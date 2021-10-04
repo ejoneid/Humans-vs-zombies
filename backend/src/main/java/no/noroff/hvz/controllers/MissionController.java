@@ -1,7 +1,10 @@
 package no.noroff.hvz.controllers;
 
+import no.noroff.hvz.models.Mission;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/game/{gameID}/mission")
@@ -10,27 +13,27 @@ public class MissionController {
 
 
     @GetMapping
-    public ResponseEntity<> getAllMissions(@PathVariable Long gameID) {
-
+    public ResponseEntity<Set<Mission>> getAllMissions(@PathVariable Long gameID) {
+        return null;
     }
 
     @GetMapping("/{missionID}")
-    public ResponseEntity<> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID) {
-
+    public ResponseEntity<Mission> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID) {
+        return null;
     }
 
     @PostMapping
-    public ResponseEntity<> createNewMission(@PathVariable Long gameID) {
-
+    public ResponseEntity<Mission> createNewMission(@PathVariable Long gameID) {
+        return null;
     }
 
     @PutMapping("/{missionID}")
-    public ResponseEntity<> updateMission(@PathVariable Long gameID, @PathVariable Long missionID) {
-
+    public ResponseEntity<Mission> updateMission(@PathVariable Long gameID, @PathVariable Long missionID) {
+        return null;
     }
 
     @DeleteMapping("/{missionID}")
-    public ResponseEntity<> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
-
+    public ResponseEntity<Mission> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
+        return null;
     }
 }
