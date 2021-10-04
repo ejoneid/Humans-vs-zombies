@@ -13,7 +13,7 @@ public class MissionController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Mission>> getAllMissions(@PathVariable Long gameID) {
+    public ResponseEntity<List<Mission>> getAllMissions(@PathVariable Long gameID) {
         return null;
     }
 

@@ -1,6 +1,7 @@
 package no.noroff.hvz.repositories;
 
+import no.noroff.hvz.models.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AppUserRepository  extends JpaRepository<AppUserRepository, Long> {
+public interface AppUserRepository  extends JpaRepository<AppUser, Long> {
 }

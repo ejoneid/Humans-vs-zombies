@@ -15,7 +15,7 @@ public class SquadController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Squad>> getAllSquads(@PathVariable Long gameID) {
+    public ResponseEntity<List<Squad>> getAllSquads(@PathVariable Long gameID) {
         return null;
     }
 
@@ -45,7 +45,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/chat")
-    public ResponseEntity<Set<Message>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID) {
+    public ResponseEntity<List<Message>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID) {
         return null;
     }
 
@@ -55,7 +55,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/check-in")
-    public ResponseEntity<Set<SquadCheckIn>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID) {
+    public ResponseEntity<List<SquadCheckIn>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID) {
         return null;
     }
 

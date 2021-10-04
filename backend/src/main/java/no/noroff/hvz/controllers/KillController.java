@@ -13,7 +13,7 @@ public class KillController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Kill>> getAllKills(@PathVariable Long gameID) {
+    public ResponseEntity<List<Kill>> getAllKills(@PathVariable Long gameID) {
         return null;
     }
 

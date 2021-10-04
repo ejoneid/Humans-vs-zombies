@@ -13,7 +13,7 @@ public class PlayerController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Player>> getAllPlayers(@PathVariable Long gameID) {
+    public ResponseEntity<List<Player>> getAllPlayers(@PathVariable Long gameID) {
         return null;
     }
 
