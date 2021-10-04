@@ -55,7 +55,7 @@ public class GameService {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(updatedGame,status);
         }
-        updatedGame = gameRepository.findById(id).get();
+        updatedGame = gameRepository.save(game);
         status = HttpStatus.OK;
         return new ResponseEntity<>(updatedGame,status);
     }
