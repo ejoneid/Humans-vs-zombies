@@ -29,21 +29,21 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<Game> createNewGame(@RequestBody Game game) {
-        return null;
+        return gameService.createNewGame(game);
     }
 
     @PutMapping("{/id}")
     public ResponseEntity<Game> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
-        return null;
+        return gameService.updateSpecificGame(id, game);
     }
 
     @DeleteMapping("{/id}")
     public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
-        return null;
+        return gameService.deleteGame(id);
     }
 
     @GetMapping("{/id}/chat")
     public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id) {
-        return null;
+        return gameService.getGameChat(id);
     }
 }
