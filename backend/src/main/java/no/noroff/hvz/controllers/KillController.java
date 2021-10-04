@@ -4,6 +4,7 @@ import no.noroff.hvz.models.Kill;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -13,7 +14,7 @@ public class KillController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Kill>> getAllKills(@PathVariable Long gameID) {
+    public ResponseEntity<List<Kill>> getAllKills(@PathVariable Long gameID) {
         return null;
     }
 

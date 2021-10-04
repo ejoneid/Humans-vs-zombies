@@ -4,6 +4,7 @@ import no.noroff.hvz.models.Player;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -13,7 +14,7 @@ public class PlayerController {
 
 
     @GetMapping
-    public ResponseEntity<Set<Player>> getAllPlayers(@PathVariable Long gameID) {
+    public ResponseEntity<List<Player>> getAllPlayers(@PathVariable Long gameID) {
         return null;
     }
 
