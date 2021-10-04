@@ -1,7 +1,6 @@
 package no.noroff.hvz.models;
 
 import javax.persistence.*;
-import java.lang.reflect.Member;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,7 @@ public class Player {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private AppUser user;
 
     @OneToMany
     @JoinColumn(name = "killer_id")
@@ -73,11 +72,11 @@ public class Player {
         this.game = game;
     }
 
-    public User getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 

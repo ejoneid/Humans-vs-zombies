@@ -17,7 +17,7 @@ public class Mission {
     private boolean isHuman;
 
     @Column
-    private String desc;
+    private String description;
 
     @Column
     private Date startTime;
@@ -54,11 +54,11 @@ public class Mission {
     }
 
     public String getDesc() {
-        return desc;
+        return description;
     }
 
     public void setDesc(String desc) {
-        this.desc = desc;
+        this.description = desc;
     }
 
     public Date getStartTime() {
@@ -83,5 +83,13 @@ public class Mission {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

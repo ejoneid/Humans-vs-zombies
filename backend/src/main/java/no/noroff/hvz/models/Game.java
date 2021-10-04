@@ -1,7 +1,5 @@
 package no.noroff.hvz.models;
 
-import org.hibernate.annotations.Generated;
-
 import javax.persistence.*;
 import java.util.Set;
 
