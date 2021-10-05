@@ -13,6 +13,7 @@ body {
   box-sizing: border-box;
   border-radius: 1000px;
   padding: 5px;
+  height: fit-content;
   /* Button Text */
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
@@ -21,4 +22,10 @@ body {
   line-height: 89%;
   align-items: center;
   color: #FEA520;
+}
+.greyBackground {
+  border: 2px solid #FEA520;
+  background: #272D2D;
+  height: fit-content;
+  width: fit-content;
 }

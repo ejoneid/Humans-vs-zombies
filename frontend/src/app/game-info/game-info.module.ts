@@ -7,6 +7,7 @@ import { SquadComponent } from './squad/squad.component';
 import { ChatComponent } from './chat/chat.component';
 import { BiteCodeComponent } from './bite-code/bite-code.component';
 import {GameInfoRoutingModule} from "./game-info-routing.module";
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {GameInfoRoutingModule} from "./game-info-routing.module";
     GameTitleComponent,
     SquadComponent,
     ChatComponent,
-    BiteCodeComponent
+    BiteCodeComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
