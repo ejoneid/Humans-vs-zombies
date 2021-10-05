@@ -1,7 +1,11 @@
 package no.noroff.hvz.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class SquadCheckIn {
@@ -25,6 +29,14 @@ public class SquadCheckIn {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private SquadMember member;
+
+    @JsonGetter("member")
+    public Long memberGetter() {
+        if (member != null) {
+            return member.getId();
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;

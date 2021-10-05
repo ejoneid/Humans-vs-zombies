@@ -1,7 +1,11 @@
 package no.noroff.hvz.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Player {
@@ -13,20 +17,47 @@ public class Player {
     @Column(nullable = false)
     private boolean isHuman;
 
-    @Column(nullable = true, length = 30)
+    @Column(nullable = false, length = 30)
     private String biteCode;
+
+    @Column(nullable = false)
+    private boolean isPatientZero;
 
     @ManyToOne
     @JoinColumn(name = "player_id")
     private Game game;
 
+    @JsonGetter("game")
+    public Long gameGetter() {
+        if (game != null) {
+            return game.getId();
+        }
+        return null;
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
 
+    @JsonGetter("user")
+    public Long userGetter() {
+        if (user != null) {
+            return user.getId();
+        }
+        return null;
+    }
+
     @OneToMany
     @JoinColumn(name = "killer_id")
     private Set<Kill> kills;
+
+    @JsonGetter("kills")
+    public List<Long> killsGetter() {
+        if (kills != null) {
+            return kills.stream().map(Kill::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
 
 //    @OneToOne
 //    @JoinColumn(name = "player_id")
@@ -39,6 +70,14 @@ public class Player {
     @OneToMany
     @JoinColumn(name = "chat_id")
     private Set<Message> messages;
+
+    @JsonGetter("messages")
+    public List<String> messagesGetter() {
+        if (messages != null) {
+            return messages.stream().map(Message::getMessage).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;
@@ -94,5 +133,13 @@ public class Player {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public boolean isPatientZero() {
+        return isPatientZero;
+    }
+
+    public void setPatientZero(boolean patientZero) {
+        isPatientZero = patientZero;
     }
 }

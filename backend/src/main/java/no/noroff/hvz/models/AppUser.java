@@ -1,7 +1,11 @@
 package no.noroff.hvz.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class AppUser {
@@ -19,6 +23,14 @@ public class AppUser {
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Player> players;
+
+    @JsonGetter("players")
+    public List<Long> playersGetter() {
+        if (players != null) {
+            return players.stream().map(Player::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;
