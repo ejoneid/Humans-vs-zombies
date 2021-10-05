@@ -1,8 +1,10 @@
 .squadBiteMapChatContainer {
   display: flex;
-  width: 70%;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  width: 30%;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: column;
+  row-gap: 1%;
 }
 #gameDescriptionElement {
   width: 30%;
@@ -11,6 +13,11 @@
   display: flex;
   justify-content: space-evenly;
 }
-.squadBiteMapChatElement {
-  width: 45%;
+#chat {
+  baseline-shift: unset;
+  align-self: baseline;
+}
+#map {
+  row-gap: 0;
+  align-self: flex-end;
 }
