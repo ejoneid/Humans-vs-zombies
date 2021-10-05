@@ -8,6 +8,7 @@ import { ChatComponent } from './chat/chat.component';
 import { BiteCodeComponent } from './bite-code/bite-code.component';
 import {GameInfoRoutingModule} from "./game-info-routing.module";
 import { MapComponent } from './map/map.component';
+import {GoogleMapsModule} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MapComponent } from './map/map.component';
   ],
   imports: [
     CommonModule,
-    GameInfoRoutingModule
+    GameInfoRoutingModule,
+    GoogleMapsModule
   ],
   exports: [
     BiteCodeComponent,
