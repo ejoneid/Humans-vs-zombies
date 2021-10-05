@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {HomePage} from "./pages/home.page";
 import {AuthButtonComponent} from "./components/auth-button/auth-button.component";
 import {LoginComponent} from "./components/login/login.component";
-import {ActiveGamesComponent} from "./components/active-games/active-games.component";
+import {ActiveGameComponent} from "./components/active-game/active-game.component";
 import {HomeRoutingModule} from "./home-routing.module";
 
 @NgModule({
@@ -11,11 +11,15 @@ import {HomeRoutingModule} from "./home-routing.module";
     HomePage,
     AuthButtonComponent,
     LoginComponent,
-    ActiveGamesComponent
+    ActiveGameComponent
   ],
   imports: [
     CommonModule,
     HomeRoutingModule
+  ],
+  exports: [
+    LoginComponent,
+    ActiveGameComponent
   ]
 })
 export class HomeModule { }

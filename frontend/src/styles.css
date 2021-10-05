@@ -2,4 +2,23 @@
 body {
   background-color: black;
   color: #B2BBBD;
+  font-family: 'Gemunu Libre', sans-serif;
+  font-weight: bold;
+}
+
+.normalGreyButton {
+  /* Button Background */
+  background: #272D2D;
+  border: 2px solid #B2BBBD;
+  box-sizing: border-box;
+  border-radius: 1000px;
+  padding: 5px;
+  /* Button Text */
+  font-family: Gemunu Libre, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 89%;
+  align-items: center;
+  color: #FEA520;
 }

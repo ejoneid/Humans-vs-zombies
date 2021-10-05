@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActiveGame} from "../models/active-game.model";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
+  private activeGames: ActiveGame[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public get games(): ActiveGame[] {
+    return this.activeGames;
   }
 
 }
