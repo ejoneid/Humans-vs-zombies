@@ -12,6 +12,8 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/game")
+// NB! Configure origins properly before deploy!
+@CrossOrigin(origins = "*")
 public class GameController {
 
     @Autowired
