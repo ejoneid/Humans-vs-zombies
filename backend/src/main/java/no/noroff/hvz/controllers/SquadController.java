@@ -35,7 +35,7 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/join")
-    public ResponseEntity<Squad> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMember member) {
+    public ResponseEntity<SquadMember> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMember member) {
         return squadService.joinSquad(gameID, squadID, member);
     }
 

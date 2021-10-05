@@ -63,15 +63,14 @@ public class SquadService {
         return new ResponseEntity<>(createdSquad, status);
     }
 
-    public ResponseEntity<Squad> joinSquad(Long gameID, Long squadID, SquadMember member) {
-        Squad squad = new Squad();
+    public ResponseEntity<SquadMember> joinSquad(Long gameID, Long squadID, SquadMember member) {
         if(!squadRepository.existsById(squadID) || !gameRepository.existsById(gameID)) {
             status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(squad,status);
+            return new ResponseEntity<>(member,status);
         }
         squadMemberRepository.save(member);
         status = HttpStatus.CREATED;
-        return new ResponseEntity<>(squad, status);
+        return new ResponseEntity<>(member, status);
     }
 
     public ResponseEntity<Squad> updateSquad(Long gameID, Long squadID, Squad squad) {
