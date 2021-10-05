@@ -1,0 +1,27 @@
+.loginSection {
+  background-color: #272D2D;
+  border-right: #FEA520 solid 2px;
+  width: 30%;
+}
+.activeGamesSection {
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  height: fit-content;
+  justify-content: center;
+  flex-flow: column;
+}
+.activeGamesTitle {
+  align-self: center;
+}
+.activeGameElement {
+  width: 50%;
+}
+.activeGameList {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+.homePageContainer {
+  display: flex;
+}

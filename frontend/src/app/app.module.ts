@@ -5,16 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { AuthModule } from '@auth0/auth0-angular';
-import { AuthButtonComponent } from './auth-button/auth-button.component';
+import {HomeModule} from "./home/home.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AuthButtonComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HomeModule,
     AuthModule.forRoot({
       domain: 'dev-fwlq8v0n.eu.auth0.com',
       clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2'
