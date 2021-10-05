@@ -12,6 +12,16 @@ public class KillDTO {
     private String killerUrl;
     private String victimUrl;
 
+    public KillDTO(Long id, Date timeOfDeath, String story, String lat, String lng, String killerUrl, String victimUrl) {
+        this.id = id;
+        this.timeOfDeath = timeOfDeath;
+        this.story = story;
+        this.lat = lat;
+        this.lng = lng;
+        this.killerUrl = killerUrl;
+        this.victimUrl = victimUrl;
+    }
+
     public Long getId() {
         return id;
     }

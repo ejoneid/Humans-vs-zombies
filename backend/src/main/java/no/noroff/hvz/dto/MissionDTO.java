@@ -13,6 +13,15 @@ public class MissionDTO {
     private Date endTime;
     private String missionType;
 
+    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, String missionType) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.missionType = missionType;
+    }
+
     public Long getId() {
         return id;
     }

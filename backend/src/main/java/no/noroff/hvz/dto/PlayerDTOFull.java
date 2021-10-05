@@ -11,6 +11,14 @@ public class PlayerDTOFull implements PlayerDTO{
     private String killsUrl;
     private String messagesUrl;
 
+    public PlayerDTOFull(Long id, Boolean isHuman, String biteCode, AppUserDTO user, String killsUrl, String messagesUrl) {
+        this.id = id;
+        this.isHuman = isHuman;
+        this.biteCode = biteCode;
+        this.user = user;
+        this.killsUrl = killsUrl;
+        this.messagesUrl = messagesUrl;
+    }
 
     @Override
     public Long getId() {
