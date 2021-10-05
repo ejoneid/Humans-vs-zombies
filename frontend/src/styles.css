@@ -5,7 +5,6 @@ body {
   font-family: 'Gemunu Libre', sans-serif;
   font-weight: bold;
 }
-
 .normalGreyButton {
   /* Button Background */
   background: #272D2D;
@@ -28,4 +27,10 @@ body {
   background: #272D2D;
   height: fit-content;
   width: fit-content;
+}
+.blackBackground {
+  background-color: black;
+  border: 2px solid #FEA520;
+  width: 100%;
+  padding: 5px;
 }

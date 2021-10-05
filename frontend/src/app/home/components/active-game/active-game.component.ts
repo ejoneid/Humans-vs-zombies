@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-active-game',
@@ -6,6 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./active-game.component.css']
 })
 export class ActiveGameComponent implements OnInit {
+
+  @Input()
+  public gameName: String = "";
+  @Input()
+  public gameStart: String = "";
+  @Input()
+  public gameEnd: String = "";
+  @Input()
+  public gameStatus: String = "";
 
   constructor() { }
 
