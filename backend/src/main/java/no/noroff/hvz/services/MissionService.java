@@ -57,12 +57,14 @@ public class MissionService {
         }
         //adds new mission
         addedMission = missionRepository.save(mission);
-        //Updates missions in specified game
-        Game game = gameRepository.findById(gameID).get();
+        //Updates missions in specified game, tror ikke dette trengs
+        /*Game game = gameRepository.findById(gameID).get();
         Set<Mission> missions = game.getMissions();
         missions.add(addedMission);
         game.setMissions(missions);
         gameRepository.save(game);
+
+         */
         //returns new mission with code
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedMission, status);
@@ -94,12 +96,15 @@ public class MissionService {
         //deleted mission
         deletedMission = missionRepository.findById(missionID).get();
         missionRepository.deleteById(missionID);
-        //Updates missions in specified game
+        //Updates missions in specified game, tror ikke det er nødvendig
+        /*
         Game game = gameRepository.findById(gameID).get();
         Set<Mission> missions = game.getMissions();
         missions.remove(deletedMission);
         game.setMissions(missions);
         gameRepository.save(game);
+
+         */
         //returns new mission with code
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(deletedMission, status);
