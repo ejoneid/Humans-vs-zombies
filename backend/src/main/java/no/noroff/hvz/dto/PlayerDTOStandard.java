@@ -8,6 +8,11 @@ public class PlayerDTOStandard implements PlayerDTO{
     private Boolean isHuman;
     private String killsUrl;
 
+    public PlayerDTOStandard(Long id, Boolean isHuman, String killsUrl) {
+        this.id = id;
+        this.isHuman = isHuman;
+        this.killsUrl = killsUrl;
+    }
 
     @Override
     public Long getId() {

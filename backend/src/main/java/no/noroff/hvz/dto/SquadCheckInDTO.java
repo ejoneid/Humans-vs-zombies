@@ -10,7 +10,16 @@ public class SquadCheckInDTO {
     private Date endTime;
     private String lat;
     private String lng;
-    private String memberUrl;
+    private SquadMemberDTO member;
+
+    public SquadCheckInDTO(Long id, Date startTime, Date endTime, String lat, String lng, SquadMemberDTO member) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.lat = lat;
+        this.lng = lng;
+        this.member = member;
+    }
 
     public Long getId() {
         return id;
@@ -52,11 +61,11 @@ public class SquadCheckInDTO {
         this.lng = lng;
     }
 
-    public String getMemberUrl() {
-        return memberUrl;
+    public SquadMemberDTO getMember() {
+        return member;
     }
 
-    public void setMemberUrl(String memberUrl) {
-        this.memberUrl = memberUrl;
+    public void setMember(SquadMemberDTO member) {
+        this.member = member;
     }
 }

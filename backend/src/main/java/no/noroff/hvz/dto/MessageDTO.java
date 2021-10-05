@@ -8,6 +8,13 @@ public class MessageDTO {
     private Date messageTime;
     private String playerUrl;
 
+    public MessageDTO(Long id, String message, Date messageTime, String playerUrl) {
+        this.id = id;
+        this.message = message;
+        this.messageTime = messageTime;
+        this.playerUrl = playerUrl;
+    }
+
     public Long getId() {
         return id;
     }
