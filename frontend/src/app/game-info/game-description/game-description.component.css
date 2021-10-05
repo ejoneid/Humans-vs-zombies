@@ -1,0 +1,4 @@
+.gameDescriptionContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

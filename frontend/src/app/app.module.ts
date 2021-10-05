@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 import { AuthModule } from '@auth0/auth0-angular';
 import {HomeModule} from "./home/home.module";
+import {GameInfoModule} from "./game-info/game-info.module";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {HomeModule} from "./home/home.module";
     BrowserModule,
     AppRoutingModule,
     HomeModule,
+    GameInfoModule,
     AuthModule.forRoot({
       domain: 'dev-fwlq8v0n.eu.auth0.com',
       clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2'

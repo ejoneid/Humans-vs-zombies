@@ -1,0 +1,16 @@
+.squadBiteMapChatContainer {
+  display: flex;
+  width: 70%;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+#gameDescriptionElement {
+  width: 30%;
+}
+.gameInfoPageContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+.squadBiteMapChatElement {
+  width: 45%;
+}
