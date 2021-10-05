@@ -1,7 +1,11 @@
 package no.noroff.hvz.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Game {
@@ -32,25 +36,61 @@ public class Game {
     @JoinColumn(name = "squad_id")
     private Set<Squad> squads;
 
+    @JsonGetter("squads")
+    public List<Long> squadGetter() {
+        if (squads != null) {
+            return squads.stream().map(Squad::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
+
     @OneToMany
     @JoinColumn(name = "mission_id")
     private Set<Mission> missions;
+
+    @JsonGetter("missions")
+    public List<Long> missionsGetter() {
+        if (missions != null) {
+            return missions.stream().map(Mission::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     @OneToMany
     @JoinColumn(name = "kill_id")
     private Set<Kill> kills;
 
+    @JsonGetter("kills")
+    public List<Long> killsGetter() {
+        if (kills != null) {
+            return kills.stream().map(Kill::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
+
     @OneToMany
     @JoinColumn(name = "message_id")
     private Set<Message> messages;
+
+    @JsonGetter("messages")
+    public List<Long> messagesGetter() {
+        if (messages != null) {
+            return messages.stream().map(Message::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     @OneToMany
     @JoinColumn(name = "player_id")
     private Set<Player> players;
 
-    @OneToOne
-    @JoinColumn(name = "patient_zero_id")
-    private Player patientZero;
+    @JsonGetter("players")
+    public List<Long> playersGetter() {
+        if (players != null) {
+            return players.stream().map(Player::getId).collect(Collectors.toList());
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;
@@ -147,12 +187,4 @@ public class Game {
     public void setPlayers(Set<Player> players) {
         this.players = players;
     }
-
-        public Player getPatientZero() {
-            return patientZero;
-        }
-
-        public void setPatientZero(Player patientZero) {
-            this.patientZero = patientZero;
-        }
 }
