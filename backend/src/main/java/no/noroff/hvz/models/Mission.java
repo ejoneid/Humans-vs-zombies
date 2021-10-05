@@ -1,5 +1,7 @@
 package no.noroff.hvz.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -28,6 +30,14 @@ public class Mission {
     @ManyToOne
     @JoinColumn(name = "mission_id")
     private Game game;
+
+    @JsonGetter("game")
+    public Long gameGetter() {
+        if (game != null) {
+            return game.getId();
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;

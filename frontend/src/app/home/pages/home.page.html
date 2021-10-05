@@ -1,28 +1,21 @@
 <body>
 <main class="homePageContainer">
   <section class="loginSection">
-    <app-login></app-login>
+    <section class="blackBackground" id="authWindow">
+      <h1>Place Authentication Here :)</h1>
+      <app-auth-button></app-auth-button>
+    </section>
   </section>
   <section class="activeGamesSection">
     <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
     <ul class="activeGameList">
-      <!--<li *ngIf="games.length==0">
-        There are no active games in your area...
-      </li>
-      <li *ngFor="let game of games">
-        <h2>{{game.name}}</h2>
-      </li>-->
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
-      <li class="activeGameElement">TestElement</li>
+      <app-active-game *ngFor="let game of games"
+                       [gameName]="game.name"
+                       [gameStart]="'05.10'"
+                       [gameEnd]="'31.10'"
+                       [gameStatus]="game.state"
+                       class="activeGameElement"
+      ></app-active-game>
     </ul>
   </section>
 </main>

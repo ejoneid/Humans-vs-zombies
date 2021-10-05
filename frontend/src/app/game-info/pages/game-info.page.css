@@ -1,0 +1,23 @@
+.squadBiteMapChatContainer {
+  display: flex;
+  width: 30%;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: column;
+  row-gap: 1%;
+}
+#gameDescriptionElement {
+  width: 30%;
+}
+.gameInfoPageContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+#chat {
+  baseline-shift: unset;
+  align-self: baseline;
+}
+#map {
+  row-gap: 0;
+  align-self: flex-end;
+}
