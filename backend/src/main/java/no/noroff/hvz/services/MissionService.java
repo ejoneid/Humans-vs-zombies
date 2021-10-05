@@ -106,7 +106,7 @@ public class MissionService {
 
          */
         //returns new mission with code
-        status = HttpStatus.CREATED;
+        status = HttpStatus.OK;
         return new ResponseEntity<>(deletedMission, status);
     }
 }
