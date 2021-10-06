@@ -33,7 +33,7 @@ public class GameController {
         return new ResponseEntity<>(games, status);
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) {
         HttpStatus status;
         Game game = gameService.getSpecificGame(id);
@@ -53,7 +53,7 @@ public class GameController {
         return new ResponseEntity<>(mapper.toGameTDO(addedGame), status);
     }
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
         HttpStatus status;
         if(!Objects.equals(id,game.getId())) {
@@ -70,7 +70,7 @@ public class GameController {
         return new ResponseEntity<>(mapper.toGameTDO(updatedGame),status);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
         HttpStatus status;
         Game deletedGame = gameService.deleteGame(id);
@@ -84,7 +84,7 @@ public class GameController {
 
     }
 
-    @GetMapping("{/id}/chat")
+    @GetMapping("/{id}/chat")
     public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id) {
         HttpStatus status;
         List<Message> messages = gameService.getGameChat(id);
