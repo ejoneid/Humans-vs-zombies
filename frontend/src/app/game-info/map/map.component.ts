@@ -18,6 +18,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   options: google.maps.MapOptions = {
     center: { lat: 59.9115856, lng: 10.750967 },
     zoom: 14,
+    disableDefaultUI: true,
     styles: [
         {
           "elementType": "geometry",
