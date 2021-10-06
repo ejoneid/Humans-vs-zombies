@@ -157,6 +157,7 @@ class AppStartupRunner implements ApplicationRunner {
 
         member1.setSquad(squad1);
         member1.setRank("A high rank, like officer");
+        member1.setPlayer(player1);
         if (squadMemberRepository.count() == 0) {
             squadMemberRepository.save(member1);
         }

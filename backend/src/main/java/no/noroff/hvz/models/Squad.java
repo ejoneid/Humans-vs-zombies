@@ -45,7 +45,7 @@ public class Squad {
     }
 
     @OneToMany
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "squad_id")
     private Set<SquadMember> members;
 
     @JsonGetter("members")
