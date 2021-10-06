@@ -67,4 +67,11 @@ public class GameService {
         return new ArrayList<>(gameRepository.findById(id).get().getMessages());
     }
 
+    public List<Message> getGameChat(Long id, Long playerID) {
+        if(!gameRepository.existsById(id)) {
+            return null;
+        }
+        return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().getId(), playerID)).collect(Collectors.toList());
+    }
+
 }

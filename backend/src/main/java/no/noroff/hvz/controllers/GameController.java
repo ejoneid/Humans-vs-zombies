@@ -86,9 +86,11 @@ public class GameController {
     }
 
     @GetMapping("/{id}/chat")
-    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id) {
+    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestParam Optional<Long> playerID) {
         HttpStatus status;
-        List<Message> messages = gameService.getGameChat(id);
+        List<Message> messages = new ArrayList<>();
+        if (playerID.isPresent()) messages = gameService.getGameChat(id, playerID.get());
+        else messages = gameService.getGameChat(id);
         if( messages == null) {
             status = HttpStatus.NOT_FOUND;
         }
