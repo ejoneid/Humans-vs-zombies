@@ -17,7 +17,6 @@ export class ChatComponent implements OnInit {
   }
 
 }
-
 //-----
 //Just for testing purposes
 class TestMessage implements Message {
@@ -27,6 +26,5 @@ class TestMessage implements Message {
   sender = "Test User";
   squad = null;
   time = "14:31";
-
 }
 //-----
