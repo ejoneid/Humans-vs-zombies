@@ -1,7 +1,8 @@
 <body>
 <app-game-title></app-game-title>
 <main class="gameInfoPageContainer">
-  <app-game-description id="gameDescriptionElement"></app-game-description>
+  <!--Should use gameInfo.description instead of mockDescription-->
+  <app-game-description id="gameDescriptionElement" [gameDescription]="mockDescription"></app-game-description>
   <section class="squadBiteMapChatContainer">
     <app-squad></app-squad>
     <app-map id="map"></app-map>
