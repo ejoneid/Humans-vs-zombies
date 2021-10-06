@@ -4,12 +4,12 @@
   <!--Should use gameInfo.description instead of mockDescription-->
   <app-game-description id="gameDescriptionElement" [gameDescription]="mockDescription"></app-game-description>
   <section class="squadBiteMapChatContainer">
-    <app-squad></app-squad>
+    <app-squad [squadName]="mockSquadName" [members]="mockSquad"></app-squad>
     <app-map id="map"></app-map>
   </section>
   <section class="squadBiteMapChatContainer">
     <app-bite-code></app-bite-code>
-    <app-chat id="chat"></app-chat>
+    <app-chat id="chat" [chatMessages]="mockChat"></app-chat>
   </section>
 </main>
 </body>

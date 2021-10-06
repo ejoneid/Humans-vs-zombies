@@ -9,7 +9,7 @@ import {Message} from "../../../models/message.model";
 export class ChatComponent implements OnInit {
 
   @Input()
-  public chatMessages: Message[] = [new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage()];
+  public chatMessages: Message[] = [];
 
   constructor() { }
 
@@ -17,16 +17,3 @@ export class ChatComponent implements OnInit {
   }
 
 }
-
-//-----
-//Just for testing purposes
-class TestMessage implements Message {
-  chat = "global";
-  content = "This is a chat message that should cover more than one line please";
-  id = 3;
-  sender = "Test User";
-  squad = null;
-  time = "14:31";
-
-}
-//-----
