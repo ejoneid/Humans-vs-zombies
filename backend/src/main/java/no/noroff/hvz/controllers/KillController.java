@@ -4,6 +4,7 @@ import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.services.KillerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,16 +28,19 @@ public class KillController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Kill> createNewKill(@PathVariable Long gameID, @RequestBody Kill kill) {
         return killerService.createNewKill(gameID, kill);
     }
 
     @PutMapping("/{killID}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Kill> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody Kill kill) {
         return killerService.updateKill(gameID, killID, kill);
     }
 
     @DeleteMapping("/{killID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Kill> deleteKill(@PathVariable Long gameID, @PathVariable Long killID) {
         return killerService.deleteKill(gameID, killID);
     }

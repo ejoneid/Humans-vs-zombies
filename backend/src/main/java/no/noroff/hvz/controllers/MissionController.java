@@ -4,6 +4,7 @@ import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.services.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,16 +28,19 @@ public class MissionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Mission> createNewMission(@PathVariable Long gameID, @RequestBody Mission mission) {
         return missionService.createNewMission(gameID, mission);
     }
 
     @PutMapping("/{missionID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Mission> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody Mission mission) {
         return missionService.updateMission(gameID, missionID, mission);
     }
 
     @DeleteMapping("/{missionID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Mission> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
         return missionService.deleteMission(gameID, missionID);
     }

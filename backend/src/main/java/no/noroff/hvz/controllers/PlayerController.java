@@ -4,6 +4,7 @@ import no.noroff.hvz.models.Player;
 import no.noroff.hvz.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +33,13 @@ public class PlayerController {
     }
 
     @PutMapping("/{playerID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Player> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestBody Player player) {
         return playerService.updatePlayer(gameID, playerID, player);
     }
 
     @DeleteMapping("/{playerID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Player> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
         return playerService.deletePlayer(gameID, playerID);
     }

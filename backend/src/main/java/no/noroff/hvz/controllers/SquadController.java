@@ -7,6 +7,7 @@ import no.noroff.hvz.models.SquadMember;
 import no.noroff.hvz.services.SquadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,11 +41,13 @@ public class SquadController {
     }
 
     @PutMapping("/{squadID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Squad> updateSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody Squad squad) {
         return squadService.updateSquad(gameID, squadID, squad);
     }
 
     @DeleteMapping("/{squadID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Squad> deleteSquad(@PathVariable Long gameID, @PathVariable Long squadID) {
         return squadService.deleteSquad(gameID, squadID);
     }
