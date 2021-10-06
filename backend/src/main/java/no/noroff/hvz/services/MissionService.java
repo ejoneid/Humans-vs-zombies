@@ -23,90 +23,45 @@ public class MissionService {
     @Autowired
     private GameRepository gameRepository;
 
-    public ResponseEntity<List<Mission>> getAllMissions(Long gameID) {
-        HttpStatus status;
+    public List<Mission> getAllMissions(Long gameID) {
         List<Mission> missions = new ArrayList<>();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(missions,status);
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            missions = new ArrayList<>(game.getMissions());
         }
-        Game game = gameRepository.findById(gameID).get();
-        missions = new ArrayList<>(game.getMissions());
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(missions, status);
+        return missions;
     }
 
-    public ResponseEntity<Mission> getSpecificMission(Long gameID, Long missionID) {
-        HttpStatus status;
+    public Mission getSpecificMission(Long gameID, Long missionID) {
         Mission mission = new Mission();
-        if(!missionRepository.existsById(missionID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(mission,status);
+        if(missionRepository.existsById(missionID) && gameRepository.existsById(gameID)) {
+            mission = missionRepository.findById(missionID).get();
         }
-        mission = missionRepository.findById(missionID).get();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(mission,status);
+        return mission;
     }
 
-    public ResponseEntity<Mission> createNewMission(Long gameID, Mission mission) {
-        HttpStatus status;
+    public Mission createNewMission(Long gameID, Mission mission) {
         Mission addedMission = new Mission();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(mission,status);
+        if(gameRepository.existsById(gameID)) {
+            addedMission = missionRepository.save(mission);
         }
-        //adds new mission
-        addedMission = missionRepository.save(mission);
-        //Updates missions in specified game, tror ikke dette trengs
-        /*Game game = gameRepository.findById(gameID).get();
-        Set<Mission> missions = game.getMissions();
-        missions.add(addedMission);
-        game.setMissions(missions);
-        gameRepository.save(game);
-
-         */
-        //returns new mission with code
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(addedMission, status);
+        return addedMission;
     }
 
-    public ResponseEntity<Mission> updateMission( Long gameID, Long missionID, Mission mission) {
-        HttpStatus status;
+    public Mission updateMission( Long gameID, Long missionID, Mission mission) {
         Mission updatedMission = new Mission();
-        if(!gameRepository.existsById(gameID) || !missionRepository.existsById(missionID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(updatedMission,status);
+        if(gameRepository.existsById(gameID) && missionRepository.existsById(missionID)) {
+            updatedMission = missionRepository.save(mission);
         }
-        if(!Objects.equals(missionID,mission.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(updatedMission,status);
-        }
-        updatedMission = missionRepository.save(mission);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(updatedMission,status);
+        return updatedMission;
     }
 
-    public ResponseEntity<Mission> deleteMission(Long gameID, Long missionID) {
-        HttpStatus status;
+    public Mission deleteMission(Long gameID, Long missionID) {
         Mission deletedMission = new Mission();
-        if(!gameRepository.existsById(gameID) || !missionRepository.existsById(missionID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(deletedMission,status);
+        if(gameRepository.existsById(gameID) && missionRepository.existsById(missionID)) {
+            deletedMission = missionRepository.findById(missionID).get();
+            missionRepository.deleteById(missionID);
         }
-        //deleted mission
-        deletedMission = missionRepository.findById(missionID).get();
-        missionRepository.deleteById(missionID);
-        //Updates missions in specified game, tror ikke det er nødvendig
-        /*
-        Game game = gameRepository.findById(gameID).get();
-        Set<Mission> missions = game.getMissions();
-        missions.remove(deletedMission);
-        game.setMissions(missions);
-        gameRepository.save(game);
-
-         */
-        //returns new mission with code
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(deletedMission, status);
+        return deletedMission;
     }
 }
