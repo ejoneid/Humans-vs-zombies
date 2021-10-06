@@ -24,41 +24,29 @@ public class PlayerService {
     @Autowired
     private GameRepository gameRepository;
 
-    public ResponseEntity<List<Player>> getAllPlayers(Long gameID) {
-        HttpStatus status;
+    public List<Player> getAllPlayers(Long gameID) {
         List<Player> players = new ArrayList<>();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(players,status);
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            players = new ArrayList<>(game.getPlayers());
         }
-        Game game = gameRepository.findById(gameID).get();
-        players = new ArrayList<>(game.getPlayers());
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(players, status);
+        return players;
     }
 
-    public ResponseEntity<Player> getSpecificPlayer( Long gameID, Long playerID) {
-        HttpStatus status;
+    public Player getSpecificPlayer( Long gameID, Long playerID) {
         Player player = new Player();
-        if(!playerRepository.existsById(playerID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(player,status);
+        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
+            player = playerRepository.findById(playerID).get();
         }
-        player = playerRepository.findById(playerID).get();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(player, status);
+        return player;
     }
 
-    public ResponseEntity<Player> createNewPlayer(Long gameID, Player player) {
-        HttpStatus status;
+    public Player createNewPlayer(Long gameID, Player player) {
         Player newPlayer = new Player();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(newPlayer,status);
+        if(gameRepository.existsById(gameID)) {
+            newPlayer = playerRepository.save(player);
         }
-        newPlayer = playerRepository.save(player);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(newPlayer,status);
+        return newPlayer;
     }
 
     public ResponseEntity<Player> updatePlayer(Long gameID, Long playerID, Player player) {
