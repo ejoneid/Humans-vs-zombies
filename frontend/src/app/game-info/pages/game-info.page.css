@@ -20,4 +20,5 @@
 #map {
   row-gap: 0;
   align-self: flex-end;
+  width: 100%;
 }
