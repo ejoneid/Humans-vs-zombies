@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,9 +23,11 @@ public class KillController {
     Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID) {
+    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestParam Optional<Long> killerID) {
         HttpStatus status;
-        List<Kill> kills = killerService.getAllKills(gameID);
+        List<Kill> kills = new ArrayList<>();
+        if (killerID.isPresent()) kills = killerService.getAllKills(gameID, killerID.get());
+        else kills = killerService.getAllKills(gameID);
         List<KillDTO> killDTOs = new ArrayList<>();
         if(kills == null) {
             status = HttpStatus.NOT_FOUND;
