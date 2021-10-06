@@ -16,8 +16,11 @@
 #chat {
   baseline-shift: unset;
   align-self: baseline;
+  height: 100%;
 }
 #map {
   row-gap: 0;
   align-self: flex-end;
+  width: 100%;
+  height: 100%;
 }

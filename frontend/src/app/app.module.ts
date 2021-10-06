@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import {HomeModule} from "./home/home.module";
 import {GameInfoModule} from "./game-info/game-info.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {GameInfoModule} from "./game-info/game-info.module";
       domain: 'dev-fwlq8v0n.eu.auth0.com',
       clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2'
     }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
