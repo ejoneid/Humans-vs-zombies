@@ -22,7 +22,7 @@ public class GameController {
         return gameService.getAllGames();
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Game> getSpecificGame(@PathVariable Long id) {
         return gameService.getSpecificGame(id);
     }
@@ -32,17 +32,17 @@ public class GameController {
         return gameService.createNewGame(game);
     }
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Game> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
         return gameService.updateSpecificGame(id, game);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
         return gameService.deleteGame(id);
     }
 
-    @GetMapping("{/id}/chat")
+    @GetMapping("/{id}/chat")
     public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id) {
         return gameService.getGameChat(id);
     }
