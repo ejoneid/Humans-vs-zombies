@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit,} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -9,10 +9,10 @@ import {catchError, map} from "rxjs/operators";
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit {
+  //Is defined from ngAfterViewInit()
+  @ViewChild("gmap") gmap: ElementRef | undefined;
 
   apiLoaded: Observable<boolean>;
-
-  mapContainer!: HTMLElement | null;
 
   //Initial settings for the Google Map
   options: google.maps.MapOptions = {
