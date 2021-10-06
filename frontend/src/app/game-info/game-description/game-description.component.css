@@ -1,4 +1,6 @@
 .gameDescriptionContainer {
   display: flex;
   flex-wrap: wrap;
+  max-height: 85vh;
+  overflow-y: scroll;
 }
