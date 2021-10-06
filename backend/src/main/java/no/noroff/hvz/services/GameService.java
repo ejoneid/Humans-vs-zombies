@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -22,6 +23,9 @@ public class GameService {
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
+    }
+    public List<Game> getAllGames(String state) {
+        return gameRepository.findAll().stream().filter(g -> Objects.equals(g.getGameState(), state)).collect(Collectors.toList());
     }
 
     public Game getSpecificGame(Long id) {

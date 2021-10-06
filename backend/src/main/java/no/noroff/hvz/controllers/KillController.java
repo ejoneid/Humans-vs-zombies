@@ -29,7 +29,7 @@ public class KillController {
     public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID) {
         HttpStatus status;
         List<Kill> kills = killerService.getAllKills(gameID);
-        List<KillDTO> killDTOs = null;
+        List<KillDTO> killDTOs = new ArrayList<>();
         if(kills == null) {
             status = HttpStatus.NOT_FOUND;
         }

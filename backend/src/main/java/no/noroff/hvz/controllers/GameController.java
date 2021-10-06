@@ -26,13 +26,12 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
-        List<GameDTO> games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
-        List<GameDTO> stateGames = games;
-        if (state.isPresent()) {
-            stateGames = games.stream().filter(g -> Objects.equals(g.getGameState(), state.get())).collect(Collectors.toList());
-        }
+        List<GameDTO> games = new ArrayList<>();
+        games = state.map(s ->
+                gameService.getAllGames(s).stream().map(mapper::toGameTDO).collect(Collectors.toList())).orElseGet(() ->
+                gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList()));
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(stateGames, status);
+        return new ResponseEntity<>(games, status);
     }
 
     @GetMapping("/{id}")
