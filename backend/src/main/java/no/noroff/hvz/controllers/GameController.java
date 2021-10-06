@@ -10,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,10 +25,14 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames() {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
+        List<GameDTO> stateGames = games;
+        if (state.isPresent()) {
+            stateGames = games.stream().filter(g -> Objects.equals(g.getGameState(), state.get())).collect(Collectors.toList());
+        }
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(games, status);
+        return new ResponseEntity<>(stateGames, status);
     }
 
     @GetMapping("/{id}")
