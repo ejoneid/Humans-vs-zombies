@@ -20,69 +20,46 @@ public class KillerService {
     @Autowired
     private GameRepository gameRepository;
 
-    public ResponseEntity<List<Kill>> getAllKills(Long gameID) {
-        HttpStatus status;
-        List<Kill> kills = new ArrayList<>();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(kills,status);
+    public List<Kill> getAllKills(Long gameID) {
+        List<Kill> kills = null;
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            kills = new ArrayList<>(game.getKills());
         }
-        Game game = gameRepository.findById(gameID).get();
-        kills = new ArrayList<>(game.getKills());
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(kills, status);
+        return kills;
     }
 
-    public ResponseEntity<Kill> getSpecificKill( Long gameID, Long killID) {
-        HttpStatus status;
+    public Kill getSpecificKill( Long gameID, Long killID) {
         Kill kill = new Kill();
-        if(!gameRepository.existsById(gameID) || !killerRepository.existsById(killID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(kill,status);
+        if(gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
+            kill = killerRepository.findById(killID).get();
         }
-        kill = killerRepository.findById(killID).get();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(kill, status);
+        return kill;
     }
 
-    public ResponseEntity<Kill> createNewKill(Long gameID, Kill kill) {
-        HttpStatus status;
+    public Kill createNewKill(Long gameID, Kill kill) {
         Kill addedKill = new Kill();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(addedKill,status);
+        if(gameRepository.existsById(gameID)) {
+            addedKill = killerRepository.save(kill);
         }
-        addedKill = killerRepository.save(kill);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(addedKill, status);
+        return addedKill;
     }
 
-    public ResponseEntity<Kill> updateKill(Long gameID, Long killID, Kill kill) {
-        HttpStatus status;
+    public Kill updateKill(Long gameID, Long killID, Kill kill) {
+
         Kill updatedKill = new Kill();
-        if(!gameRepository.existsById(gameID) || !killerRepository.existsById(killID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(updatedKill,status);
+        if(gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
+            updatedKill = killerRepository.save(kill);
         }
-        if(!Objects.equals(killID,kill.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(updatedKill,status);
-        }
-        updatedKill = killerRepository.save(kill);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(updatedKill, status);
+        return updatedKill;
     }
 
-    public ResponseEntity<Kill> deleteKill(Long gameID, Long killID) {
-        HttpStatus status;
+    public Kill deleteKill(Long gameID, Long killID) {
         Kill deletedKill = new Kill();
-        if (!gameRepository.existsById(gameID) || !killerRepository.existsById(killID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(deletedKill, status);
+        if (gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
+            deletedKill = killerRepository.findById(killID).get();
+            killerRepository.deleteById(killID);
         }
-        deletedKill = killerRepository.findById(killID).get();
-        killerRepository.deleteById(killID);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(deletedKill, status);
+        return deletedKill;
     }
 }
