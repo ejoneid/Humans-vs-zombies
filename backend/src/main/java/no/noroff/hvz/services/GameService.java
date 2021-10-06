@@ -20,69 +20,47 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
-    public ResponseEntity<List<Game>> getAllGames() {
-        List<Game> games = gameRepository.findAll();
-        HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(games, status);
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
     }
 
-    public ResponseEntity<Game> getSpecificGame(Long id) {
-        HttpStatus status;
+    public Game getSpecificGame(Long id) {
         Game game = new Game();
         if(!gameRepository.existsById(id)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(game,status);
+            return game;
         }
         game = gameRepository.findById(id).get();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(game,status);
+        return game;
     }
 
-    public ResponseEntity<Game> createNewGame(Game game) {
-        Game addedGame = gameRepository.save(game);
-        HttpStatus status = HttpStatus.CREATED;
-        return new ResponseEntity<>(addedGame, status);
+    public Game createNewGame(Game game) {
+        return gameRepository.save(game);
     }
 
-    public ResponseEntity<Game> updateSpecificGame( Long id, Game game) {
-        HttpStatus status;
+    public Game updateSpecificGame( Long id, Game game) {
         Game updatedGame = new Game();
         if(!gameRepository.existsById(id)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(updatedGame,status);
-        }
-        if(!Objects.equals(id,game.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(updatedGame,status);
+            return updatedGame;
         }
         updatedGame = gameRepository.save(game);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(updatedGame,status);
+        return updatedGame;
     }
 
-    public ResponseEntity<Game> deleteGame(Long id) {
-        HttpStatus status;
+    public Game deleteGame(Long id) {
         Game deletedGame = new Game();
         if(!gameRepository.existsById(id)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(deletedGame,status);
+            return deletedGame;
         }
         deletedGame= gameRepository.findById(id).get();
         gameRepository.deleteById(id);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(deletedGame, status);
+        return deletedGame;
     }
 
-    public ResponseEntity<List<Message>> getGameChat(Long id) {
-        HttpStatus status;
-        List<Message> messages = new ArrayList<>();
+    public List<Message> getGameChat(Long id) {
         if(!gameRepository.existsById(id)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(messages,status);
+            return null;
         }
-        messages = new ArrayList<>(gameRepository.findById(id).get().getMessages());
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(messages,status);
+        return new ArrayList<>(gameRepository.findById(id).get().getMessages());
     }
 
 }
