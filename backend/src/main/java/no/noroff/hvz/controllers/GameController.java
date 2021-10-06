@@ -26,13 +26,12 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
-        List<GameDTO> games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
-        List<GameDTO> stateGames = games;
-        if (state.isPresent()) {
-            stateGames = games.stream().filter(g -> Objects.equals(g.getGameState(), state.get())).collect(Collectors.toList());
-        }
+        List<GameDTO> games = new ArrayList<>();
+        games = state.map(s ->
+                gameService.getAllGames(s).stream().map(mapper::toGameTDO).collect(Collectors.toList())).orElseGet(() ->
+                gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList()));
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(stateGames, status);
+        return new ResponseEntity<>(games, status);
     }
 
     @GetMapping("/{id}")
@@ -87,9 +86,11 @@ public class GameController {
     }
 
     @GetMapping("/{id}/chat")
-    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id) {
+    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestParam Optional<Long> playerID) {
         HttpStatus status;
-        List<Message> messages = gameService.getGameChat(id);
+        List<Message> messages = new ArrayList<>();
+        if (playerID.isPresent()) messages = gameService.getGameChat(id, playerID.get());
+        else messages = gameService.getGameChat(id);
         if( messages == null) {
             status = HttpStatus.NOT_FOUND;
         }

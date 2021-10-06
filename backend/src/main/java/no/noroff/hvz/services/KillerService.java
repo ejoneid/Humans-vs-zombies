@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class KillerService {
@@ -25,6 +26,15 @@ public class KillerService {
         if(gameRepository.existsById(gameID)) {
             Game game = gameRepository.findById(gameID).get();
             kills = new ArrayList<>(game.getKills());
+        }
+        return kills;
+    }
+
+    public List<Kill> getAllKills(Long gameID, Long killerID) {
+        List<Kill> kills = null;
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            kills = game.getKills().stream().filter(k -> Objects.equals(k.getKiller().getId(), killerID)).collect(Collectors.toList());
         }
         return kills;
     }
