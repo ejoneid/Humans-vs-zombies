@@ -1,0 +1,10 @@
+<section class="greyBackground">
+  <section class="chatContainer">
+    <h2>Global Chat</h2>
+    <app-message *ngFor="let message of chatMessages"
+                 [timeSent]="message.time"
+                 [sender]="message.sender"
+                 [message]="message.content">
+    </app-message>
+  </section>
+</section>
