@@ -1,8 +1,7 @@
 export interface Message {
   id: number,
-  squad: number,
-  human: boolean,
-  zombie: boolean,
+  chat: string
+  squad: number | null,
   sender: string,
   time: string,
   content: string
