@@ -27,123 +27,90 @@ public class SquadService {
     @Autowired
     SquadMemberRepository squadMemberRepository;
 
-    private HttpStatus status;
-
-    public ResponseEntity<List<Squad>> getAllSquads(Long gameID) {
+    public List<Squad> getAllSquads(Long gameID) {
         List<Squad> squads = new ArrayList<>();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(squads,status);
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            squads = new ArrayList<>(game.getSquads());
         }
-        Game game = gameRepository.findById(gameID).get();
-        squads = new ArrayList<>(game.getSquads());
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(squads,status);
+        return squads;
     }
 
-    public ResponseEntity<Squad> getSpecificSquad(Long gameID, Long squadID) {
+    public Squad getSpecificSquad(Long gameID, Long squadID) {
         Squad squad = new Squad();
-        if (!squadRepository.existsById(squadID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(squad, status);
+        if (squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
+            squad = squadRepository.findById(squadID).get();
         }
-        squad = squadRepository.findById(squadID).get();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(squad, status);
+        return squad;
     }
 
-    public ResponseEntity<Squad> createNewSquad(Long gameID, Squad squad) {
-        Squad createdSquad = new Squad();
-        if(!gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(createdSquad,status);
+    public Squad createNewSquad(Long gameID, Squad squad) {
+        Squad createdSquad = null;
+        if(gameRepository.existsById(gameID)) {
+            createdSquad = squadRepository.save(squad);
         }
-        createdSquad = squadRepository.save(squad);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(createdSquad, status);
+        return createdSquad;
     }
 
-    public ResponseEntity<SquadMember> joinSquad(Long gameID, Long squadID, SquadMember member) {
-        if(!squadRepository.existsById(squadID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(member,status);
+    public SquadMember joinSquad(Long gameID, Long squadID, SquadMember member) {
+        SquadMember addedSquadMember = null;
+        if(squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
+            addedSquadMember = squadMemberRepository.save(member);
         }
-        squadMemberRepository.save(member);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(member, status);
+        return addedSquadMember;
     }
 
-    public ResponseEntity<Squad> updateSquad(Long gameID, Long squadID, Squad squad) {
-        Squad updatedSquad = new Squad();
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(updatedSquad,status);
+    public Squad updateSquad(Long gameID, Long squadID, Squad squad) {
+        Squad updatedSquad = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            updatedSquad = squadRepository.save(squad);
         }
-        if(!Objects.equals(squadID, squad.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(updatedSquad,status);
-        }
-        updatedSquad = squadRepository.save(squad);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(updatedSquad,status);
+        return updatedSquad;
     }
 
-    public ResponseEntity<Squad> deleteSquad(Long gameID, Long squadID) {
-        Squad deletedSquad = new Squad();
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(deletedSquad,status);
+    public Squad deleteSquad(Long gameID, Long squadID) {
+        Squad deletedSquad = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            deletedSquad = squadRepository.findById(squadID).get();
+            squadRepository.deleteById(squadID);
         }
-        deletedSquad = squadRepository.findById(squadID).get();
-        squadRepository.deleteById(squadID);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(deletedSquad, status);
+        return deletedSquad;
     }
 
-    public ResponseEntity<List<Message>> getSquadChat(Long gameID, Long squadID) {
-        List<Message> chat = new ArrayList<>();
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(chat,status);
+    public List<Message> getSquadChat(Long gameID, Long squadID) {
+        List<Message> chat = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            Squad squad = squadRepository.findById(squadID).get();
+            chat = squad.getMessages().stream().toList();
         }
-        Squad squad = squadRepository.findById(squadID).get();
-        chat = squad.getMessages().stream().toList();
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(chat, status);
+        return chat;
     }
 
-    public ResponseEntity<Message> createSquadChat(Long gameID, Long squadID, Message message) {
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(message,status);
+    public Message createSquadChat(Long gameID, Long squadID, Message message) {
+        Message chat = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            chat = messageRepository.save(message);
         }
-        messageRepository.save(message);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(message, status);
+        return chat;
     }
 
-    public ResponseEntity<List<SquadCheckIn>> getSquadCheckIn(Long gameID, Long squadID) {
-        List<SquadCheckIn> checkins = new ArrayList<>();
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(checkins,status);
+    public List<SquadCheckIn> getSquadCheckIn(Long gameID, Long squadID) {
+        List<SquadCheckIn> checkins = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            Squad squad = squadRepository.findById(squadID).get();
+            Set<SquadMember> members = squad.getMembers();
+            for (SquadMember m : members) {
+                checkins.addAll(m.getCheckIns());
+            }
         }
-        Squad squad = squadRepository.findById(squadID).get();
-        Set<SquadMember> members = squad.getMembers();
-        for (SquadMember m : members) {
-            checkins.addAll(m.getCheckIns());
-        }
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(checkins, status);
+        return checkins;
     }
 
-    public ResponseEntity<SquadCheckIn> createSquadCheckIn(Long gameID, Long squadID, SquadCheckIn checkin) {
-        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(checkin,status);
+    public SquadCheckIn createSquadCheckIn(Long gameID, Long squadID, SquadCheckIn checkin) {
+        SquadCheckIn addedSquadCheckIn = null;
+        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            addedSquadCheckIn = squadCheckInRepository.save(checkin);
         }
-        squadCheckInRepository.save(checkin);
-        status = HttpStatus.CREATED;
-        return new ResponseEntity<>(checkin, status);
+        return addedSquadCheckIn;
     }
 }

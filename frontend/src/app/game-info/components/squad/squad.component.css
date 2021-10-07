@@ -1,0 +1,25 @@
+.squadContainer {
+  max-height: 30vh;
+  overflow-y: scroll;
+}
+#memberItem {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: #FEA520 solid 1px;
+  margin-right: 5px;
+}
+p {
+  height: 0;
+}
+h3 {
+  height: 0;
+}
+h2 {
+  height: 5px;
+}
+#living {
+  color: #00FF00;
+}
+#dead {
+  color: red;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-game-title',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game-title.component.css']
 })
 export class GameTitleComponent implements OnInit {
+
+  @Input()
+  public gameTitle: string = "ERROR: No game title found";
 
   constructor() { }
 

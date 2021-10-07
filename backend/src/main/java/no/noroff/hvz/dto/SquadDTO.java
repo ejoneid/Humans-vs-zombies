@@ -1,12 +1,22 @@
 package no.noroff.hvz.dto;
 
+import java.util.List;
+
 public class SquadDTO {
 
     private Long id;
     private String name;
     private String squadType;
     private String messagesUrl;
-    private String membersUrl;
+    private List<SquadMemberDTO> members;
+
+    public SquadDTO(Long id, String name, String squadType, String messagesUrl, List<SquadMemberDTO> members) {
+        this.id = id;
+        this.name = name;
+        this.squadType = squadType;
+        this.messagesUrl = messagesUrl;
+        this.members = members;
+    }
 
     public Long getId() {
         return id;
@@ -40,11 +50,11 @@ public class SquadDTO {
         this.messagesUrl = messagesUrl;
     }
 
-    public String getMembersUrl() {
-        return membersUrl;
+    public List<SquadMemberDTO> getMembers() {
+        return members;
     }
 
-    public void setMembersUrl(String membersUrl) {
-        this.membersUrl = membersUrl;
+    public void setMembers(List<SquadMemberDTO> members) {
+        this.members = members;
     }
 }

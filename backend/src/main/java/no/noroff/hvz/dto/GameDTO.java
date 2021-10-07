@@ -1,7 +1,5 @@
 package no.noroff.hvz.dto;
 
-import javax.persistence.Column;
-
 public class GameDTO {
 
     private Long id;
@@ -14,8 +12,23 @@ public class GameDTO {
     private String squadsUrl;
     private String missionsUrl;
     private String killsUrl;
-    private String messagesUrl;
+    private String chatUrl;
     private String playersUrl;
+
+    public GameDTO(Long id, String name, String gameState, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
+        this.id = id;
+        this.name = name;
+        this.gameState = gameState;
+        this.nw_lat = nw_lat;
+        this.se_lat = se_lat;
+        this.nw_long = nw_long;
+        this.se_long = se_long;
+        this.squadsUrl = squadsUrl;
+        this.missionsUrl = missionsUrl;
+        this.killsUrl = killsUrl;
+        this.chatUrl = chatUrl;
+        this.playersUrl = playersUrl;
+    }
 
     public Long getId() {
         return id;
@@ -97,12 +110,12 @@ public class GameDTO {
         this.killsUrl = killsUrl;
     }
 
-    public String getMessagesUrl() {
-        return messagesUrl;
+    public String getChatUrl() {
+        return chatUrl;
     }
 
-    public void setMessagesUrl(String messagesUrl) {
-        this.messagesUrl = messagesUrl;
+    public void setChatUrl(String chatUrl) {
+        this.chatUrl = chatUrl;
     }
 
     public String getPlayersUrl() {

@@ -5,6 +5,12 @@ public class AppUserDTO {
     private String firstName;
     private String lastName;
 
+    public AppUserDTO(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Long getId() {
         return id;
     }

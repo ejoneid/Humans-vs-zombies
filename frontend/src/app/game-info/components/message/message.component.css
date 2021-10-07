@@ -1,0 +1,15 @@
+.messageContainer {
+  border: #00FF00 solid 1px;
+  display: flex;
+  justify-content: space-evenly;
+}
+#time {
+  color: #00FF00;
+}
+#sender {
+  color: #FEA520;
+  height: 0;
+}
+#message {
+  width: 70%;
+}

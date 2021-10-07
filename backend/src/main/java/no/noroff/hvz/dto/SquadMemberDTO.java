@@ -4,8 +4,14 @@ public class SquadMemberDTO {
     private Long id;
     private String rank;
     private String playerUrl;
-    private String squadUrl;
     private String checkInsUrl;
+
+    public SquadMemberDTO(Long id, String rank, String playerUrl, String checkInsUrl) {
+        this.id = id;
+        this.rank = rank;
+        this.playerUrl = playerUrl;
+        this.checkInsUrl = checkInsUrl;
+    }
 
     public Long getId() {
         return id;
@@ -29,14 +35,6 @@ public class SquadMemberDTO {
 
     public void setPlayerUrl(String playerUrl) {
         this.playerUrl = playerUrl;
-    }
-
-    public String getSquadUrl() {
-        return squadUrl;
-    }
-
-    public void setSquadUrl(String squadUrl) {
-        this.squadUrl = squadUrl;
     }
 
     public String getCheckInsUrl() {

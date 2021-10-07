@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameInfoPage } from './pages/game-info.page';
-import { GameDescriptionComponent } from './game-description/game-description.component';
-import { GameTitleComponent } from './game-title/game-title.component';
-import { SquadComponent } from './squad/squad.component';
-import { ChatComponent } from './chat/chat.component';
-import { BiteCodeComponent } from './bite-code/bite-code.component';
+import { GameDescriptionComponent } from './components/game-description/game-description.component';
+import { GameTitleComponent } from './components/game-title/game-title.component';
+import { SquadComponent } from './components/squad/squad.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { BiteCodeComponent } from './components/bite-code/bite-code.component';
 import {GameInfoRoutingModule} from "./game-info-routing.module";
-import { MapComponent } from './map/map.component';
+import { MapComponent } from './components/map/map.component';
+import {GoogleMapsModule} from "@angular/google-maps";
+import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +19,13 @@ import { MapComponent } from './map/map.component';
     SquadComponent,
     ChatComponent,
     BiteCodeComponent,
-    MapComponent
+    MapComponent,
+    MessageComponent
   ],
   imports: [
     CommonModule,
-    GameInfoRoutingModule
+    GameInfoRoutingModule,
+    GoogleMapsModule
   ],
   exports: [
     BiteCodeComponent,
