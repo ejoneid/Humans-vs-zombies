@@ -25,11 +25,16 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestHeader(required=false) String state) {
         List<GameDTO> games = new ArrayList<>();
-        games = state.map(s ->
-                gameService.getAllGames(s).stream().map(mapper::toGameTDO).collect(Collectors.toList())).orElseGet(() ->
-                gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList()));
+//        games = state.map(s ->
+//                gameService.getAllGames(s).stream().map(mapper::toGameTDO).collect(Collectors.toList())).orElseGet(() ->
+//                gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList()));
+        if (state != null) {
+            games = gameService.getAllGames().stream().map(mapper::toGameTDO).filter(g -> Objects.equals(g.getGameState(), state)).collect(Collectors.toList());
+        } else {
+            games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
+        }
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(games, status);
     }
