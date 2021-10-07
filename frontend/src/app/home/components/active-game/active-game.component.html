@@ -1,10 +1,16 @@
 <section class="blackBackground">
-  <h2>{{gameName}}</h2>
+  <h2 id="name">{{gameName}}</h2>
+  <button class="normalGreyButton" (click)="toGameInfo(gameId)">Game Info</button>
   <section class="infoContainer">
-    <section class="timeContainer">
+    <div class="timeContainer">
       <h3 class="time">Game Start: {{gameStart}}</h3>
-      <h3 class="time">Game End: {{gameEnd}}</h3>
-    </section>
-    <h3 id="status">Status: {{gameStatus}}</h3>
+      <h3 class="time">Game End: &nbsp; &nbsp;{{gameEnd}}</h3>
+    </div>
+    <div class="statusContainer">
+      <h3 id="status">Status: &nbsp;</h3>
+      <h3 id="statusOpen" *ngIf="gameStatus == 'Open'">Open</h3>
+      <h3 id="statusClosed" *ngIf="gameStatus == 'Closed'">Ongoing</h3>
+      <h3 id="statusFinished" *ngIf="gameStatus == 'Finished'">Finished</h3>
+    </div>
   </section>
 </section>
