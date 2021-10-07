@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-bite-code',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bite-code.component.css']
 })
 export class BiteCodeComponent implements OnInit {
+
+  @Input()
+  public biteCode: string = "ERROR: No bite code found";
 
   constructor() { }
 

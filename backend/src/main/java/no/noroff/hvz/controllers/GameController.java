@@ -9,6 +9,7 @@ import no.noroff.hvz.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/game")
+// NB! Configure origins properly before deploy!
+@CrossOrigin(origins = "*")
 public class GameController {
 
     @Autowired
@@ -51,6 +54,7 @@ public class GameController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GameDTO> createNewGame(@RequestBody Game game) {
         Game addedGame = gameService.createNewGame(game);
         HttpStatus status = HttpStatus.CREATED;
@@ -58,6 +62,7 @@ public class GameController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
         HttpStatus status;
         if(!Objects.equals(id,game.getId())) {
@@ -75,6 +80,7 @@ public class GameController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
         HttpStatus status;
         Game deletedGame = gameService.deleteGame(id);

@@ -49,32 +49,20 @@ public class PlayerService {
         return newPlayer;
     }
 
-    public ResponseEntity<Player> updatePlayer(Long gameID, Long playerID, Player player) {
-        HttpStatus status;
+    public Player updatePlayer(Long gameID, Long playerID, Player player) {
         Player updatedPlayer = new Player();
-        if(!playerRepository.existsById(playerID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(updatedPlayer,status);
+        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
+            updatedPlayer = playerRepository.save(player);
         }
-        if(!Objects.equals(playerID,player.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(updatedPlayer,status);
-        }
-        updatedPlayer = playerRepository.save(player);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(updatedPlayer, status);
+        return updatedPlayer ;
     }
 
-    public ResponseEntity<Player> deletePlayer(Long gameID, Long playerID) {
-        HttpStatus status;
+    public Player deletePlayer(Long gameID, Long playerID) {
         Player deletedPlayer = new Player();
-        if(!playerRepository.existsById(playerID) || !gameRepository.existsById(gameID)) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(deletedPlayer,status);
+        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
+            deletedPlayer = playerRepository.findById(playerID).get();
+            playerRepository.deleteById(playerID);
         }
-        deletedPlayer = playerRepository.findById(playerID).get();
-        playerRepository.deleteById(playerID);
-        status = HttpStatus.OK;
-        return new ResponseEntity<>(deletedPlayer, status);
+        return deletedPlayer;
     }
 }
