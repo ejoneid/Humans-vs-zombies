@@ -24,10 +24,10 @@ public class KillController {
     Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestParam Optional<Long> killerID) {
+    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestHeader(required = false) Long killerID) {
         HttpStatus status;
         List<Kill> kills = new ArrayList<>();
-        if (killerID.isPresent()) kills = killerService.getAllKills(gameID, killerID.get());
+        if (killerID != null) kills = killerService.getAllKills(gameID, killerID);
         else kills = killerService.getAllKills(gameID);
         List<KillDTO> killDTOs = new ArrayList<>();
         if(kills == null) {

@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.GameDTO;
+import no.noroff.hvz.dto.MessageDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Message;
@@ -28,11 +29,13 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestHeader(required=false) String state) {
         List<GameDTO> games = new ArrayList<>();
-        games = state.map(s ->
-                gameService.getAllGames(s).stream().map(mapper::toGameTDO).collect(Collectors.toList())).orElseGet(() ->
-                gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList()));
+        if (state != null) {
+            games = gameService.getAllGames(state).stream().map(mapper::toGameTDO).collect(Collectors.toList());
+        } else {
+            games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
+        }
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(games, status);
     }
@@ -92,10 +95,11 @@ public class GameController {
     }
 
     @GetMapping("/{id}/chat")
-    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestParam Optional<Long> playerID) {
+    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) Boolean human) {
         HttpStatus status;
         List<Message> messages = new ArrayList<>();
-        if (playerID.isPresent()) messages = gameService.getGameChat(id, playerID.get());
+        if (playerID != null) messages = gameService.getGameChat(id, playerID);
+        else if (human != null) messages = gameService.getGameChat(id, human);
         else messages = gameService.getGameChat(id);
         if( messages == null) {
             status = HttpStatus.NOT_FOUND;
@@ -104,5 +108,17 @@ public class GameController {
             status = HttpStatus.OK;
         }
         return new ResponseEntity<>(messages,status);
+    }
+
+    @PostMapping("/{id}/chat")
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader(required = false) Long playerID) {
+        HttpStatus status;
+        Message createdMessage = gameService.createNewChat(id, message, playerID);
+        if (createdMessage != null) {
+            status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        }
+        status = HttpStatus.I_AM_A_TEAPOT;
+        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }
 }

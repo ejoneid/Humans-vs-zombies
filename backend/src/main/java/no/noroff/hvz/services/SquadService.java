@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -55,6 +56,7 @@ public class SquadService {
     public SquadMember joinSquad(Long gameID, Long squadID, SquadMember member) {
         SquadMember addedSquadMember = null;
         if(squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
+            member.setSquad(squadRepository.getById(squadID));
             addedSquadMember = squadMemberRepository.save(member);
         }
         return addedSquadMember;
