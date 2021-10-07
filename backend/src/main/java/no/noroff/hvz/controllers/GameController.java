@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.GameDTO;
+import no.noroff.hvz.dto.MessageDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Message;
@@ -101,5 +102,17 @@ public class GameController {
             status = HttpStatus.OK;
         }
         return new ResponseEntity<>(messages,status);
+    }
+
+    @PostMapping("/{id}/chat")
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader(required = false) Long playerID) {
+        HttpStatus status;
+        Message createdMessage = gameService.createNewChat(id, message, playerID);
+        if (createdMessage != null) {
+            status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        }
+        status = HttpStatus.I_AM_A_TEAPOT;
+        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }
 }

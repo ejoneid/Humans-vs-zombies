@@ -3,6 +3,8 @@ package no.noroff.hvz.services;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Message;
 import no.noroff.hvz.repositories.GameRepository;
+import no.noroff.hvz.repositories.MessageRepository;
+import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,12 @@ import java.util.stream.Collectors;
 public class GameService {
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
@@ -79,5 +87,22 @@ public class GameService {
             return null;
         }
         return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().isHuman(), human)).collect(Collectors.toList());
+    }
+
+    public Message createNewChat(Long id, Message message, Long playerID) {
+        if (!gameRepository.existsById(id)) {
+            return null;
+        }
+        Game game = gameRepository.findById(id).get();
+        message.setGame(game);
+        if (playerID != null) {
+            message.setPlayer(playerRepository.findById(playerID).get());
+        }
+        messageRepository.save(message);
+        Set<Message> chat = game.getMessages();
+        chat.add(message);
+        game.setMessages(chat);
+        gameRepository.save(game);
+        return message;
     }
 }
