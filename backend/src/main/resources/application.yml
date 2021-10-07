@@ -1,0 +1,8 @@
+auth0:
+  audience: https://hvz/api
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-fwlq8v0n.eu.auth0.com/

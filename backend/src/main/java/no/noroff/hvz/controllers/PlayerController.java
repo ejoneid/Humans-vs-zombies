@@ -8,6 +8,7 @@ import no.noroff.hvz.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class PlayerController {
     }
 
     @PutMapping("/{playerID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestBody Player player) {
         HttpStatus status;
         if(!Objects.equals(playerID,player.getId())) {
@@ -92,6 +94,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{playerID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
 
         HttpStatus status;
