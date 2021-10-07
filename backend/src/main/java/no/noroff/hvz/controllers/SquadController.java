@@ -1,9 +1,6 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.MessageDTO;
-import no.noroff.hvz.dto.SquadCheckInDTO;
-import no.noroff.hvz.dto.SquadDTO;
-import no.noroff.hvz.dto.SquadMemberDTO;
+import no.noroff.hvz.dto.*;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.services.SquadService;
@@ -75,8 +72,8 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/join")
-    public ResponseEntity<SquadMemberDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMember member) {
-        SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, member);
+    public ResponseEntity<SquadMemberDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
+        SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
         SquadMemberDTO squadMemberDTO = null;
         if(addedSquadMember == null) {
             status = HttpStatus.NOT_FOUND;
