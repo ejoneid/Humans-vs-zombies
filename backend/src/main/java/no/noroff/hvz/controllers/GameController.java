@@ -91,8 +91,6 @@ public class GameController {
     public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) Boolean human) {
         HttpStatus status;
         List<Message> messages = new ArrayList<>();
-//        if (playerID.isPresent()) messages = gameService.getGameChat(id, playerID.get());
-//        else if (human.isPresent()) messages = gameService.getGameChat(id, human.get());
         if (playerID != null) messages = gameService.getGameChat(id, playerID);
         else if (human != null) messages = gameService.getGameChat(id, human);
         else messages = gameService.getGameChat(id);
