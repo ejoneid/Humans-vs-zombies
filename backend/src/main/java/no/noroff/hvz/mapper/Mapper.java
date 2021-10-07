@@ -2,6 +2,9 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.*;
 import no.noroff.hvz.models.*;
+import no.noroff.hvz.repositories.PlayerRepository;
+import no.noroff.hvz.repositories.SquadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,6 +13,12 @@ import java.util.ArrayList;
 public class Mapper {
 
     private final String url = "/api/game/";
+
+    @Autowired
+    PlayerRepository playerRepository;
+
+    @Autowired
+    SquadRepository squadRepository;
 
     public MissionDTO toMissionDTO(Mission mission) {
         String missionType;
@@ -67,6 +76,14 @@ public class Mapper {
         String playerUrl = url + squadMember.getSquad().getGame().getId() + "/player/" + squadMember.getPlayer().getId();
         String checkInsUrl = url + squadMember.getSquad().getGame().getId() + "/check-in/"; //TODO legge til searc parameter så vi får riktige checkIns
         return  new SquadMemberDTO(squadMember.getId(), squadMember.getRank(), playerUrl, checkInsUrl);
+    }
+
+    public SquadMember toSquadMember (SquadMemberFromDTO dto) {
+        SquadMember member = new SquadMember();
+        Player player = playerRepository.findById(dto.getPlayerID()).get();
+        member.setPlayer(player);
+        member.setRank(dto.getRank());
+        return member;
     }
 
     public SquadDTO toSquadDTO(Squad squad) {

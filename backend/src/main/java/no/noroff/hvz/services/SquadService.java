@@ -1,5 +1,6 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.dto.SquadMemberFromDTO;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
