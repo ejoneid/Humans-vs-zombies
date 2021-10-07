@@ -7,6 +7,8 @@ import { ChatComponent } from './components/chat/chat.component';
 import { MissionComponent } from './components/mission/mission.component';
 import { GameComponent } from './components/game/game.component';
 import { PlayerComponent } from './components/player/player.component';
+import {GameTitleComponent} from "./components/game-title/game-title.component";
+import {GoogleMapsModule} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -15,11 +17,13 @@ import { PlayerComponent } from './components/player/player.component';
     ChatComponent,
     MissionComponent,
     GameComponent,
-    PlayerComponent
+    PlayerComponent,
+    GameTitleComponent
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    GoogleMapsModule
   ]
 })
 export class AdminModule { }

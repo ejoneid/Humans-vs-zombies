@@ -1,1 +1,14 @@
-<p>admin.page works!</p>
+<body>
+<app-game-title [gameTitle]="mockTitle"></app-game-title>
+<main class="adminContainer">
+  <app-player></app-player>
+  <section class="missionGameMapChatContainer">
+    <app-mission></app-mission>
+    <app-game></app-game>
+  </section>
+  <section class="missionGameMapChatContainer">
+    <app-map-admin></app-map-admin>
+    <app-chat-admin></app-chat-admin>
+  </section>
+</main>
+</body>
