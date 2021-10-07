@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -52,6 +56,20 @@ public class Mapper {
         String victimUrl = url + kill.getGame().getId() + "/player/" + kill.getVictim().getId();
         return new KillDTO(kill.getId(), kill.getTimeOfDeath(), kill.getStory(), kill.getLat(), kill.getLng(),
                 killerUrl, victimUrl);
+    }
+
+    public Kill RegKillDTO(RegKillDTO killDTO) {
+        Kill kill = new Kill();
+        Player killer = playerRepository.findById(killDTO.getKillerID()).get();
+        List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getByteCode())).collect(Collectors.toList());
+        if (victim.size() == 0) return null;
+        kill.setKiller(killer);
+        kill.setVictim(victim.get(0));
+        kill.setTimeOfDeath(new Date());
+        kill.setStory(killDTO.getStory());
+        kill.setLat(killDTO.getLat());
+        kill.setLng(killDTO.getLng());
+        return kill;
     }
 
     public MessageDTO toMessageDTO(Message message) {
