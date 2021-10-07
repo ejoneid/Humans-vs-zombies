@@ -2,10 +2,10 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
-import {options} from "src/assets/map-options";
+import {options} from 'src/assets/map-options';
 
 @Component({
-  selector: 'app-map',
+  selector: 'app-map-admin',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
