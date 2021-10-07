@@ -1,15 +1,53 @@
 .infoContainer {
   display: flex;
+  justify-content: space-between;
+}
+#name {
+  line-height: 40px;
+  margin: 0;
+  align-self: center;
+}
+.normalGreyButton {
+  align-self: center;
+}
+.blackBackground {
+  display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 }
 .time {
-  height: 0;
+  line-height: 20px;
+  margin: 0;
 }
 .timeContainer {
   display: flex;
   flex-direction: column;
+  align-self: flex-end;
+}
+.statusContainer {
+  display: flex;
+  justify-content: space-around;
 }
 #status {
   align-self: flex-end;
-  margin-left: 10px;
+  line-height: 20px;
+  margin: 0;
+}
+#statusOpen {
+  color: #00FF00;
+  align-self: flex-end;
+  line-height: 20px;
+  margin: 0;
+}
+#statusClosed {
+  color: blue;
+  align-self: flex-end;
+  line-height: 20px;
+  margin: 0;
+}
+#statusFinished {
+  color: red;
+  align-self: flex-end;
+  line-height: 20px;
+  margin: 0;
 }
