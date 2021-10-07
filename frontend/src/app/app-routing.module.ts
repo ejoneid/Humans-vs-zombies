@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: 'info',
     loadChildren: () => import("./game-info/game-info.module").then(m => m.GameInfoModule)
   },
+  { path: 'admin',
+    loadChildren: () => import("./admin/admin.module").then(m => m.AdminModule)
+  }
 ];
 
 @NgModule({
