@@ -74,4 +74,10 @@ public class GameService {
         return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().getId(), playerID)).collect(Collectors.toList());
     }
 
+    public List<Message> getGameChat(Long id, Boolean human) {
+        if(!gameRepository.existsById(id)) {
+            return null;
+        }
+        return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().isHuman(), human)).collect(Collectors.toList());
+    }
 }
