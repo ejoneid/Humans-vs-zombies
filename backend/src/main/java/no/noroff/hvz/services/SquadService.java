@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -68,6 +69,7 @@ public class SquadService {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(member,status);
         }
+        member.setSquad(squadRepository.getById(squadID));
         squadMemberRepository.save(member);
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(member, status);
