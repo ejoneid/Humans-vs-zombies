@@ -18,7 +18,8 @@ export class GameInfoPage implements OnInit {
   mockSquad: PlayerInfo[] = [new TestPlayer1(), new TestPlayer2(), new TestPlayer1(), new TestPlayer1(), new TestPlayer2(), new TestPlayer2()];
   mockSquadName: string = "Test Squadron";
   mockChat: Message[] = [new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage()];
-  mockBiteCode: string = "ThisCouldBeRandomlyGenerated30"
+  mockBiteCode: string = "ThisCouldBeRandomlyGenerated30";
+  mockTitle: string = "Test Title for Awesome Game";
 
   constructor() { }
 
