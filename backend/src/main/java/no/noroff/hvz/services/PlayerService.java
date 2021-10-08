@@ -1,10 +1,9 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.models.Game;
-import no.noroff.hvz.models.Mission;
-import no.noroff.hvz.models.Player;
+import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
+import no.noroff.hvz.repositories.SquadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,9 @@ public class PlayerService {
     private PlayerRepository playerRepository;
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private SquadRepository squadRepository;
 
     public List<Player> getAllPlayers(Long gameID) {
         List<Player> players = new ArrayList<>();
@@ -98,5 +100,22 @@ public class PlayerService {
             playerRepository.deleteById(playerID);
         }
         return deletedPlayer;
+    }
+
+    public Squad getPlayerSquad(Long gameID, Long playerID) {
+        Squad squad = null;
+        if (gameRepository.existsById(gameID) && playerRepository.existsById(playerID)) {
+            List<Squad> squads = squadRepository.findAll().stream().toList();
+            for (Squad s : squads) {
+                List<SquadMember> members = s.getMembers().stream().toList();
+                for (SquadMember m : members) {
+                    if (Objects.equals(m.getPlayer().getId(), playerID)) {
+                        squad = s;
+                        break;
+                    }
+                }
+            }
+        }
+        return squad;
     }
 }
