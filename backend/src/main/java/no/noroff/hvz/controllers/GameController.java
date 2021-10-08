@@ -29,10 +29,10 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestHeader(required=false) String state) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games = new ArrayList<>();
-        if (state != null) {
-            games = gameService.getAllGames(state).stream().map(mapper::toGameTDO).collect(Collectors.toList());
+        if (state.isPresent()) {
+            games = gameService.getAllGames(state.get()).stream().map(mapper::toGameTDO).collect(Collectors.toList());
         } else {
             games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
         }

@@ -48,11 +48,11 @@ public class KillerService {
     }
 
     public Kill createNewKill(Long gameID, Kill kill) {
-        Kill addedKill = new Kill();
-        if(gameRepository.existsById(gameID)) {
-            addedKill = killerRepository.save(kill);
+        if(gameRepository.existsById(gameID) && kill != null) {
+            kill.setGame(gameRepository.findById(gameID).get());
+            kill = killerRepository.save(kill);
         }
-        return addedKill;
+        return kill;
     }
 
     public Kill updateKill(Long gameID, Long killID, Kill kill) {

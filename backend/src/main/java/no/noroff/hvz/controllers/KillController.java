@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.KillDTO;
+import no.noroff.hvz.dto.RegKillDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
@@ -57,14 +58,15 @@ public class KillController {
 //    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody Kill kill) {
         HttpStatus status;
-        Kill addedKill = killerService.createNewKill(gameID, kill);
-        if(addedKill.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
+        Kill addedKill = killerService.createNewKill(gameID, mapper.RegKillDTO(kill));
+        if(addedKill == null) {
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, status);
         }
         else {
             status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
         }
-        return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
     }
 
     @PutMapping("/{killID}")
