@@ -5,6 +5,7 @@ public class GameDTO {
     private Long id;
     private String name;
     private String gameState;
+    private String description;
     private String nw_lat;
     private String se_lat;
     private String nw_long;
@@ -15,10 +16,11 @@ public class GameDTO {
     private String chatUrl;
     private String playersUrl;
 
-    public GameDTO(Long id, String name, String gameState, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
+    public GameDTO(Long id, String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
         this.id = id;
         this.name = name;
         this.gameState = gameState;
+        this.description = description;
         this.nw_lat = nw_lat;
         this.se_lat = se_lat;
         this.nw_long = nw_long;
@@ -52,6 +54,14 @@ public class GameDTO {
 
     public void setGameState(String gameState) {
         this.gameState = gameState;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getNw_lat() {

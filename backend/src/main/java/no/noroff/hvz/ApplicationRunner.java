@@ -76,6 +76,7 @@ class AppStartupRunner implements ApplicationRunner {
 
         game1.setGameState("Some state");
         game1.setName("The coolest game");
+        game1.setDescription("Some game with a description");
         if (gameRepository.count() == 0) {
             gameRepository.save(game1);
         }
