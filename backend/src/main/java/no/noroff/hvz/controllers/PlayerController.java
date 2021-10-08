@@ -2,9 +2,11 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.PlayerDTO;
 import no.noroff.hvz.dto.RegPlayerDTO;
+import no.noroff.hvz.dto.SquadDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
+import no.noroff.hvz.models.Squad;
 import no.noroff.hvz.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -113,5 +115,18 @@ public class PlayerController {
         }
 
         return new ResponseEntity<>(playerDTO, status);
+    }
+
+    @GetMapping("/{playerID}/squad")
+    public ResponseEntity<SquadDTO> getPlayerSquad(@PathVariable Long gameID,@PathVariable Long playerID) {
+        HttpStatus status;
+        Squad squad = playerService.getPlayerSquad(gameID, playerID);
+        if (squad != null) {
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(mapper.toSquadDTO(squad), status);
+        } else {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
     }
 }
