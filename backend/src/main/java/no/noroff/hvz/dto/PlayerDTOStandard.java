@@ -7,11 +7,13 @@ public class PlayerDTOStandard implements PlayerDTO{
     private Long id;
     private Boolean isHuman;
     private String killsUrl;
+    private AppUserDTO user;
 
-    public PlayerDTOStandard(Long id, Boolean isHuman, String killsUrl) {
+    public PlayerDTOStandard(Long id, Boolean isHuman, String killsUrl, AppUserDTO user) {
         this.id = id;
         this.isHuman = isHuman;
         this.killsUrl = killsUrl;
+        this.user = user;
     }
 
     @Override
@@ -38,5 +40,13 @@ public class PlayerDTOStandard implements PlayerDTO{
 
     public void setKillsUrl(String killsUrl) {
         this.killsUrl = killsUrl;
+    }
+
+    public AppUserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(AppUserDTO user) {
+        this.user = user;
     }
 }

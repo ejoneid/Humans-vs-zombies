@@ -3,6 +3,7 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.PlayerDTO;
 import no.noroff.hvz.dto.RegPlayerDTO;
 import no.noroff.hvz.dto.SquadDTO;
+import no.noroff.hvz.dto.SquadViewDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
@@ -119,12 +120,12 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerID}/squad")
-    public ResponseEntity<SquadDTO> getPlayerSquad(@PathVariable Long gameID,@PathVariable Long playerID) {
+    public ResponseEntity<SquadViewDTO> getPlayerSquad(@PathVariable Long gameID, @PathVariable Long playerID) {
         HttpStatus status;
         Squad squad = playerService.getPlayerSquad(gameID, playerID);
         if (squad != null) {
             status = HttpStatus.OK;
-            return new ResponseEntity<>(mapper.toSquadDTO(squad), status);
+            return new ResponseEntity<>(mapper.toSquadViewDTO(squad), status);
         } else {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
