@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.PlayerDTO;
+import no.noroff.hvz.dto.RegPlayerDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
@@ -59,17 +60,18 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Player player) {
+    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody RegPlayerDTO player) {
         HttpStatus status;
-        Player newPlayer = playerService.createNewPlayer(gameID, player);
-        PlayerDTO playerDTO = mapper.toPlayerDTOFull(player);
-        if(newPlayer.getId() == null) {
+        Player newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO(player));
+        if(newPlayer == null) {
             status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null,status);
         }
         else {
+            PlayerDTO playerDTO = mapper.toPlayerDTOFull(newPlayer);
             status = HttpStatus.CREATED;
+            return new ResponseEntity<>(playerDTO,status);
         }
-        return new ResponseEntity<>(playerDTO,status);
     }
 
     @PutMapping("/{playerID}")
