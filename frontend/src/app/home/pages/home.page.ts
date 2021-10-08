@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActiveGame} from "../../models/active-game.model";
+import {HomeAPI} from "../api/home.api";
 
 @Component({
   selector: 'app-home',
@@ -10,16 +11,26 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  constructor() {
+  constructor(private readonly homeAPI: HomeAPI) {
+
     //-----
     //Just for testing purposes
-    for (let i = 0; i < 12; i++) {
+    /*for (let i = 0; i < 12; i++) {
       this.activeGames.push(new TestGame());
-    }
+    }*/
     //-----
   }
 
   ngOnInit(): void {
+    //Filling the list with active games
+    this.homeAPI.getGames("api/game")
+      .subscribe((games) => {
+        for (let game of games) {
+          this.activeGames.push(
+            {id: game.id, name: game.name, gameState: game.gameState}
+          )
+        }
+      })
   }
 
   public get games(): ActiveGame[] {
@@ -29,13 +40,9 @@ export class HomePage implements OnInit {
 
 //-----
 //Just for testing purposes
-class TestGame implements ActiveGame {
+/*class TestGame implements ActiveGame {
   id =  1;
   name = "Test name";
-  nw_lat = null;
-  nw_long = null;
-  se_lat = null;
-  se_long = null;
-  state = "Open";
-}
+  gameState = "Open";
+}*/
 //-----

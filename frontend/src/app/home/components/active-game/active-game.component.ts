@@ -25,7 +25,7 @@ export class ActiveGameComponent implements OnInit {
   }
 
   toGameInfo(gameId: number): Promise<boolean> {
-    return this.router.navigate(["info"]);///"+gameId]);
+    return this.router.navigate(["game/"+gameId]);
   }
 
 }
