@@ -61,11 +61,12 @@ public class KillController {
         Kill addedKill = killerService.createNewKill(gameID, mapper.RegKillDTO(kill));
         if(addedKill == null) {
             status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, status);
         }
         else {
             status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
         }
-        return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
     }
 
     @PutMapping("/{killID}")

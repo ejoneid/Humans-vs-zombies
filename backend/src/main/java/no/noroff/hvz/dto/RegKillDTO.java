@@ -3,7 +3,7 @@ package no.noroff.hvz.dto;
 public class RegKillDTO {
 
     private Long killerID;
-    private String byteCode;
+    private String biteCode;
     private String story;
     private String lat;
     private String lng;
@@ -16,12 +16,12 @@ public class RegKillDTO {
         this.killerID = killerID;
     }
 
-    public String getByteCode() {
-        return byteCode;
+    public String getBiteCode() {
+        return biteCode;
     }
 
-    public void setByteCode(String byteCode) {
-        this.byteCode = byteCode;
+    public void setByteCode(String biteCode) {
+        this.biteCode = biteCode;
     }
 
     public String getStory() {

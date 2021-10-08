@@ -61,7 +61,7 @@ public class Mapper {
     public Kill RegKillDTO(RegKillDTO killDTO) {
         Kill kill = new Kill();
         Player killer = playerRepository.findById(killDTO.getKillerID()).get();
-        List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getByteCode())).collect(Collectors.toList());
+        List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getBiteCode())).collect(Collectors.toList());
         if (victim.size() == 0) return null;
         kill.setKiller(killer);
         kill.setVictim(victim.get(0));
