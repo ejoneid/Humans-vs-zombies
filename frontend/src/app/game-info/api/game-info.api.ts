@@ -17,5 +17,8 @@ export class GameInfoAPI {
   public getCurrentPlayerInfo(gameID: number, playerID: number): Observable<any> {
     return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID);
   }
+  public getCurrentPlayerSquad(gameID: number, playerID: number): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/squad");
+  }
 
 }

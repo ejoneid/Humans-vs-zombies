@@ -1,6 +1,6 @@
 export interface MapInfo {
-  nw_lat: string | null,
-  se_lat: string | null,
-  nw_long: string | null,
-  se_long: string | null
+  nw_lat: number,
+  se_lat: number,
+  nw_long: number,
+  se_long: number
 }
