@@ -57,8 +57,8 @@ export class GameInfoPage implements OnInit {
     this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
       .subscribe((squad) => {
         const members: PlayerInfo[] = [];
-        for (let member of squad.members) {
-          members.push({name: member.name, state: member.is_human})
+        for (let member of squad.players) {
+          members.push({name: member.name, state: member.human})
         }
         this.gameInfo.squad_info = {name: squad.name, members: members};
       });
