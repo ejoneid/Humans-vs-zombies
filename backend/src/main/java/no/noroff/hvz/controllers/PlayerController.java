@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/game/{gameID}/player")
+@CrossOrigin(origins = "*")
 public class PlayerController {
 
     @Autowired

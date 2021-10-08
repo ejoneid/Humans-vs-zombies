@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -10,32 +10,36 @@ import {MapInfo} from "../../../models/map-info.model";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit {
 
   @Input()
-  mapInfo: MapInfo | null = null;
+  mapInfo!: MapInfo;
 
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap: ElementRef | undefined;
 
-  apiLoaded: Observable<boolean>;
+  apiLoaded!: Observable<boolean>;
 
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
 
-  constructor(httpClient: HttpClient) {
+  constructor(private readonly httpClient: HttpClient) {
+  }
+
+  ngOnInit() {
+    this.options.restriction!.latLngBounds = {
+      east: this.mapInfo.se_long,
+      north: this.mapInfo.nw_lat,
+      south: this.mapInfo.se_lat,
+      west: this.mapInfo.nw_long
+    };
+    console.log(this.options)
     //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
-    this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
+    this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
       .pipe(
         map(() => true),
         catchError(() => of(false)),
       );
-  }
-
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
   }
 
   initMap(): void {
@@ -45,5 +49,4 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.options
     );
   }
-
 }

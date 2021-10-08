@@ -25,7 +25,7 @@ export class GameInfoPage implements OnInit {
   private gameDescription: string = "";
   private biteCode: string = "ERROR: No bite code found";
   private squad: SquadInfo | null = null;
-  private mapInfo: MapInfo | null = null;
+  private mapInfo: MapInfo = {nw_lat: 0, se_lat: 0, nw_long: 0, se_long: 0};
   private messages: Message[] | null = null;
   private squadURL: string = "";
   private messagesURL: string = "";
@@ -56,11 +56,14 @@ export class GameInfoPage implements OnInit {
     this.gameInfoAPI.getCurrentPlayerInfo(gameID,this.playerID)
       .subscribe((player) => {
         this.biteCode = player.biteCode;
+      });
+    this.gameInfoAPI.getCurrentPlayerSquad(gameID,this.playerID)
+      .subscribe((squad) => {
         const members: PlayerInfo[] = [];
-        for (let member of player.squad) {
+        for (let member of squad.members) {
           members.push({name: member.name, state: member.is_human})
         }
-        this.squad = {name: player.squad.name, members: members};
+        this.squad = {name: squad.name, members: members};
       });
 
     //Setting all the info into a single object.

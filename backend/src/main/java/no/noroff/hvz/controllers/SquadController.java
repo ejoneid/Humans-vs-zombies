@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/game/{gameID}/squad")
+@CrossOrigin(origins = "*")
 public class SquadController {
 
     @Autowired
