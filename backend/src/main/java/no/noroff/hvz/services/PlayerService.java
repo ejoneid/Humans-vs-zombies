@@ -42,11 +42,22 @@ public class PlayerService {
     }
 
     public Player createNewPlayer(Long gameID, Player player) {
-        Player newPlayer = new Player();
         if(gameRepository.existsById(gameID)) {
-            newPlayer = playerRepository.save(player);
+            player.setGame(gameRepository.findById(gameID).get());
+            player.setBiteCode(createRandomWord(10));
+            player = playerRepository.save(player);
         }
-        return newPlayer;
+        return player;
+    }
+
+    public static String createRandomWord(int len) {
+        StringBuilder name = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            int v = 1 + (int) (Math.random() * 26);
+            char c = (char) (v + 'a' - 1);
+            name.append(c);
+        }
+        return name.toString();
     }
 
     public Player updatePlayer(Long gameID, Long playerID, Player player) {

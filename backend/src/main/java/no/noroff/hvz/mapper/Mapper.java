@@ -2,6 +2,7 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.*;
 import no.noroff.hvz.models.*;
+import no.noroff.hvz.repositories.AppUserRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import no.noroff.hvz.repositories.SquadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class Mapper {
 
     @Autowired
     SquadRepository squadRepository;
+
+    @Autowired
+    AppUserRepository appUserRepository;
 
     public MissionDTO toMissionDTO(Mission mission) {
         String missionType;
@@ -88,6 +92,16 @@ public class Mapper {
         AppUserDTO userDTO = toAppUserDTO(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(), player.getBiteCode(),
                userDTO ,killsUrl,messagesUrl);
+    }
+
+    public Player regPlayerDTO(RegPlayerDTO p) {
+        Player player = new Player();
+        if (!appUserRepository.existsById(p.getUserID())) return null;
+        AppUser user = appUserRepository.findById(p.getUserID()).get();
+        player.setUser(user);
+        player.setHuman(true);
+        player.setPatientZero(false);
+        return player;
     }
 
     public SquadMemberDTO toSquadMemberDTO (SquadMember squadMember) {
