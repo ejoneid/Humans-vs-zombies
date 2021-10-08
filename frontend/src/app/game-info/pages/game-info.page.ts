@@ -16,6 +16,7 @@ export class GameInfoPage implements OnInit {
   // Should be set from a request to the backend in the constructor
   /*gameInfo!: GameInfo;*/
 
+  //TODO: Find player id from auth
   playerID:number = 1;
 
   playerName: string = "ERROR: No player name found";
@@ -29,19 +30,32 @@ export class GameInfoPage implements OnInit {
   squad: SquadInfo | null = null;
   mapInfo: MapInfo | null = null;
   messages: Message[] | null = null;
+  squadURL: string = "";
+  messagesURL: string = "";
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const gameID: number = parseInt(this.route.snapshot.paramMap.get("id")!);
-    this.gameInfoAPI.getGameById("api/game/"+gameID)
-      /*.subscribe((game) => {
-        const name = game.name;
-        const state = game.state;
-        }
+    this.gameInfoAPI.getGameById(gameID)
+      .subscribe((game) => {
+        this.gameName = game.name;
+        this.gameState = game.state;
+        this.gameDescription = game.description;
+        this.squadURL = game.squadURL;
+        this.mapInfo = {
+          nw_lat: game.nw_lat,
+          se_lat: game.se_lat,
+          nw_long: game.nw_long,
+          se_long: game.se_long
+        };
+        this.messagesURL = game.messages;
+        });
 
-      )*/
-    this.gameInfoAPI.getCurrentPlayerInfo(gameID,this.playerID)
+    /*this.gameInfoAPI.getCurrentPlayerInfo(gameID,this.playerID)
+      .subscribe((player) => {
+        this.biteCode = player.biteCode;
+      })*/
   }
 
 }
