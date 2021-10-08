@@ -9,9 +9,9 @@ export interface GameInfo {
   description: string,
   player_count: number,
   bite_code: string,
-  squad_info: SquadInfo,
-  map_info: MapInfo
+  squad_info: SquadInfo | null,
+  map_info: MapInfo | null,
   messages: [
-    Message
+    Message | null
   ]
 }

@@ -11,8 +11,8 @@ export class HomeAPI {
   constructor(private readonly http: HttpClient) {
   }
 
-  public getGames(getURL: string): Observable<any> {
-    return this.http.get<any>(baseURL+getURL);
+  public getGames(): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game");
   }
 
 }

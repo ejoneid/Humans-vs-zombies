@@ -9,7 +9,9 @@ import {Message} from "../../../models/message.model";
 export class ChatComponent implements OnInit {
 
   @Input()
-  public chatMessages: Message[] = [];
+  public chatMessages: Message[] | null = null;
+  @Input()
+  public playerIsHuman: boolean = true;
 
   constructor() { }
 

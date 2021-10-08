@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {PlayerInfo} from "../../models/player-info.model";
 import {Message} from "../../models/message.model";
+import {GameInfoAPI} from "../api/game-info.api";
+import {ActivatedRoute} from "@angular/router";
+import {SquadInfo} from "../../models/squad-info.model";
+import {MapInfo} from "../../models/map-info.model";
 /*import {GameInfo} from "../../models/game-info.model";*/
 
 @Component({
@@ -11,38 +14,48 @@ import {Message} from "../../models/message.model";
 export class GameInfoPage implements OnInit {
 
   // Should be set from a request to the backend in the constructor
-  /*gameInfo: GameInfo;*/
+  /*gameInfo!: GameInfo;*/
 
-  //Mock data for the gameInfo
-  mockDescription: string = "This game description contains a lot of information about how the game works and whatever special rules it has. The important part is that it is long enough to enable the scrolling function of the view ;)"
-  mockSquad: PlayerInfo[] = [new TestPlayer1(), new TestPlayer2(), new TestPlayer1(), new TestPlayer1(), new TestPlayer2(), new TestPlayer2()];
-  mockSquadName: string = "Test Squadron";
-  mockChat: Message[] = [new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage(), new TestMessage()];
-  mockBiteCode: string = "ThisCouldBeRandomlyGenerated30";
-  mockTitle: string = "Test Title for Awesome Game";
+  //TODO: Find player id from auth
+  playerID:number = 1;
 
-  constructor() { }
+  playerName: string = "ERROR: No player name found";
+  playerIsHuman: boolean = true;
+
+  id: number = 0;
+  gameName: string = "ERROR: No game name found";
+  gameState: string = "ERROR: No game state found";
+  gameDescription: string = "";
+  biteCode: string = "ERROR: No bite code found";
+  squad: SquadInfo | null = null;
+  mapInfo: MapInfo | null = null;
+  messages: Message[] | null = null;
+  squadURL: string = "";
+  messagesURL: string = "";
+
+  constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const gameID: number = parseInt(this.route.snapshot.paramMap.get("id")!);
+    this.gameInfoAPI.getGameById(gameID)
+      .subscribe((game) => {
+        this.gameName = game.name;
+        this.gameState = game.state;
+        this.gameDescription = game.description;
+        this.squadURL = game.squadURL;
+        this.mapInfo = {
+          nw_lat: game.nw_lat,
+          se_lat: game.se_lat,
+          nw_long: game.nw_long,
+          se_long: game.se_long
+        };
+        this.messagesURL = game.messages;
+        });
+
+    /*this.gameInfoAPI.getCurrentPlayerInfo(gameID,this.playerID)
+      .subscribe((player) => {
+        this.biteCode = player.biteCode;
+      })*/
   }
 
 }
-//-----
-//Just for testing purposes
-class TestMessage implements Message {
-  chat = "global";
-  content = "This is a chat message that should cover more than one line please";
-  id = 3;
-  sender = "Test User";
-  squad = null;
-  time = "14:31";
-}
-class TestPlayer1 implements PlayerInfo {
-  public name = "Test User";
-  public state = true;
-}
-class TestPlayer2 implements PlayerInfo {
-  public name = "Test User Longname";
-  public state = false;
-}
-//-----

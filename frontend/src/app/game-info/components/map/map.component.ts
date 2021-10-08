@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
+import {MapInfo} from "../../../models/map-info.model";
 
 @Component({
   selector: 'app-map',
@@ -10,6 +11,10 @@ import {options} from "src/assets/map-options";
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit {
+
+  @Input()
+  mapInfo: MapInfo | null = null;
+
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap: ElementRef | undefined;
 

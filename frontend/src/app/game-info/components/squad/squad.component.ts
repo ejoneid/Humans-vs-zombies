@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PlayerInfo} from "../../../models/player-info.model";
+import {SquadInfo} from "../../../models/squad-info.model";
 
 @Component({
   selector: 'app-squad',
@@ -9,9 +10,7 @@ import {PlayerInfo} from "../../../models/player-info.model";
 export class SquadComponent implements OnInit {
 
   @Input()
-  public squadName: string = "ERROR: No squad name";
-  @Input()
-  public members: PlayerInfo[] = [];
+  public squad: SquadInfo | null = null;
 
   constructor() { }
 

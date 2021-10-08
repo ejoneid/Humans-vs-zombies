@@ -1,15 +1,15 @@
 <body>
-<app-game-title [gameTitle]="mockTitle"></app-game-title>
+<app-game-title [gameTitle]="gameName"></app-game-title>
 <main class="gameInfoPageContainer">
   <!--Should use gameInfo.description instead of mockDescription-->
-  <app-game-description id="gameDescriptionElement" [gameDescription]="mockDescription"></app-game-description>
+  <app-game-description id="gameDescriptionElement" [gameDescription]="gameDescription"></app-game-description>
   <section class="squadBiteMapChatContainer">
-    <app-squad [squadName]="mockSquadName" [members]="mockSquad"></app-squad>
-    <app-map id="map"></app-map>
+    <app-squad [squad]="squad"></app-squad>
+    <app-map id="map" [mapInfo]="mapInfo"></app-map>
   </section>
   <section class="squadBiteMapChatContainer">
-    <app-bite-code [biteCode]="mockBiteCode"></app-bite-code>
-    <app-chat id="chat" [chatMessages]="mockChat"></app-chat>
+    <app-bite-code [biteCode]="biteCode"></app-bite-code>
+    <app-chat id="chat" [chatMessages]="messages" [playerIsHuman]="playerIsHuman"></app-chat>
   </section>
 </main>
 </body>
