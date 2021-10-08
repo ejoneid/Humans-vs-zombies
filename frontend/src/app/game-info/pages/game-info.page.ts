@@ -14,22 +14,21 @@ import {GameInfo} from "../../models/game-info.model";
 })
 export class GameInfoPage implements OnInit {
   //Holder for the game, initialized in ngOnInit
-  gameInfo!: GameInfo;
+  private gameInfo!: GameInfo;
 
   //All the variables are initialized in safe states or error states.
   //TODO: Find player id from auth
-  playerID:number = 1;
-  playerName: string = "ERROR: No player name found";
-  playerIsHuman: boolean = true;
-  gameName: string = "ERROR: No game name found";
-  gameState: string = "ERROR: No game state found";
-  gameDescription: string = "";
-  biteCode: string = "ERROR: No bite code found";
-  squad: SquadInfo | null = null;
-  mapInfo: MapInfo | null = null;
-  messages: Message[] | null = null;
-  squadURL: string = "";
-  messagesURL: string = "";
+  private playerID:number = 1;
+  private playerIsHuman: boolean = true;
+  private gameName: string = "ERROR: No game name found";
+  private gameState: string = "ERROR: No game state found";
+  private gameDescription: string = "";
+  private biteCode: string = "ERROR: No bite code found";
+  private squad: SquadInfo | null = null;
+  private mapInfo: MapInfo | null = null;
+  private messages: Message[] | null = null;
+  private squadURL: string = "";
+  private messagesURL: string = "";
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
@@ -69,6 +68,7 @@ export class GameInfoPage implements OnInit {
       bite_code: this.biteCode,
       description: this.gameDescription,
       id: gameID,
+      player_is_human: this.playerIsHuman,
       player_id: this.playerID,
       map_info: this.mapInfo,
       messages: this.messages,
@@ -77,5 +77,9 @@ export class GameInfoPage implements OnInit {
       squad_info: this.squad,
       state: this.gameState
     }
+  }
+
+  get game(): GameInfo {
+    return this.gameInfo;
   }
 }
