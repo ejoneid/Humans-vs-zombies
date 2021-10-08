@@ -13,7 +13,7 @@ import {MapInfo} from "../../../models/map-info.model";
 export class MapComponent implements OnInit {
 
   @Input()
-  mapInfo!: MapInfo;
+  mapInfo!: MapInfo | null;
 
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap: ElementRef | undefined;
@@ -27,13 +27,14 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.options.restriction!.latLngBounds = {
-      east: this.mapInfo.se_long,
-      north: this.mapInfo.nw_lat,
-      south: this.mapInfo.se_lat,
-      west: this.mapInfo.nw_long
-    };
-    console.log(this.options)
+    if (this.mapInfo != null) {
+      this.options.restriction = {latLngBounds: {
+        east: this.mapInfo.se_long,
+        north: this.mapInfo.nw_lat,
+        south: this.mapInfo.se_lat,
+        west: this.mapInfo.nw_long
+      }};
+    }
     //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
       .pipe(

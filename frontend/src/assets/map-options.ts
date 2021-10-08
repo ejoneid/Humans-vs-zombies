@@ -1,7 +1,6 @@
 
 export const options: google.maps.MapOptions = {
   center: { lat: 59.9115856, lng: 10.750967 },
-  restriction: {latLngBounds: {east: 0,north: 0, south: 0, west: 0}},
   zoom: 14,
   disableDefaultUI: true,
   styles: [

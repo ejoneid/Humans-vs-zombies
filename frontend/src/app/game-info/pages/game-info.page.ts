@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Message} from "../../models/message.model";
 import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
-import {SquadInfo} from "../../models/squad-info.model";
-import {MapInfo} from "../../models/map-info.model";
 import {PlayerInfo} from "../../models/player-info.model";
 import {GameInfo} from "../../models/game-info.model";
 
@@ -14,72 +11,57 @@ import {GameInfo} from "../../models/game-info.model";
 })
 export class GameInfoPage implements OnInit {
   //Holder for the game, initialized in ngOnInit
-  private gameInfo!: GameInfo;
-
-  //All the variables are initialized in safe states or error states.
-  //TODO: Find player id from auth
-  private playerID:number = 1;
-  private playerIsHuman: boolean = true;
-  private gameName: string = "ERROR: No game name found";
-  private gameState: string = "ERROR: No game state found";
-  private gameDescription: string = "";
-  private biteCode: string = "ERROR: No bite code found";
-  private squad: SquadInfo | null = null;
-  private mapInfo: MapInfo = {nw_lat: 0, se_lat: 0, nw_long: 0, se_long: 0};
-  private messages: Message[] | null = null;
-  private squadURL: string = "";
-  private messagesURL: string = "";
+  private gameInfo: GameInfo = {
+    id: 0,
+    //All the variables are initialized in safe states or error states.
+    //TODO: Find player id from auth
+    player_id: 1,
+    player_is_human: true,
+    name: "ERROR: No game name found",
+    state: "ERROR: No game state found",
+    description: "",
+    bite_code: "ERROR: No bite code found",
+    squad_info: null,
+    map_info: null,
+    //TODO: Filter messages in HEAD
+    messages: null
+  };
+  private messagesURL!: string;
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     //Finding gameID from the optional params
-    const gameID: number = parseInt(this.route.snapshot.paramMap.get("id")!);
+    this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
 
     //Getting information about the specific game
-    this.gameInfoAPI.getGameById(gameID)
+    this.gameInfoAPI.getGameById(this.gameInfo.id)
       .subscribe((game) => {
-        this.gameName = game.name;
-        this.gameState = game.state;
-        this.gameDescription = game.description;
-        this.squadURL = game.squadURL;
-        this.mapInfo = {
-          nw_lat: game.nw_lat,
-          se_lat: game.se_lat,
-          nw_long: game.nw_long,
-          se_long: game.se_long
+        this.gameInfo.name = game.name;
+        this.gameInfo.state = game.state;
+        this.gameInfo.description = game.description;
+        this.gameInfo.map_info = {
+          nw_lat: 59.945500,//game.nw_lat,
+          se_lat: 59.897553,//game.se_lat,
+          nw_long: 10.687306,//game.nw_long,
+          se_long: 10.831628//game.se_long
         };
         this.messagesURL = game.messages;
-        });
+      });
 
     //Getting information about the specific player.
-    this.gameInfoAPI.getCurrentPlayerInfo(gameID,this.playerID)
+    this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.id, this.gameInfo.player_id)
       .subscribe((player) => {
-        this.biteCode = player.biteCode;
+        this.gameInfo.bite_code = player.biteCode;
       });
-    this.gameInfoAPI.getCurrentPlayerSquad(gameID,this.playerID)
+    this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
       .subscribe((squad) => {
         const members: PlayerInfo[] = [];
-        for (let member of squad.members) {
-          members.push({name: member.name, state: member.is_human})
+        for (let member of squad.players) {
+          members.push({name: member.name, state: member.human})
         }
-        this.squad = {name: squad.name, members: members};
+        this.gameInfo.squad_info = {name: squad.name, members: members};
       });
-
-    //Setting all the info into a single object.
-    this.gameInfo = {
-      bite_code: this.biteCode,
-      description: this.gameDescription,
-      id: gameID,
-      player_is_human: this.playerIsHuman,
-      player_id: this.playerID,
-      map_info: this.mapInfo,
-      messages: this.messages,
-      name: this.gameName,
-      player_count: 0,
-      squad_info: this.squad,
-      state: this.gameState
-    }
   }
 
   get game(): GameInfo {
