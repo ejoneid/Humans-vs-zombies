@@ -3,7 +3,6 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.KillDTO;
 import no.noroff.hvz.dto.RegKillDTO;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.services.KillerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +55,9 @@ public class KillController {
 
     @PostMapping
 //    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody Kill kill) {
+    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) {
         HttpStatus status;
-        Kill addedKill = killerService.createNewKill(gameID, mapper.RegKillDTO(kill));
+        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
         if(addedKill == null) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, status);

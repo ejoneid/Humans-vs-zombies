@@ -20,6 +20,9 @@ public class Game {
     @Column(nullable = false, length = 20)
     private String gameState;
 
+    @Column
+    private String description;
+
     @Column(length = 20)
     private String nw_lat;
 
@@ -186,5 +189,13 @@ public class Game {
 
     public void setPlayers(Set<Player> players) {
         this.players = players;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

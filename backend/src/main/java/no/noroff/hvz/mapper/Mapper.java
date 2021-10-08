@@ -51,7 +51,7 @@ public class Mapper {
         String killsUrl = gameUrl + "/kill";
         String chatUrl = gameUrl + "/chat";
         String playersUrl = gameUrl + "/player";
-        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getNw_lat(), game.getSe_lat(),
+        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getNw_lat(), game.getSe_lat(),
                 game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
     }
 
@@ -62,7 +62,7 @@ public class Mapper {
                 killerUrl, victimUrl);
     }
 
-    public Kill RegKillDTO(RegKillDTO killDTO) {
+    public Kill regKillDTO(RegKillDTO killDTO) {
         Kill kill = new Kill();
         Player killer = playerRepository.findById(killDTO.getKillerID()).get();
         List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getBiteCode())).collect(Collectors.toList());
