@@ -11,8 +11,11 @@ export class GameInfoAPI {
   constructor(private readonly http: HttpClient) {
   }
 
-  public getGameById(getURL: string): Observable<any> {
-    return this.http.get<any>(baseURL+getURL);
+  public getGameById(gameID: string): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game/"+gameID);
+  }
+  public getCurrentPlayerInfo(gameID: number, playerID: number): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID);
   }
 
 }

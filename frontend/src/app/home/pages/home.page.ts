@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     //Filling the list with active games
-    this.homeAPI.getGames("api/game")
+    this.homeAPI.getGames()
       .subscribe((games) => {
         for (let game of games) {
           this.activeGames.push(

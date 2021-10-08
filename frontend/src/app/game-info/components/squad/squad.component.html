@@ -1,9 +1,9 @@
 <section class="greyBackground">
-  <section class="squadContainer">
-    <h2>{{squadName}}</h2>
+  <section class="squadContainer" *ngIf="squad != null">
+    <h2>{{squad.name}}</h2>
     <h3>Members:</h3>
     <ul>
-      <li *ngFor="let member of members" id="memberItem">
+      <li *ngFor="let member of squad.members" id="memberItem">
         <p>{{member.name}}</p>
         <p *ngIf="member.state" id="living">Alive</p>
         <p *ngIf="!member.state" id="dead">Zombie</p>
