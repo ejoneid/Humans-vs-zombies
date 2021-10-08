@@ -8,7 +8,7 @@ import no.noroff.hvz.services.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class MissionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody Mission mission) {
         HttpStatus status;
         Mission addedMission = missionService.createNewMission(gameID, mission);
@@ -69,7 +69,7 @@ public class MissionController {
     }
 
     @PutMapping("/{missionID}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody Mission mission) {
         HttpStatus status;
         if(!Objects.equals(missionID,mission.getId())) {
@@ -87,7 +87,7 @@ public class MissionController {
     }
 
     @DeleteMapping("/{missionID}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MissionDTO> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
         HttpStatus status;
         Mission deletedMission = missionService.deleteMission(gameID, missionID);

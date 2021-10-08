@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-active-game',
@@ -15,10 +16,16 @@ export class ActiveGameComponent implements OnInit {
   public gameEnd: String = "";
   @Input()
   public gameStatus: String = "";
+  @Input()
+  public gameId: number = 0;
 
-  constructor() { }
+  constructor(private readonly router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  toGameInfo(gameId: number): Promise<boolean> {
+    return this.router.navigate(["info"]);///"+gameId]);
   }
 
 }

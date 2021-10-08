@@ -36,6 +36,6 @@ class TestGame implements ActiveGame {
   nw_long = null;
   se_lat = null;
   se_long = null;
-  state = "Zombies are bad";
+  state = "Open";
 }
 //-----

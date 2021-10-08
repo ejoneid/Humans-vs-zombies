@@ -10,6 +10,7 @@
     <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
     <ul class="activeGameList">
       <app-active-game *ngFor="let game of games"
+                       [gameId]="game.id"
                        [gameName]="game.name"
                        [gameStart]="'05.10'"
                        [gameEnd]="'31.10'"
