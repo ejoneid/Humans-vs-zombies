@@ -10,7 +10,7 @@ import no.noroff.hvz.services.SquadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class SquadController {
     }
 
     @PutMapping("/{squadID}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SquadDTO> updateSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody Squad squad) {
         SquadDTO squadDTO = null;
         if(!Objects.equals(squadID, squad.getId())) {
@@ -108,7 +108,7 @@ public class SquadController {
     }
 
     @DeleteMapping("/{squadID}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SquadDTO> deleteSquad(@PathVariable Long gameID, @PathVariable Long squadID) {
         Squad deletedSquad = squadService.deleteSquad(gameID, squadID);
         SquadDTO squadDTO = null;

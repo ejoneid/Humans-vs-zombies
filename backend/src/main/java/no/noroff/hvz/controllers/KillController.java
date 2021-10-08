@@ -8,7 +8,7 @@ import no.noroff.hvz.services.KillerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -54,7 +54,7 @@ public class KillController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody Kill kill) {
         HttpStatus status;
         Kill addedKill = killerService.createNewKill(gameID, kill);
@@ -68,7 +68,7 @@ public class KillController {
     }
 
     @PutMapping("/{killID}")
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody Kill kill) {
         HttpStatus status;
         if(!Objects.equals(killID,kill.getId())) {
@@ -86,7 +86,7 @@ public class KillController {
     }
 
     @DeleteMapping("/{killID}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<KillDTO> deleteKill(@PathVariable Long gameID, @PathVariable Long killID) {
         HttpStatus status;
         Kill deletedKill = killerService.deleteKill(gameID, killID);
