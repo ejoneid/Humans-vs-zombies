@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -14,7 +14,7 @@ import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps"
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
 
   @Input()
   mapInfo!: MapBorder | null;
@@ -32,56 +32,32 @@ export class MapComponent implements OnInit {
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
 
-  //Icons for the Google Map custom markers can be put here as file references
-  icons: Record<string, {icon: string}> = {
-    mission: {
-      icon: "src/assets/mission_icon_temp.png"
-    },
-    gravestone: {
-      icon: "src/assets/gravestone_icon_temp.png"
-    }
-  };
-
   //Markers for the Google Map are put here
-  markers: MapMarker[] = [{ //Test marker.
-      description: "Hello",
-      position: {
-        lat: 59.9115856, lng: 10.750967
-      },
-      label: {
-        text: "markerName",
-        color: "#B2BBBD"
-      },
-      options: {
-        icon: "../assets/gravestone_icon_temp.png"
-      },
-      title: "Marker title"
-    }];
+  markers: MapMarker[] = [];
 
   constructor(private readonly httpClient: HttpClient) {
+  }
+
+  ngOnChanges() {
     // Populating the marker list
-    if (this.missions != undefined) {
-      for (let mission of this.missions) {
-        this.markers.push({
-          description: mission.description,
-          position: {lat: mission.lat, lng: mission.lng},
-          label: {text: mission.name, color: "#B2BBBD"},
-          options: {icon: "../assets/mission_icon_temp.png"},
-          title: mission.name
-        });
-      }
+    for (let mission of this.missions) {
+      this.markers.push({
+        description: mission.description,
+        position: {lat: mission.lat, lng: mission.lng},
+        label: {text: mission.name, color: "#B2BBBD"},
+        options: {icon: "../assets/mission_icon_temp.png"},
+        title: mission.name
+      });
     }
-    if (this.kills != undefined) {
-      for (let kill of this.kills) {
-        if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
-          this.markers.push({
-            description: kill.story,
-            position: {lat: kill.lat, lng: kill.lng},
-            label: {text: kill.killer, color: "#B2BBBD"},
-            options: {icon: "../assets/kill_icon_temp.png"},
-            title: "Kill"
-          });
-        }
+    for (let kill of this.kills) {
+      if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
+        this.markers.push({
+          description: kill.story,
+          position: {lat: kill.lat, lng: kill.lng},
+          label: {text: kill.killerName, color: "#B2BBBD"},
+          options: {icon: "../assets/gravestone_icon_temp.png"},
+          title: "Kill"
+        });
       }
     }
   }

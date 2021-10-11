@@ -3,6 +3,8 @@ import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
 import {PlayerInfo} from "../../models/player-info.model";
 import {GameInfo} from "../../models/game-info.model";
+import {Mission} from "../../models/mission.model";
+import {Kill} from "../../models/kill.model";
 
 @Component({
   selector: 'app-game-info-page',
@@ -38,60 +40,74 @@ export class GameInfoPage implements OnInit {
 
     //Getting information about the specific game
     this.gameInfoAPI.getGameById(this.gameInfo.id)
-      .subscribe((game) => {
-        this.gameInfo.name = game.name;
-        this.gameInfo.state = game.state;
-        this.gameInfo.description = game.description;
-        this.gameInfo.map_info = {
-          nw_lat: 59.945500,//game.nw_lat,
-          se_lat: 59.897553,//game.se_lat,
-          nw_long: 10.687306,//game.nw_long,
-          se_long: 10.831628//game.se_long
-        };
-        this.messagesURL = game.messages;
+      .then((response) => {
+        response.subscribe((game) => {
+            this.gameInfo.name = game.name;
+            this.gameInfo.state = game.state;
+            this.gameInfo.description = game.description;
+            this.gameInfo.map_info = {
+              nw_lat: 59.945500,//game.nw_lat,
+              se_lat: 59.897553,//game.se_lat,
+              nw_long: 10.687306,//game.nw_long,
+              se_long: 10.831628//game.se_long
+            };
+            this.messagesURL = game.messages;
+          });
       });
 
     //Getting information about the specific player.
     this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.id, this.gameInfo.player_id)
-      .subscribe((player) => {
-        this.gameInfo.bite_code = player.biteCode;
+      .then((response) => {
+        response.subscribe((player) => {
+          this.gameInfo.bite_code = player.biteCode;
+        });
       });
     this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
-      .subscribe((squad) => {
-        const members: PlayerInfo[] = [];
-        for (let member of squad.players) {
-          members.push({name: member.name, state: member.human});
-        }
-        this.gameInfo.squad_info = {name: squad.name, members: members};
+      .then((response) => {
+        response.subscribe((squad) => {
+          const members: PlayerInfo[] = [];
+          for (let member of squad.players) {
+            members.push({name: member.name, state: member.human});
+          }
+          this.gameInfo.squad_info = {name: squad.name, members: members};
+        });
       });
 
     //Getting information about map markers.
+    const tempMissions: Mission[] = [];
     this.gameInfoAPI.getMissionsByGame(this.gameInfo.id)
-      .subscribe((missions) => {
-        for (let mission of missions) {
-          this.gameInfo.missions.push({
-            name: mission.name,
-            description: mission.description,
-            endTime: mission.endTime,
-            startTime: mission.startTime,
-            lat: mission.lat,
-            lng: mission.lng,
-            isHuman: mission.isHuman
-          });
-        }
+      .then((response) => {
+        response.subscribe((missions) => {
+          for (let mission of missions) {
+            tempMissions.push({
+              name: mission.name.toString(),
+              description: mission.description.toString(),
+              endTime: mission.endTime.toString(),
+              startTime: mission.startTime.toString(),
+              lat: parseFloat(mission.lat),
+              lng: parseFloat(mission.lng),
+              isHuman: mission.isHuman
+            });
+          }
+          this.gameInfo.missions = tempMissions;
+        });
       });
+    const tempKills: Kill[] = [];
     this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
-      .subscribe((kills) => {
-        for (let kill of kills) {
-          this.gameInfo.kills.push({
-            killer: kill.killer,
-            lat: kill.lat,
-            lng: kill.lng,
-            story: kill.story,
-            timeOfDeath: kill.timeOfDeath,
-            victim: kill.victim
-          });
-        }
+      .then((response) => {
+        response.subscribe((kills) => {
+          for (let kill of kills) {
+            tempKills.push({
+              killerName: kill.killerName.toString(),
+              lat: parseFloat(kill.lat),
+              lng: parseFloat(kill.lng),
+              story: kill.story.toString(),
+              timeOfDeath: kill.timeOfDeath.toString(),
+              victimName: kill.victimName.toString()
+            });
+          }
+          this.gameInfo.kills = tempKills;
+        });
       });
   }
 

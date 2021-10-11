@@ -3,6 +3,6 @@ export interface Kill {
   story: string | null,
   lat: number | null,
   lng: number | null,
-  killer: string,
-  victim: string
+  killerName: string,
+  victimName: string
 }
