@@ -3,7 +3,6 @@ import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
 import {PlayerInfo} from "../../models/player-info.model";
 import {GameInfo} from "../../models/game-info.model";
-import LatLng = google.maps.LatLng;
 
 @Component({
   selector: 'app-game-info-page',
@@ -61,7 +60,7 @@ export class GameInfoPage implements OnInit {
       .subscribe((squad) => {
         const members: PlayerInfo[] = [];
         for (let member of squad.players) {
-          members.push({name: member.name, state: member.human})
+          members.push({name: member.name, state: member.human});
         }
         this.gameInfo.squad_info = {name: squad.name, members: members};
       });
@@ -70,17 +69,15 @@ export class GameInfoPage implements OnInit {
     this.gameInfoAPI.getMissionsByGame(this.gameInfo.id)
       .subscribe((missions) => {
         for (let mission of missions) {
-          let latLng: LatLng | null = null;
-          if (mission.lat != null && mission.lng != null) latLng = new LatLng(mission.lat, mission.lng);
-
           this.gameInfo.missions.push({
             name: mission.name,
             description: mission.description,
             endTime: mission.endTime,
             startTime: mission.startTime,
-            latLng: latLng,
+            lat: mission.lat,
+            lng: mission.lng,
             isHuman: mission.isHuman
-          })
+          });
         }
       });
     this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
@@ -93,7 +90,7 @@ export class GameInfoPage implements OnInit {
             story: kill.story,
             timeOfDeath: kill.timeOfDeath,
             victim: kill.victim
-          })
+          });
         }
       });
   }

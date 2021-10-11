@@ -1,9 +1,8 @@
-import LatLng = google.maps.LatLng;
-
 export interface Mission {
   name: string,
   description: string,
-  latLng: LatLng | null,
+  lat: number,
+  lng: number,
   startTime: string | null,
   endTime: string | null,
   isHuman: boolean
