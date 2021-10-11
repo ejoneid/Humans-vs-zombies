@@ -62,6 +62,21 @@ export class GameInfoPage implements OnInit {
         }
         this.gameInfo.squad_info = {name: squad.name, members: members};
       });
+
+    //Getting information about map markers.
+    this.gameInfoAPI.getMissionsByGame(this.gameInfo.id)
+      .subscribe((missions) => {
+        for (let mission of missions) {
+
+        }
+      });
+
+    this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
+      .subscribe((kills) => {
+        for (let kill of kills) {
+
+        }
+      });
   }
 
   get game(): GameInfo {

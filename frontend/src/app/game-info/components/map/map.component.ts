@@ -3,7 +3,7 @@ import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
-import {MapInfo} from "../../../models/map-info.model";
+import {MapBorder} from "../../../models/map-border.model";
 
 @Component({
   selector: 'app-map',
@@ -13,7 +13,7 @@ import {MapInfo} from "../../../models/map-info.model";
 export class MapComponent implements OnInit {
 
   @Input()
-  mapInfo!: MapInfo | null;
+  mapInfo!: MapBorder | null;
 
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap: ElementRef | undefined;
