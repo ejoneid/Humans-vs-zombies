@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/game/{gameID}/kill")
+@CrossOrigin(origins = "*")
 public class KillController {
 
     @Autowired

@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
 import {MapBorder} from "../../../models/map-border.model";
+import {Kill} from "../../../models/kill.model";
+import {Mission} from "../../../models/mission.model";
 
 @Component({
   selector: 'app-map',
@@ -14,9 +16,13 @@ export class MapComponent implements OnInit {
 
   @Input()
   mapInfo!: MapBorder | null;
+  @Input()
+  kills!: Kill[];
+  @Input()
+  missions!: Mission[];
 
   //Is defined from ngAfterViewInit()
-  @ViewChild("gmap") gmap: ElementRef | undefined;
+  @ViewChild("gmap") gmap!: ElementRef;
 
   apiLoaded!: Observable<boolean>;
 
