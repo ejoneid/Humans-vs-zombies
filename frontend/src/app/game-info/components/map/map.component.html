@@ -5,11 +5,13 @@
               height="100%" width="100%"
               style="height: 100%; width: 100%"
   >
-    <map-marker
+    <map-marker #mapMarker="mapMarker"
       *ngFor="let marker of markers"
-      [title]="marker.name"
+      [label]="marker.label"
       [position]="marker.position"
       [options]="marker.options"
+      (mapClick)="openInfoWindow(mapMarker, marker.description)"
     ></map-marker>
+    <map-info-window></map-info-window>
   </google-map>
 </section>
