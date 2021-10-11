@@ -8,11 +8,12 @@ import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.models.Squad;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class PlayerController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID) {
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @RequestHeader String authorization) {
         playerService.getAllPlayers(gameID);
         HttpStatus status;
         List<PlayerDTO> playerDTOs = new ArrayList<>();
@@ -42,23 +43,32 @@ public class PlayerController {
         }
         else{
             status = HttpStatus.OK;
-            //TODO her må riktig DTO velges basert på admin
-            playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
+            if (SecurityUtils.isAdmin(authorization)) {
+                playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
+            }
+            else {
+                playerDTOs = players.stream().map(mapper::toPlayerDTOStandard).collect(Collectors.toList());
+            }
         }
         return new ResponseEntity<>(playerDTOs, status);
     }
 
     @GetMapping("/{playerID}")
-    public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
+    public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestHeader String authorization) {
         HttpStatus status;
         Player player = playerService.getSpecificPlayer(gameID, playerID);
-        PlayerDTO playerDTO = mapper.toPlayerDTOFull(player);
+        PlayerDTO playerDTO = null;
         if(player.getId() == null) {
             status = HttpStatus.NOT_FOUND;
         }
         else {
             status = HttpStatus.OK;
-            //TODO her må riktig DTO velges basert på admin
+            if (SecurityUtils.isAdmin(authorization)) {
+                playerDTO = mapper.toPlayerDTOFull(player);
+            }
+            else {
+                playerDTO = mapper.toPlayerDTOStandard(player);
+            }
         }
         return new ResponseEntity<>(playerDTO, status);
     }
@@ -79,7 +89,7 @@ public class PlayerController {
     }
 
     @PutMapping("/{playerID}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestBody Player player) {
         HttpStatus status;
         if(!Objects.equals(playerID,player.getId())) {
@@ -93,14 +103,13 @@ public class PlayerController {
         }
         else {
             status = HttpStatus.OK;
-            //TODO her må riktig DTO velges basert på admin
             playerDTO = mapper.toPlayerDTOFull(player);
         }
         return new ResponseEntity<>(playerDTO, status);
     }
 
     @DeleteMapping("/{playerID}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
 
         HttpStatus status;
@@ -112,7 +121,6 @@ public class PlayerController {
         }
         else {
             status = HttpStatus.OK;
-            //TODO her må riktig DTO velges basert på admin
             playerDTO = mapper.toPlayerDTOFull(deletedPlayer);
         }
 

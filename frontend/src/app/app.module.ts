@@ -4,10 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import {HomeModule} from "./home/home.module";
 import {GameInfoModule} from "./game-info/game-info.module";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -19,12 +19,27 @@ import {HttpClientModule} from "@angular/common/http";
     HomeModule,
     GameInfoModule,
     AuthModule.forRoot({
+      // The domain and clientId were configured in the previous chapter
       domain: 'dev-fwlq8v0n.eu.auth0.com',
-      clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2'
+      clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2',
+    
+      // Request this audience at user authentication time
+      audience: 'https://hvz/api',
+    
+      // Request this scope at user authentication time
+      scope: 'admin:permissions',
+      
+    
+      // Specify configuration for the interceptor              
+      httpInterceptor: {
+        allowedList: ['http://localhost:4200/*', 'http://localhost:8080/api/game']
+      }
     }),
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

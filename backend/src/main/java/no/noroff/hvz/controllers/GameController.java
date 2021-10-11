@@ -9,7 +9,7 @@ import no.noroff.hvz.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -29,7 +29,10 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state, @RequestHeader Map<String, String> headers) {
+        headers.forEach((key, value) -> {
+            System.out.println("Header "+ key+" = "+ value);
+        });
         List<GameDTO> games = new ArrayList<>();
         if (state.isPresent()) {
             games = gameService.getAllGames(state.get()).stream().map(mapper::toGameTDO).collect(Collectors.toList());
@@ -54,7 +57,7 @@ public class GameController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> createNewGame(@RequestBody Game game) {
         Game addedGame = gameService.createNewGame(game);
         HttpStatus status = HttpStatus.CREATED;
@@ -62,7 +65,7 @@ public class GameController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
         HttpStatus status;
         if(!Objects.equals(id,game.getId())) {
@@ -80,7 +83,7 @@ public class GameController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
         HttpStatus status;
         Game deletedGame = gameService.deleteGame(id);
