@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -29,10 +31,11 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state, @RequestHeader Map<String, String> headers, @AuthenticationPrincipal Jwt principal) {
         headers.forEach((key, value) -> {
             System.out.println("Header "+ key+" = "+ value);
         });
+        System.out.println(principal.getClaimAsString("sub"));
         List<GameDTO> games = new ArrayList<>();
         if (state.isPresent()) {
             games = gameService.getAllGames(state.get()).stream().map(mapper::toGameTDO).collect(Collectors.toList());
