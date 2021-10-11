@@ -24,7 +24,9 @@ export class GameInfoPage implements OnInit {
     squad_info: null,
     map_info: null,
     //TODO: Filter messages in HEAD
-    messages: null
+    messages: [],
+    kills: [],
+    missions: []
   };
   private messagesURL!: string;
 
@@ -67,14 +69,28 @@ export class GameInfoPage implements OnInit {
     this.gameInfoAPI.getMissionsByGame(this.gameInfo.id)
       .subscribe((missions) => {
         for (let mission of missions) {
-
+          this.gameInfo.missions.push({
+            name: mission.name,
+            description: mission.description,
+            endTime: mission.endTime,
+            startTime: mission.startTime,
+            lat: mission.lat,
+            lng: mission.lng,
+            isHuman: mission.isHuman
+          })
         }
       });
-
     this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
       .subscribe((kills) => {
         for (let kill of kills) {
-
+          this.gameInfo.kills.push({
+            killer: kill.killer,
+            lat: kill.lat,
+            lng: kill.lng,
+            story: kill.story,
+            timeOfDeath: kill.timeOfDeath,
+            victim: kill.victim
+          })
         }
       });
   }
