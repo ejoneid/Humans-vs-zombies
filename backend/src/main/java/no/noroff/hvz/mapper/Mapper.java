@@ -44,6 +44,14 @@ public class Mapper {
         return new AppUserDTO(user.getId(), user.getFirstName(), user.getLastName());
     }
 
+    public AppUser toAppUser(AppUserDTO appUserDTO) {
+        AppUser appUser = new AppUser();
+        appUser.setId(appUserDTO.getId());
+        appUser.setLastName(appUserDTO.getLastName());
+        appUser.setFirstName(appUserDTO.getFirstName());
+        return appUser;
+    }
+
     public GameDTO toGameTDO(Game game) {
         String gameUrl = url + game.getId();
         String squadsUrl = gameUrl + "/squad";
