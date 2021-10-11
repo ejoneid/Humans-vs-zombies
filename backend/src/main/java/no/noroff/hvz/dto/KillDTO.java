@@ -9,8 +9,8 @@ public class KillDTO {
     private String story;
     private String lat;
     private String lng;
-    private String killerUrl;
-    private String victimUrl;
+    private String killerName;
+    private String victimName;
 
     public KillDTO(Long id, Date timeOfDeath, String story, String lat, String lng, String killerUrl, String victimUrl) {
         this.id = id;
@@ -18,8 +18,8 @@ public class KillDTO {
         this.story = story;
         this.lat = lat;
         this.lng = lng;
-        this.killerUrl = killerUrl;
-        this.victimUrl = victimUrl;
+        this.killerName = killerUrl;
+        this.victimName = victimUrl;
     }
 
     public Long getId() {
@@ -62,19 +62,19 @@ public class KillDTO {
         this.lng = lng;
     }
 
-    public String getKillerUrl() {
-        return killerUrl;
+    public String getKillerName() {
+        return killerName;
     }
 
-    public void setKillerUrl(String killerUrl) {
-        this.killerUrl = killerUrl;
+    public void setKillerName(String killerName) {
+        this.killerName = killerName;
     }
 
-    public String getVictimUrl() {
-        return victimUrl;
+    public String getVictimName() {
+        return victimName;
     }
 
-    public void setVictimUrl(String victimUrl) {
-        this.victimUrl = victimUrl;
+    public void setVictimName(String victimName) {
+        this.victimName = victimName;
     }
 }

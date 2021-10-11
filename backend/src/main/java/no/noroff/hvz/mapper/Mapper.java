@@ -37,7 +37,7 @@ public class Mapper {
             missionType = "Zombie";
         }
         return new MissionDTO(mission.getId(),mission.getName(),mission.getDescription(),
-                mission.getStartTime(), mission.getEndTime(), missionType);
+                mission.getStartTime(), mission.getEndTime(), missionType, mission.getLat(), mission.getLng());
     }
 
     public AppUserDTO toAppUserDTO(AppUser user) {
@@ -56,10 +56,10 @@ public class Mapper {
     }
 
     public KillDTO toKillTDO(Kill kill) {
-        String killerUrl = url + kill.getGame().getId() + "/player/" + kill.getKiller().getId();
-        String victimUrl = url + kill.getGame().getId() + "/player/" + kill.getVictim().getId();
+        String killerName = kill.getKiller().getUser().getFirstName() + " " + kill.getKiller().getUser().getLastName();
+        String victimName = kill.getVictim().getUser().getFirstName() + " " + kill.getVictim().getUser().getLastName();
         return new KillDTO(kill.getId(), kill.getTimeOfDeath(), kill.getStory(), kill.getLat(), kill.getLng(),
-                killerUrl, victimUrl);
+                killerName, victimName);
     }
 
     public Kill regKillDTO(RegKillDTO killDTO) {
@@ -68,7 +68,11 @@ public class Mapper {
         List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getBiteCode())).collect(Collectors.toList());
         if (victim.size() == 0) return null;
         kill.setKiller(killer);
-        kill.setVictim(victim.get(0));
+        // Set victim to zombie
+        Player v = victim.get(0);
+        v.setHuman(false);
+
+        kill.setVictim(v);
         kill.setTimeOfDeath(new Date());
         kill.setStory(killDTO.getStory());
         kill.setLat(killDTO.getLat());
