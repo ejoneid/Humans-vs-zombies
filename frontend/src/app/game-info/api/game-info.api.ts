@@ -20,5 +20,10 @@ export class GameInfoAPI {
   public getCurrentPlayerSquad(gameID: number, playerID: number): Observable<any> {
     return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/squad");
   }
-
+  public getMissionsByGame(gameID: number): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game/"+gameID+"/mission");
+  }
+  public getKillsByGame(gameID: number): Observable<any> {
+    return this.http.get<any>(baseURL+"api/game/"+gameID+"/kill");
+  }
 }

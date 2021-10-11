@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/game/{gameID}/mission")
+@CrossOrigin(origins = "*")
 public class MissionController {
 
     @Autowired

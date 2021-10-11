@@ -1,6 +1,8 @@
 import {SquadInfo} from "./squad-info.model";
-import {MapInfo} from "./map-info.model";
+import {MapBorder} from "./map-border.model";
 import {Message} from "./message.model";
+import {Kill} from "./kill.model";
+import {Mission} from "./mission.model";
 
 export interface GameInfo {
   id: number,
@@ -12,6 +14,8 @@ export interface GameInfo {
   /*player_count: number,*/ //Not implemented
   bite_code: string,
   squad_info: SquadInfo | null,
-  map_info: MapInfo | null,
-  messages: Message[] | null
+  map_info: MapBorder | null,
+  messages: Message[],
+  kills: Kill[],
+  missions: Mission[]
 }

@@ -1,14 +1,27 @@
 <body>
-<app-game-title [gameTitle]="game.name"></app-game-title>
+<app-game-title
+  [gameTitle]="game.name"
+></app-game-title>
 <main class="gameInfoPageContainer">
-  <app-game-description id="gameDescriptionElement" [gameDescription]="game.description"></app-game-description>
+  <app-game-description id="gameDescriptionElement"
+                        [gameDescription]="game.description"
+  ></app-game-description>
   <section class="squadBiteMapChatContainer">
     <app-squad [squad]="game.squad_info"></app-squad>
-    <app-map id="map" [mapInfo]="game.map_info"></app-map>
+    <app-map id="map"
+             [mapInfo]="game.map_info"
+             [kills]="game.kills"
+             [missions]="game.missions"
+    ></app-map>
   </section>
   <section class="squadBiteMapChatContainer">
-    <app-bite-code [biteCode]="game.bite_code"></app-bite-code>
-    <app-chat id="chat" [chatMessages]="game.messages" [playerIsHuman]="game.player_is_human"></app-chat>
+    <app-bite-code
+      [biteCode]="game.bite_code"
+    ></app-bite-code>
+    <app-chat id="chat"
+              [chatMessages]="game.messages"
+              [playerIsHuman]="game.player_is_human"
+    ></app-chat>
   </section>
 </main>
 </body>
