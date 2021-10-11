@@ -3,6 +3,7 @@ import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
 import {PlayerInfo} from "../../models/player-info.model";
 import {GameInfo} from "../../models/game-info.model";
+import LatLng = google.maps.LatLng;
 
 @Component({
   selector: 'app-game-info-page',
@@ -69,13 +70,15 @@ export class GameInfoPage implements OnInit {
     this.gameInfoAPI.getMissionsByGame(this.gameInfo.id)
       .subscribe((missions) => {
         for (let mission of missions) {
+          let latLng: LatLng | null = null;
+          if (mission.lat != null && mission.lng != null) latLng = new LatLng(mission.lat, mission.lng);
+
           this.gameInfo.missions.push({
             name: mission.name,
             description: mission.description,
             endTime: mission.endTime,
             startTime: mission.startTime,
-            lat: mission.lat,
-            lng: mission.lng,
+            latLng: latLng,
             isHuman: mission.isHuman
           })
         }

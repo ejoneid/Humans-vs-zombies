@@ -29,6 +29,8 @@ export class MapComponent implements OnInit {
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
 
+  //Markers for te Google Map
+
   constructor(private readonly httpClient: HttpClient) {
   }
 
