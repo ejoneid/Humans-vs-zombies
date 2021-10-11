@@ -18,7 +18,7 @@ public class Mission {
     @Column(nullable = false)
     private boolean isHuman;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Column
@@ -26,6 +26,12 @@ public class Mission {
 
     @Column
     private Date endTime;
+
+    @Column
+    private String lat;
+
+    @Column
+    private String lng;
 
     @ManyToOne
     @JoinColumn(name = "mission_id")
@@ -101,5 +107,21 @@ public class Mission {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

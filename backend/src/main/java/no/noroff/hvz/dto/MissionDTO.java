@@ -12,14 +12,18 @@ public class MissionDTO {
     private Date startTime;
     private Date endTime;
     private String missionType;
+    private String lat;
+    private String lng;
 
-    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, String missionType) {
+    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, String missionType, String lat, String lng) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
         this.missionType = missionType;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Long getId() {
@@ -68,5 +72,21 @@ public class MissionDTO {
 
     public void setMissionType(String missionType) {
         this.missionType = missionType;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

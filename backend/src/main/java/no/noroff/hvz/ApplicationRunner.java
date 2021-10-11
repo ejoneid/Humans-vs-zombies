@@ -85,6 +85,7 @@ class AppStartupRunner implements ApplicationRunner {
         mission1.setGame(game1);
         mission1.setHuman(true);
         mission1.setName("The coolest mission");
+        mission1.setDescription("An awesome mission");
 
         if (missionRepository.count() == 0) {
             mission1 = missionRepository.save(mission1);
