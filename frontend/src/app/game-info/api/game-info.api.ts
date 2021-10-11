@@ -11,19 +11,19 @@ export class GameInfoAPI {
   constructor(private readonly http: HttpClient) {
   }
 
-  public getGameById(gameID: number): Observable<any> {
-    return this.http.get<any>(baseURL+"api/game/"+gameID);
+  public async getGameById(gameID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID);
   }
-  public getCurrentPlayerInfo(gameID: number, playerID: number): Observable<any> {
-    return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID);
+  public async getCurrentPlayerInfo(gameID: number, playerID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL + "api/game/" + gameID + "/player/" + playerID);
   }
-  public getCurrentPlayerSquad(gameID: number, playerID: number): Observable<any> {
-    return this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/squad");
+  public async getCurrentPlayerSquad(gameID: number, playerID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/squad");
   }
-  public getMissionsByGame(gameID: number): Observable<any> {
-    return this.http.get<any>(baseURL+"api/game/"+gameID+"/mission");
+  public async getMissionsByGame(gameID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/mission");
   }
-  public getKillsByGame(gameID: number): Observable<any> {
-    return this.http.get<any>(baseURL+"api/game/"+gameID+"/kill");
+  public async getKillsByGame(gameID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/kill");
   }
 }
