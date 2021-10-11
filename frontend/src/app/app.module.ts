@@ -22,17 +22,17 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
       // The domain and clientId were configured in the previous chapter
       domain: 'dev-fwlq8v0n.eu.auth0.com',
       clientId: 'UhMx2hMd70OxMqZZFhZZctAIWRuVvaA2',
-    
+
       // Request this audience at user authentication time
       audience: 'https://hvz/api',
-    
+
       // Request this scope at user authentication time
       scope: 'admin:permissions',
-      
-    
-      // Specify configuration for the interceptor              
+
+
+      // Specify configuration for the interceptor
       httpInterceptor: {
-        allowedList: ['http://localhost:4200/*', 'http://localhost:8080/api/game']
+        allowedList: ['http://localhost:4200/*', 'http://localhost:8080/api/*']
       }
     }),
     HttpClientModule
