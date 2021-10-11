@@ -69,14 +69,6 @@ public class Mission {
         isHuman = human;
     }
 
-    public String getDesc() {
-        return description;
-    }
-
-    public void setDesc(String desc) {
-        this.description = desc;
-    }
-
     public Date getStartTime() {
         return startTime;
     }

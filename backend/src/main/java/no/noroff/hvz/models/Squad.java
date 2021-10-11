@@ -33,11 +33,11 @@ public class Squad {
     }
 
     @OneToMany
-    @JoinColumn(name = "message_id")
+    @JoinColumn(name = "squad_message_id")
     private Set<Message> messages;
 
     @JsonGetter("messages")
-    public List<Long> playersGetter() {
+    public List<Long> messagesGetter() {
         if (messages != null) {
             return messages.stream().map(Message::getId).collect(Collectors.toList());
         }

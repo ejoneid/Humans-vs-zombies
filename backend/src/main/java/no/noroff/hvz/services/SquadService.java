@@ -29,6 +29,9 @@ public class SquadService {
     @Autowired
     SquadMemberRepository squadMemberRepository;
 
+    @Autowired
+    PlayerRepository playerRepository;
+
     public List<Squad> getAllSquads(Long gameID) {
         List<Squad> squads = new ArrayList<>();
         if(gameRepository.existsById(gameID)) {
@@ -49,6 +52,7 @@ public class SquadService {
     public Squad createNewSquad(Long gameID, Squad squad) {
         Squad createdSquad = null;
         if(gameRepository.existsById(gameID)) {
+            squad.setGame(gameRepository.findById(gameID).get());
             createdSquad = squadRepository.save(squad);
         }
         return createdSquad;
@@ -89,9 +93,14 @@ public class SquadService {
         return chat;
     }
 
-    public Message createSquadChat(Long gameID, Long squadID, Message message) {
+    public Message createSquadChat(Long gameID, Long squadID, Long playerID, Message message) {
         Message chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            message.setGame(gameRepository.findById(gameID).get());
+            message.setSquad(squadRepository.findById(squadID).get());
+            message.setPlayer(playerRepository.findById(playerID).get());
+            message.setHuman(playerRepository.findById(playerID).get().isHuman());
+            message.setGlobal(false);
             chat = messageRepository.save(message);
         }
         return chat;

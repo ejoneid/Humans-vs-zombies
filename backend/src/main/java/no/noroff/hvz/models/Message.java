@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class Message {
@@ -21,7 +19,7 @@ public class Message {
     private boolean isHuman;
 
     @Column(nullable = false)
-    private boolean isZombie;
+    private boolean isGlobal;
 
     @Column
     private Date chatTime;
@@ -51,7 +49,7 @@ public class Message {
     }
 
     @ManyToOne
-    @JoinColumn(name = "squad_id")
+    @JoinColumn(name = "squad_message_id")
     private Squad squad;
 
     @JsonGetter("squad")
@@ -86,12 +84,12 @@ public class Message {
         isHuman = human;
     }
 
-    public boolean isZombie() {
-        return isZombie;
+    public boolean isGlobal() {
+        return isGlobal;
     }
 
-    public void setZombie(boolean zombie) {
-        isZombie = zombie;
+    public void setGlobal(boolean global) {
+        isGlobal = global;
     }
 
     public Date getChatTime() {
