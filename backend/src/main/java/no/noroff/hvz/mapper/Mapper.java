@@ -68,11 +68,7 @@ public class Mapper {
         List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getBiteCode())).collect(Collectors.toList());
         if (victim.size() == 0) return null;
         kill.setKiller(killer);
-        // Set victim to zombie
-        Player v = victim.get(0);
-        v.setHuman(false);
-
-        kill.setVictim(v);
+        kill.setVictim(victim.get(0));
         kill.setTimeOfDeath(new Date());
         kill.setStory(killDTO.getStory());
         kill.setLat(killDTO.getLat());

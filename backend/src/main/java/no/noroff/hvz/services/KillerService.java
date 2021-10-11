@@ -50,6 +50,7 @@ public class KillerService {
     public Kill createNewKill(Long gameID, Kill kill) {
         if(gameRepository.existsById(gameID) && kill != null) {
             kill.setGame(gameRepository.findById(gameID).get());
+            kill.getVictim().setHuman(false);
             kill = killerRepository.save(kill);
         }
         return kill;
