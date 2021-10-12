@@ -6,7 +6,9 @@ import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.models.Player;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.MissionService;
+import no.noroff.hvz.services.PlayerService;
 import no.noroff.hvz.services.UserService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,38 +36,51 @@ public class MissionController {
     private Mapper mapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PlayerService playerService;
 
     @GetMapping
-    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
-        AppUser user = userService.getSpecificUser(principal.getClaimAsString("sub"));
-        if(user == null) {
+        try {
+            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            List<MissionDTO> missionDTOs;
+            List<Mission> missions;
+            if(SecurityUtils.isAdmin(authorization)) {
+                missions = missionService.getAllMissions(gameID);
+            }
+            else {
+                missions = missionService.getAllMissionsFaction(gameID, player.isHuman());
+            }
+            missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(missionDTOs, status);
+        }
+        catch(NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(null, status);
         }
-        List<Mission> missions = missionService.getAllMissions(gameID);
-        List<MissionDTO> missionDTOs = new ArrayList<>();
-        if(missions == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-            missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
-        }
-        return new ResponseEntity<>(missionDTOs, status);
     }
 
     @GetMapping("/{missionID}")
-    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID) {
+    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
-        Mission mission = missionService.getSpecificMission(gameID,missionID);
-        if(mission.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        try {
+            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            Mission mission = missionService.getSpecificMission(gameID,missionID);
+            if(!SecurityUtils.isAdmin(authorization)) {
+                if(mission.isHuman() != player.isHuman()) {
+                    status = HttpStatus.FORBIDDEN;
+                    return new ResponseEntity<>(null, status);
+                }
+            }
             status = HttpStatus.OK;
+            return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
         }
-        return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
+        catch(NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
     }
 
     @PostMapping
