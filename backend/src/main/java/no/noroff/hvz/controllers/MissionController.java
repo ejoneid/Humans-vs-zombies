@@ -40,6 +40,7 @@ public class MissionController {
     private PlayerService playerService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
         try {
@@ -63,6 +64,7 @@ public class MissionController {
     }
 
     @GetMapping("/{missionID}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
         try {
