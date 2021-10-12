@@ -1,22 +1,12 @@
 package no.noroff.hvz.dto;
 
 public class AppUserDTO {
-    private Long id;
     private String firstName;
     private String lastName;
 
-    public AppUserDTO(Long id, String firstName, String lastName) {
-        this.id = id;
+    public AppUserDTO(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

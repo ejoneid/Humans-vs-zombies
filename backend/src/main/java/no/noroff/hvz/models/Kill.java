@@ -39,7 +39,7 @@ public class Kill {
     }
 
     @ManyToOne
-    @JoinColumn(name = "killer_id")
+    @JoinColumn(name = "killer_id", nullable = false)
     private Player killer;
 
     @JsonGetter("killer")
@@ -51,7 +51,7 @@ public class Kill {
     }
 
     @OneToOne
-    @JoinColumn(name = "victim_id")
+    @JoinColumn(name = "victim_id", nullable = false)
     private Player victim;
 
     @JsonGetter("victim")
