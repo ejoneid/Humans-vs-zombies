@@ -15,10 +15,10 @@ public class UserService {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    public AppUser getSpecificUser(Long id) {
+    public AppUser getSpecificUser(String openId) {
         AppUser appUser = null;
-        if(appUserRepository.existsById(id)) {
-            appUser = appUserRepository.getById(id);
+        if(appUserRepository.existsAppUserByOpenId(openId)) {
+            appUser = appUserRepository.getAppUserByOpenId(openId);
         }
         return appUser;
     }

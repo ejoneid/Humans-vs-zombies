@@ -22,9 +22,9 @@ public class UserController {
 
     private HttpStatus status = HttpStatus.OK;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AppUserDTO> getSpecificUser(@PathVariable Long id) {
-        AppUser appUser = userService.getSpecificUser(id);
+    @GetMapping()
+    public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
+        AppUser appUser = userService.getSpecificUser(principal.getClaimAsString("sub"));
         AppUserDTO appUserDTO = null;
         if(appUser == null) {
             status = HttpStatus.NOT_FOUND;
