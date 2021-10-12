@@ -9,6 +9,7 @@ import { GameComponent } from './components/game/game.component';
 import { PlayerComponent } from './components/player/player.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {GoogleMapsModule} from "@angular/google-maps";
   imports: [
     CommonModule,
     AdminRoutingModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    FormsModule
   ]
 })
 export class AdminModule { }

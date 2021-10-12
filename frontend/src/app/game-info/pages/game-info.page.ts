@@ -50,10 +50,10 @@ export class GameInfoPage implements OnInit {
             this.gameInfo.state = game.state;
             this.gameInfo.description = game.description;
             this.gameInfo.map_info = {
-              nw_lat: 59.945500,//game.nw_lat,
-              se_lat: 59.897553,//game.se_lat,
-              nw_long: 10.687306,//game.nw_long,
-              se_long: 10.831628//game.se_long
+              nw_lat: game.nw_lat,
+              se_lat: game.se_lat,
+              nw_long: game.nw_long,
+              se_long: game.se_long
             };
             this.messagesURL = game.messages;
           });

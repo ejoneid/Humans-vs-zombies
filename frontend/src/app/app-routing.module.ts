@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'game/:id',
     loadChildren: () => import("./game-info/game-info.module").then(m => m.GameInfoModule)
   },
-  { path: 'admin',
+  { path: 'game/:id/admin',
     loadChildren: () => import("./admin/admin.module").then(m => m.AdminModule)
   }
 ];

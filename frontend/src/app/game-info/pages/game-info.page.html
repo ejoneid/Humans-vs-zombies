@@ -6,7 +6,7 @@
   <app-game-description id="gameDescriptionElement"
                         [gameDescription]="game.description"
   ></app-game-description>
-  <section class="squadBiteMapChatContainer">
+  <section class="componentContainer">
     <app-squad [squad]="game.squad_info"></app-squad>
     <app-map id="map"
              [mapInfo]="game.map_info"
@@ -14,7 +14,7 @@
              [missions]="game.missions"
     ></app-map>
   </section>
-  <section class="squadBiteMapChatContainer">
+  <section class="componentContainer">
     <app-bite-code
       [biteCode]="game.bite_code"
     ></app-bite-code>

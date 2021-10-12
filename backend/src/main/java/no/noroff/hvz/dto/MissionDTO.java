@@ -11,17 +11,17 @@ public class MissionDTO {
     private String description;
     private Date startTime;
     private Date endTime;
-    private String missionType;
+    private boolean human;
     private String lat;
     private String lng;
 
-    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, String missionType, String lat, String lng) {
+    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, boolean human, String lat, String lng) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.missionType = missionType;
+        this.human = human;
         this.lat = lat;
         this.lng = lng;
     }
@@ -66,12 +66,12 @@ public class MissionDTO {
         this.endTime = endTime;
     }
 
-    public String getMissionType() {
-        return missionType;
+    public boolean isHuman() {
+        return human;
     }
 
-    public void setMissionType(String missionType) {
-        this.missionType = missionType;
+    public void setHuman(boolean human) {
+        this.human = human;
     }
 
     public String getLat() {

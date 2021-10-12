@@ -2,13 +2,21 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.MissionDTO;
 import no.noroff.hvz.mapper.Mapper;
+import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
+import no.noroff.hvz.models.Player;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.MissionService;
+import no.noroff.hvz.services.PlayerService;
+import no.noroff.hvz.services.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,33 +34,55 @@ public class MissionController {
     private MissionService missionService;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PlayerService playerService;
 
     @GetMapping
-    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
-        List<Mission> missions = missionService.getAllMissions(gameID);
-        List<MissionDTO> missionDTOs = new ArrayList<>();
-        if(missions == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
+        try {
+            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            List<MissionDTO> missionDTOs;
+            List<Mission> missions;
+            if(SecurityUtils.isAdmin(authorization)) {
+                missions = missionService.getAllMissions(gameID);
+            }
+            else {
+                missions = missionService.getAllMissionsFaction(gameID, player.isHuman());
+            }
             missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
+            status = HttpStatus.OK;
+            return new ResponseEntity<>(missionDTOs, status);
         }
-        return new ResponseEntity<>(missionDTOs, status);
+        catch(NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
     }
 
     @GetMapping("/{missionID}")
-    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
-        Mission mission = missionService.getSpecificMission(gameID,missionID);
-        if(mission.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        try {
+            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            Mission mission = missionService.getSpecificMission(gameID,missionID);
+            if(!SecurityUtils.isAdmin(authorization)) {
+                if(mission.isHuman() != player.isHuman()) {
+                    status = HttpStatus.FORBIDDEN;
+                    return new ResponseEntity<>(null, status);
+                }
+            }
             status = HttpStatus.OK;
+            return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
         }
-        return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
+        catch(NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
     }
 
     @PostMapping

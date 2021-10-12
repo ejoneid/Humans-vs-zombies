@@ -29,24 +29,16 @@ public class Mapper {
     AppUserRepository appUserRepository;
 
     public MissionDTO toMissionDTO(Mission mission) {
-        String missionType;
-        if(mission.isHuman()) {
-            missionType = "Human";
-        }
-        else {
-            missionType = "Zombie";
-        }
         return new MissionDTO(mission.getId(),mission.getName(),mission.getDescription(),
-                mission.getStartTime(), mission.getEndTime(), missionType, mission.getLat(), mission.getLng());
+                mission.getStartTime(), mission.getEndTime(), mission.isHuman(), mission.getLat(), mission.getLng());
     }
 
     public AppUserDTO toAppUserDTO(AppUser user) {
-        return new AppUserDTO(user.getId(), user.getFirstName(), user.getLastName());
+        return new AppUserDTO(user.getFirstName(), user.getLastName());
     }
 
     public AppUser toAppUser(AppUserDTO appUserDTO) {
         AppUser appUser = new AppUser();
-        appUser.setId(appUserDTO.getId());
         appUser.setLastName(appUserDTO.getLastName());
         appUser.setFirstName(appUserDTO.getFirstName());
         return appUser;

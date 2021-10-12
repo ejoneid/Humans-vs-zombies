@@ -31,12 +31,8 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state, @RequestHeader Map<String, String> headers, @AuthenticationPrincipal Jwt principal) {
-        headers.forEach((key, value) -> {
-            System.out.println("Header "+ key+" = "+ value);
-        });
-        System.out.println(principal.getClaimAsString("sub"));
-        List<GameDTO> games = new ArrayList<>();
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
+        List<GameDTO> games;
         if (state.isPresent()) {
             games = gameService.getAllGames(state.get()).stream().map(mapper::toGameTDO).collect(Collectors.toList());
         } else {
@@ -101,9 +97,10 @@ public class GameController {
     }
 
     @GetMapping("/{id}/chat")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) String human) {
         HttpStatus status;
-        List<Message> messages = new ArrayList<>();
+        List<Message> messages;
         if (playerID != null) messages = gameService.getGameChat(id, playerID);
         else if (human != null) messages = gameService.getGameChat(id, Boolean.parseBoolean(human));
         else messages = gameService.getGameChat(id);
@@ -118,6 +115,7 @@ public class GameController {
     }
 
     @PostMapping("/{id}/chat")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
         HttpStatus status;
         Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
@@ -126,6 +124,6 @@ public class GameController {
             return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
         }
         status = HttpStatus.I_AM_A_TEAPOT;
-        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        return new ResponseEntity<>(null, status);
     }
 }

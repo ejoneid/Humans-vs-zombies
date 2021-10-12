@@ -33,6 +33,7 @@ public class PlayerController {
     private Mapper mapper;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @RequestHeader String authorization) {
         playerService.getAllPlayers(gameID);
         HttpStatus status;
@@ -54,6 +55,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerID}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestHeader String authorization) {
         HttpStatus status;
         Player player = playerService.getSpecificPlayer(gameID, playerID);
@@ -74,6 +76,7 @@ public class PlayerController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody RegPlayerDTO player) {
         HttpStatus status;
         Player newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO(player));
@@ -128,6 +131,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerID}/squad")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SquadViewDTO> getPlayerSquad(@PathVariable Long gameID, @PathVariable Long playerID) {
         HttpStatus status;
         Squad squad = playerService.getPlayerSquad(gameID, playerID);
