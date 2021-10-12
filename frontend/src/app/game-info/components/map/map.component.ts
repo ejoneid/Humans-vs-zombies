@@ -45,7 +45,7 @@ export class MapComponent implements OnInit, OnChanges {
         description: mission.description,
         position: {lat: mission.lat, lng: mission.lng},
         label: {text: mission.name, color: "#B2BBBD"},
-        options: {icon: "../assets/mission_icon_temp.png"},
+        options: {icon: "../assets/mission-icon.svg"},
         title: mission.name
       });
     }
@@ -55,7 +55,7 @@ export class MapComponent implements OnInit, OnChanges {
           description: kill.story,
           position: {lat: kill.lat, lng: kill.lng},
           label: {text: kill.killerName, color: "#B2BBBD"},
-          options: {icon: "../assets/gravestone_icon_temp.png"},
+          options: {icon: "../assets/tombstone-icon.svg"},
           title: "Kill"
         });
       }
