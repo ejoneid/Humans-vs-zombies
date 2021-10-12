@@ -21,6 +21,9 @@ public class Message {
     @Column(nullable = false)
     private boolean isGlobal;
 
+    @Column(nullable = false)
+    private boolean isFaction;
+
     @Column
     private Date chatTime;
 
@@ -122,5 +125,13 @@ public class Message {
 
     public void setSquad(Squad squad) {
         this.squad = squad;
+    }
+
+    public boolean isFaction() {
+        return isFaction;
+    }
+
+    public void setFaction(boolean faction) {
+        isFaction = faction;
     }
 }

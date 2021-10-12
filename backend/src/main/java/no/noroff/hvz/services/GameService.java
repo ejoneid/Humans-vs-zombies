@@ -69,21 +69,31 @@ public class GameService {
         if(!gameRepository.existsById(id)) {
             return null;
         }
-        return new ArrayList<>(gameRepository.findById(id).get().getMessages());
+        return gameRepository.findById(id).get().getMessages()
+                .stream().filter(Message::isGlobal).filter(m -> !m.isFaction())
+                .sorted(Comparator.comparing(Message::getChatTime))
+                .collect(Collectors.toList());
     }
 
     public List<Message> getGameChat(Long id, Long playerID) {
         if(!gameRepository.existsById(id)) {
             return null;
         }
-        return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().getId(), playerID)).collect(Collectors.toList());
+        return gameRepository.findById(id).get().getMessages()
+                .stream().filter(g -> Objects.equals(g.getPlayer().getId(), playerID))
+                .sorted(Comparator.comparing(Message::getChatTime))
+                .collect(Collectors.toList());
     }
 
     public List<Message> getGameChat(Long id, Boolean human) {
         if(!gameRepository.existsById(id)) {
             return null;
         }
-        return gameRepository.findById(id).get().getMessages().stream().filter(g -> Objects.equals(g.getPlayer().isHuman(), human)).collect(Collectors.toList());
+        return gameRepository.findById(id).get().getMessages()
+                .stream().filter(g -> Objects.equals(g.getPlayer().isHuman(), human))
+                .filter(Message::isGlobal).filter(Message::isFaction)
+                .sorted(Comparator.comparing(Message::getChatTime))
+                .collect(Collectors.toList());
     }
 
     public Message createNewChat(Long id, Message message, Long playerID) {
@@ -92,6 +102,8 @@ public class GameService {
         }
         Game game = gameRepository.findById(id).get();
         message.setGame(game);
+        message.setChatTime(new Date());
+        message.setGlobal(true);
         if (playerID != null) {
             message.setPlayer(playerRepository.findById(playerID).get());
             message.setHuman(playerRepository.findById(playerID).get().isHuman());

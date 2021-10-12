@@ -98,11 +98,11 @@ public class GameController {
 
     @GetMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) Boolean human) {
+    public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) String human) {
         HttpStatus status;
         List<Message> messages;
         if (playerID != null) messages = gameService.getGameChat(id, playerID);
-        else if (human != null) messages = gameService.getGameChat(id, human);
+        else if (human != null) messages = gameService.getGameChat(id, Boolean.parseBoolean(human));
         else messages = gameService.getGameChat(id);
         if( messages == null) {
             status = HttpStatus.NOT_FOUND;
@@ -110,14 +110,15 @@ public class GameController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(messages,status);
+        List<MessageDTO> msgdto = messages.stream().map(m -> mapper.toMessageDTO(m)).collect(Collectors.toList());
+        return new ResponseEntity<>(msgdto,status);
     }
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader(required = false) Long playerID) {
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
         HttpStatus status;
-        Message createdMessage = gameService.createNewChat(id, message, playerID);
+        Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
         if (createdMessage != null) {
             status = HttpStatus.CREATED;
             return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);

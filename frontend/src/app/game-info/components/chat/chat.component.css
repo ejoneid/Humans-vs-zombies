@@ -5,3 +5,8 @@
   flex-direction: column;
   row-gap: 3px;
 }
+
+.chatHeaderContainer {
+ display: flex;
+  justify-content: space-evenly;
+}

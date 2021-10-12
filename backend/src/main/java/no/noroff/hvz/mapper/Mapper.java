@@ -78,7 +78,7 @@ public class Mapper {
 
     public MessageDTO toMessageDTO(Message message) {
         String playerUrl = url + message.getGame().getId() + "/player/" + message.getPlayer().getId();
-        return new MessageDTO(message.getId(), message.getMessage(),message.getChatTime(),playerUrl);
+        return new MessageDTO(message.getId(), message.getMessage(),message.getChatTime(),playerUrl, message.getPlayer().getUser().getFirstName() + " " + message.getPlayer().getUser().getLastName(), message.isHuman(), message.isGlobal(), message.isFaction());
     }
 
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {

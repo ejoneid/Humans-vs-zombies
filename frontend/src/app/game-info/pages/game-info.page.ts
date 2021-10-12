@@ -5,6 +5,7 @@ import {PlayerInfo} from "../../models/player-info.model";
 import {GameInfo} from "../../models/game-info.model";
 import {Mission} from "../../models/mission.model";
 import {Kill} from "../../models/kill.model";
+import {Message} from "../../models/message.model";
 
 @Component({
   selector: 'app-game-info-page',
@@ -31,6 +32,9 @@ export class GameInfoPage implements OnInit {
     missions: []
   };
   private messagesURL!: string;
+
+  private selectedChat = "Global";
+  private prevMessageSent: String | undefined;
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
@@ -69,7 +73,7 @@ export class GameInfoPage implements OnInit {
           for (let member of squad.players) {
             members.push({name: member.name, state: member.human});
           }
-          this.gameInfo.squad_info = {name: squad.name, members: members};
+          this.gameInfo.squad_info = {name: squad.name, members: members, id: squad.id};
         });
       });
 
@@ -109,9 +113,118 @@ export class GameInfoPage implements OnInit {
           this.gameInfo.kills = tempKills;
         });
       });
+
+    const tempMessages: Message[] = [];
+    this.gameInfoAPI.getGameChat(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.gameInfo.messages = tempMessages;
+        })
+      });
   }
 
   get game(): GameInfo {
     return this.gameInfo;
+  }
+
+  loadGlobalChat() {
+    this.selectedChat = "Global";
+    const tempMessages: Message[] = [];
+    this.gameInfoAPI.getGameChat(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.gameInfo.messages = tempMessages;
+        })
+      });
+  }
+
+  loadFactionChat() {
+    this.selectedChat = "Faction";
+    const tempMessages: Message[] = [];
+    this.gameInfoAPI.getFactionChat(this.gameInfo.id, this.gameInfo.player_is_human)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.gameInfo.messages = tempMessages;
+        })
+      });
+  }
+
+  loadSquadChat() {
+    this.selectedChat = "Squad";
+    const tempMessages: Message[] = [];
+    this.gameInfoAPI.getSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.gameInfo.messages = tempMessages;
+        })
+      });
+  }
+
+  sendChatMessage(message: String) {
+    if (this.selectedChat == "Global") {
+      this.gameInfoAPI.sendGlobalChat(this.gameInfo.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+            this.loadGlobalChat();
+          })
+        });
+    } else if (this.selectedChat == "Faction") {
+      this.gameInfoAPI.sendFactionChat(this.gameInfo.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+            this.loadFactionChat();
+          })
+        });
+    } else {
+      this.gameInfoAPI.sendSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+            this.loadSquadChat();
+          })
+        });
+    }
   }
 }
