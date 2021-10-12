@@ -41,12 +41,11 @@ public class Mapper {
     }
 
     public AppUserDTO toAppUserDTO(AppUser user) {
-        return new AppUserDTO(user.getId(), user.getFirstName(), user.getLastName());
+        return new AppUserDTO(user.getFirstName(), user.getLastName());
     }
 
     public AppUser toAppUser(AppUserDTO appUserDTO) {
         AppUser appUser = new AppUser();
-        appUser.setId(appUserDTO.getId());
         appUser.setLastName(appUserDTO.getLastName());
         appUser.setFirstName(appUserDTO.getFirstName());
         return appUser;
