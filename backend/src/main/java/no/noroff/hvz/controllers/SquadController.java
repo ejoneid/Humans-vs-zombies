@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -122,7 +124,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/chat")
-    public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID) {
+    public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         List<Message> chat = squadService.getSquadChat(gameID, squadID);
         List<MessageDTO> chatDTO = null;
         if(chat == null) {
