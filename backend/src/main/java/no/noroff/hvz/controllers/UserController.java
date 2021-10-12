@@ -24,13 +24,14 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
+        System.out.println(principal);
         AppUser appUser = userService.getSpecificUser(principal.getClaimAsString("sub"));
         AppUserDTO appUserDTO = null;
         if(appUser == null) {
             status = HttpStatus.NOT_FOUND;
-
         }
         else {
+            status = HttpStatus.OK;
             appUserDTO = mapper.toAppUserDTO(appUser);
         }
 
