@@ -74,7 +74,7 @@ public class KillController {
         HttpStatus status;
         if(!Objects.equals(killID,kill.getId())) {
             status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toKillTDO(new Kill()),status);
+            return new ResponseEntity<>(null, status);
         }
         Kill updatedKill = killerService.updateKill(gameID, killID, kill);
         if(updatedKill.getId() == null) {
