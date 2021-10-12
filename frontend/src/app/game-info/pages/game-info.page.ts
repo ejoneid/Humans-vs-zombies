@@ -206,25 +206,25 @@ export class GameInfoPage implements OnInit {
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            this.loadGlobalChat();
           })
         });
-      this.loadGlobalChat();
     } else if (this.selectedChat == "Faction") {
       this.gameInfoAPI.sendFactionChat(this.gameInfo.id, this.gameInfo.player_id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            this.loadFactionChat();
           })
         });
-      this.loadFactionChat();
     } else {
       this.gameInfoAPI.sendSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id, this.gameInfo.player_id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            this.loadSquadChat();
           })
         });
-      this.loadSquadChat();
     }
   }
 }
