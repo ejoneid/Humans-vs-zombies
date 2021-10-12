@@ -44,16 +44,18 @@ public class PlayerService {
         return player;
     }
 
-    public Player getPlayerByGameAndUser(Game game, AppUser user) {
+    public Player getPlayerByGameAndUser(Long gameId, AppUser user) {
         Player player = null;
+        Game game = gameRepository.getById(gameId);
         if(playerRepository.existsByGameAndUser(game,user)) {
             player = playerRepository.getPlayerByGameAndUser(game,user);
         }
         return player;
     }
 
-    public Player getPlayerByGameAndBiteCode(Game game, String biteCode) {
+    public Player getPlayerByGameAndBiteCode(Long gameId, String biteCode) {
         Player player = null;
+        Game game = gameRepository.getById(gameId);
         if(playerRepository.existsByGameAndBiteCode(game,biteCode)) {
             player = playerRepository.getPlayerByGameAndBiteCode(game,biteCode);
         }
