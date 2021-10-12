@@ -10,8 +10,9 @@ public class MessageDTO {
     private String playerName;
     private boolean human;
     private boolean global;
+    private boolean faction;
 
-    public MessageDTO(Long id, String message, Date messageTime, String playerUrl, String playerName, boolean human, boolean global) {
+    public MessageDTO(Long id, String message, Date messageTime, String playerUrl, String playerName, boolean human, boolean global, boolean faction) {
         this.id = id;
         this.message = message;
         this.messageTime = messageTime;
@@ -19,6 +20,7 @@ public class MessageDTO {
         this.playerName = playerName;
         this.human = human;
         this.global = global;
+        this.faction = faction;
     }
 
     public Long getId() {
@@ -75,5 +77,13 @@ public class MessageDTO {
 
     public void setGlobal(boolean global) {
         this.global = global;
+    }
+
+    public boolean isFaction() {
+        return faction;
+    }
+
+    public void setFaction(boolean faction) {
+        this.faction = faction;
     }
 }

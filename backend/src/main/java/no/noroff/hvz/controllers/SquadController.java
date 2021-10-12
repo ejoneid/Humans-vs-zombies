@@ -136,8 +136,8 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/chat")
-    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader Long playerID, @RequestBody Message message) {
-        Message chat = squadService.createSquadChat(gameID, squadID, playerID, message);
+    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader String playerID, @RequestBody Message message) {
+        Message chat = squadService.createSquadChat(gameID, squadID, Long.parseLong(playerID), message);
         MessageDTO messageDTO = null;
         if(chat == null) {
             status = HttpStatus.NOT_FOUND;

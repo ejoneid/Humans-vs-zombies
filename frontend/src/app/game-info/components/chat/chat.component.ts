@@ -15,6 +15,8 @@ export class ChatComponent implements OnInit {
   @Input()
   public playerHasSquad: boolean = false;
 
+  public submitText: String = "";
+
   constructor() { }
 
   ngOnInit(): void {
@@ -35,4 +37,11 @@ export class ChatComponent implements OnInit {
     this.squadChat.emit();
   }
 
+  @Output() sendChat: EventEmitter<any> = new EventEmitter<any>();
+  submitChat() {
+    if (this.submitText != "") {
+      this.sendChat.emit(this.submitText);
+      this.submitText = "";
+    }
+  }
 }

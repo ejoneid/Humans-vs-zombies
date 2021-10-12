@@ -33,6 +33,9 @@ export class GameInfoPage implements OnInit {
   };
   private messagesURL!: string;
 
+  private selectedChat = "Global";
+  private prevMessageSent: String | undefined;
+
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -135,6 +138,7 @@ export class GameInfoPage implements OnInit {
   }
 
   loadGlobalChat() {
+    this.selectedChat = "Global";
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getGameChat(this.gameInfo.id)
       .then((response) => {
@@ -155,6 +159,7 @@ export class GameInfoPage implements OnInit {
   }
 
   loadFactionChat() {
+    this.selectedChat = "Faction";
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getFactionChat(this.gameInfo.id, this.gameInfo.player_is_human)
       .then((response) => {
@@ -175,6 +180,7 @@ export class GameInfoPage implements OnInit {
   }
 
   loadSquadChat() {
+    this.selectedChat = "Squad";
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id)
       .then((response) => {
@@ -192,5 +198,33 @@ export class GameInfoPage implements OnInit {
           this.gameInfo.messages = tempMessages;
         })
       });
+  }
+
+  sendChatMessage(message: String) {
+    if (this.selectedChat == "Global") {
+      this.gameInfoAPI.sendGlobalChat(this.gameInfo.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+          })
+        });
+      this.loadGlobalChat();
+    } else if (this.selectedChat == "Faction") {
+      this.gameInfoAPI.sendFactionChat(this.gameInfo.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+          })
+        });
+      this.loadFactionChat();
+    } else {
+      this.gameInfoAPI.sendSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id, this.gameInfo.player_id, message)
+        .then((res) => {
+          res.subscribe(msg => {
+            this.prevMessageSent = msg.message;
+          })
+        });
+      this.loadSquadChat();
+    }
   }
 }

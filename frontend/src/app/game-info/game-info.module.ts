@@ -10,6 +10,7 @@ import {GameInfoRoutingModule} from "./game-info-routing.module";
 import { MapComponent } from './components/map/map.component';
 import {GoogleMapsModule} from "@angular/google-maps";
 import { MessageComponent } from './components/message/message.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -22,11 +23,12 @@ import { MessageComponent } from './components/message/message.component';
     MapComponent,
     MessageComponent
   ],
-  imports: [
-    CommonModule,
-    GameInfoRoutingModule,
-    GoogleMapsModule
-  ],
+    imports: [
+        CommonModule,
+        GameInfoRoutingModule,
+        GoogleMapsModule,
+        FormsModule
+    ],
   exports: [
     BiteCodeComponent,
     ChatComponent,
