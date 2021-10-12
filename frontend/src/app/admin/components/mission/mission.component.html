@@ -1,5 +1,10 @@
 <section class="greyBackground">
+  <h2>Missions:</h2>
+  <button class="normalGreyButton">New Mission</button>
   <section class="missionContainer">
-    <h2>Missions:</h2>
+    <div *ngFor="let mission of missions" id="mission">
+      <p>{{mission.description}}</p>
+      <button class="normalGreyButton" (click)="editMission(mission)">Edit</button>
+    </div>
   </section>
 </section>

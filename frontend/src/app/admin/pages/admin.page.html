@@ -3,16 +3,16 @@
 <main class="adminContainer">
   <app-player [gameID]="game.id"></app-player>
   <section class="componentContainer">
-    <app-mission></app-mission>
+    <app-mission [missions]="game.missions"></app-mission>
     <app-game></app-game>
   </section>
   <section class="componentContainer">
-    <app-map-admin
+    <app-map-admin id="map"
       [mapInfo]="game.map_info"
       [kills]="game.kills"
       [missions]="game.missions"
     ></app-map-admin>
-    <app-chat-admin></app-chat-admin>
+    <app-chat-admin id="chat"></app-chat-admin>
   </section>
 </main>
 </body>

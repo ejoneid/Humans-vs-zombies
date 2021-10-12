@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>{{data.name}}</h2>
+<mat-dialog-content>
+  <textarea [(ngModel)]="data.description"></textarea>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="normalGreyButton" [mat-dialog-close]="data.description">Save</button>
+</mat-dialog-actions>

@@ -10,6 +10,9 @@ import { PlayerComponent } from './components/player/player.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {FormsModule} from "@angular/forms";
+import { MissionEditComponent } from './components/mission-edit/mission-edit.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -19,13 +22,19 @@ import {FormsModule} from "@angular/forms";
     MissionComponent,
     GameComponent,
     PlayerComponent,
-    GameTitleComponent
+    GameTitleComponent,
+    MissionEditComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     GoogleMapsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    MatInputModule
+  ],
+  entryComponents: [
+    MissionEditComponent
   ]
 })
 export class AdminModule { }
