@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MissionService {
@@ -24,7 +25,7 @@ public class MissionService {
     private GameRepository gameRepository;
 
     public List<Mission> getAllMissions(Long gameID) {
-        List<Mission> missions = new ArrayList<>();
+        List<Mission> missions = null;
         if(gameRepository.existsById(gameID)) {
             Game game = gameRepository.findById(gameID).get();
             missions = new ArrayList<>(game.getMissions());
@@ -32,8 +33,17 @@ public class MissionService {
         return missions;
     }
 
+    public List<Mission> getAllMissionsFaction(Long gameID, boolean isHuman) {
+        List<Mission> missions = null;
+        if(gameRepository.existsById(gameID)) {
+            Game game = gameRepository.findById(gameID).get();
+            missions = game.getMissions().stream().filter(mission -> Objects.equals(mission.isHuman(),isHuman)).collect(Collectors.toList());
+        }
+        return missions;
+    }
+
     public Mission getSpecificMission(Long gameID, Long missionID) {
-        Mission mission = new Mission();
+        Mission mission = null;
         if(missionRepository.existsById(missionID) && gameRepository.existsById(gameID)) {
             mission = missionRepository.findById(missionID).get();
         }
