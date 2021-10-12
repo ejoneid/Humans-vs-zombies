@@ -1,6 +1,11 @@
 <section class="greyBackground">
+  <section class="chatHeaderContainer">
+    <h2>Chat</h2>
+    <button class="normalGreyButton" (click)="displayGlobal()">Global</button>
+    <button class="normalGreyButton" (click)="displayFaction()">Human</button>
+    <button class="normalGreyButton" *ngIf="playerHasSquad" (click)="displaySquad()">Squad</button>
+  </section>
   <section class="chatContainer">
-    <h2>Global Chat</h2>
     <app-message *ngFor="let message of chatMessages"
                  [timeSent]="message.time"
                  [sender]="message.sender"

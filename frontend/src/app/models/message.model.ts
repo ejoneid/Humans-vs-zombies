@@ -1,7 +1,7 @@
 export interface Message {
   id: number,
-  chat: string
-  squad: number | null,
+  global: boolean,
+  human: boolean,
   sender: string,
   time: string,
   content: string

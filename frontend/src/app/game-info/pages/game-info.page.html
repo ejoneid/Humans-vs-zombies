@@ -21,6 +21,10 @@
     <app-chat id="chat"
               [chatMessages]="game.messages"
               [playerIsHuman]="game.player_is_human"
+              [playerHasSquad]="game.squad_info != null"
+              (globalChat)="loadGlobalChat()"
+              (factionChat)="loadFactionChat()"
+              (squadChat)="loadSquadChat()"
     ></app-chat>
   </section>
 </main>
