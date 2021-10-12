@@ -159,12 +159,15 @@ class AppStartupRunner implements ApplicationRunner {
 
         user1.setFirstName("Per");
         user1.setLastName("Persen");
+        user1.setOpenId("openId");
 
         user2.setFirstName("Hans");
         user2.setLastName("Hansen");
+        user2.setOpenId("openId");
 
         user3.setFirstName("John");
         user3.setLastName("Johnsen");
+        user3.setOpenId("openId");
 
         if (appUserRepository.count() == 0) {
             user1 = appUserRepository.save(user1);
