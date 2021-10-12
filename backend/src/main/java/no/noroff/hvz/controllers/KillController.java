@@ -85,16 +85,11 @@ public class KillController {
         }
 
         String userOpenId = principal.getClaimAsString("sub");
-        System.out.println(unchangedKill);
         // Checks if the user is authorized as admin or the killer
         if (!(SecurityUtils.isAdmin(authorization) || unchangedKill.getKiller().getUser().equals( userService.getSpecificUser(userOpenId) ))) {
             status = HttpStatus.FORBIDDEN;
             return new ResponseEntity<>(null, status);
         }
-//        if(!Objects.equals(killID,kill.getId())) {
-//            status = HttpStatus.BAD_REQUEST;
-//            return new ResponseEntity<>(null, status);
-//        }
         Kill updatedKill = killerService.updateKill(gameID, killID, kill);
         if(updatedKill.getId() == null) {
             status = HttpStatus.NOT_FOUND;
