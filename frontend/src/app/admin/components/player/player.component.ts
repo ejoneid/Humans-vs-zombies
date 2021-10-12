@@ -15,6 +15,8 @@ export class PlayerComponent implements OnInit {
 
   public playerName: string = "";
 
+  public hasPlayer: boolean = false;
+
   private playerInfo: PlayerInfoFull = {
     name: "",
     biteCode: "",
@@ -36,16 +38,17 @@ export class PlayerComponent implements OnInit {
         response.subscribe((player) => {
           this.playerInfo = {
             id: player.id,
-            name: player.name,
+            name: player.user.firstName + " " + player.user.lastName,
             biteCode: player.biteCode,
-            isHuman: player.isHuman,
+            isHuman: player.human,
             messages: [],
             kills: [],
           };
         });
-      });
+      })
+      .then(() => {this.hasPlayer = true;});
     //Get player kills
-    this.adminAPI.getKillsByPlayer(this.gameID, this.playerInfo.id)
+    /*this.adminAPI.getKillsByPlayer(this.gameID, this.playerInfo.id)
       .then((response) => {
         response.subscribe((kills) => {
           const tempKills: Kill[] = [];
@@ -61,7 +64,7 @@ export class PlayerComponent implements OnInit {
           }
           this.playerInfo.kills = tempKills;
         });
-      });
+      });*/
     //TODO: Get player messages
   }
 

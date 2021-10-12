@@ -1,6 +1,9 @@
 <section class="blackBackground">
   <h2 id="name">{{gameName}}</h2>
+  <!--TODO: Add check to see if user is admin or not-->
   <button class="normalGreyButton" (click)="toGameInfo(gameId)">Game Info</button>
+  <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button>
+
   <section class="infoContainer">
     <div class="timeContainer">
       <h3 class="time">Game Start: {{gameStart}}</h3>

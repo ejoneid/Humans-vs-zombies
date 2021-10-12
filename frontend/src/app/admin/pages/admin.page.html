@@ -1,7 +1,7 @@
 <body>
 <app-game-title-admin [gameTitle]="game.name"></app-game-title-admin>
 <main class="adminContainer">
-  <app-player></app-player>
+  <app-player [gameID]="game.id"></app-player>
   <section class="componentContainer">
     <app-mission></app-mission>
     <app-game></app-game>

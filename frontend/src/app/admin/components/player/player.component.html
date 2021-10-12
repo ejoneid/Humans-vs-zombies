@@ -4,12 +4,13 @@
       type="text"
       [(ngModel)]="playerName"
       (submit)="onPlayerSearch()"
-      (keydown)="onPlayerSearch()"
+      (keydown.enter)="onPlayerSearch()"
       name="playerSearch">
   </form>
-  <section id="playerContainer" *ngIf="playerName != ''">
-    <h3>Name: {{playerName}}</h3>
-    <h3>Faction: {{player.isHuman}}</h3>
+  <section id="playerContainer" *ngIf="hasPlayer">
+    <h3>Name: {{player.name}}</h3>
+    <h3 *ngIf="!player.isHuman">Faction: Zombie</h3>
+    <h3 *ngIf="player.isHuman">Faction: Human</h3>
     <h3 *ngIf="player.isHuman">BiteCode: {{player.biteCode}}</h3>
     <section id="messages">
       <div id="message" *ngFor="let message of player.messages">

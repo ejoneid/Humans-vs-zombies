@@ -12,13 +12,6 @@ export class HomePage implements OnInit {
   private activeGames: ActiveGame[] = [];
 
   constructor(private readonly homeAPI: HomeAPI) {
-
-    //-----
-    //Just for testing purposes
-    /*for (let i = 0; i < 12; i++) {
-      this.activeGames.push(new TestGame());
-    }*/
-    //-----
   }
 
   ngOnInit(): void {
@@ -37,12 +30,3 @@ export class HomePage implements OnInit {
     return this.activeGames;
   }
 }
-
-//-----
-//Just for testing purposes
-/*class TestGame implements ActiveGame {
-  id =  1;
-  name = "Test name";
-  gameState = "Open";
-}*/
-//-----
