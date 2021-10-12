@@ -1,13 +1,17 @@
 <body>
-<app-game-title [gameTitle]="mockTitle"></app-game-title>
+<app-game-title-admin [gameTitle]="game.name"></app-game-title-admin>
 <main class="adminContainer">
   <app-player></app-player>
-  <section class="missionGameMapChatContainer">
+  <section class="componentContainer">
     <app-mission></app-mission>
     <app-game></app-game>
   </section>
-  <section class="missionGameMapChatContainer">
-    <app-map-admin></app-map-admin>
+  <section class="componentContainer">
+    <app-map-admin
+      [mapInfo]="game.map_info"
+      [kills]="game.kills"
+      [missions]="game.missions"
+    ></app-map-admin>
     <app-chat-admin></app-chat-admin>
   </section>
 </main>
