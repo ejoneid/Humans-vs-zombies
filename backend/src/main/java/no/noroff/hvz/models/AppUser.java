@@ -20,6 +20,9 @@ public class AppUser {
     @Column(nullable = false, length = 50)
     private String lastName;
 
+    @Column(nullable = false)
+    private String openId;
+
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Player> players;
@@ -30,6 +33,14 @@ public class AppUser {
             return players.stream().map(Player::getId).collect(Collectors.toList());
         }
         return null;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     public Long getId() {
