@@ -2,13 +2,19 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.MissionDTO;
 import no.noroff.hvz.mapper.Mapper;
+import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
+import no.noroff.hvz.models.Player;
 import no.noroff.hvz.services.MissionService;
+import no.noroff.hvz.services.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,10 +32,17 @@ public class MissionController {
     private MissionService missionService;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID) {
+    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
+        AppUser user = userService.getSpecificUser(principal.getClaimAsString("sub"));
+        if(user == null) {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
         List<Mission> missions = missionService.getAllMissions(gameID);
         List<MissionDTO> missionDTOs = new ArrayList<>();
         if(missions == null) {
