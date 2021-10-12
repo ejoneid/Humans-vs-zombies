@@ -1,12 +1,23 @@
 package no.noroff.hvz.dto;
 
+import java.util.Date;
+
 public class RegKillDTO {
 
     private Long killerID;
+    private Date timeOfDeath;
     private String biteCode;
     private String story;
     private String lat;
     private String lng;
+
+    public Date getTimeOfDeath() {
+        return timeOfDeath;
+    }
+
+    public void setTimeOfDeath(Date timeOfDeath) {
+        this.timeOfDeath = timeOfDeath;
+    }
 
     public Long getKillerID() {
         return killerID;
@@ -20,7 +31,7 @@ public class RegKillDTO {
         return biteCode;
     }
 
-    public void setByteCode(String biteCode) {
+    public void setBiteCode(String biteCode) {
         this.biteCode = biteCode;
     }
 
