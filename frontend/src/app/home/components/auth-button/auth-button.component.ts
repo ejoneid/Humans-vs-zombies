@@ -1,4 +1,3 @@
-import { GameService } from './../../services/game.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
@@ -10,13 +9,9 @@ import { DOCUMENT } from '@angular/common';
 })
 export class AuthButtonComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService, private readonly gameService: GameService) { }
+  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) { }
 
   ngOnInit(): void {
-    this.gameService.fetchGames();
-    console.log(this.gameService.getGames());
-
-    this.gameService.addGame();
   }
 
 }
