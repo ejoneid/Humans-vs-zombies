@@ -44,6 +44,22 @@ public class PlayerService {
         return player;
     }
 
+    public Player getPlayerByGameAndUser(Game game, AppUser user) {
+        Player player = null;
+        if(playerRepository.existsByGameAndUser(game,user)) {
+            player = playerRepository.getPlayerByGameAndUser(game,user);
+        }
+        return player;
+    }
+
+    public Player getPlayerByGameAndBiteCode(Game game, String biteCode) {
+        Player player = null;
+        if(playerRepository.existsByGameAndBiteCode(game,biteCode)) {
+            player = playerRepository.getPlayerByGameAndBiteCode(game,biteCode);
+        }
+        return player;
+    }
+
     /**
      * Method for putting in default info to a new user generated player
      * @param gameID
