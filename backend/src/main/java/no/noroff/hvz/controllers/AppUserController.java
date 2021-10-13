@@ -1,6 +1,6 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.AppUserDTO;
+import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,17 +47,10 @@ public class AppUserController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
-        AppUserDTO addedUserDTO;
-        try {
-            addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
-        } catch (DataIntegrityViolationException exception) {
-            status = HttpStatus.CONFLICT;
-            return new ResponseEntity<>(null, status);
-        }
-         addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
+        AppUserDTO addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedUserDTO,status);
     }

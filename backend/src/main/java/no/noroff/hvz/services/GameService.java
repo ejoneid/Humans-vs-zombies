@@ -33,13 +33,8 @@ public class GameService {
         return gameRepository.findAll().stream().filter(g -> Objects.equals(g.getGameState(), state)).collect(Collectors.toList());
     }
 
-    public Game getSpecificGame(Long id) {
-        Game game = new Game();
-        if(!gameRepository.existsById(id)) {
-            return game;
-        }
-        game = gameRepository.findById(id).get();
-        return game;
+    public Game getSpecificGame(Long id) throws NoSuchElementException {
+        return gameRepository.findById(id).get();
     }
 
     public Game createNewGame(Game game) {

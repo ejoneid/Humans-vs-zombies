@@ -1,7 +1,7 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.KillDTO;
-import no.noroff.hvz.dto.RegKillDTO;
+import no.noroff.hvz.dto.kill.KillDTO;
+import no.noroff.hvz.dto.kill.RegKillDTO;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Kill;
@@ -62,15 +62,9 @@ public class KillController {
     }
 
     @PostMapping
-    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) {
+    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) throws InvalidBiteCodeException {
         HttpStatus status;
-        Kill addedKill;
-        try {
-            addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
-        } catch (InvalidBiteCodeException exception) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(null, status);
-        }
+        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
         if(addedKill == null) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, status);

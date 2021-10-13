@@ -1,7 +1,9 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.MissionDTO;
+import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.mapper.Mapper;
+import no.noroff.hvz.models.AppUser;
+import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
@@ -16,8 +18,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
