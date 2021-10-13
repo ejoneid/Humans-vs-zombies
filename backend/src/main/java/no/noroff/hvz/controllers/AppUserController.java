@@ -3,7 +3,6 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.AppUserDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
-import no.noroff.hvz.services.UserService;
 import org.hibernate.exception.ConstraintViolationException;
 import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +52,12 @@ public class AppUserController {
         appUser.setOpenId(principal.getClaimAsString("sub"));
         AppUserDTO addedUserDTO;
         try {
-            addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
+            addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
         } catch (DataIntegrityViolationException exception) {
             status = HttpStatus.CONFLICT;
             return new ResponseEntity<>(null, status);
         }
-        AppUserDTO addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
+         addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedUserDTO,status);
     }
