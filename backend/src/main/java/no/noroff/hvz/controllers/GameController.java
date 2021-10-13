@@ -10,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,9 +31,9 @@ public class GameController {
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games;
         if (state.isPresent()) {
-            games = gameService.getAllGames(state.get()).stream().map(mapper::toGameTDO).collect(Collectors.toList());
+            games = gameService.getAllGames(state.get()).stream().map(mapper::toGameDTO).collect(Collectors.toList());
         } else {
-            games = gameService.getAllGames().stream().map(mapper::toGameTDO).collect(Collectors.toList());
+            games = gameService.getAllGames().stream().map(mapper::toGameDTO).collect(Collectors.toList());
         }
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(games, status);
@@ -52,7 +49,7 @@ public class GameController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toGameTDO(game),status);
+        return new ResponseEntity<>(mapper.toGameDTO(game),status);
     }
 
     @PostMapping
@@ -60,7 +57,7 @@ public class GameController {
     public ResponseEntity<GameDTO> createNewGame(@RequestBody Game game) {
         Game addedGame = gameService.createNewGame(game);
         HttpStatus status = HttpStatus.CREATED;
-        return new ResponseEntity<>(mapper.toGameTDO(addedGame), status);
+        return new ResponseEntity<>(mapper.toGameDTO(addedGame), status);
     }
 
     @PutMapping("/{id}")
@@ -69,7 +66,7 @@ public class GameController {
         HttpStatus status;
         if(!Objects.equals(id,game.getId())) {
             status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toGameTDO(new Game()),status);
+            return new ResponseEntity<>(mapper.toGameDTO(new Game()),status);
         }
         Game updatedGame = gameService.updateSpecificGame(id, game);
         if(updatedGame.getId() == null) {
@@ -78,7 +75,7 @@ public class GameController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toGameTDO(updatedGame),status);
+        return new ResponseEntity<>(mapper.toGameDTO(updatedGame),status);
     }
 
     @DeleteMapping("/{id}")

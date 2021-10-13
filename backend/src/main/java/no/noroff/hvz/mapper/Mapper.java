@@ -44,7 +44,7 @@ public class Mapper {
         return appUser;
     }
 
-    public GameDTO toGameTDO(Game game) {
+    public GameDTO toGameDTO(Game game) {
         String gameUrl = url + game.getId();
         String squadsUrl = gameUrl + "/squad";
         String missionsUrl = gameUrl + "/mission";
@@ -55,7 +55,7 @@ public class Mapper {
                 game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
     }
 
-    public KillDTO toKillTDO(Kill kill) {
+    public KillDTO toKillDTO(Kill kill) {
         String killerName = kill.getKiller().getUser().getFirstName() + " " + kill.getKiller().getUser().getLastName();
         String victimName = kill.getVictim().getUser().getFirstName() + " " + kill.getVictim().getUser().getLastName();
         return new KillDTO(kill.getId(), kill.getTimeOfDeath(), kill.getStory(), kill.getLat(), kill.getLng(),

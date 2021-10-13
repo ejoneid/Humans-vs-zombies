@@ -42,7 +42,7 @@ public class KillController {
         }
         else {
             status = HttpStatus.OK;
-            killDTOs = kills.stream().map(mapper::toKillTDO).collect(Collectors.toList());
+            killDTOs = kills.stream().map(mapper::toKillDTO).collect(Collectors.toList());
         }
         return new ResponseEntity<>(killDTOs, status);
     }
@@ -57,7 +57,7 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(kill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(kill), status);
     }
 
     @PostMapping
@@ -70,7 +70,7 @@ public class KillController {
         }
         else {
             status = HttpStatus.CREATED;
-            return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
+            return new ResponseEntity<>(mapper.toKillDTO(addedKill), status);
         }
     }
 
@@ -81,7 +81,7 @@ public class KillController {
 
         if (unchangedKill.getId() == null) {
             status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(mapper.toKillTDO(unchangedKill), status);
+            return new ResponseEntity<>(mapper.toKillDTO(unchangedKill), status);
         }
 
         String userOpenId = principal.getClaimAsString("sub");
@@ -97,7 +97,7 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(updatedKill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(updatedKill), status);
     }
 
     @DeleteMapping("/{killID}")
@@ -111,6 +111,6 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(deletedKill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(deletedKill), status);
     }
 }
