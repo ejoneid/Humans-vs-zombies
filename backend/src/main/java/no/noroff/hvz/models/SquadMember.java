@@ -14,44 +14,20 @@ public class SquadMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String rank;
+    @Column(nullable = false, length = 2)
+    private int rank;
 
     @ManyToOne
     @JoinColumn(name = "squad_id")
     private Squad squad;
 
-    @JsonGetter("squad")
-    public Long squadGetter() {
-        if (squad != null) {
-            return squad.getId();
-        }
-        return null;
-    }
-
     @OneToOne
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @JsonGetter("player")
-    public Long playerGetter() {
-        if (player != null) {
-            return player.getId();
-        }
-        return null;
-    }
-
     @OneToMany
     @JoinColumn(name = "member_id")
     private Set<SquadCheckIn> checkIns;
-
-    @JsonGetter("checkIns")
-    public List<Long> CheckInsGetter() {
-        if (checkIns != null) {
-            return checkIns.stream().map(SquadCheckIn::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
 
     public Long getId() {
         return id;
@@ -61,11 +37,11 @@ public class SquadMember {
         this.id = id;
     }
 
-    public String getRank() {
+    public int getRank() {
         return rank;
     }
 
-    public void setRank(String rank) {
+    public void setRank(int rank) {
         this.rank = rank;
     }
 

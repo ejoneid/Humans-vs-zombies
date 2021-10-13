@@ -2,15 +2,12 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.MissionDTO;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.AppUser;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.MissionService;
 import no.noroff.hvz.services.PlayerService;
-import no.noroff.hvz.services.UserService;
-import org.apache.catalina.User;
+import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +30,7 @@ public class MissionController {
     @Autowired
     private Mapper mapper;
     @Autowired
-    private UserService userService;
+    private AppUserService appUserService;
     @Autowired
     private PlayerService playerService;
 
@@ -44,7 +39,7 @@ public class MissionController {
     public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
         try {
-            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
             List<MissionDTO> missionDTOs;
             List<Mission> missions;
             if(SecurityUtils.isAdmin(authorization)) {
@@ -68,7 +63,7 @@ public class MissionController {
     public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
         try {
-            Player player = playerService.getPlayerByGameAndUser(gameID, userService.getSpecificUser(principal.getClaimAsString("sub")));
+            Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
             Mission mission = missionService.getSpecificMission(gameID,missionID);
             if(!SecurityUtils.isAdmin(authorization)) {
                 if(mission.isHuman() != player.isHuman()) {

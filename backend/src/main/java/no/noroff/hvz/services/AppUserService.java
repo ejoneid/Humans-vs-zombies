@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.sql.SQLException;
 
 @Service
-public class UserService {
+public class AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;

@@ -128,4 +128,13 @@ public class SquadService {
         }
         return addedSquadCheckIn;
     }
+
+    public boolean isMemberOfSquad(Squad squad, Player player){
+        for(SquadMember member : squad.getMembers()) {
+            if(member.getPlayer().getId() == player.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

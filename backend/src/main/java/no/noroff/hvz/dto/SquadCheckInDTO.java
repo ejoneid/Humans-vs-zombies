@@ -6,16 +6,14 @@ import java.util.Date;
 public class SquadCheckInDTO {
 
     private Long id;
-    private Date startTime;
-    private Date endTime;
+    private Date time;
     private String lat;
     private String lng;
-    private SquadMemberDTO member;
+    private PlayerDTO member;
 
-    public SquadCheckInDTO(Long id, Date startTime, Date endTime, String lat, String lng, SquadMemberDTO member) {
+    public SquadCheckInDTO(Long id, Date time, String lat, String lng, PlayerDTO member) {
         this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.time = time;
         this.lat = lat;
         this.lng = lng;
         this.member = member;
@@ -29,20 +27,12 @@ public class SquadCheckInDTO {
         this.id = id;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getTime() {
+        return time;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public String getLat() {
@@ -61,11 +51,11 @@ public class SquadCheckInDTO {
         this.lng = lng;
     }
 
-    public SquadMemberDTO getMember() {
+    public PlayerDTO getMember() {
         return member;
     }
 
-    public void setMember(SquadMemberDTO member) {
+    public void setMember(PlayerDTO member) {
         this.member = member;
     }
 }

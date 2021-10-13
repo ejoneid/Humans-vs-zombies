@@ -295,24 +295,22 @@ class AppStartupRunner implements ApplicationRunner {
 //        if (squadMemberRepository.count() == 0) {
 //            squadMemberRepository.save(member1);
 //        }
-        member1.setRank("Officer");
+        member1.setRank(1);
         member1.setPlayer(player1);
 
-        member2.setRank("Loser");
+        member2.setRank(2);
         member2.setPlayer(player2);
 
         squadService.joinSquad(1L, 1L, member1);
         squadService.joinSquad(1L, 1L, member2);
 
         sci1.setMember(member1);
-        sci1.setStartTime(new Date());
-        sci1.setEndTime(new Date());
+        sci1.setTime(new Date());
         sci1.setLat("59.913931");
         sci1.setLng("10.740858");
 
         sci2.setMember(member2);
-        sci2.setStartTime(new Date());
-        sci2.setEndTime(new Date());
+        sci2.setTime(new Date());
         sci2.setLat("59.917659");
         sci2.setLng("10.764178");
 //        if (squadCheckInRepository.count() == 0) {

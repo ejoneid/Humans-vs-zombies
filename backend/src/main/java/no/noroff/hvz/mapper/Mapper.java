@@ -87,11 +87,10 @@ public class Mapper {
     }
 
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
-        String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
-        return new PlayerDTOStandard(player.getId(),player.isHuman(),killsUrl, toAppUserDTO(player.getUser()));
+        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode());
     }
 
-    public PlayerDTO toPlayerDTOFull(Player player) {
+    public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
         AppUserDTO userDTO = toAppUserDTO(player.getUser());
@@ -109,12 +108,6 @@ public class Mapper {
         return player;
     }
 
-    public SquadMemberDTO toSquadMemberDTO (SquadMember squadMember) {
-        String playerUrl = url + squadMember.getSquad().getGame().getId() + "/player/" + squadMember.getPlayer().getId();
-        String checkInsUrl = url + squadMember.getSquad().getGame().getId() + "/check-in/"; //TODO legge til searc parameter så vi får riktige checkIns
-        return  new SquadMemberDTO(squadMember.getId(), squadMember.getRank(), playerUrl, checkInsUrl);
-    }
-
     public SquadMember toSquadMember (SquadMemberFromDTO dto) {
         SquadMember member = new SquadMember();
         Player player = playerRepository.findById(dto.getPlayerID()).get();
@@ -124,37 +117,16 @@ public class Mapper {
     }
 
     public SquadDTO toSquadDTO(Squad squad) {
-        String messagesUrl = url + squad.getGame().getId() + "/squad/" + squad.getId() + "/chat";
-        String squadType;
-        ArrayList<SquadMemberDTO> members = new ArrayList<>();
+        ArrayList<PlayerDTO> members = new ArrayList<>();
         for (SquadMember member: squad.getMembers()) {
-            members.add(toSquadMemberDTO(member));
+            members.add(toPlayerDTOStandard(member.getPlayer()));
         }
-        if(squad.isHuman()) {
-            squadType = "Human";
-        }
-        else {
-            squadType = "Zombie";
-        }
-        return new SquadDTO(squad.getId(), squad.getName(),squadType,messagesUrl,members);
+        return new SquadDTO(squad.getId(), squad.getName(),members);
     }
 
     public SquadCheckInDTO toSquadCheckInDTO(SquadCheckIn squadCheckIn) {
-        SquadMemberDTO memberDTO = toSquadMemberDTO(squadCheckIn.getMember());
-        return new SquadCheckInDTO(squadCheckIn.getId(), squadCheckIn.getStartTime(), squadCheckIn.getEndTime(),
+        PlayerDTO memberDTO = toPlayerDTOStandard(squadCheckIn.getMember().getPlayer());
+        return new SquadCheckInDTO(squadCheckIn.getId(), squadCheckIn.getTime(),
                 squadCheckIn.getLat(), squadCheckIn.getLng(), memberDTO);
-    }
-
-    public SquadViewDTO toSquadViewDTO(Squad squad) {
-        String messagesUrl = url + squad.getGame().getId() + "/squad/" + squad.getId() + "/chat";
-        List<PlayerViewDTO> players = new ArrayList<>();
-        for (SquadMember m : squad.getMembers()) {
-            players.add(toPlayerViewDTO(m.getPlayer()));
-        }
-        return new SquadViewDTO(squad.getId(), squad.getName(), messagesUrl, players);
-    }
-
-    public PlayerViewDTO toPlayerViewDTO(Player player) {
-        return new PlayerViewDTO(player.getUser().getFirstName() + " " + player.getUser().getLastName(), player.isHuman());
     }
 }

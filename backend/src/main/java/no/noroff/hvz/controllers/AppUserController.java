@@ -3,8 +3,8 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.AppUserDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
-import no.noroff.hvz.services.UserService;
 import org.hibernate.exception.ConstraintViolationException;
+import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,12 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")
-public class UserController {
+public class AppUserController {
 
     @Autowired
     private Mapper mapper;
     @Autowired
-    private UserService userService;
+    private AppUserService appUserService;
 
     private HttpStatus status = HttpStatus.OK;
 
@@ -32,7 +32,7 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
         System.out.println(principal);
-        AppUser appUser = userService.getSpecificUser(principal.getClaimAsString("sub"));
+        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         AppUserDTO appUserDTO = null;
         if(appUser == null) {
             status = HttpStatus.NOT_FOUND;
@@ -52,11 +52,12 @@ public class UserController {
         appUser.setOpenId(principal.getClaimAsString("sub"));
         AppUserDTO addedUserDTO;
         try {
-            addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
+            addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
         } catch (DataIntegrityViolationException exception) {
             status = HttpStatus.CONFLICT;
             return new ResponseEntity<>(null, status);
         }
+         addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedUserDTO,status);
     }
