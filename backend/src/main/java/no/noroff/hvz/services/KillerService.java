@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class KillerService {
         if(gameRepository.existsById(gameID) && kill != null) {
             kill.setGame(gameRepository.findById(gameID).get());
             kill.getVictim().setHuman(false);
+            if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
             kill = killerRepository.save(kill);
         }
         return kill;

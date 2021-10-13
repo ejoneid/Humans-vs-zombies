@@ -2,6 +2,7 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.KillDTO;
 import no.noroff.hvz.dto.RegKillDTO;
+import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.security.SecurityUtils;
@@ -42,7 +43,7 @@ public class KillController {
         }
         else {
             status = HttpStatus.OK;
-            killDTOs = kills.stream().map(mapper::toKillTDO).collect(Collectors.toList());
+            killDTOs = kills.stream().map(mapper::toKillDTO).collect(Collectors.toList());
         }
         return new ResponseEntity<>(killDTOs, status);
     }
@@ -57,20 +58,26 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(kill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(kill), status);
     }
 
     @PostMapping
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) {
         HttpStatus status;
-        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
+        Kill addedKill;
+        try {
+            addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
+        } catch (InvalidBiteCodeException exception) {
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(null, status);
+        }
         if(addedKill == null) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, status);
         }
         else {
             status = HttpStatus.CREATED;
-            return new ResponseEntity<>(mapper.toKillTDO(addedKill), status);
+            return new ResponseEntity<>(mapper.toKillDTO(addedKill), status);
         }
     }
 
@@ -81,7 +88,7 @@ public class KillController {
 
         if (unchangedKill.getId() == null) {
             status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(mapper.toKillTDO(unchangedKill), status);
+            return new ResponseEntity<>(mapper.toKillDTO(unchangedKill), status);
         }
 
         String userOpenId = principal.getClaimAsString("sub");
@@ -97,7 +104,7 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(updatedKill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(updatedKill), status);
     }
 
     @DeleteMapping("/{killID}")
@@ -111,6 +118,6 @@ public class KillController {
         else {
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toKillTDO(deletedKill), status);
+        return new ResponseEntity<>(mapper.toKillDTO(deletedKill), status);
     }
 }

@@ -1,8 +1,10 @@
 package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.*;
+import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.AppUserRepository;
+import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import no.noroff.hvz.repositories.SquadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +22,19 @@ public class Mapper {
     private final String url = "/api/game/";
 
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
     @Autowired
-    SquadRepository squadRepository;
+    private SquadRepository squadRepository;
 
     @Autowired
-    AppUserRepository appUserRepository;
+    private AppUserRepository appUserRepository;
+
+    @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
+    private CustomMapper customMapper;
 
     public MissionDTO toMissionDTO(Mission mission) {
         return new MissionDTO(mission.getId(),mission.getName(),mission.getDescription(),
@@ -44,7 +52,7 @@ public class Mapper {
         return appUser;
     }
 
-    public GameDTO toGameTDO(Game game) {
+    public GameDTO toGameDTO(Game game) {
         String gameUrl = url + game.getId();
         String squadsUrl = gameUrl + "/squad";
         String missionsUrl = gameUrl + "/mission";
@@ -55,24 +63,21 @@ public class Mapper {
                 game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
     }
 
-    public KillDTO toKillTDO(Kill kill) {
+    public KillDTO toKillDTO(Kill kill) {
         String killerName = kill.getKiller().getUser().getFirstName() + " " + kill.getKiller().getUser().getLastName();
         String victimName = kill.getVictim().getUser().getFirstName() + " " + kill.getVictim().getUser().getLastName();
         return new KillDTO(kill.getId(), kill.getTimeOfDeath(), kill.getStory(), kill.getLat(), kill.getLng(),
                 killerName, victimName);
     }
 
-    public Kill regKillDTO(RegKillDTO killDTO) {
+    public Kill regKillDTO(RegKillDTO killDTO) throws InvalidBiteCodeException {
         Kill kill = new Kill();
+        customMapper.updateKillFromDto(killDTO, kill);
         Player killer = playerRepository.findById(killDTO.getKillerID()).get();
-        List<Player> victim = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), killDTO.getBiteCode())).collect(Collectors.toList());
-        if (victim.size() == 0) return null;
+        Player victim = playerRepository.getPlayerByGameAndBiteCode(killer.getGame(), killDTO.getBiteCode());
+        if (victim == null) throw new InvalidBiteCodeException("BiteCode did not match any players in this game!");
         kill.setKiller(killer);
-        kill.setVictim(victim.get(0));
-        kill.setTimeOfDeath(new Date());
-        kill.setStory(killDTO.getStory());
-        kill.setLat(killDTO.getLat());
-        kill.setLng(killDTO.getLng());
+        kill.setVictim(victim);
         return kill;
     }
 
