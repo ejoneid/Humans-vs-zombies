@@ -98,6 +98,7 @@ public class SquadService {
     public Message createSquadChat(Long gameID, Long squadID, Long playerID, Message message) {
         Message chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
+            //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
             message.setGame(gameRepository.findById(gameID).get());
             message.setSquad(squadRepository.findById(squadID).get());
             message.setPlayer(playerRepository.findById(playerID).get());
@@ -131,7 +132,7 @@ public class SquadService {
 
     public boolean isMemberOfSquad(Squad squad, Player player){
         for(SquadMember member : squad.getMembers()) {
-            if(member.getPlayer().getId() == player.getId()) {
+            if(member.getPlayer().getId().equals(player.getId())) {
                 return true;
             }
         }
