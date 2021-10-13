@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GameInfo} from "../../models/game-info.model";
 import {ActivatedRoute} from "@angular/router";
-import {PlayerInfo} from "../../models/player-info.model";
 import {Mission} from "../../models/mission.model";
 import {Kill} from "../../models/kill.model";
 import {AdminAPI} from "../api/admin.api";
@@ -62,6 +61,7 @@ export class AdminPage implements OnInit {
           for (let mission of missions) {
             tempMissions.push({
               name: mission.name.toString(),
+              id: mission.id,
               description: mission.description.toString(),
               endTime: mission.endTime.toString(),
               startTime: mission.startTime.toString(),

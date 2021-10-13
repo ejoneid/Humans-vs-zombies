@@ -85,6 +85,7 @@ export class GameInfoPage implements OnInit {
           for (let mission of missions) {
             tempMissions.push({
               name: mission.name.toString(),
+              id: mission.id,
               description: mission.description.toString(),
               endTime: mission.endTime.toString(),
               startTime: mission.startTime.toString(),

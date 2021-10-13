@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
+import {Mission} from "../../models/mission.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,8 @@ export class AdminAPI {
   }
   public async getMessagesByPlayer(gameID: number, playerID: number): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/message");
+  }
+  public async updateMission(gameID: number, missionId: number, mission: Mission): Promise<Observable<any>> {
+    return await this.http.put<any>(baseURL+"api/game/"+gameID+"/mission/"+missionId, mission);
   }
 }
