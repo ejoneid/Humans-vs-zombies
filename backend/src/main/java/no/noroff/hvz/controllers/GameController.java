@@ -104,18 +104,19 @@ public class GameController {
 
     @GetMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id,
+    public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id,
                                                      @RequestHeader(required = false) Long playerID,
-                                                     @RequestHeader(required = false) Boolean human,
+                                                     @RequestHeader(required = false) String human,
                                                      @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
                                                      ) {
         HttpStatus status;
-        List<Message> messages = null;
+        List<Message> messages;
+        List<MessageDTO> messageDTOs = null;
         try {
             if(SecurityUtils.isAdmin(authorization)) {
                 if (playerID != null) messages = gameService.getGameChat(id, playerID);
-                else if (human != null) messages = gameService.getGameChat(id, human);
+                else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
                 else messages = gameService.getGameChat(id);
             }
             else {
@@ -126,11 +127,12 @@ public class GameController {
                 else messages = gameService.getGameChat(id, player.isHuman());
             }
             status = HttpStatus.OK;
+             messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
         }
         catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
         }
-        return new ResponseEntity<>(messages,status);
+        return new ResponseEntity<>(messageDTOs,status);
     }
 
     @PostMapping("/{id}/chat")
