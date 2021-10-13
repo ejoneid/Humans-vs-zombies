@@ -47,6 +47,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) {
         HttpStatus status;
         Game game = gameService.getSpecificGame(id);
