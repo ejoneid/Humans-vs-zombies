@@ -3,10 +3,7 @@ package no.noroff.hvz.mapper;
 import no.noroff.hvz.dto.*;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.*;
-import no.noroff.hvz.repositories.AppUserRepository;
-import no.noroff.hvz.repositories.GameRepository;
-import no.noroff.hvz.repositories.PlayerRepository;
-import no.noroff.hvz.repositories.SquadRepository;
+import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +29,9 @@ public class Mapper {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private SquadMemberRepository squadMemberRepository;
 
     @Autowired
     private CustomMapper customMapper;
@@ -90,6 +90,10 @@ public class Mapper {
         return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode());
     }
 
+    public Player toPlayer(PlayerDTO playerDTO) {
+        return playerRepository.getById(playerDTO.getId());
+    }
+
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
@@ -128,5 +132,11 @@ public class Mapper {
         PlayerDTO memberDTO = toPlayerDTOStandard(squadCheckIn.getMember().getPlayer());
         return new SquadCheckInDTO(squadCheckIn.getId(), squadCheckIn.getTime(),
                 squadCheckIn.getLat(), squadCheckIn.getLng(), memberDTO);
+    }
+
+    public SquadCheckIn toSquadCheckIn(SquadCheckInDTO squadCheckInDTO) {
+        Player player = toPlayer(squadCheckInDTO.getMember());
+        SquadMember squadMember = squadMemberRepository.getByPlayer(player);
+        return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 }
