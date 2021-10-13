@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
-public class UserService {
+public class AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;

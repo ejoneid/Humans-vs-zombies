@@ -4,6 +4,7 @@ import no.noroff.hvz.dto.*;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.services.SquadService;
+import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +26,8 @@ public class SquadController {
     private SquadService squadService;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    private AppUserService appUserService;
 
     private HttpStatus status;
 
@@ -60,32 +61,41 @@ public class SquadController {
     }
 
     @PostMapping
-    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody Squad squad) {
-
-        Squad createdSquad = squadService.createNewSquad(gameID, squad);
+    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody Squad squad,
+                                                   @AuthenticationPrincipal Jwt principal) {
         SquadDTO squadDTO = null;
-        if(createdSquad == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        try {
+            AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Player player = appUserService.getPlayerByGameAndUser(gameID, user);
+            Squad createdSquad = squadService.createNewSquad(gameID, squad);
+            SquadMember member = new SquadMember();
+            member.setRank(1);
+            member.setPlayer(player);
+            member = squadService.joinSquad(gameID, createdSquad.getId(), member);
             status = HttpStatus.CREATED;
+            //Gets the updated squad with the new member
+            createdSquad = squadService.getSpecificSquad(gameID,createdSquad.getId());
             squadDTO = mapper.toSquadDTO(squad);
+        }
+        catch (NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
         }
         return new ResponseEntity<>(squadDTO, status);
     }
 
     @PostMapping("/{squadID}/join")
-    public ResponseEntity<SquadMemberDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
-        SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
-        SquadMemberDTO squadMemberDTO = null;
-        if(addedSquadMember == null) {
+    public ResponseEntity<SquadDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
+        SquadDTO squadDTO = null;
+        try {
+            SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
+            squadDTO = mapper.toSquadDTO(squadService.getSpecificSquad(gameID, addedSquadMember.getSquad().getId()));
+            status = HttpStatus.CREATED;
+        }
+        catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
         }
-        else {
-            status = HttpStatus.CREATED;
-            squadMemberDTO = mapper.toSquadMemberDTO(addedSquadMember);
-        }
-        return new ResponseEntity<>(squadMemberDTO, status);
+
+        return new ResponseEntity<>(squadDTO, status);
     }
 
     @PutMapping("/{squadID}")

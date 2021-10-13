@@ -15,10 +15,7 @@ public class SquadCheckIn {
     private Long id;
 
     @Column(nullable = false)
-    private Date startTime;
-
-    @Column(nullable = false)
-    private Date endTime;
+    private Date time;
 
     @Column(nullable = false, length = 20)
     private String lat;
@@ -46,21 +43,14 @@ public class SquadCheckIn {
         this.id = id;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getTime() {
+        return time;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 
     public String getLat() {
         return lat;
