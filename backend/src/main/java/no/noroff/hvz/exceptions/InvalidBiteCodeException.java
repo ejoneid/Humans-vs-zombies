@@ -1,7 +1,10 @@
 package no.noroff.hvz.exceptions;
 
-public class InvalidBiteCodeException extends Exception{
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class InvalidBiteCodeException extends ResponseStatusException {
     public InvalidBiteCodeException(String msg) {
-        super(msg);
+        super(HttpStatus.BAD_REQUEST, msg);
     }
 }

@@ -62,15 +62,9 @@ public class KillController {
     }
 
     @PostMapping
-    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) {
+    public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody RegKillDTO kill) throws InvalidBiteCodeException {
         HttpStatus status;
-        Kill addedKill;
-        try {
-            addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
-        } catch (InvalidBiteCodeException exception) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(null, status);
-        }
+        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
         if(addedKill == null) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, status);
