@@ -108,7 +108,7 @@ public class MissionController {
             return new ResponseEntity<>(mapper.toMissionDTO(new Mission()),status);
         }
         try {
-            Mission mission = missionService.getSpecificMission(gameID, missionID);
+            Mission mission = mapper.toMission(missionDTO);
             Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
             updatedMissionDTO = mapper.toMissionDTO(updatedMission);
             status = HttpStatus.OK;
