@@ -3,7 +3,6 @@
 <main class="adminContainer">
   <app-player [gameID]="game.id"></app-player>
   <section class="componentContainer">
-    <app-mission [missions]="game.missions" [gameID]="game.id"></app-mission>
     <app-game></app-game>
   </section>
   <section class="componentContainer">
@@ -11,6 +10,9 @@
       [mapInfo]="game.map_info"
       [kills]="game.kills"
       [missions]="game.missions"
+      [gameID]="game.id"
+      (missionUpdate)="updateMissions()"
+      (killUpdate)="updateKills()"
     ></app-map-admin>
     <app-chat-admin id="chat"></app-chat-admin>
   </section>

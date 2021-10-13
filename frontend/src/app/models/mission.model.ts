@@ -6,5 +6,6 @@ export interface Mission {
   lng: number,
   startTime: string | null,
   endTime: string | null,
-  isHuman: boolean
+  human: boolean,
+  gameId: number
 }

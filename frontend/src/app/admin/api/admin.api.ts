@@ -30,7 +30,7 @@ export class AdminAPI {
   public async getMessagesByPlayer(gameID: number, playerID: number): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/message");
   }
-  public async updateMission(gameID: number, missionId: number, mission: Mission): Promise<Observable<any>> {
-    return await this.http.put<any>(baseURL+"api/game/"+gameID+"/mission/"+missionId, mission);
+  public async updateMission(gameID: number, missionID: number, mission: Mission): Promise<Observable<any>> {
+    return await this.http.put<any>(baseURL+"api/game/"+gameID+"/mission/"+missionID, mission);
   }
 }

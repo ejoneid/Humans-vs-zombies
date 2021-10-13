@@ -42,6 +42,8 @@ export class MapComponent implements OnInit, OnChanges {
     // Populating the marker list
     for (let mission of this.missions) {
       this.markers.push({
+        id: mission.id,
+        isMission: true,
         description: mission.description,
         position: {lat: mission.lat, lng: mission.lng},
         label: {text: mission.name, color: "#B2BBBD"},
@@ -52,6 +54,8 @@ export class MapComponent implements OnInit, OnChanges {
     for (let kill of this.kills) {
       if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
         this.markers.push({
+          id: kill.id,
+          isMission: false,
           description: kill.story,
           position: {lat: kill.lat, lng: kill.lng},
           label: {text: kill.killerName, color: "#B2BBBD"},
