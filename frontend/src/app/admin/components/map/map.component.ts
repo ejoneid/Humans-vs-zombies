@@ -65,6 +65,8 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    //Resetting the markers so that they dont get loaded twice when changes are made.
+    this.markers = [];
     // Populating the marker list
     for (let mission of this.missions) {
       this.markers.push({
@@ -113,13 +115,12 @@ export class MapComponent implements OnInit, OnChanges {
   //TODO: Opens a dialog window for the specified kill
   private editKill(id: number): void {
     const kill = this.kills.find(m => m.id === id);
-    console.log(kill);
+    kill;
   }
 
   //Opens a dialog window for the specified mission.
   private editMission(id: number): void {
     const mission = this.missions.find(m => m.id === id);
-    console.log(`FOUND: ${mission}`)
     if (mission != undefined) {
       const dialogRef = this.dialog.open(MissionEditComponent, {
         height: "fit-content",
@@ -140,8 +141,7 @@ export class MapComponent implements OnInit, OnChanges {
           mission.startTime = result.startTime;
           mission.endTime = result.endTime;
           this.adminAPI.updateMission(this.gameID, mission.id, mission)
-            .then(result => result.subscribe((res) => {
-              console.log(res)
+            .then(result => result.subscribe(() => {
               this.missionUpdate.emit();
             }));
         }
