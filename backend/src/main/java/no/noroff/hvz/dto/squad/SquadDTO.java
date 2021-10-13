@@ -1,5 +1,7 @@
 package no.noroff.hvz.dto.squad;
 
+import no.noroff.hvz.dto.player.PlayerDTO;
+
 import java.util.List;
 
 public class SquadDTO {

@@ -2,6 +2,7 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
 import no.noroff.hvz.dto.player.RegPlayerDTO;
+import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.squad.SquadViewDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Game;
