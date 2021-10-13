@@ -77,7 +77,7 @@ public class SquadController {
             status = HttpStatus.CREATED;
             //Gets the updated squad with the new member
             createdSquad = squadService.getSpecificSquad(gameID,createdSquad.getId());
-            squadDTO = mapper.toSquadDTO(squad);
+            squadDTO = mapper.toSquadDTO(createdSquad);
         }
         catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
@@ -141,18 +141,25 @@ public class SquadController {
         List<MessageDTO> chatDTO = new ArrayList<>();
         try{
             List<Message> chat = squadService.getSquadChat(gameID, squadID);
-            status = HttpStatus.OK;
+
 
             if(SecurityUtils.isAdmin(authorization)) {
                 chatDTO = chat.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+                status = HttpStatus.OK;
             }
             else {
                 AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
                 Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+                Squad squad= squadService.getSpecificSquad(gameID, squadID);
                 //check if player
-                if(player.isHuman() == chat.get(0).isHuman())
+                if(player.isHuman() == chat.get(0).isHuman() && squadService.isMemberOfSquad(squad,player)) {
+                    chatDTO = chat.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+                    status = HttpStatus.OK;
+                }
+                else {
+                    status = HttpStatus.FORBIDDEN;
+                }
             }
-
         }
         catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
