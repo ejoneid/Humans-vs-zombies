@@ -3,6 +3,7 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.*;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.SquadService;
 import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -134,15 +136,26 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/chat")
-    public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
-        List<Message> chat = squadService.getSquadChat(gameID, squadID);
-        List<MessageDTO> chatDTO = null;
-        if(chat == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+    public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID,
+                                                         @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+        List<MessageDTO> chatDTO = new ArrayList<>();
+        try{
+            List<Message> chat = squadService.getSquadChat(gameID, squadID);
             status = HttpStatus.OK;
-            chatDTO = chat.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+
+            if(SecurityUtils.isAdmin(authorization)) {
+                chatDTO = chat.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+            }
+            else {
+                AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+                Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+                //check if player
+                if(player.isHuman() == chat.get(0).isHuman())
+            }
+
+        }
+        catch (NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
         }
         return new ResponseEntity<>(chatDTO, status);
     }
