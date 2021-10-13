@@ -9,8 +9,7 @@ import no.noroff.hvz.models.Message;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.GameService;
-import no.noroff.hvz.services.UserService;
-import org.apache.catalina.User;
+import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class GameController {
     @Autowired
     private GameService gameService;
     @Autowired
-    UserService userService;
+    AppUserService appUserService;
     @Autowired
     private Mapper mapper;
 
@@ -120,8 +119,8 @@ public class GameController {
                 else messages = gameService.getGameChat(id);
             }
             else {
-                AppUser user = userService.getSpecificUser(principal.getClaimAsString("sub"));
-                Player player = userService.getPlayerByGameAndUser(id, user);
+                AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+                Player player = appUserService.getPlayerByGameAndUser(id, user);
                 //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
                 if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
                 else messages = gameService.getGameChat(id, player.isHuman());

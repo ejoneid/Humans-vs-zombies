@@ -6,14 +6,12 @@ public class PlayerDTOStandard implements PlayerDTO{
 
     private Long id;
     private Boolean isHuman;
-    private String killsUrl;
-    private AppUserDTO user;
+    private String biteCode;
 
-    public PlayerDTOStandard(Long id, Boolean isHuman, String killsUrl, AppUserDTO user) {
+    public PlayerDTOStandard(Long id, Boolean isHuman, String biteCode) {
         this.id = id;
         this.isHuman = isHuman;
-        this.killsUrl = killsUrl;
-        this.user = user;
+        this.biteCode = biteCode;
     }
 
     @Override
@@ -34,19 +32,11 @@ public class PlayerDTOStandard implements PlayerDTO{
         isHuman = human;
     }
 
-    public String getKillsUrl() {
-        return killsUrl;
+    public String getBiteCode() {
+        return biteCode;
     }
 
-    public void setKillsUrl(String killsUrl) {
-        this.killsUrl = killsUrl;
-    }
-
-    public AppUserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(AppUserDTO user) {
-        this.user = user;
+    public void setBiteCode(String biteCode) {
+        this.biteCode = biteCode;
     }
 }

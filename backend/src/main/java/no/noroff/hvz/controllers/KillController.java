@@ -7,7 +7,7 @@ import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.KillerService;
-import no.noroff.hvz.services.UserService;
+import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class KillController {
     @Autowired
     private KillerService killerService;
     @Autowired
-    private UserService userService;
+    private AppUserService appUserService;
     @Autowired
     Mapper mapper;
 
@@ -93,7 +93,7 @@ public class KillController {
 
         String userOpenId = principal.getClaimAsString("sub");
         // Checks if the user is authorized as admin or the killer
-        if (!(SecurityUtils.isAdmin(authorization) || unchangedKill.getKiller().getUser().equals( userService.getSpecificUser(userOpenId) ))) {
+        if (!(SecurityUtils.isAdmin(authorization) || unchangedKill.getKiller().getUser().equals( appUserService.getSpecificUser(userOpenId) ))) {
             status = HttpStatus.FORBIDDEN;
             return new ResponseEntity<>(null, status);
         }

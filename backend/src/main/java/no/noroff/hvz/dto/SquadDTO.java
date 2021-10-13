@@ -6,16 +6,12 @@ public class SquadDTO {
 
     private Long id;
     private String name;
-    private String squadType;
-    private String messagesUrl;
-    private List<SquadMemberDTO> members;
+    private List<PlayerDTO> members;
 
-    public SquadDTO(Long id, String name, String squadType, String messagesUrl, List<SquadMemberDTO> members) {
+    public SquadDTO(Long id, String name, List<PlayerDTO> players) {
         this.id = id;
         this.name = name;
-        this.squadType = squadType;
-        this.messagesUrl = messagesUrl;
-        this.members = members;
+        this.members = players;
     }
 
     public Long getId() {
@@ -34,27 +30,11 @@ public class SquadDTO {
         this.name = name;
     }
 
-    public String getSquadType() {
-        return squadType;
-    }
-
-    public void setSquadType(String squadType) {
-        this.squadType = squadType;
-    }
-
-    public String getMessagesUrl() {
-        return messagesUrl;
-    }
-
-    public void setMessagesUrl(String messagesUrl) {
-        this.messagesUrl = messagesUrl;
-    }
-
-    public List<SquadMemberDTO> getMembers() {
+    public List<PlayerDTO> getMembers() {
         return members;
     }
 
-    public void setMembers(List<SquadMemberDTO> members) {
+    public void setMembers(List<PlayerDTO> members) {
         this.members = members;
     }
 }
