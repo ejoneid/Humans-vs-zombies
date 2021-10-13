@@ -3,9 +3,14 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.GameDTO;
 import no.noroff.hvz.dto.MessageDTO;
 import no.noroff.hvz.mapper.Mapper;
+import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Message;
+import no.noroff.hvz.models.Player;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.GameService;
+import no.noroff.hvz.services.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +31,8 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
-
+    @Autowired
+    UserService userService;
     @Autowired
     private Mapper mapper;
 
@@ -98,20 +104,33 @@ public class GameController {
 
     @GetMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id, @RequestHeader(required = false) Long playerID, @RequestHeader(required = false) String human) {
+    public ResponseEntity<List<Message>> getGameChat(@PathVariable Long id,
+                                                     @RequestHeader(required = false) Long playerID,
+                                                     @RequestHeader(required = false) Boolean human,
+                                                     @RequestHeader String authorization,
+                                                     @AuthenticationPrincipal Jwt principal
+                                                     ) {
         HttpStatus status;
-        List<Message> messages;
-        if (playerID != null) messages = gameService.getGameChat(id, playerID);
-        else if (human != null) messages = gameService.getGameChat(id, Boolean.parseBoolean(human));
-        else messages = gameService.getGameChat(id);
-        if( messages == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        List<Message> messages = null;
+        try {
+            if(SecurityUtils.isAdmin(authorization)) {
+                if (playerID != null) messages = gameService.getGameChat(id, playerID);
+                else if (human != null) messages = gameService.getGameChat(id, human);
+                else messages = gameService.getGameChat(id);
+            }
+            else {
+                AppUser user = userService.getSpecificUser(principal.getClaimAsString("sub"));
+                Player player = userService.getPlayerByGameAndUser(id, user);
+                //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
+                if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
+                else messages = gameService.getGameChat(id, player.isHuman());
+            }
             status = HttpStatus.OK;
         }
-        List<MessageDTO> msgdto = messages.stream().map(m -> mapper.toMessageDTO(m)).collect(Collectors.toList());
-        return new ResponseEntity<>(msgdto,status);
+        catch (NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<>(messages,status);
     }
 
     @PostMapping("/{id}/chat")
