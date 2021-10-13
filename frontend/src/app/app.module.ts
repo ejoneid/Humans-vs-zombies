@@ -32,7 +32,19 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 
       // Specify configuration for the interceptor
       httpInterceptor: {
-        allowedList: ['http://localhost:4200/*', 'http://localhost:8080/api/*']
+        allowedList: [ 
+        {
+          uriMatcher: (url: string) => {
+            if (url == "http://localhost:8080/api/game") {return false}
+            if (url.match("http://localhost:8080/api/.*")) {return true} 
+            return false;
+          }
+        },
+        {
+          httpMethod: "post",
+          uri: "http://localhost:8080/api/game"
+        }
+        ],
       }
     }),
     HttpClientModule
