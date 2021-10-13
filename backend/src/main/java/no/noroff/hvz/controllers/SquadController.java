@@ -1,6 +1,10 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.*;
+import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.squad.SquadCheckInDTO;
+import no.noroff.hvz.dto.squad.SquadDTO;
+import no.noroff.hvz.dto.squad.SquadMemberDTO;
+import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.security.SecurityUtils;

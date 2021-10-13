@@ -1,4 +1,4 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.mission;
 
 import java.util.Date;
 

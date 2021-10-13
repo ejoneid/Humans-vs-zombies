@@ -1,13 +1,9 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.dto.SquadMemberFromDTO;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;

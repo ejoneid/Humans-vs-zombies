@@ -1,6 +1,13 @@
 package no.noroff.hvz.mapper;
 
-import no.noroff.hvz.dto.*;
+import no.noroff.hvz.dto.game.GameDTO;
+import no.noroff.hvz.dto.kill.KillDTO;
+import no.noroff.hvz.dto.kill.RegKillDTO;
+import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.mission.MissionDTO;
+import no.noroff.hvz.dto.player.*;
+import no.noroff.hvz.dto.squad.*;
+import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
@@ -8,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 public class Mapper {

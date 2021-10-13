@@ -1,7 +1,7 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.GameDTO;
-import no.noroff.hvz.dto.MessageDTO;
+import no.noroff.hvz.dto.game.GameDTO;
+import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -47,16 +47,9 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) {
-        HttpStatus status;
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
         Game game = gameService.getSpecificGame(id);
-        if(game.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(mapper.toGameDTO(game),status);
     }
 
@@ -93,7 +86,6 @@ public class GameController {
         Game deletedGame = gameService.deleteGame(id);
         if(deletedGame.getId() == null) {
             status = HttpStatus.NOT_FOUND;
-
         }
         else {
             status = HttpStatus.OK;
