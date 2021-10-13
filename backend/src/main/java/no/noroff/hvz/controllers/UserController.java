@@ -47,16 +47,10 @@ public class UserController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
-        AppUserDTO addedUserDTO;
-        try {
-            addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
-        } catch (DataIntegrityViolationException exception) {
-            status = HttpStatus.CONFLICT;
-            return new ResponseEntity<>(null, status);
-        }
+        AppUserDTO addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedUserDTO,status);
     }

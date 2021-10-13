@@ -48,15 +48,9 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) {
-        HttpStatus status;
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
         Game game = gameService.getSpecificGame(id);
-        if(game.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(mapper.toGameDTO(game),status);
     }
 
