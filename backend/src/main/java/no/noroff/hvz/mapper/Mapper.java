@@ -38,7 +38,13 @@ public class Mapper {
 
     public MissionDTO toMissionDTO(Mission mission) {
         return new MissionDTO(mission.getId(),mission.getName(),mission.getDescription(),
-                mission.getStartTime(), mission.getEndTime(), mission.isHuman(), mission.getLat(), mission.getLng());
+                mission.getStartTime(), mission.getEndTime(), mission.isHuman(), mission.getLat(), mission.getLng(),mission.getGame().getId());
+    }
+
+    public Mission toMission(MissionDTO missionDTO) {
+        Game game = gameRepository.getById(missionDTO.getGameId());
+        return new Mission(missionDTO.getId(), missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
+                missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
     public AppUserDTO toAppUserDTO(AppUser user) {

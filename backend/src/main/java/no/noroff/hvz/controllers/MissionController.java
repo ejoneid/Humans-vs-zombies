@@ -82,34 +82,41 @@ public class MissionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody Mission mission) {
+    public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody MissionDTO missionDTO) {
         HttpStatus status;
-        Mission addedMission = missionService.createNewMission(gameID, mission);
-        if(addedMission.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        MissionDTO addedMissionDTO = null;
+        try {
+            Mission mission = mapper.toMission(missionDTO);
+            Mission addedMission = missionService.createNewMission(gameID, mission);
+            addedMissionDTO = mapper.toMissionDTO(addedMission);
             status = HttpStatus.CREATED;
         }
-        return new ResponseEntity<>(mapper.toMissionDTO(addedMission), status);
+        catch (NullPointerException e) {
+            //Game not found
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<>(addedMissionDTO, status);
     }
 
     @PutMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody Mission mission) {
+    public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTO missionDTO) {
         HttpStatus status;
-        if(!Objects.equals(missionID,mission.getId())) {
+        MissionDTO updatedMissionDTO = null;
+        if(!Objects.equals(missionID,missionDTO.getId())) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(mapper.toMissionDTO(new Mission()),status);
         }
-        Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
-        if(updatedMission.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        try {
+            Mission mission = missionService.getSpecificMission(gameID, missionID);
+            Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
+            updatedMissionDTO = mapper.toMissionDTO(updatedMission);
             status = HttpStatus.OK;
         }
-        return new ResponseEntity<>(mapper.toMissionDTO(updatedMission),status);
+        catch (NullPointerException e) {
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<>(updatedMissionDTO,status);
     }
 
     @DeleteMapping("/{missionID}")

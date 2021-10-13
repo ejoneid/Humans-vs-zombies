@@ -1,7 +1,5 @@
 package no.noroff.hvz.dto;
 
-import javax.persistence.Column;
-import java.io.FilenameFilter;
 import java.util.Date;
 
 public class MissionDTO {
@@ -14,8 +12,9 @@ public class MissionDTO {
     private boolean human;
     private String lat;
     private String lng;
+    private Long gameId;
 
-    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, boolean human, String lat, String lng) {
+    public MissionDTO(Long id, String name, String description, Date startTime, Date endTime, boolean human, String lat, String lng, Long gameId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,6 +23,7 @@ public class MissionDTO {
         this.human = human;
         this.lat = lat;
         this.lng = lng;
+        this.gameId = gameId;
     }
 
     public Long getId() {
@@ -88,5 +88,13 @@ public class MissionDTO {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 }
