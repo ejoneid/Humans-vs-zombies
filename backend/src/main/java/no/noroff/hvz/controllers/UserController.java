@@ -4,13 +4,17 @@ import no.noroff.hvz.dto.AppUserDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.services.UserService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -46,7 +50,13 @@ public class UserController {
     public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
-        AppUserDTO addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
+        AppUserDTO addedUserDTO;
+        try {
+            addedUserDTO = mapper.toAppUserDTO(userService.createUser(appUser));
+        } catch (DataIntegrityViolationException exception) {
+            status = HttpStatus.CONFLICT;
+            return new ResponseEntity<>(null, status);
+        }
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedUserDTO,status);
     }

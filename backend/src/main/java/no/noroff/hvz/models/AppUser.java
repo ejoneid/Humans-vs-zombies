@@ -20,7 +20,7 @@ public class AppUser {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String openId;
 
     @OneToMany
