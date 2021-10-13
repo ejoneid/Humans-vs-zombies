@@ -33,6 +33,29 @@ export class AdminPage implements OnInit {
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
+  updateMissions() {
+    const tempMissions: Mission[] = [];
+    this.adminAPI.getMissionsByGame(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((missions) => {
+          for (let mission of missions) {
+            tempMissions.push({
+              name: mission.name.toString(),
+              id: mission.id,
+              description: mission.description.toString(),
+              endTime: mission.endTime.toString(),
+              startTime: mission.startTime.toString(),
+              lat: parseFloat(mission.lat),
+              lng: parseFloat(mission.lng),
+              human: mission.isHuman,
+              gameId: this.game.id
+            });
+          }
+          this.gameInfo.missions = tempMissions;
+        });
+      });
+  }
+
   ngOnInit(): void {
     //Finding gameID from the optional params
     this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
@@ -54,31 +77,14 @@ export class AdminPage implements OnInit {
         });
       });
     //Getting information about map markers.
-    const tempMissions: Mission[] = [];
-    this.adminAPI.getMissionsByGame(this.gameInfo.id)
-      .then((response) => {
-        response.subscribe((missions) => {
-          for (let mission of missions) {
-            tempMissions.push({
-              name: mission.name.toString(),
-              id: mission.id,
-              description: mission.description.toString(),
-              endTime: mission.endTime.toString(),
-              startTime: mission.startTime.toString(),
-              lat: parseFloat(mission.lat),
-              lng: parseFloat(mission.lng),
-              isHuman: mission.isHuman
-            });
-          }
-          this.gameInfo.missions = tempMissions;
-        });
-      });
+    this.updateMissions();
     const tempKills: Kill[] = [];
     this.adminAPI.getKillsByGame(this.gameInfo.id)
       .then((response) => {
         response.subscribe((kills) => {
           for (let kill of kills) {
             tempKills.push({
+              id: kill.id,
               killerName: kill.killerName.toString(),
               lat: parseFloat(kill.lat),
               lng: parseFloat(kill.lng),
