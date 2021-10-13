@@ -1,4 +1,4 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.mission;
 
 import javax.persistence.Column;
 import java.io.FilenameFilter;

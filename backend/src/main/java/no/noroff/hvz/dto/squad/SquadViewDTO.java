@@ -1,4 +1,6 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.squad;
+
+import no.noroff.hvz.dto.player.PlayerViewDTO;
 
 import java.util.List;
 

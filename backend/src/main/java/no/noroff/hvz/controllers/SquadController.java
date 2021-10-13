@@ -1,6 +1,10 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.*;
+import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.squad.SquadCheckInDTO;
+import no.noroff.hvz.dto.squad.SquadDTO;
+import no.noroff.hvz.dto.squad.SquadMemberDTO;
+import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.services.SquadService;
@@ -12,10 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController

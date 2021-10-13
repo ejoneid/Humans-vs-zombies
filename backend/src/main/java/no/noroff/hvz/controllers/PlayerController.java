@@ -1,11 +1,9 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.PlayerDTO;
-import no.noroff.hvz.dto.RegPlayerDTO;
-import no.noroff.hvz.dto.SquadDTO;
-import no.noroff.hvz.dto.SquadViewDTO;
+import no.noroff.hvz.dto.player.PlayerDTO;
+import no.noroff.hvz.dto.player.RegPlayerDTO;
+import no.noroff.hvz.dto.squad.SquadViewDTO;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.models.Squad;
 import no.noroff.hvz.security.SecurityUtils;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController

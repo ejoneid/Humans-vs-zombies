@@ -1,20 +1,13 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.dto.AppUserDTO;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.repositories.AppUserRepository;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
-import org.apache.logging.log4j.message.StringFormattedMessage;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.sql.SQLException;
 
 @Service
 public class UserService {

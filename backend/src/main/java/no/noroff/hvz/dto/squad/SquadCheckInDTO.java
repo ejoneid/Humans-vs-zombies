@@ -1,6 +1,5 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.squad;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 public class SquadCheckInDTO {

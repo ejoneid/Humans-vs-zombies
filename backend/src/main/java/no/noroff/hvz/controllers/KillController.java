@@ -1,7 +1,7 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.KillDTO;
-import no.noroff.hvz.dto.RegKillDTO;
+import no.noroff.hvz.dto.kill.KillDTO;
+import no.noroff.hvz.dto.kill.RegKillDTO;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Kill;

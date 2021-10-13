@@ -1,8 +1,9 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.player;
 
-import java.util.List;
+import no.noroff.hvz.dto.player.PlayerDTO;
+import no.noroff.hvz.dto.user.AppUserDTO;
 
-public class PlayerDTOFull implements PlayerDTO{
+public class PlayerDTOFull implements PlayerDTO {
 
     private Long id;
     private Boolean isHuman;

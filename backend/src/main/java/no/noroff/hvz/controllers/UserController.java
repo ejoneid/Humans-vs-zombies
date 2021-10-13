@@ -1,10 +1,9 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.AppUserDTO;
+import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.services.UserService;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/user")

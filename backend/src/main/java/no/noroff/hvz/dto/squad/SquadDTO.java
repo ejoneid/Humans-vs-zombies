@@ -1,4 +1,4 @@
-package no.noroff.hvz.dto;
+package no.noroff.hvz.dto.squad;
 
 import java.util.List;
 

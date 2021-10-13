@@ -1,6 +1,6 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.dto.RegKillDTO;
+import no.noroff.hvz.dto.kill.RegKillDTO;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
@@ -8,8 +8,6 @@ import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.KillerRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;

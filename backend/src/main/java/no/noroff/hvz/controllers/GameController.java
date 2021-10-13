@@ -1,7 +1,7 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.GameDTO;
-import no.noroff.hvz.dto.MessageDTO;
+import no.noroff.hvz.dto.game.GameDTO;
+import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -10,7 +10,6 @@ import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.GameService;
 import no.noroff.hvz.services.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
