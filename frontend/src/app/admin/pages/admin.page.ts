@@ -33,6 +33,16 @@ export class AdminPage implements OnInit {
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
+  ngOnInit(): void {
+    //Finding gameID from the optional params
+    this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
+    //Getting information about the specific game
+    this.updateGame();
+    //Getting information about map markers.
+    this.updateMissions();
+    this.updateKills();
+  }
+
   updateMissions() {
     const tempMissions: Mission[] = [];
     this.adminAPI.getMissionsByGame(this.gameInfo.id)
@@ -56,28 +66,7 @@ export class AdminPage implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    //Finding gameID from the optional params
-    this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
-
-    //Getting information about the specific game
-    this.adminAPI.getGameById(this.gameInfo.id)
-      .then((response) => {
-        response.subscribe((game) => {
-          this.gameInfo.name = game.name;
-          this.gameInfo.state = game.state;
-          this.gameInfo.description = game.description;
-          this.gameInfo.map_info = {
-            nw_lat: game.nw_lat,
-            se_lat: game.se_lat,
-            nw_long: game.nw_long,
-            se_long: game.se_long
-          };
-          this.messagesURL = game.messages;
-        });
-      });
-    //Getting information about map markers.
-    this.updateMissions();
+  updateKills() {
     const tempKills: Kill[] = [];
     this.adminAPI.getKillsByGame(this.gameInfo.id)
       .then((response) => {
@@ -94,6 +83,24 @@ export class AdminPage implements OnInit {
             });
           }
           this.gameInfo.kills = tempKills;
+        });
+      });
+  }
+
+  updateGame() {
+    this.adminAPI.getGameById(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((game) => {
+          this.gameInfo.name = game.name;
+          this.gameInfo.state = game.state;
+          this.gameInfo.description = game.description;
+          this.gameInfo.map_info = {
+            nw_lat: game.nw_lat,
+            se_lat: game.se_lat,
+            nw_long: game.nw_long,
+            se_long: game.se_long
+          };
+          this.messagesURL = game.messages;
         });
       });
   }

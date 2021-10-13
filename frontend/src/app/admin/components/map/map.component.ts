@@ -7,7 +7,7 @@ import {MapBorder} from "../../../models/map-border.model";
 import {Kill} from "../../../models/kill.model";
 import {Mission} from "../../../models/mission.model";
 import {MapMarker} from "../../../models/map-marker.model";
-import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps";
+import {MapInfoWindow} from "@angular/google-maps";
 import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
@@ -29,6 +29,8 @@ export class MapComponent implements OnInit, OnChanges {
   public gameID!: number;
   @Output()
   missionUpdate: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  killUpdate: EventEmitter<any> = new EventEmitter<any>();
 
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap!: ElementRef;
@@ -98,24 +100,26 @@ export class MapComponent implements OnInit, OnChanges {
     );
   }
 
-  public editMarker(markerID: string, id: string): void {
-    console.log(markerID)
-    if (this.markers.find(m => m.id === parseInt(markerID)) != undefined) {
-      if (this.markers.find(m => m.id === parseInt(markerID))!.isMission) {
-        this.editMission(parseInt(id));
-      }
-      else {
-        this.editKill(parseInt(id));
-      }
+  //Checks if the selected marker is for a kill or a mission and opens the proper method.
+  public editMarker(id: number, isMission: boolean): void {
+    if (isMission) {
+      this.editMission(id);
+    }
+    else {
+      this.editKill(id);
     }
   }
 
+  //TODO: Opens a dialog window for the specified kill
   private editKill(id: number): void {
-
+    const kill = this.kills.find(m => m.id === id);
+    console.log(kill);
   }
 
+  //Opens a dialog window for the specified mission.
   private editMission(id: number): void {
     const mission = this.missions.find(m => m.id === id);
+    console.log(`FOUND: ${mission}`)
     if (mission != undefined) {
       const dialogRef = this.dialog.open(MissionEditComponent, {
         height: "fit-content",
@@ -136,8 +140,9 @@ export class MapComponent implements OnInit, OnChanges {
           mission.startTime = result.startTime;
           mission.endTime = result.endTime;
           this.adminAPI.updateMission(this.gameID, mission.id, mission)
-            .then(result => result.subscribe((response) => {
-              console.log(response)
+            .then(result => result.subscribe((res) => {
+              console.log(res)
+              this.missionUpdate.emit();
             }));
         }
       });

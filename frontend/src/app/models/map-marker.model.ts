@@ -1,5 +1,5 @@
 export interface MapMarker {
-  id: number | null,
+  id: number,
   isMission: boolean,
   description: string | null,
   position: {

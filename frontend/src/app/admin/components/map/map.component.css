@@ -23,3 +23,7 @@
 #newMissionButton {
   align-self: center;
 }
+.dataContainer {
+  line-height: 0;
+  height: 0;
+}

@@ -5,16 +5,12 @@
               height="100%" width="100%"
               style="height: 100%; width: 100%"
   >
-    <!--(click)="editMission(mission)-->
-    <map-marker #mapMarker="mapMarker"
+    <map-marker
       *ngFor="let marker of markers"
       [label]="marker.label"
       [position]="marker.position"
       [options]="marker.options"
-      (mapClick)="editMarker(markerID.innerHTML, id.innerHTML)"
-    >
-      <p #markerID>{{marker.id}}</p>
-      <p #id>{{marker.id}}</p>
+      (mapClick)="editMarker(marker.id, marker.isMission)">
     </map-marker>
     <map-info-window></map-info-window>
   </google-map>

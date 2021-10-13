@@ -22,8 +22,8 @@
 
 <mat-dialog-actions id="buttonContainer">
   <mat-slide-toggle [(ngModel)]="data.isHuman">
-    <p *ngIf="data.isHuman">Human mission</p>
-    <p *ngIf="!data.isHuman">Zombie mission</p>
+    <p class="dataContainer" *ngIf="data.isHuman">Human mission</p>
+    <p class="dataContainer" *ngIf="!data.isHuman">Zombie mission</p>
   </mat-slide-toggle>
   <button id="saveMission" class="normalGreyButton" [mat-dialog-close]="data">Save</button>
 </mat-dialog-actions>
