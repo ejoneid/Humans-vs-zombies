@@ -93,6 +93,7 @@ public class GameController {
         Game deletedGame = gameService.deleteGame(id);
         if(deletedGame.getId() == null) {
             status = HttpStatus.NOT_FOUND;
+
         }
         else {
             status = HttpStatus.OK;
