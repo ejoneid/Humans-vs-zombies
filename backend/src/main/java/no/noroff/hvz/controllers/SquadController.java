@@ -76,7 +76,7 @@ public class SquadController {
             member = squadService.joinSquad(gameID, createdSquad.getId(), member);
             status = HttpStatus.CREATED;
             //Gets the updated squad with the new member
-            createdSquad = squadService.getSpecificSquad(gameID,createdSquad.getId());
+            createdSquad = squadService.getSpecificSquad(gameID,member.getSquad().getId());
             squadDTO = mapper.toSquadDTO(createdSquad);
         }
         catch (NullPointerException e) {
@@ -152,7 +152,7 @@ public class SquadController {
                 Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
                 Squad squad= squadService.getSpecificSquad(gameID, squadID);
                 //check if player
-                if(player.isHuman() == chat.get(0).isHuman() && squadService.isMemberOfSquad(squad,player)) {
+                if(player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) {
                     chatDTO = chat.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
                     status = HttpStatus.OK;
                 }
@@ -169,6 +169,7 @@ public class SquadController {
 
     @PostMapping("/{squadID}/chat")
     public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader String playerID, @RequestBody Message message) {
+        //TODO skal ta inn MessageDTO, du kan endre den hvis du trenger at den gjør noe annet, eventuelt lage en reg versjon
         Message chat = squadService.createSquadChat(gameID, squadID, Long.parseLong(playerID), message);
         MessageDTO messageDTO = null;
         if(chat == null) {
@@ -182,31 +183,56 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/check-in")
-    public ResponseEntity<List<SquadCheckInDTO>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID) {
-        List<SquadCheckIn> checkins = squadService.getSquadCheckIn(gameID, squadID);
-        List<SquadCheckInDTO> checkInsDTO = null;
-        if(checkins == null) {
+    public ResponseEntity<List<SquadCheckInDTO>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
+                                                                 @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+        List<SquadCheckInDTO> checkInDTOs = new ArrayList<>();
+        try{
+            List<SquadCheckIn> checkins = squadService.getSquadCheckIn(gameID, squadID);
+            if(SecurityUtils.isAdmin(authorization)) {
+                checkInDTOs = checkins.stream().map(mapper::toSquadCheckInDTO).collect(Collectors.toList());
+                status = HttpStatus.OK;
+            }
+            else {
+                AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+                Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+                Squad squad= squadService.getSpecificSquad(gameID, squadID);
+                //check if player
+                if(player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) {
+                    checkInDTOs = checkins.stream().map(mapper::toSquadCheckInDTO).collect(Collectors.toList());
+                    status = HttpStatus.OK;
+                }
+                else {
+                    status = HttpStatus.FORBIDDEN;
+                }
+            }
+        }
+        catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
         }
-        else {
-            status = HttpStatus.OK;
-            checkInsDTO = checkins.stream().map(mapper::toSquadCheckInDTO).collect(Collectors.toList());
-        }
-
-        return new ResponseEntity<>(checkInsDTO, status);
+        return new ResponseEntity<>(checkInDTOs, status);
     }
 
     @PostMapping("/{squadID}/check-in")
-    public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadCheckIn checkin) {
-        SquadCheckIn addedCheckIn = squadService.createSquadCheckIn(gameID, squadID, checkin);
-        SquadCheckInDTO checkInDTO = null;
-        if(addedCheckIn == null) {
+    public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
+                                                              @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) {
+        SquadCheckInDTO addedCheckInDTO = null;
+        try{
+            AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+            Squad squad= squadService.getSpecificSquad(gameID, squadID);
+            //check if player and squad is same faction
+            if(player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) {
+                SquadCheckIn addedCheckIn = squadService.createSquadCheckIn(gameID, squadID, mapper.toSquadCheckIn(checkInDTO));
+                status = HttpStatus.OK;
+                addedCheckInDTO = mapper.toSquadCheckInDTO(addedCheckIn);
+            }
+            else {
+                status = HttpStatus.FORBIDDEN;
+            }
+        }
+        catch (NullPointerException e) {
             status = HttpStatus.NOT_FOUND;
         }
-        else{
-            status = HttpStatus.CREATED;
-            checkInDTO = mapper.toSquadCheckInDTO(addedCheckIn);
-        }
-        return new ResponseEntity<>(checkInDTO, status);
+        return new ResponseEntity<>(addedCheckInDTO, status);
     }
 }

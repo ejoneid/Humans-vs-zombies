@@ -27,12 +27,15 @@ public class SquadCheckIn {
     @JoinColumn(name = "member_id")
     private SquadMember member;
 
-    @JsonGetter("member")
-    public Long memberGetter() {
-        if (member != null) {
-            return member.getId();
-        }
-        return null;
+    public SquadCheckIn() {
+    }
+
+    public SquadCheckIn(Long id, Date time, String lat, String lng, SquadMember member) {
+        this.id = id;
+        this.time = time;
+        this.lat = lat;
+        this.lng = lng;
+        this.member = member;
     }
 
     public Long getId() {
