@@ -91,7 +91,8 @@ export class GameInfoPage implements OnInit {
               startTime: mission.startTime.toString(),
               lat: parseFloat(mission.lat),
               lng: parseFloat(mission.lng),
-              isHuman: mission.isHuman
+              human: mission.isHuman,
+              gameId: this.game.id
             });
           }
           this.gameInfo.missions = tempMissions;
@@ -103,6 +104,7 @@ export class GameInfoPage implements OnInit {
         response.subscribe((kills) => {
           for (let kill of kills) {
             tempKills.push({
+              id: kill.id,
               killerName: kill.killerName.toString(),
               lat: parseFloat(kill.lat),
               lng: parseFloat(kill.lng),

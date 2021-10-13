@@ -36,24 +36,14 @@ export class AdminPage implements OnInit {
   ngOnInit(): void {
     //Finding gameID from the optional params
     this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
-
     //Getting information about the specific game
-    this.adminAPI.getGameById(this.gameInfo.id)
-      .then((response) => {
-        response.subscribe((game) => {
-          this.gameInfo.name = game.name;
-          this.gameInfo.state = game.state;
-          this.gameInfo.description = game.description;
-          this.gameInfo.map_info = {
-            nw_lat: game.nw_lat,
-            se_lat: game.se_lat,
-            nw_long: game.nw_long,
-            se_long: game.se_long
-          };
-          this.messagesURL = game.messages;
-        });
-      });
+    this.updateGame();
     //Getting information about map markers.
+    this.updateMissions();
+    this.updateKills();
+  }
+
+  updateMissions() {
     const tempMissions: Mission[] = [];
     this.adminAPI.getMissionsByGame(this.gameInfo.id)
       .then((response) => {
@@ -67,18 +57,23 @@ export class AdminPage implements OnInit {
               startTime: mission.startTime.toString(),
               lat: parseFloat(mission.lat),
               lng: parseFloat(mission.lng),
-              isHuman: mission.isHuman
+              human: mission.isHuman,
+              gameId: this.game.id
             });
           }
           this.gameInfo.missions = tempMissions;
         });
       });
+  }
+
+  updateKills() {
     const tempKills: Kill[] = [];
     this.adminAPI.getKillsByGame(this.gameInfo.id)
       .then((response) => {
         response.subscribe((kills) => {
           for (let kill of kills) {
             tempKills.push({
+              id: kill.id,
               killerName: kill.killerName.toString(),
               lat: parseFloat(kill.lat),
               lng: parseFloat(kill.lng),
@@ -88,6 +83,24 @@ export class AdminPage implements OnInit {
             });
           }
           this.gameInfo.kills = tempKills;
+        });
+      });
+  }
+
+  updateGame() {
+    this.adminAPI.getGameById(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((game) => {
+          this.gameInfo.name = game.name;
+          this.gameInfo.state = game.state;
+          this.gameInfo.description = game.description;
+          this.gameInfo.map_info = {
+            nw_lat: game.nw_lat,
+            se_lat: game.se_lat,
+            nw_long: game.nw_long,
+            se_long: game.se_long
+          };
+          this.messagesURL = game.messages;
         });
       });
   }
