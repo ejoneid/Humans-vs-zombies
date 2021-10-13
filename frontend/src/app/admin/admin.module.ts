@@ -9,10 +9,12 @@ import { GameComponent } from './components/game/game.component';
 import { PlayerComponent } from './components/player/player.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { MissionEditComponent } from './components/mission-edit/mission-edit.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -31,7 +33,10 @@ import {MatInputModule} from "@angular/material/input";
     GoogleMapsModule,
     FormsModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule
   ],
   entryComponents: [
     MissionEditComponent

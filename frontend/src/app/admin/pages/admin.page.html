@@ -3,7 +3,7 @@
 <main class="adminContainer">
   <app-player [gameID]="game.id"></app-player>
   <section class="componentContainer">
-    <app-mission [missions]="game.missions"></app-mission>
+    <app-mission [missions]="game.missions" [gameID]="game.id"></app-mission>
     <app-game></app-game>
   </section>
   <section class="componentContainer">

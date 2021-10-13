@@ -1,1 +1,14 @@
-
+#description {
+  width: 98%;
+}
+#title {
+  width: 98%;
+}
+#buttonContainer {
+  display: flex;
+  flex-direction: column;
+}
+#dateTimeContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

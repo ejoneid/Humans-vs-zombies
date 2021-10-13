@@ -1,7 +1,29 @@
-<h2 mat-dialog-title>{{data.name}}</h2>
+<textarea id="title" cdkTextareaAutosize mat-dialog-title placeholder="Mission name"
+          [(ngModel)]="data.name"></textarea>
 <mat-dialog-content>
-  <textarea [(ngModel)]="data.description"></textarea>
+  <textarea id="description" cdkTextareaAutosize
+            [(ngModel)]="data.description" placeholder="Mission description"></textarea>
+
+  <mat-label>Choose a start and end date (Optional):</mat-label>
+  <section id="dateTimeContainer">
+    <mat-form-field appearance="fill">
+      <input matInput [matDatepicker]="startPicker" placeholder="Start date" [(ngModel)]="data.startTime">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput [matDatepicker]="endPicker" placeholder="End date" [(ngModel)]="data.endTime">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </section>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button class="normalGreyButton" [mat-dialog-close]="data.description">Save</button>
+
+<mat-dialog-actions id="buttonContainer">
+  <mat-slide-toggle [(ngModel)]="data.isHuman">
+    <p *ngIf="data.isHuman">Human mission</p>
+    <p *ngIf="!data.isHuman">Zombie mission</p>
+  </mat-slide-toggle>
+  <button id="saveMission" class="normalGreyButton" [mat-dialog-close]="data">Save</button>
 </mat-dialog-actions>

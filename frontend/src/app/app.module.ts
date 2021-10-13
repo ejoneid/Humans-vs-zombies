@@ -9,6 +9,7 @@ import {HomeModule} from "./home/home.module";
 import {GameInfoModule} from "./game-info/game-info.module";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
         allowedList: ['http://localhost:4200/*', 'http://localhost:8080/api/*']
       }
     }),
+    MatNativeDateModule,
     HttpClientModule,
     NoopAnimationsModule
   ],
