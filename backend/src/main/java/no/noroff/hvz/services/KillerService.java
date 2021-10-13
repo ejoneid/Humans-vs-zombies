@@ -1,9 +1,12 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.dto.RegKillDTO;
+import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.KillerRepository;
+import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,10 @@ public class KillerService {
     private KillerRepository killerRepository;
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
+    @Autowired
+    private CustomMapper mapper;
 
     public List<Kill> getAllKills(Long gameID) {
         List<Kill> kills = null;
@@ -56,13 +63,16 @@ public class KillerService {
         return kill;
     }
 
-    public Kill updateKill(Long gameID, Long killID, Kill kill) {
+    public Kill updateKill(Long gameID, Long killID, RegKillDTO killDto) {
 
-        Kill updatedKill = new Kill();
-        if(gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
-            updatedKill = killerRepository.save(kill);
+        Kill updatedKill = getSpecificKill(gameID, killID);
+        mapper.updateKillFromDto(killDto, updatedKill);
+        try {
+            updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
+        } catch (Exception exception) {
+            System.out.println("COULD NOT FIND PLAYER!");
         }
-        return updatedKill;
+        return killerRepository.save(updatedKill);
     }
 
     public Kill deleteKill(Long gameID, Long killID) {

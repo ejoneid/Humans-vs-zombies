@@ -250,25 +250,33 @@ class AppStartupRunner implements ApplicationRunner {
 //        }
         message1.setMessage("Hello World!");
         message1.setGlobal(true);
+        message1.setFaction(false);
 
         message2.setMessage("Hello global chat!");
         message2.setGlobal(true);
+        message2.setFaction(false);
 
         message3.setMessage("Hello faction!");
         message3.setGlobal(false);
+        message3.setFaction(true);
 
         message4.setMessage("This faction chat is nice!!");
         message4.setGlobal(false);
+        message4.setFaction(true);
 
         message5.setMessage("Hello Game 2!");
         message5.setGlobal(true);
+        message5.setFaction(false);
 
         message6.setMessage("Hello Player 4! Greetings from number 5");
         message6.setGlobal(true);
+        message6.setFaction(false);
 
         message7.setMessage("Hello Squad");
+        message7.setFaction(false);
 
         message8.setMessage("Hello Squad indeed");
+        message8.setFaction(false);
 
         gameService.createNewChat(1L, message1, 1L);
         gameService.createNewChat(1L, message2, 2L);

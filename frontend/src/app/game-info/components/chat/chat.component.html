@@ -1,10 +1,24 @@
 <section class="greyBackground">
+  <section class="chatHeaderContainer">
+    <h2>Chat</h2>
+    <button class="normalGreyButton" (click)="displayGlobal()">Global</button>
+    <button class="normalGreyButton" *ngIf="playerIsHuman" (click)="displayFaction()">Human</button>
+    <button class="normalGreyButton" *ngIf="!playerIsHuman" (click)="displayFaction()">Zombie</button>
+    <button class="normalGreyButton" *ngIf="playerHasSquad" (click)="displaySquad()">Squad</button>
+  </section>
   <section class="chatContainer">
-    <h2>Global Chat</h2>
     <app-message *ngFor="let message of chatMessages"
                  [timeSent]="message.time"
                  [sender]="message.sender"
                  [message]="message.content">
     </app-message>
+  </section>
+  <section class="sendContainer">
+    <form>
+      <input type="text" [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
+      <button type="submit" (click)="submitChat()">
+        Send
+      </button>
+    </form>
   </section>
 </section>

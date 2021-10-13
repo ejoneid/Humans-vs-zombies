@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SquadService {
@@ -88,7 +89,8 @@ public class SquadService {
         List<Message> chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
             Squad squad = squadRepository.findById(squadID).get();
-            chat = squad.getMessages().stream().toList();
+            chat = squad.getMessages().stream()
+                    .sorted(Comparator.comparing(Message::getChatTime)).collect(Collectors.toList());
         }
         return chat;
     }
@@ -101,6 +103,7 @@ public class SquadService {
             message.setPlayer(playerRepository.findById(playerID).get());
             message.setHuman(playerRepository.findById(playerID).get().isHuman());
             message.setGlobal(false);
+            message.setChatTime(new Date());
             chat = messageRepository.save(message);
         }
         return chat;

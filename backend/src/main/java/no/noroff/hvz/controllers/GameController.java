@@ -135,9 +135,9 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader(required = false) Long playerID) {
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
         HttpStatus status;
-        Message createdMessage = gameService.createNewChat(id, message, playerID);
+        Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
         if (createdMessage != null) {
             status = HttpStatus.CREATED;
             return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
