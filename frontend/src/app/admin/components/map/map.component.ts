@@ -11,6 +11,7 @@ import {MapInfoWindow} from "@angular/google-maps";
 import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
+import LatLng = google.maps.LatLng;
 
 @Component({
   selector: 'app-map-admin',
@@ -105,11 +106,18 @@ export class MapComponent implements OnInit, OnChanges {
   //Checks if the selected marker is for a kill or a mission and opens the proper method.
   public editMarker(id: number, isMission: boolean): void {
     if (isMission) {
-      this.editMission(id);
+      const mission = this.missions.find(m => m.id === id);
+      if (mission != undefined) {
+        this.editMission(mission);
+      }
     }
     else {
       this.editKill(id);
     }
+  }
+
+  public createMarker(position: LatLng): void {
+    this.createMission(position);
   }
 
   //TODO: Opens a dialog window for the specified kill
@@ -119,59 +127,64 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   //Opens a dialog window for the specified mission.
-  private editMission(id: number): void {
-    const mission = this.missions.find(m => m.id === id);
-    if (mission != undefined) {
-      const dialogRef = this.dialog.open(MissionEditComponent, {
-        height: "fit-content",
-        width: "fit-content",
-        data: {
-          name: mission.name,
-          description: mission.description,
-          startTime: mission.startTime,
-          endTime: mission.endTime,
-          isHuman: mission.human
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result != undefined) {
-          mission.name = result.name;
-          mission.human = result.isHuman;
-          mission.description = result.description;
-          mission.startTime = result.startTime;
-          mission.endTime = result.endTime;
-          this.adminAPI.updateMission(this.gameID, mission.id, mission)
-            .then(result => result.subscribe(() => {
-              this.missionUpdate.emit();
-            }));
-        }
-      });
-    } else {
-      const dialogRef = this.dialog.open(MissionEditComponent, {
-        height: "fit-content",
-        width: "fit-content",
-        data: {
-          name: null,
-          description: null,
-          startTime: null,
-          endTime: null,
-          isHuman: true
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.logResult(result);
-      });
-    }
+  private editMission(mission: Mission): void {
+    const dialogRef = this.dialog.open(MissionEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        name: mission.name,
+        description: mission.description,
+        startTime: mission.startTime,
+        endTime: mission.endTime,
+        isHuman: mission.human
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        mission.name = result.name;
+        mission.human = result.isHuman;
+        mission.description = result.description;
+        mission.startTime = result.startTime;
+        mission.endTime = result.endTime;
+        this.adminAPI.updateMission(this.gameID, mission.id, mission)
+          .then(result => result.subscribe(() => {
+            this.missionUpdate.emit();
+          }));
+      }
+    });
   }
 
-  logResult(result: any) {
-    if (result != undefined) {
-      console.log(`Mission Name: ${result.name}`);
-      if (result.isHuman) console.log(`Mission type: Human`);
-      else console.log(`Mission type: Zombie`);
-      console.log(`Mission Description: ${result.description}`);
-      if (result.startTime != null) console.log(`Start time: ${result.startTime}`);
-      if (result.endTime != null) console.log(`End time: ${result.endTime}`);
+  //Creates a new mission
+  private createMission(position: LatLng): void {
+    let mission: Mission = {
+      name: "",
+      description: "",
+      startTime: null,
+      endTime: null,
+      gameId: this.gameID,
+      human: false,
+      id: 0,
+      lat: position.lat(),
+      lng: position.lng()
     }
+    const dialogRef = this.dialog.open(MissionEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        name: "",
+        description: "",
+        startTime: "",
+        endTime: "",
+        isHuman: false
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      result.subscribe(() => {
+        this.adminAPI.createMission(this.gameID, mission)
+          .then(result => result.subscribe(() => {
+            this.missionUpdate.emit();
+          }));
+      });
+    });
   }
 }
