@@ -5,6 +5,7 @@ import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.kill.KillDTO;
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Component
 public class Mapper {
@@ -94,6 +96,13 @@ public class Mapper {
     public MessageDTO toMessageDTO(Message message) {
         String playerUrl = url + message.getGame().getId() + "/player/" + message.getPlayer().getId();
         return new MessageDTO(message.getId(), message.getMessage(),message.getChatTime(),playerUrl, message.getPlayer().getUser().getFirstName() + " " + message.getPlayer().getUser().getLastName(), message.isHuman(), message.isGlobal(), message.isFaction());
+    }
+
+    public Message toMessage(MessageDTOreg dto) {
+        Message message = new Message();
+        message.setMessage(dto.getMessage());
+        message.setFaction(dto.isFaction());
+        return message;
     }
 
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {

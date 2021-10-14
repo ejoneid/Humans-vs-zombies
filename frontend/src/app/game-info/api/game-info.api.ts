@@ -37,17 +37,13 @@ export class GameInfoAPI {
   public async getSquadChat(gameID: number, squadID: number) {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat");
   }
-  public async sendGlobalChat(gameID: number, playerID: number, message: String): Promise<Observable<any>> {
-    console.log(message);
-    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
-    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":false}, {headers: header});
+  public async sendGlobalChat(gameID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":false});
   }
-  public async sendFactionChat(gameID: number, playerID: number, message: String): Promise<Observable<any>> {
-    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
-    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true}, {headers: header});
+  public async sendFactionChat(gameID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true});
   }
-  public async sendSquadChat(gameID: number, squadID: number, playerID: number, message: String): Promise<Observable<any>> {
-    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
-    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false}, {headers:header});
+  public async sendSquadChat(gameID: number, squadID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
   }
 }

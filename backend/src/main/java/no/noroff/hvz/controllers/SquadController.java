@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.dto.squad.SquadCheckInDTO;
 import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
@@ -171,9 +172,11 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/chat")
-    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestHeader String playerID, @RequestBody Message message) {
-        //TODO skal ta inn MessageDTO, du kan endre den hvis du trenger at den gjør noe annet, eventuelt lage en reg versjon
-        Message chat = squadService.createSquadChat(gameID, squadID, Long.parseLong(playerID), message);
+    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) {
+        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+        if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        Message chat = squadService.createSquadChat(gameID, squadID, player.getId(), mapper.toMessage(message));
         MessageDTO messageDTO = null;
         if(chat == null) {
             status = HttpStatus.NOT_FOUND;

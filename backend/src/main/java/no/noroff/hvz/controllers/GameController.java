@@ -3,6 +3,7 @@ package no.noroff.hvz.controllers;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -132,9 +133,12 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
         HttpStatus status;
-        Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
+        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        Player player = appUserService.getPlayerByGameAndUser(id, appUser);
+        if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());
         if (createdMessage != null) {
             status = HttpStatus.CREATED;
             return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
