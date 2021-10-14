@@ -14,6 +14,9 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { CreateMarkerComponent } from './components/create-marker/create-marker.component';
+import { KillEditComponent } from './components/kill-edit/kill-edit.component';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -23,19 +26,22 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     GameComponent,
     PlayerComponent,
     GameTitleComponent,
-    MissionEditComponent
+    MissionEditComponent,
+    CreateMarkerComponent,
+    KillEditComponent
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    GoogleMapsModule,
-    FormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatDatepickerModule,
-    ReactiveFormsModule,
-    MatSlideToggleModule
-  ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        GoogleMapsModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatDatepickerModule,
+        ReactiveFormsModule,
+        MatSlideToggleModule,
+        MatCardModule
+    ],
   entryComponents: [
     MissionEditComponent
   ]

@@ -4,6 +4,7 @@
               [options]="options"
               height="100%" width="100%"
               style="height: 100%; width: 100%"
+              (mapClick)="createMarker($event.latLng)"
   >
     <map-marker
       *ngFor="let marker of markers"

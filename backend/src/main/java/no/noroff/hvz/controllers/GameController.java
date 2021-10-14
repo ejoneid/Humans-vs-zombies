@@ -1,7 +1,9 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.game.GameDTO;
+import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -55,7 +57,8 @@ public class GameController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<GameDTO> createNewGame(@RequestBody Game game) {
+    public ResponseEntity<GameDTO> createNewGame(@RequestBody GameDTOReg gameDTOReg) {
+        Game game = mapper.toGame(gameDTOReg);
         Game addedGame = gameService.createNewGame(game);
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toGameDTO(addedGame), status);
@@ -63,8 +66,9 @@ public class GameController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
+    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTO gameDTO) {
         HttpStatus status = HttpStatus.OK;
+        Game game = mapper.toGame(gameDTO);
         if(!Objects.equals(id,game.getId())) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(null, status);
@@ -112,8 +116,10 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
-        Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        Player player = appUserService.getPlayerByGameAndUser(id, appUser);
+        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }

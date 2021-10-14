@@ -10,6 +10,7 @@ import {GameInfoModule} from "./game-info/game-info.module";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
+import {MomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -34,11 +35,11 @@ import {MatNativeDateModule} from "@angular/material/core";
 
       // Specify configuration for the interceptor
       httpInterceptor: {
-        allowedList: [ 
+        allowedList: [
         {
           uriMatcher: (url: string) => {
             if (url == "http://localhost:8080/api/game") {return false}
-            if (url.match("http://localhost:8080/api/.*")) {return true} 
+            if (url.match("http://localhost:8080/api/.*")) {return true}
             return false;
           }
         },
@@ -51,7 +52,8 @@ import {MatNativeDateModule} from "@angular/material/core";
     }),
     MatNativeDateModule,
     HttpClientModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    MomentDateModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }

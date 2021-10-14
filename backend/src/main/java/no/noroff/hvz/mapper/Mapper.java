@@ -1,9 +1,11 @@
 package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.game.GameDTO;
+import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.kill.KillDTO;
-import no.noroff.hvz.dto.kill.RegKillDTO;
+import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
+import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Component
 public class Mapper {
@@ -80,7 +82,7 @@ public class Mapper {
                 killerName, victimName);
     }
 
-    public Kill regKillDTO(RegKillDTO killDTO) throws InvalidBiteCodeException {
+    public Kill regKillDTO(KillDTOReg killDTO) throws InvalidBiteCodeException {
         Kill kill = new Kill();
         customMapper.updateKillFromDto(killDTO, kill);
         Player killer = playerRepository.findById(killDTO.getKillerID()).get();
@@ -94,6 +96,13 @@ public class Mapper {
     public MessageDTO toMessageDTO(Message message) {
         String playerUrl = url + message.getGame().getId() + "/player/" + message.getPlayer().getId();
         return new MessageDTO(message.getId(), message.getMessage(),message.getChatTime(),playerUrl, message.getPlayer().getUser().getFirstName() + " " + message.getPlayer().getUser().getLastName(), message.isHuman(), message.isGlobal(), message.isFaction());
+    }
+
+    public Message toMessage(MessageDTOreg dto) {
+        Message message = new Message();
+        message.setMessage(dto.getMessage());
+        message.setFaction(dto.isFaction());
+        return message;
     }
 
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
@@ -112,7 +121,7 @@ public class Mapper {
                userDTO ,killsUrl,messagesUrl);
     }
 
-    public Player regPlayerDTO(RegPlayerDTO p) {
+    public Player regPlayerDTO(PlayerDTOReg p) {
         Player player = new Player();
         if (!appUserRepository.existsById(p.getUserID())) return null;
         AppUser user = appUserRepository.findById(p.getUserID()).get();
@@ -148,5 +157,12 @@ public class Mapper {
         Player player = toPlayer(squadCheckInDTO.getMember());
         SquadMember squadMember = squadMemberRepository.getByPlayer(player);
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
+    }
+
+    public Game toGame(GameDTOReg gameDTO) {
+        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+    }
+    public Game toGame(GameDTO gameDTO) {
+        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
     }
 }

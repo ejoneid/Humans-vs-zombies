@@ -1,6 +1,6 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.dto.kill.RegKillDTO;
+import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
@@ -63,7 +63,7 @@ public class KillerService {
         return kill;
     }
 
-    public Kill updateKill(Long gameID, Long killID, RegKillDTO killDto) {
+    public Kill updateKill(Long gameID, Long killID, KillDTOReg killDto) {
 
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
