@@ -39,60 +39,44 @@ public class Game {
     @JoinColumn(name = "squad_id")
     private Set<Squad> squads;
 
-    @JsonGetter("squads")
-    public List<Long> squadGetter() {
-        if (squads != null) {
-            return squads.stream().map(Squad::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
-
     @OneToMany
     @JoinColumn(name = "mission_id")
     private Set<Mission> missions;
-
-    @JsonGetter("missions")
-    public List<Long> missionsGetter() {
-        if (missions != null) {
-            return missions.stream().map(Mission::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
 
     @OneToMany
     @JoinColumn(name = "kill_id")
     private Set<Kill> kills;
 
-    @JsonGetter("kills")
-    public List<Long> killsGetter() {
-        if (kills != null) {
-            return kills.stream().map(Kill::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
-
     @OneToMany
     @JoinColumn(name = "message_id")
     private Set<Message> messages;
-
-    @JsonGetter("messages")
-    public List<Long> messagesGetter() {
-        if (messages != null) {
-            return messages.stream().map(Message::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
 
     @OneToMany
     @JoinColumn(name = "player_id")
     private Set<Player> players;
 
-    @JsonGetter("players")
-    public List<Long> playersGetter() {
-        if (players != null) {
-            return players.stream().map(Player::getId).collect(Collectors.toList());
-        }
-        return null;
+    public Game(String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
+        this.name = name;
+        this.gameState = gameState;
+        this.description = description;
+        this.nw_lat = nw_lat;
+        this.se_lat = se_lat;
+        this.nw_long = nw_long;
+        this.se_long = se_long;
+    }
+
+    public Game(Long id, String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
+        this.id = id;
+        this.name = name;
+        this.gameState = gameState;
+        this.description = description;
+        this.nw_lat = nw_lat;
+        this.se_lat = se_lat;
+        this.nw_long = nw_long;
+        this.se_long = se_long;
+    }
+
+    public Game() {
     }
 
     public Long getId() {
