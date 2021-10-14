@@ -44,13 +44,14 @@ public class MissionController {
     public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         try {
-            Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
+
             List<MissionDTO> missionDTOs;
             List<Mission> missions;
             if(SecurityUtils.isAdmin(authorization)) {
                 missions = missionService.getAllMissions(gameID);
             }
             else {
+                Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
                 missions = missionService.getAllMissionsFaction(gameID, player.isHuman());
             }
             missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
