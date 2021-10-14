@@ -1,5 +1,6 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
@@ -19,12 +20,11 @@ public class AppUserService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    public AppUser getSpecificUser(String openId) {
-        AppUser appUser = null;
-        if(appUserRepository.existsAppUserByOpenId(openId)) {
-            appUser = appUserRepository.getAppUserByOpenId(openId);
+    public AppUser getSpecificUser(String openId) throws AppUserNotFoundException {
+        if(!appUserRepository.existsAppUserByOpenId(openId)) {
+            throw new AppUserNotFoundException("Could not find user");
         }
-        return appUser;
+        return appUserRepository.getAppUserByOpenId(openId);
     }
 
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) {

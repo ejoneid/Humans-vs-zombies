@@ -4,6 +4,7 @@ import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.message.MessageDTOreg;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -92,7 +93,7 @@ public class GameController {
                                                      @RequestHeader(required = false) String human,
                                                      @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
-                                                     ) throws NullPointerException {
+                                                     ) throws NullPointerException, AppUserNotFoundException {
         HttpStatus status;
         List<Message> messages;
         List<MessageDTO> messageDTOs = null;
@@ -116,7 +117,7 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(id, appUser);
         Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());

@@ -5,6 +5,7 @@ import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.dto.squad.SquadCheckInDTO;
 import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.security.SecurityUtils;
@@ -68,7 +69,7 @@ public class SquadController {
 
     @PostMapping
     public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody Squad squad,
-                                                   @AuthenticationPrincipal Jwt principal) {
+                                                   @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         SquadDTO squadDTO = null;
         try {
             AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
@@ -141,7 +142,7 @@ public class SquadController {
 
     @GetMapping("/{squadID}/chat")
     public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                         @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+                                                         @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         List<MessageDTO> chatDTO = new ArrayList<>();
         try{
             List<Message> chat = squadService.getSquadChat(gameID, squadID);
@@ -172,7 +173,7 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/chat")
-    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
         if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -190,7 +191,7 @@ public class SquadController {
 
     @GetMapping("/{squadID}/check-in")
     public ResponseEntity<List<SquadCheckInDTO>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                                 @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+                                                                 @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         List<SquadCheckInDTO> checkInDTOs = new ArrayList<>();
         try{
             List<SquadCheckIn> checkins = squadService.getSquadCheckIn(gameID, squadID);
@@ -220,7 +221,7 @@ public class SquadController {
 
     @PostMapping("/{squadID}/check-in")
     public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                              @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) {
+                                                              @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         SquadCheckInDTO addedCheckInDTO = null;
         try{
             AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));

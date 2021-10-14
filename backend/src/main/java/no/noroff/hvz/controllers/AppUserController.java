@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.user.AppUserDTO;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import org.hibernate.exception.ConstraintViolationException;
@@ -31,8 +32,12 @@ public class AppUserController {
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
-        System.out.println(principal);
-        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        AppUser appUser;
+        try {
+            appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        } catch (AppUserNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         AppUserDTO appUserDTO = null;
         if(appUser == null) {
             status = HttpStatus.NOT_FOUND;

@@ -2,6 +2,7 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.kill.KillDTO;
 import no.noroff.hvz.dto.kill.KillDTOReg;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.Kill;
@@ -76,7 +77,7 @@ public class KillController {
     }
 
     @PutMapping("/{killID}")
-    public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         Kill unchangedKill = killerService.getSpecificKill(gameID, killID);
 
