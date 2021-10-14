@@ -177,7 +177,7 @@ public class SquadController {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
         if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        Message chat = squadService.createSquadChat(gameID, squadID, player.getId(), mapper.toMessage(message));
+        Message chat = squadService.createSquadChat(gameID, squadID, appUser, mapper.toMessage(message));
         MessageDTO messageDTO = null;
         if(chat == null) {
             status = HttpStatus.NOT_FOUND;

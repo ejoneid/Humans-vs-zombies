@@ -120,7 +120,7 @@ public class GameController {
     public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(id, appUser);
-        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());
+        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }

@@ -29,6 +29,9 @@ public class SquadService {
     @Autowired
     PlayerRepository playerRepository;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
     public List<Squad> getAllSquads(Long gameID) {
         List<Squad> squads = new ArrayList<>();
         if(gameRepository.existsById(gameID)) {
@@ -91,14 +94,14 @@ public class SquadService {
         return chat;
     }
 
-    public Message createSquadChat(Long gameID, Long squadID, Long playerID, Message message) {
+    public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
         Message chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
             //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
             message.setGame(gameRepository.findById(gameID).get());
             message.setSquad(squadRepository.findById(squadID).get());
-            message.setPlayer(playerRepository.findById(playerID).get());
-            message.setHuman(playerRepository.findById(playerID).get().isHuman());
+            message.setUser(user);
+            message.setHuman(playerRepository.getPlayerByGameAndUser(gameRepository.getById(gameID),user).isHuman());
             message.setGlobal(false);
             message.setChatTime(new Date());
             chat = messageRepository.save(message);

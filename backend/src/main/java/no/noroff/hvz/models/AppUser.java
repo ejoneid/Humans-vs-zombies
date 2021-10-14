@@ -27,13 +27,9 @@ public class AppUser {
     @JoinColumn(name = "user_id")
     private Set<Player> players;
 
-    @JsonGetter("players")
-    public List<Long> playersGetter() {
-        if (players != null) {
-            return players.stream().map(Player::getId).collect(Collectors.toList());
-        }
-        return null;
-    }
+    @OneToMany
+    @JoinColumn(name = "chat_id")
+    private Set<Message> messages;
 
     public String getOpenId() {
         return openId;
@@ -73,5 +69,13 @@ public class AppUser {
 
     public void setPlayers(Set<Player> players) {
         this.players = players;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 }
