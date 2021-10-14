@@ -12,6 +12,7 @@ import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
 import LatLng = google.maps.LatLng;
+import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 
 @Component({
   selector: 'app-map-admin',
@@ -117,13 +118,30 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   public createMarker(position: LatLng): void {
-    this.createMission(position);
+    const dialogRef = this.dialog.open(CreateMarkerComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        position: position
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.createMission(position);
+        }
+        else {
+          this.createKill(position);
+        }
+    });
   }
 
   //TODO: Opens a dialog window for the specified kill
   private editKill(id: number): void {
     const kill = this.kills.find(m => m.id === id);
-    kill;
+  }
+
+  //Creates a new kill
+  private createKill(position: LatLng): void {
   }
 
   //Opens a dialog window for the specified mission.
@@ -179,12 +197,14 @@ export class MapComponent implements OnInit, OnChanges {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      result.subscribe(() => {
-        this.adminAPI.createMission(this.gameID, mission)
-          .then(result => result.subscribe(() => {
-            this.missionUpdate.emit();
-          }));
-      });
+      if (result != undefined) {
+        result.subscribe(() => {
+          this.adminAPI.createMission(this.gameID, mission)
+            .then(result => result.subscribe(() => {
+              this.missionUpdate.emit();
+            }));
+        });
+      }
     });
   }
 }
