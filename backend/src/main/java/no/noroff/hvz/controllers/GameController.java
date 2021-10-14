@@ -4,6 +4,7 @@ import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.message.MessageDTOreg;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -67,35 +68,22 @@ public class GameController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTO gameDTO) {
-        HttpStatus status;
+        HttpStatus status = HttpStatus.OK;
         Game game = mapper.toGame(gameDTO);
         if(!Objects.equals(id,game.getId())) {
             status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toGameDTO(new Game()),status);
+            return new ResponseEntity<>(null, status);
         }
         Game updatedGame = gameService.updateSpecificGame(id, game);
-        if(updatedGame.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
         return new ResponseEntity<>(mapper.toGameDTO(updatedGame),status);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
-        HttpStatus status;
+    public ResponseEntity<GameDTO> deleteGame(@PathVariable Long id) {
         Game deletedGame = gameService.deleteGame(id);
-        if(deletedGame.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
-        return new ResponseEntity<>(deletedGame, status);
-
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(mapper.toGameDTO(deletedGame), status);
     }
 
     @GetMapping("/{id}/chat")
@@ -105,45 +93,35 @@ public class GameController {
                                                      @RequestHeader(required = false) String human,
                                                      @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
-                                                     ) {
+                                                     ) throws NullPointerException, AppUserNotFoundException {
         HttpStatus status;
         List<Message> messages;
         List<MessageDTO> messageDTOs = null;
-        try {
-            if(SecurityUtils.isAdmin(authorization)) {
-                if (playerID != null) messages = gameService.getGameChat(id, playerID);
-                else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
-                else messages = gameService.getGameChat(id);
-            }
-            else {
-                AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-                Player player = appUserService.getPlayerByGameAndUser(id, user);
-                //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
-                if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
-                else messages = gameService.getGameChat(id, player.isHuman());
-            }
-            status = HttpStatus.OK;
-             messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+        if(SecurityUtils.isAdmin(authorization)) {
+            if (playerID != null) messages = gameService.getGameChat(id, playerID);
+            else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
+            else messages = gameService.getGameChat(id);
         }
-        catch (NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
+        else {
+            AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Player player = appUserService.getPlayerByGameAndUser(id, user);
+            //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
+            if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
+            else messages = gameService.getGameChat(id, player.isHuman());
         }
+        status = HttpStatus.OK;
+         messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+
         return new ResponseEntity<>(messageDTOs,status);
     }
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) {
-        HttpStatus status;
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(id, appUser);
-        if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());
-        if (createdMessage != null) {
-            status = HttpStatus.CREATED;
-            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
-        }
-        status = HttpStatus.I_AM_A_TEAPOT;
-        return new ResponseEntity<>(null, status);
+        HttpStatus status = HttpStatus.CREATED;
+        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }
 }
