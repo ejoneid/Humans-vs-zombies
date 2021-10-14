@@ -42,7 +42,7 @@ public class SquadController {
     @GetMapping
     public ResponseEntity<List<SquadDTO>> getAllSquads(@PathVariable Long gameID, @RequestParam Optional<String> playerId) {
         List<SquadDTO> squadDTOs = new ArrayList<>();
-        List<Squad> squads = null;
+        List<Squad> squads;
         if (playerId.isPresent()) {
             Squad squad = squadService.getSquadByPlayer(gameID, Long.parseLong(playerId.get()));
             SquadDTO squadDTO = mapper.toSquadDTO(squad);
