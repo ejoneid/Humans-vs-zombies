@@ -36,8 +36,8 @@ export class MissionEditComponent implements OnInit {
   }
 
   checkDate(): boolean {
-    this.data.startTime = JSON.stringify(this.data.startTime).split("\"")[1];
-    this.data.endTime = JSON.stringify(this.data.endTime).split("\"")[1];
+    if (this.data.startTime != null) this.data.startTime = JSON.stringify(this.data.startTime).split("\"")[1];
+    if (this.data.endTime != null) this.data.endTime = JSON.stringify(this.data.endTime).split("\"")[1];
     if (this.data.startTime != null && this.data.endTime != null) {
       if (this.data.startTime > this.data.endTime) {
         return false;

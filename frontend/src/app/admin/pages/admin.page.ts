@@ -53,11 +53,11 @@ export class AdminPage implements OnInit {
               name: mission.name.toString(),
               id: mission.id,
               description: mission.description.toString(),
-              endTime: mission.endTime.toString(),
-              startTime: mission.startTime.toString(),
+              endTime: mission.endTime,
+              startTime: mission.startTime,
               lat: parseFloat(mission.lat),
               lng: parseFloat(mission.lng),
-              human: mission.isHuman,
+              human: mission.human,
               gameId: this.game.id
             });
           }

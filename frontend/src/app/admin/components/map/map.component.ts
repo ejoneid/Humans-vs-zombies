@@ -113,7 +113,10 @@ export class MapComponent implements OnInit, OnChanges {
       }
     }
     else {
-      this.editKill(id);
+      const kill = this.kills.find(k => k.id === id);
+      if (kill != undefined) {
+        this.editKill(kill);
+      }
     }
   }
 
@@ -136,8 +139,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   //TODO: Opens a dialog window for the specified kill
-  private editKill(id: number): void {
-    const kill = this.kills.find(m => m.id === id);
+  private editKill(kill: Kill): void {
   }
 
   //Creates a new kill
@@ -198,12 +200,15 @@ export class MapComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        result.subscribe(() => {
-          this.adminAPI.createMission(this.gameID, mission)
-            .then(result => result.subscribe(() => {
-              this.missionUpdate.emit();
-            }));
-        });
+        mission.name = result.name;
+        mission.human = result.isHuman;
+        mission.description = result.description;
+        mission.startTime = result.startTime;
+        mission.endTime = result.endTime;
+        this.adminAPI.createMission(this.gameID, mission)
+          .then(result => result.subscribe(() => {
+            this.missionUpdate.emit();
+          }));
       }
     });
   }
