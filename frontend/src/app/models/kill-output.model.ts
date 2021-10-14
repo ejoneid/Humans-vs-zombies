@@ -4,6 +4,6 @@ export interface KillOutput {
   story: string | null,
   lat: number | null,
   lng: number | null,
-  killerId: number,
+  killerID: number,
   biteCode: string
 }

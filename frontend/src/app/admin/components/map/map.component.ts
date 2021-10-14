@@ -144,7 +144,7 @@ export class MapComponent implements OnInit, OnChanges {
     let outputKill: KillOutput = {
       biteCode: this.biteCodes.find(b => b.name === kill.victimName)!.biteCode,
       id: kill.id,
-      killerId: this.ids.find(b => b.name === kill.killerName)!.id,
+      killerID: this.ids.find(b => b.name === kill.killerName)!.id,
       lat: kill.lat,
       lng: kill.lng,
       story: kill.story,
@@ -171,7 +171,7 @@ export class MapComponent implements OnInit, OnChanges {
             }));
         }
         else {
-          outputKill.killerId = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+          outputKill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
           outputKill.biteCode = result.victimName;
           outputKill.story = result.story;
           outputKill.timeOfDeath = result.timeOfDeath;
@@ -190,7 +190,7 @@ export class MapComponent implements OnInit, OnChanges {
     console.log(this.biteCodes)
     let kill: KillOutput = {
       timeOfDeath: "",
-      killerId: 0,
+      killerID: 0,
       biteCode: "",
       story: "",
       id: 0,
@@ -211,7 +211,7 @@ export class MapComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        kill.killerId = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+        kill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
         kill.biteCode = result.victimName;
         kill.story = result.story;
         kill.timeOfDeath = result.timeOfDeath;
