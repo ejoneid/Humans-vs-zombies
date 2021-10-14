@@ -24,6 +24,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> handleNoSuchElementException(NullPointerException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InvalidBiteCodeException.class)
     public ResponseEntity<Object> handleInvalidBiteCodeException(InvalidBiteCodeException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -88,42 +88,33 @@ public class GameController {
                                                      @RequestHeader(required = false) String human,
                                                      @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
-                                                     ) {
+                                                     ) throws NullPointerException {
         HttpStatus status;
         List<Message> messages;
         List<MessageDTO> messageDTOs = null;
-        try {
-            if(SecurityUtils.isAdmin(authorization)) {
-                if (playerID != null) messages = gameService.getGameChat(id, playerID);
-                else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
-                else messages = gameService.getGameChat(id);
-            }
-            else {
-                AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-                Player player = appUserService.getPlayerByGameAndUser(id, user);
-                //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
-                if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
-                else messages = gameService.getGameChat(id, player.isHuman());
-            }
-            status = HttpStatus.OK;
-             messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+        if(SecurityUtils.isAdmin(authorization)) {
+            if (playerID != null) messages = gameService.getGameChat(id, playerID);
+            else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
+            else messages = gameService.getGameChat(id);
         }
-        catch (NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
+        else {
+            AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Player player = appUserService.getPlayerByGameAndUser(id, user);
+            //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
+            if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
+            else messages = gameService.getGameChat(id, player.isHuman());
         }
+        status = HttpStatus.OK;
+         messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+
         return new ResponseEntity<>(messageDTOs,status);
     }
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody Message message, @RequestHeader String playerID) {
-        HttpStatus status;
         Message createdMessage = gameService.createNewChat(id, message, Long.parseLong(playerID));
-        if (createdMessage != null) {
-            status = HttpStatus.CREATED;
-            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
-        }
-        status = HttpStatus.I_AM_A_TEAPOT;
-        return new ResponseEntity<>(null, status);
+        HttpStatus status = HttpStatus.CREATED;
+        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
     }
 }

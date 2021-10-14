@@ -90,7 +90,7 @@ public class GameService {
 
     public Message createNewChat(Long id, Message message, Long playerID) {
         if (!gameRepository.existsById(id)) {
-            return null;
+            throw new NoSuchElementException("Did not find game with id of " + id);
         }
         Game game = gameRepository.findById(id).get();
         message.setGame(game);
