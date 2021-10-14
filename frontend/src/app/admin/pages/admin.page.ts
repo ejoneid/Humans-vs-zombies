@@ -26,8 +26,8 @@ export class AdminPage implements OnInit {
     players: []
   };
 
-  private humanBiteCodes: {name: string, biteCode: string}[] = [];
-  private zombieIDs: {name: string, id: number}[] = [];
+  private humanBiteCodesArray: {name: string, biteCode: string}[] = [];
+  private zombieIDsArray: {name: string, id: number}[] = [];
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
@@ -110,10 +110,10 @@ export class AdminPage implements OnInit {
         response.subscribe((players) => {
           for (let player of players) {
             if (player.human) { //Used in the map component for creating and updating kills.
-              this.humanBiteCodes.push({name: player.name, biteCode: player.biteCode});
+              this.humanBiteCodesArray.push({name: player.name, biteCode: player.biteCode});
             }
             else {
-              this.zombieIDs.push({name: player.name, id: player.id});
+              this.zombieIDsArray.push({name: player.name, id: player.id});
             }
             tempPlayers.push({ //Used in the players component as a list
               id: player.id,
@@ -129,6 +129,12 @@ export class AdminPage implements OnInit {
       });
   }
 
+  get humanBiteCodes(): {name: string, biteCode: string}[] {
+    return this.humanBiteCodesArray;
+  }
+  get zombieIDs(): {name: string, id: number}[] {
+    return this.zombieIDsArray;
+  }
   get game(): GameInfoAdmin {
     return this.gameInfo;
   }

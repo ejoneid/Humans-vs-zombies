@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlayerViewComponent } from './player-view.component';
+import { SinglePlayerComponent } from './single-player.component';
 
 describe('PlayerViewComponent', () => {
-  let component: PlayerViewComponent;
-  let fixture: ComponentFixture<PlayerViewComponent>;
+  let component: SinglePlayerComponent;
+  let fixture: ComponentFixture<SinglePlayerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlayerViewComponent ]
+      declarations: [ SinglePlayerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlayerViewComponent);
+    fixture = TestBed.createComponent(SinglePlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

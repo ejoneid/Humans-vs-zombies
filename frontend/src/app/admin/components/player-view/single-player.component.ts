@@ -2,18 +2,16 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PlayerInfoFull} from "../../../models/player-info-full.model";
 
 @Component({
-  selector: 'app-player-view',
-  templateUrl: './player-view.component.html',
-  styleUrls: ['./player-view.component.css']
+  selector: 'app-single-player',
+  templateUrl: './single-player.component.html',
+  styleUrls: ['./single-player.component.css']
 })
-export class PlayerViewComponent implements OnInit {
+export class SinglePlayerComponent implements OnInit {
 
   public playerName: string = "";
 
-  public hasPlayer: boolean = false;
-
   @Input()
-  private playerInfo!: PlayerInfoFull;
+  public playerInfo!: PlayerInfoFull;
 
   constructor() { }
 

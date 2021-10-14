@@ -30,6 +30,10 @@ export class MapComponent implements OnInit, OnChanges {
   missions!: Mission[];
   @Input()
   public gameID!: number;
+  @Input()
+  public biteCodes!: {name: string, biteCode: string}[];
+  @Input()
+  public ids!: {name: string, id: number}[];
   @Output()
   missionUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Output()

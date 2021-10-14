@@ -17,7 +17,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateMarkerComponent } from './components/create-marker/create-marker.component';
 import { KillEditComponent } from './components/kill-edit/kill-edit.component';
 import {MatCardModule} from "@angular/material/card";
-import { PlayerViewComponent } from './components/player-view/player-view.component';
+import { SinglePlayerComponent } from './components/player-view/single-player.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { PlayerViewComponent } from './components/player-view/player-view.compon
     MissionEditComponent,
     CreateMarkerComponent,
     KillEditComponent,
-    PlayerViewComponent
+    SinglePlayerComponent
   ],
     imports: [
         CommonModule,
