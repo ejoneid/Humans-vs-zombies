@@ -36,4 +36,7 @@ export class AdminAPI {
   public async updateMission(gameID: number, missionID: number, mission: Mission): Promise<Observable<any>> {
     return await this.http.put<any>(baseURL+"api/game/"+gameID+"/mission/"+missionID, mission);
   }
+  public async deleteMission(gameID: number, missionID: number): Promise<Observable<any>> {
+    return await this.http.delete<any>(baseURL+"api/game/"+gameID+"/mission/"+missionID);
+  }
 }

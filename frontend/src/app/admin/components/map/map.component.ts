@@ -161,15 +161,23 @@ export class MapComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        mission.name = result.name;
-        mission.human = result.isHuman;
-        mission.description = result.description;
-        mission.startTime = result.startTime;
-        mission.endTime = result.endTime;
-        this.adminAPI.updateMission(this.gameID, mission.id, mission)
-          .then(result => result.subscribe(() => {
-            this.missionUpdate.emit();
-          }));
+        if (!result) {
+          this.adminAPI.deleteMission(this.gameID, mission.id)
+            .then(result => result.subscribe(() => {
+              this.missionUpdate.emit();
+            }));
+        }
+        else {
+          mission.name = result.name;
+          mission.human = result.isHuman;
+          mission.description = result.description;
+          mission.startTime = result.startTime;
+          mission.endTime = result.endTime;
+          this.adminAPI.updateMission(this.gameID, mission.id, mission)
+            .then(result => result.subscribe(() => {
+              this.missionUpdate.emit();
+            }));
+        }
       }
     });
   }

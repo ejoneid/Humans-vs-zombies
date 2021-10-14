@@ -46,16 +46,21 @@ export class MissionEditComponent implements OnInit {
     return true;
   }
 
-  closeDialog() {
-    this.buttonClicked = true;
-    if (this.checkDate()) {
-      if (this.data.name != undefined && this.data.name.length > 0) {
-        if (this.data.description != undefined && this.data.description.length > 0)
-          this.dialogRef.close(this.data);
+  closeDialog(edit: boolean) {
+    if (edit) {
+      this.buttonClicked = true;
+      if (this.checkDate()) {
+        if (this.data.name != undefined && this.data.name.length > 0) {
+          if (this.data.description != undefined && this.data.description.length > 0)
+            this.dialogRef.close(this.data);
+        }
+      }
+      else {
+        this.illegalDate = true;
       }
     }
     else {
-      this.illegalDate = true;
+      this.dialogRef.close(false);
     }
   }
 

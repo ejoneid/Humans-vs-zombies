@@ -32,5 +32,6 @@
     <p class="dataContainer" *ngIf="data.isHuman">Human mission</p>
     <p class="dataContainer" *ngIf="!data.isHuman">Zombie mission</p>
   </mat-slide-toggle>
-  <button id="saveMission" class="normalGreyButton" (click)="closeDialog()">Save</button>
+  <button id="saveMission" class="normalGreyButton" (click)="closeDialog(true)">Save</button>
+  <button id="deleteMission" class="normalGreyButton" (click)="closeDialog(false)">Delete</button>
 </mat-dialog-actions>
