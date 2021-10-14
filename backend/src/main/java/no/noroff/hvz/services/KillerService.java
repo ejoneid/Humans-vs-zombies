@@ -40,20 +40,15 @@ public class KillerService {
     }
 
     public Kill getSpecificKill( Long gameID, Long killID) {
-        Kill kill = new Kill();
-        if(gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
-            kill = killerRepository.findById(killID).get();
-        }
-        return kill;
+        if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        return killerRepository.findById(killID).get();
     }
 
     public Kill createNewKill(Long gameID, Kill kill) {
-        if(gameRepository.existsById(gameID) && kill != null) {
-            kill.setGame(gameRepository.findById(gameID).get());
-            kill.getVictim().setHuman(false);
-            if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
-            kill = killerRepository.save(kill);
-        }
+        kill.setGame(gameRepository.findById(gameID).get());
+        kill.getVictim().setHuman(false);
+        if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
+        kill = killerRepository.save(kill);
         return kill;
     }
 
@@ -61,20 +56,18 @@ public class KillerService {
 
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
-        try {
+//        try {
             updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
-        } catch (Exception exception) {
-            System.out.println("COULD NOT FIND PLAYER!");
-        }
+//        } catch (Exception exception) {
+//            System.out.println("COULD NOT FIND PLAYER!");
+//        }
         return killerRepository.save(updatedKill);
     }
 
     public Kill deleteKill(Long gameID, Long killID) {
-        Kill deletedKill = new Kill();
-        if (gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
-            deletedKill = killerRepository.findById(killID).get();
-            killerRepository.deleteById(killID);
-        }
+        if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Kill deletedKill = killerRepository.findById(killID).get();
+        killerRepository.deleteById(killID);
         return deletedKill;
     }
 }

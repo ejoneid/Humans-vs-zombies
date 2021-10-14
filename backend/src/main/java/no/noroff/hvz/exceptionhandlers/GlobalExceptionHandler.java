@@ -2,6 +2,7 @@ package no.noroff.hvz.exceptionhandlers;
 
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
+import no.noroff.hvz.exceptions.MissingPermissionsException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppUserNotFoundException.class)
     public ResponseEntity<Object> handleInvalidBiteCodeException(AppUserNotFoundException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MissingPermissionsException.class)
+    public ResponseEntity<Object> handleInvalidBiteCodeException(MissingPermissionsException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }
