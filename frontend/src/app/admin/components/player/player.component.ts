@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PlayerInfoFull} from "../../../models/player-info-full.model";
 import {AdminAPI} from "../../api/admin.api";
-import {Kill} from "../../../models/kill.model";
 
 @Component({
   selector: 'app-player',
