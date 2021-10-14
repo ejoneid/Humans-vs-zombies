@@ -1,9 +1,9 @@
 <h3>Name: {{player.name}}</h3>
 <h3>ID: {{player.id}}</h3>
+<h3 *ngIf="!player.isHuman">Faction: Zombie</h3>
+<h3 *ngIf="player.isHuman">Faction: Human</h3>
+<h3 *ngIf="player.isHuman">BiteCode: {{player.biteCode}}</h3>
 <section id="collapsibleInfoContainer">
-  <h3 *ngIf="!player.isHuman">Faction: Zombie</h3>
-  <h3 *ngIf="player.isHuman">Faction: Human</h3>
-  <h3 *ngIf="player.isHuman">BiteCode: {{player.biteCode}}</h3>
   <section id="messages">
     <div id="message" *ngFor="let message of player.messages">
       <p>{{message.time}}</p>

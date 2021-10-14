@@ -44,6 +44,7 @@ export class AdminAPI {
     return await this.http.post<any>(baseURL+"api/game/"+gameID+"/kill/", kill);
   }
   public async updateKill(gameID: number, killID: number, kill: KillOutput): Promise<Observable<any>> {
+    console.log(kill)
     return await this.http.put<any>(baseURL+"api/game/"+gameID+"/kill/"+killID, kill);
   }
   public async deleteKill(gameID: number, killID: number): Promise<Observable<any>> {
