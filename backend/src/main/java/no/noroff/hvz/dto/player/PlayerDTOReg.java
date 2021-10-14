@@ -1,6 +1,6 @@
 package no.noroff.hvz.dto.player;
 
-public class RegPlayerDTO {
+public class PlayerDTOReg {
 
     private Long userID;
 

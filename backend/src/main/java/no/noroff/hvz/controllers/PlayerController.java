@@ -1,11 +1,9 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.player.RegPlayerDTO;
+import no.noroff.hvz.dto.player.PlayerDTOReg;
 import no.noroff.hvz.dto.squad.SquadDTO;
-import no.noroff.hvz.dto.squad.SquadViewDTO;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.models.Squad;
 import no.noroff.hvz.security.SecurityUtils;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -77,7 +74,7 @@ public class PlayerController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody RegPlayerDTO player) {
+    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody PlayerDTOReg player) {
         HttpStatus status;
         Player newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO(player));
         if(newPlayer == null) {

@@ -2,7 +2,7 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.kill.KillDTO;
-import no.noroff.hvz.dto.kill.RegKillDTO;
+import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.player.*;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class Mapper {
@@ -80,7 +79,7 @@ public class Mapper {
                 killerName, victimName);
     }
 
-    public Kill regKillDTO(RegKillDTO killDTO) throws InvalidBiteCodeException {
+    public Kill regKillDTO(KillDTOReg killDTO) throws InvalidBiteCodeException {
         Kill kill = new Kill();
         customMapper.updateKillFromDto(killDTO, kill);
         Player killer = playerRepository.findById(killDTO.getKillerID()).get();
@@ -112,7 +111,7 @@ public class Mapper {
                userDTO ,killsUrl,messagesUrl);
     }
 
-    public Player regPlayerDTO(RegPlayerDTO p) {
+    public Player regPlayerDTO(PlayerDTOReg p) {
         Player player = new Player();
         if (!appUserRepository.existsById(p.getUserID())) return null;
         AppUser user = appUserRepository.findById(p.getUserID()).get();

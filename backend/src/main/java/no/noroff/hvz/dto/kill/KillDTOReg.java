@@ -2,7 +2,7 @@ package no.noroff.hvz.dto.kill;
 
 import java.util.Date;
 
-public class RegKillDTO {
+public class KillDTOReg {
 
     private Long killerID;
     private Date timeOfDeath;
