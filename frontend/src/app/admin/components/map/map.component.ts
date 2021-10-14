@@ -13,6 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
 import LatLng = google.maps.LatLng;
 import {CreateMarkerComponent} from "../create-marker/create-marker.component";
+import {KillEditComponent} from "../kill-edit/kill-edit.component";
 
 @Component({
   selector: 'app-map-admin',
@@ -140,10 +141,71 @@ export class MapComponent implements OnInit, OnChanges {
 
   //TODO: Opens a dialog window for the specified kill
   private editKill(kill: Kill): void {
+    const dialogRef = this.dialog.open(KillEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        killerName: kill.killerName,
+        victimName: kill.victimName,
+        timeOfDeath: kill.timeOfDeath,
+        story: kill.story
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        if (!result) {
+          this.adminAPI.deleteKill(this.gameID, kill.id)
+            .then(result => result.subscribe(() => {
+              this.killUpdate.emit();
+            }));
+        }
+        else {
+          kill.victimName = result.victimName;
+          kill.killerName = result.killerName;
+          kill.story = result.story;
+          kill.timeOfDeath = result.timeOfDeath;
+          this.adminAPI.updateKill(this.gameID, kill.id, kill)
+            .then(result => result.subscribe(() => {
+              this.killUpdate.emit();
+            }));
+        }
+      }
+    });
   }
 
   //Creates a new kill
   private createKill(position: LatLng): void {
+    let kill: Kill = {
+      timeOfDeath: "",
+      killerName: "",
+      victimName: "",
+      story: "",
+      id: 0,
+      lat: position.lat(),
+      lng: position.lng()
+    }
+    const dialogRef = this.dialog.open(KillEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        timeOfDeath: "",
+        killerName: "",
+        victimName: "",
+        story: ""
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        kill.killerName = result.killerName;
+        kill.victimName = result.victimName;
+        kill.story = result.story;
+        kill.timeOfDeath = result.timeOfDeath;
+        this.adminAPI.createKill(this.gameID, kill)
+          .then(result => result.subscribe(() => {
+            this.killUpdate.emit();
+          }));
+      }
+    });
   }
 
   //Opens a dialog window for the specified mission.
