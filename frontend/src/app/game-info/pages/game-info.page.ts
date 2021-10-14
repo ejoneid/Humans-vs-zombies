@@ -205,7 +205,7 @@ export class GameInfoPage implements OnInit {
 
   sendChatMessage(message: String) {
     if (this.selectedChat == "Global") {
-      this.gameInfoAPI.sendGlobalChat(this.gameInfo.id, this.gameInfo.player_id, message)
+      this.gameInfoAPI.sendGlobalChat(this.gameInfo.id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
@@ -213,7 +213,7 @@ export class GameInfoPage implements OnInit {
           })
         });
     } else if (this.selectedChat == "Faction") {
-      this.gameInfoAPI.sendFactionChat(this.gameInfo.id, this.gameInfo.player_id, message)
+      this.gameInfoAPI.sendFactionChat(this.gameInfo.id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
@@ -221,7 +221,7 @@ export class GameInfoPage implements OnInit {
           })
         });
     } else {
-      this.gameInfoAPI.sendSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id, this.gameInfo.player_id, message)
+      this.gameInfoAPI.sendSquadChat(this.gameInfo.id, this.gameInfo.squad_info!.id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
