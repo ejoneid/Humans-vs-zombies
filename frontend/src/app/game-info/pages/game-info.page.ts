@@ -70,7 +70,7 @@ export class GameInfoPage implements OnInit {
       .then((response) => {
         response.subscribe((squad) => {
           const members: PlayerInfo[] = [];
-          for (let member of squad.players) {
+          for (let member of squad.members) {
             members.push({name: member.name, state: member.human});
           }
           this.gameInfo.squad_info = {name: squad.name, members: members, id: squad.id};

@@ -47,7 +47,6 @@ export class GameInfoAPI {
     return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true}, {headers: header});
   }
   public async sendSquadChat(gameID: number, squadID: number, playerID: number, message: String): Promise<Observable<any>> {
-    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
-    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false}, {headers:header});
+    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
   }
 }
