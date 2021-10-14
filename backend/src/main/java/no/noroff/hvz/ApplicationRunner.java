@@ -69,6 +69,7 @@ class AppStartupRunner implements ApplicationRunner {
         AppUser user3 = new AppUser();
 
         AppUser patrick = new AppUser();
+        AppUser fredrik = new AppUser();
 
         Game game1 = new Game();
         Game game2 = new Game();
@@ -97,6 +98,7 @@ class AppStartupRunner implements ApplicationRunner {
         Player player5 = new Player();
 
         Player playerPatrick = new Player();
+        Player playerFredrik = new Player();
 
         Squad squad1 = new Squad();
 
@@ -106,6 +108,7 @@ class AppStartupRunner implements ApplicationRunner {
         SquadMember member1 = new SquadMember();
         SquadMember member2 = new SquadMember();
         SquadMember memberPatrick = new SquadMember();
+        SquadMember memberFredrik = new SquadMember();
 
         game1.setGameState("Open");
         game1.setName("Game numero uno");
@@ -173,15 +176,19 @@ class AppStartupRunner implements ApplicationRunner {
         user3.setLastName("Johnsen");
         user3.setOpenId("openId3");
 
-        patrick.setFirstName("Patrick Haukaa");
+        patrick.setFirstName("Patrick");
         patrick.setLastName("Haukaa");
         patrick.setOpenId("google-oauth2|112037027886754103927");
+        fredrik.setFirstName("Fredrik");
+        fredrik.setLastName("Rikheim");
+        fredrik.setOpenId("google-oauth2|108443371955945011845");
 
         if (appUserRepository.count() == 0) {
             user1 = appUserRepository.save(user1);
             user2 = appUserRepository.save(user2);
             user3 = appUserRepository.save(user3);
             patrick = appUserRepository.save(patrick);
+            fredrik = appUserRepository.save(fredrik);
         }
 
         player1.setHuman(true);
@@ -207,6 +214,9 @@ class AppStartupRunner implements ApplicationRunner {
         playerPatrick.setHuman(true);
         playerPatrick.setUser(patrick);
         playerPatrick.setPatientZero(false);
+        playerFredrik.setHuman(true);
+        playerFredrik.setUser(fredrik);
+        playerFredrik.setPatientZero(false);
 
         playerService.createNewPlayer(1L, player1);
         playerService.createNewPlayer(1L, player2);
@@ -214,6 +224,7 @@ class AppStartupRunner implements ApplicationRunner {
         playerService.createNewPlayer(2L, player4);
         playerService.createNewPlayer(2L, player5);
         playerService.createNewPlayer(1L, playerPatrick);
+        playerService.createNewPlayer(1L, playerFredrik);
 
 
         kill1.setKiller(player2);
@@ -279,9 +290,13 @@ class AppStartupRunner implements ApplicationRunner {
         memberPatrick.setRank(3);
         memberPatrick.setPlayer(playerPatrick);
 
+        memberPatrick.setRank(4);
+        memberPatrick.setPlayer(playerFredrik);
+
         squadService.joinSquad(1L, 1L, member1);
         squadService.joinSquad(1L, 1L, member2);
         squadService.joinSquad(1L, 1L, memberPatrick);
+        squadService.joinSquad(1L, 1L, memberFredrik);
 
         sci1.setMember(member1);
         sci1.setTime(new Date());
