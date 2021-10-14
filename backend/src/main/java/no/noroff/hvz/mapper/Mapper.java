@@ -85,7 +85,7 @@ public class Mapper {
     public Kill regKillDTO(KillDTOReg killDTO) throws InvalidBiteCodeException {
         Kill kill = new Kill();
         customMapper.updateKillFromDto(killDTO, kill);
-        Player killer = playerRepository.findById(killDTO.getKillerID()).get();
+        Player killer = playerRepository.getById(killDTO.getKillerID());
         Player victim = playerRepository.getPlayerByGameAndBiteCode(killer.getGame(), killDTO.getBiteCode());
         if (victim == null) throw new InvalidBiteCodeException("BiteCode did not match any players in this game!");
         kill.setKiller(killer);
@@ -106,7 +106,8 @@ public class Mapper {
     }
 
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
-        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode());
+        String name = player.getUser().getFirstName() + " " + player.getUser().getLastName();
+        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
     }
 
     public Player toPlayer(PlayerDTO playerDTO) {
@@ -124,7 +125,7 @@ public class Mapper {
     public Player regPlayerDTO(PlayerDTOReg p) {
         Player player = new Player();
         if (!appUserRepository.existsById(p.getUserID())) return null;
-        AppUser user = appUserRepository.findById(p.getUserID()).get();
+        AppUser user = appUserRepository.getById(p.getUserID());
         player.setUser(user);
         player.setHuman(true);
         player.setPatientZero(false);
@@ -133,7 +134,7 @@ public class Mapper {
 
     public SquadMember toSquadMember (SquadMemberFromDTO dto) {
         SquadMember member = new SquadMember();
-        Player player = playerRepository.findById(dto.getPlayerID()).get();
+        Player player = playerRepository.getById(dto.getPlayerID());
         member.setPlayer(player);
         member.setRank(dto.getRank());
         return member;
