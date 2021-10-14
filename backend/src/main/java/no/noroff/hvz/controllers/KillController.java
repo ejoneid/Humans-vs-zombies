@@ -33,19 +33,12 @@ public class KillController {
     Mapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestHeader(required = false) Long killerID) {
-        HttpStatus status;
-        List<Kill> kills = new ArrayList<>();
+    public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestParam(required = false) Long killerID) {
+        List<Kill> kills;
         if (killerID != null) kills = killerService.getAllKills(gameID, killerID);
         else kills = killerService.getAllKills(gameID);
-        List<KillDTO> killDTOs = new ArrayList<>();
-        if(kills == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-            killDTOs = kills.stream().map(mapper::toKillDTO).collect(Collectors.toList());
-        }
+        HttpStatus status = HttpStatus.OK;
+        List<KillDTO> killDTOs = kills.stream().map(mapper::toKillDTO).collect(Collectors.toList());
         return new ResponseEntity<>(killDTOs, status);
     }
 

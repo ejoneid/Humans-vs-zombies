@@ -9,10 +9,8 @@ import no.noroff.hvz.repositories.KillerRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,21 +26,17 @@ public class KillerService {
     private CustomMapper mapper;
 
     public List<Kill> getAllKills(Long gameID) {
-        List<Kill> kills = null;
-        if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
-            kills = new ArrayList<>(game.getKills());
+        if(!gameRepository.existsById(gameID)) {
+            throw new NoSuchElementException("Could not find game with id: " + gameID);
         }
-        return kills;
+        return killerRepository.getKillsByGame_Id(gameID);
     }
 
     public List<Kill> getAllKills(Long gameID, Long killerID) {
-        List<Kill> kills = null;
-        if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
-            kills = game.getKills().stream().filter(k -> Objects.equals(k.getKiller().getId(), killerID)).collect(Collectors.toList());
+        if(!gameRepository.existsById(gameID)) {
+            throw new NoSuchElementException("Could not find game with id: " + gameID);
         }
-        return kills;
+        return killerRepository.getKillsByGame_IdAndKiller_Id(gameID, killerID);
     }
 
     public Kill getSpecificKill( Long gameID, Long killID) {
