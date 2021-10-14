@@ -5,7 +5,7 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import { MapComponent } from './components/map/map.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { GameComponent } from './components/game/game.component';
-import { PlayerComponent } from './components/player/player.component';
+import { PlayersComponent } from './components/player/players.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -17,6 +17,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateMarkerComponent } from './components/create-marker/create-marker.component';
 import { KillEditComponent } from './components/kill-edit/kill-edit.component';
 import {MatCardModule} from "@angular/material/card";
+import { SinglePlayerComponent } from './components/player-view/single-player.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -24,24 +26,26 @@ import {MatCardModule} from "@angular/material/card";
     MapComponent,
     ChatComponent,
     GameComponent,
-    PlayerComponent,
+    PlayersComponent,
     GameTitleComponent,
     MissionEditComponent,
     CreateMarkerComponent,
-    KillEditComponent
+    KillEditComponent,
+    SinglePlayerComponent
   ],
-    imports: [
-        CommonModule,
-        AdminRoutingModule,
-        GoogleMapsModule,
-        FormsModule,
-        MatDialogModule,
-        MatInputModule,
-        MatDatepickerModule,
-        ReactiveFormsModule,
-        MatSlideToggleModule,
-        MatCardModule
-    ],
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    GoogleMapsModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatSelectModule
+  ],
   entryComponents: [
     MissionEditComponent
   ]

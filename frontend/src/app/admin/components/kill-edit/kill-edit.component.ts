@@ -31,15 +31,36 @@ export class KillEditComponent implements OnInit {
 
   buttonClicked = false;
 
-  constructor(public dialogRef: MatDialogRef<KillEditComponent>, @Inject(MAT_DIALOG_DATA) public data: {victimName: string | null, story: string | null, timeOfDeath: string | null, killerName: string | null}) {
+  selectedVictimBiteCode!: string | null;
+  selectedKillerID!: number| null;
+
+  constructor(public dialogRef: MatDialogRef<KillEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:
+                {victimName: string | null,
+                  story: string | null,
+                  timeOfDeath: string | null,
+                  killerName: string | null,
+                  ids: {name: string, id: number}[],
+                  biteCodes: {name: string, biteCode: string}[]
+                }) {
+    if (data.victimName != null) this.selectedVictimBiteCode = data.biteCodes.find(v => v.name === data.victimName)!.biteCode;
+    if (data.killerName != null) this.selectedKillerID = data.ids.find(k => k.name === data.killerName)!.id;
   }
 
   ngOnInit(): void {
+  }
+  selectVictim(event: Event) {
+    this.selectedVictimBiteCode = (event.target as HTMLSelectElement).value;
+  }
+  selectKiller(event: Event) {
+    this.selectedKillerID = parseInt((event.target as HTMLSelectElement).value);
   }
 
   closeDialog(edit: boolean) {
     if (edit) {
       this.buttonClicked = true;
+      this.data.victimName = this.selectedVictimBiteCode;
+      this.data.killerName = this.selectedKillerID!.toString();
       this.data.timeOfDeath = JSON.stringify(this.data.timeOfDeath).split("\"")[1];
       if (this.data.victimName != undefined && this.data.victimName.length > 0) {
         if (this.data.killerName != undefined && this.data.killerName.length > 0) {

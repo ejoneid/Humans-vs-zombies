@@ -1,7 +1,9 @@
 <body>
 <app-game-title-admin [gameTitle]="game.name"></app-game-title-admin>
 <main class="adminContainer">
-  <app-player [gameID]="game.id"></app-player>
+  <app-players
+    [playerList]="game.players"
+    (playerUpdate)="updatePlayers()"></app-players>
   <section class="componentContainer">
     <app-game></app-game>
   </section>
@@ -11,6 +13,8 @@
       [kills]="game.kills"
       [missions]="game.missions"
       [gameID]="game.id"
+      [biteCodes]="humanBiteCodes"
+      [ids]="zombieIDs"
       (missionUpdate)="updateMissions()"
       (killUpdate)="updateKills()"
     ></app-map-admin>

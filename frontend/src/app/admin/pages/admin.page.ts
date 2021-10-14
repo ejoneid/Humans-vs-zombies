@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {GameInfo} from "../../models/game-info.model";
 import {ActivatedRoute} from "@angular/router";
 import {Mission} from "../../models/mission.model";
 import {Kill} from "../../models/kill.model";
 import {AdminAPI} from "../api/admin.api";
+import {GameInfoAdmin} from "../../models/game-info-admin.model";
+import {PlayerInfoFull} from "../../models/player-info-full.model";
 
 @Component({
   selector: 'app-admin.page',
@@ -12,24 +13,21 @@ import {AdminAPI} from "../api/admin.api";
 })
 export class AdminPage implements OnInit {
   //Holder for the game, initialized in ngOnInit
-  private gameInfo: GameInfo = {
+  private gameInfo: GameInfoAdmin = {
     id: 0,
     //All the variables are initialized in safe states or error states.
-    //TODO: Find player id from auth
-    player_id: 1,
-    player_is_human: true,
     name: "ERROR: No game name found",
     state: "ERROR: No game state found",
     description: "",
-    bite_code: "ERROR: No bite code found",
     squad_info: null,
     map_info: null,
-    //TODO: Filter messages in HEAD
-    messages: [],
     kills: [],
-    missions: []
+    missions: [],
+    players: []
   };
-  private messagesURL!: string;
+
+  private humanBiteCodesArray: {name: string, biteCode: string}[] = [];
+  private zombieIDsArray: {name: string, id: number}[] = [];
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
@@ -41,6 +39,7 @@ export class AdminPage implements OnInit {
     //Getting information about map markers.
     this.updateMissions();
     this.updateKills();
+    this.updatePlayers();
   }
 
   updateMissions() {
@@ -100,12 +99,43 @@ export class AdminPage implements OnInit {
             nw_long: game.nw_long,
             se_long: game.se_long
           };
-          this.messagesURL = game.messages;
         });
       });
   }
 
-  get game(): GameInfo {
+  updatePlayers() {
+    const tempPlayers: PlayerInfoFull[] = [];
+    this.adminAPI.getAllPlayers(this.game.id)
+      .then((response) => {
+        response.subscribe((players) => {
+          for (let player of players) {
+            if (player.human) { //Used in the map component for creating and updating kills.
+              this.humanBiteCodesArray.push({name: player.user.firstName + " " + player.user.lastName, biteCode: player.biteCode});
+            }
+            else {
+              this.zombieIDsArray.push({name: player.user.firstName + " " + player.user.lastName, id: player.id});
+            }
+            tempPlayers.push({ //Used in the players component as a list
+              id: player.id,
+              name: player.user.firstName + " " + player.user.lastName,
+              isHuman: player.human,
+              biteCode: player.biteCode,
+              kills: player.kills,
+              messages: player.messages
+            });
+          }
+          this.gameInfo.players = tempPlayers;
+        });
+      });
+  }
+
+  get humanBiteCodes(): {name: string, biteCode: string}[] {
+    return this.humanBiteCodesArray;
+  }
+  get zombieIDs(): {name: string, id: number}[] {
+    return this.zombieIDsArray;
+  }
+  get game(): GameInfoAdmin {
     return this.gameInfo;
   }
 }

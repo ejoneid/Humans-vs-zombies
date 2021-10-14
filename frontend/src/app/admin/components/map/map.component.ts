@@ -14,6 +14,7 @@ import {AdminAPI} from "../../api/admin.api";
 import LatLng = google.maps.LatLng;
 import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 import {KillEditComponent} from "../kill-edit/kill-edit.component";
+import {KillOutput} from "../../../models/kill-output.model";
 
 @Component({
   selector: 'app-map-admin',
@@ -30,6 +31,10 @@ export class MapComponent implements OnInit, OnChanges {
   missions!: Mission[];
   @Input()
   public gameID!: number;
+  @Input()
+  public biteCodes!: {name: string, biteCode: string}[];
+  @Input()
+  public ids!: {name: string, id: number}[];
   @Output()
   missionUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -50,6 +55,7 @@ export class MapComponent implements OnInit, OnChanges {
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
   }
 
+  //Creates the map and applies the borders (If any)
   ngOnInit() {
     if (this.mapInfo != null) {
       this.options.restriction = {latLngBounds: {
@@ -67,6 +73,7 @@ export class MapComponent implements OnInit, OnChanges {
       );
   }
 
+  //Updates the markers-array for the map
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
     this.markers = [];
@@ -97,14 +104,6 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
-  initMap(): void {
-    // Styles a map in night mode.
-    new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      this.options
-    );
-  }
-
   //Checks if the selected marker is for a kill or a mission and opens the proper method.
   public editMarker(id: number, isMission: boolean): void {
     if (isMission) {
@@ -121,6 +120,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
+  //Checks if the admin wants to create a kill- or mission marker.
   public createMarker(position: LatLng): void {
     const dialogRef = this.dialog.open(CreateMarkerComponent, {
       height: "fit-content",
@@ -139,8 +139,17 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //TODO: Opens a dialog window for the specified kill
+  //Opens a dialog window for the specified kill
   private editKill(kill: Kill): void {
+    let outputKill: KillOutput = {
+      biteCode: this.biteCodes.find(b => b.name === kill.victimName)!.biteCode,
+      id: kill.id,
+      killerID: this.ids.find(b => b.name === kill.killerName)!.id,
+      lat: kill.lat,
+      lng: kill.lng,
+      story: kill.story,
+      timeOfDeath: ""
+    }
     const dialogRef = this.dialog.open(KillEditComponent, {
       height: "fit-content",
       width: "fit-content",
@@ -148,7 +157,9 @@ export class MapComponent implements OnInit, OnChanges {
         killerName: kill.killerName,
         victimName: kill.victimName,
         timeOfDeath: kill.timeOfDeath,
-        story: kill.story
+        story: kill.story,
+        ids: this.ids,
+        biteCodes: this.biteCodes
       }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -160,11 +171,11 @@ export class MapComponent implements OnInit, OnChanges {
             }));
         }
         else {
-          kill.victimName = result.victimName;
-          kill.killerName = result.killerName;
-          kill.story = result.story;
-          kill.timeOfDeath = result.timeOfDeath;
-          this.adminAPI.updateKill(this.gameID, kill.id, kill)
+          outputKill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+          outputKill.biteCode = result.victimName;
+          outputKill.story = result.story;
+          outputKill.timeOfDeath = result.timeOfDeath;
+          this.adminAPI.updateKill(this.gameID, outputKill.id, outputKill)
             .then(result => result.subscribe(() => {
               this.killUpdate.emit();
             }));
@@ -175,10 +186,12 @@ export class MapComponent implements OnInit, OnChanges {
 
   //Creates a new kill
   private createKill(position: LatLng): void {
-    let kill: Kill = {
+    console.log(this.ids)
+    console.log(this.biteCodes)
+    let kill: KillOutput = {
       timeOfDeath: "",
-      killerName: "",
-      victimName: "",
+      killerID: 0,
+      biteCode: "",
       story: "",
       id: 0,
       lat: position.lat(),
@@ -191,13 +204,15 @@ export class MapComponent implements OnInit, OnChanges {
         timeOfDeath: "",
         killerName: "",
         victimName: "",
-        story: ""
+        story: "",
+        biteCodes: this.biteCodes,
+        ids: this.ids
       }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        kill.killerName = result.killerName;
-        kill.victimName = result.victimName;
+        kill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+        kill.biteCode = result.victimName;
         kill.story = result.story;
         kill.timeOfDeath = result.timeOfDeath;
         this.adminAPI.createKill(this.gameID, kill)
@@ -281,5 +296,14 @@ export class MapComponent implements OnInit, OnChanges {
           }));
       }
     });
+  }
+
+  //Used as a callback function for the map in ngOnInit.
+  initMap(): void {
+    // Styles a map in night mode.
+    new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      this.options
+    );
   }
 }
