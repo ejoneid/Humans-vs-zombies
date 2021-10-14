@@ -19,7 +19,7 @@ export class GameInfoAPI {
     return await this.http.get<any>(baseURL + "api/game/" + gameID + "/player/" + playerID);
   }
   public async getCurrentPlayerSquad(gameID: number, playerID: number): Promise<Observable<any>> {
-    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/squad");
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/squad?playerId=" + playerID);
   }
   public async getMissionsByGame(gameID: number): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/mission");
