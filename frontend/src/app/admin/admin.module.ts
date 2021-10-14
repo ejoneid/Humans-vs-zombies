@@ -18,6 +18,7 @@ import { CreateMarkerComponent } from './components/create-marker/create-marker.
 import { KillEditComponent } from './components/kill-edit/kill-edit.component';
 import {MatCardModule} from "@angular/material/card";
 import { SinglePlayerComponent } from './components/player-view/single-player.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -32,18 +33,19 @@ import { SinglePlayerComponent } from './components/player-view/single-player.co
     KillEditComponent,
     SinglePlayerComponent
   ],
-    imports: [
-        CommonModule,
-        AdminRoutingModule,
-        GoogleMapsModule,
-        FormsModule,
-        MatDialogModule,
-        MatInputModule,
-        MatDatepickerModule,
-        ReactiveFormsModule,
-        MatSlideToggleModule,
-        MatCardModule
-    ],
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    GoogleMapsModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatSelectModule
+  ],
   entryComponents: [
     MissionEditComponent
   ]

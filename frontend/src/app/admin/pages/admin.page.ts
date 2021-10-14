@@ -110,14 +110,14 @@ export class AdminPage implements OnInit {
         response.subscribe((players) => {
           for (let player of players) {
             if (player.human) { //Used in the map component for creating and updating kills.
-              this.humanBiteCodesArray.push({name: player.name, biteCode: player.biteCode});
+              this.humanBiteCodesArray.push({name: player.user.firstName + " " + player.user.lastName, biteCode: player.biteCode});
             }
             else {
-              this.zombieIDsArray.push({name: player.name, id: player.id});
+              this.zombieIDsArray.push({name: player.user.firstName + " " + player.user.lastName, id: player.id});
             }
             tempPlayers.push({ //Used in the players component as a list
               id: player.id,
-              name: player.name,
+              name: player.user.firstName + " " + player.user.lastName,
               isHuman: player.human,
               biteCode: player.biteCode,
               kills: player.kills,

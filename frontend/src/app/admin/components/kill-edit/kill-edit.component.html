@@ -1,19 +1,24 @@
 <mat-dialog-content>
-  <!--TODO: both killerName and victimeName should be changed to dropdown-menus.-->
-  <div>
-    <mat-error *ngIf="description.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
-    <textarea #description id="killerName" cdkTextareaAutosize
-              [(ngModel)]="data.killerName" placeholder="Killer name (Required)"></textarea>
-  </div>
-  <div>
-    <mat-error *ngIf="description.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
-    <textarea #description id="victimName" cdkTextareaAutosize
-              [(ngModel)]="data.victimName" placeholder="Victim name (Required)"></textarea>
-  </div>
-  <div>
-    <textarea #description id="story" cdkTextareaAutosize
-              [(ngModel)]="data.story" placeholder="Kill Story (Optional)"></textarea>
-  </div>
+  <mat-form-field appearance="fill">
+    <mat-label>Killer Name</mat-label>
+    <select matNativeControl (change)="selectKiller($event)">
+      <option value=""></option>
+      <option *ngFor="let killer of data.ids" [value]="killer.id"
+              [selected]="selectedKillerID === killer.id">{{ killer.name }}</option>
+    </select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Victim Name</mat-label>
+    <select matNativeControl (change)="selectVictim($event)">
+      <option value=""></option>
+      <option *ngFor="let victim of data.biteCodes" [value]="victim.biteCode"
+              [selected]="selectedVictimBiteCode === victim.biteCode">{{ victim.name }}</option>
+    </select>
+  </mat-form-field>
+
+  <textarea id="story" cdkTextareaAutosize
+      [(ngModel)]="data.story" placeholder="Kill Story (Optional)"></textarea>
   <mat-label>When did the kill happen? (Required):</mat-label>
   <section id="dateTimeContainer">
     <mat-form-field appearance="fill">
