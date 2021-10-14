@@ -1,0 +1,18 @@
+<section id="playerContainer" *ngIf="hasPlayer">
+  <h3>Name: {{player.name}}</h3>
+  <h3 *ngIf="!player.isHuman">Faction: Zombie</h3>
+  <h3 *ngIf="player.isHuman">Faction: Human</h3>
+  <h3 *ngIf="player.isHuman">BiteCode: {{player.biteCode}}</h3>
+  <section id="messages">
+    <div id="message" *ngFor="let message of player.messages">
+      <p>{{message.time}}</p>
+      <p>{{message.content}}</p>
+    </div>
+  </section>
+  <section id="kills">
+    <div id="kill" *ngFor="let kill of player.kills">
+      <p>{{kill.victimName}}</p>
+      <p>{{kill.story}}</p>
+    </div>
+  </section>
+</section>

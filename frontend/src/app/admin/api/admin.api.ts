@@ -22,8 +22,8 @@ export class AdminAPI {
   public async getKillsByGame(gameID: number): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/kill");
   }
-  public async getPlayerByName(gameID: number, playerName: string): Promise<Observable<any>> {
-    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerName);
+  public async getAllPlayers(gameID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player");
   }
   public async getKillsByPlayer(gameID: number, playerID: number): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/player/"+playerID+"/kill");
