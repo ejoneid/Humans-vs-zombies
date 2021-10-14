@@ -64,34 +64,21 @@ public class GameController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody Game game) {
-        HttpStatus status;
+        HttpStatus status = HttpStatus.OK;
         if(!Objects.equals(id,game.getId())) {
             status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toGameDTO(new Game()),status);
+            return new ResponseEntity<>(null, status);
         }
         Game updatedGame = gameService.updateSpecificGame(id, game);
-        if(updatedGame.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
         return new ResponseEntity<>(mapper.toGameDTO(updatedGame),status);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<Game> deleteGame(@PathVariable Long id) {
-        HttpStatus status;
+    public ResponseEntity<GameDTO> deleteGame(@PathVariable Long id) {
         Game deletedGame = gameService.deleteGame(id);
-        if(deletedGame.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
-        return new ResponseEntity<>(deletedGame, status);
-
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(mapper.toGameDTO(deletedGame), status);
     }
 
     @GetMapping("/{id}/chat")

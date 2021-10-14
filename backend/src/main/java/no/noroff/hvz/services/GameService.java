@@ -41,21 +41,18 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    public Game updateSpecificGame( Long id, Game game) {
-        Game updatedGame = new Game();
+    public Game updateSpecificGame( Long id, Game game) throws NoSuchElementException {
         if(!gameRepository.existsById(id)) {
-            return updatedGame;
+            throw new NoSuchElementException("Did not find game with id of " + id);
         }
-        updatedGame = gameRepository.save(game);
-        return updatedGame;
+        return gameRepository.save(game);
     }
 
-    public Game deleteGame(Long id) {
-        Game deletedGame = new Game();
+    public Game deleteGame(Long id) throws NoSuchElementException {
         if(!gameRepository.existsById(id)) {
-            return deletedGame;
+            throw new NoSuchElementException("Did not find game with id of " + id);
         }
-        deletedGame= gameRepository.findById(id).get();
+        Game deletedGame = gameRepository.findById(id).get();
         gameRepository.deleteById(id);
         return deletedGame;
     }

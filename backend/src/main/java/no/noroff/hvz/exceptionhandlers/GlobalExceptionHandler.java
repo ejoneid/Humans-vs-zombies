@@ -1,5 +1,6 @@
 package no.noroff.hvz.exceptionhandlers;
 
+import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +22,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidBiteCodeException.class)
+    public ResponseEntity<Object> handleInvalidBiteCodeException(InvalidBiteCodeException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
