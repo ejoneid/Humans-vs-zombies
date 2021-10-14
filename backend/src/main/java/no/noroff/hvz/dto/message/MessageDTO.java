@@ -6,17 +6,15 @@ public class MessageDTO {
     private Long id;
     private String message;
     private Date messageTime;
-    private String playerUrl;
     private String playerName;
     private boolean human;
     private boolean global;
     private boolean faction;
 
-    public MessageDTO(Long id, String message, Date messageTime, String playerUrl, String playerName, boolean human, boolean global, boolean faction) {
+    public MessageDTO(Long id, String message, Date messageTime,  String playerName, boolean human, boolean global, boolean faction) {
         this.id = id;
         this.message = message;
         this.messageTime = messageTime;
-        this.playerUrl = playerUrl;
         this.playerName = playerName;
         this.human = human;
         this.global = global;
@@ -45,14 +43,6 @@ public class MessageDTO {
 
     public void setMessageTime(Date messageTime) {
         this.messageTime = messageTime;
-    }
-
-    public String getPlayerUrl() {
-        return playerUrl;
-    }
-
-    public void setPlayerUrl(String playerUrl) {
-        this.playerUrl = playerUrl;
     }
 
     public String getPlayerName() {

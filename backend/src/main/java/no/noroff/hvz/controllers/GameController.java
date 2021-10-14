@@ -111,7 +111,9 @@ public class GameController {
         List<MessageDTO> messageDTOs = null;
         try {
             if(SecurityUtils.isAdmin(authorization)) {
-                if (playerID != null) messages = gameService.getGameChat(id, playerID);
+                if (playerID != null) {
+                    messages = gameService.getGameChat(id, playerID);
+                }
                 else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
                 else messages = gameService.getGameChat(id);
             }
@@ -138,7 +140,7 @@ public class GameController {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(id, appUser);
         if (player == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), player.getId());
+        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
         if (createdMessage != null) {
             status = HttpStatus.CREATED;
             return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);

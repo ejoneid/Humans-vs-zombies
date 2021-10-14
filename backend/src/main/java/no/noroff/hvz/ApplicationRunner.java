@@ -278,15 +278,15 @@ class AppStartupRunner implements ApplicationRunner {
         message8.setMessage("Hello Squad indeed");
         message8.setFaction(false);
 
-        gameService.createNewChat(1L, message1, 1L);
-        gameService.createNewChat(1L, message2, 2L);
-        gameService.createNewChat(1L, message3, 1L);
-        gameService.createNewChat(1L, message4, 3L);
-        gameService.createNewChat(2L, message5, 4L);
-        gameService.createNewChat(2L, message6, 5L);
+        gameService.createNewChat(1L, message1, user1);
+        gameService.createNewChat(1L, message2, user2);
+        gameService.createNewChat(1L, message3, user1);
+        gameService.createNewChat(1L, message4, user3);
+        gameService.createNewChat(2L, message5, user2);
+        gameService.createNewChat(2L, message6, user3);
 
-        squadService.createSquadChat(1L, 1L, 1L, message7);
-        squadService.createSquadChat(1L, 1L, 3L, message8);
+        squadService.createSquadChat(1L, 1L, user1, message7);
+        squadService.createSquadChat(1L, 1L, user3, message8);
 
 
 //        member1.setSquad(squad1);

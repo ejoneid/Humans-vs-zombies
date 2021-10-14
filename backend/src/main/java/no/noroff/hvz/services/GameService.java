@@ -1,7 +1,9 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Message;
+import no.noroff.hvz.models.Player;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.MessageRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
@@ -75,7 +77,7 @@ public class GameService {
             return null;
         }
         return gameRepository.findById(id).get().getMessages()
-                .stream().filter(g -> Objects.equals(g.getPlayer().getId(), playerID))
+                .stream().filter(g -> Objects.equals(g.getUser().getId(), playerID))
                 .sorted(Comparator.comparing(Message::getChatTime))
                 .collect(Collectors.toList());
     }
@@ -85,13 +87,14 @@ public class GameService {
             return null;
         }
         return gameRepository.findById(id).get().getMessages()
-                .stream().filter(g -> Objects.equals(g.getPlayer().isHuman(), human))
+                .stream().filter(g -> Objects.equals(
+                        playerRepository.getPlayerByGameAndUser(gameRepository.getById(id),g.getUser()).isHuman(), human))
                 .filter(Message::isGlobal).filter(Message::isFaction)
                 .sorted(Comparator.comparing(Message::getChatTime))
                 .collect(Collectors.toList());
     }
 
-    public Message createNewChat(Long id, Message message, Long playerID) {
+    public Message createNewChat(Long id, Message message, AppUser user) {
         if (!gameRepository.existsById(id)) {
             return null;
         }
@@ -99,9 +102,9 @@ public class GameService {
         message.setGame(game);
         message.setChatTime(new Date());
         message.setGlobal(true);
-        if (playerID != null) {
-            message.setPlayer(playerRepository.findById(playerID).get());
-            message.setHuman(playerRepository.findById(playerID).get().isHuman());
+        if (user != null) {
+            message.setUser(user);
+            message.setHuman(playerRepository.getPlayerByGameAndUser(game,user).isHuman());
         }
         messageRepository.save(message);
         return message;
