@@ -126,18 +126,4 @@ public class PlayerController {
 
         return new ResponseEntity<>(playerDTO, status);
     }
-
-    @GetMapping("/{playerID}/squad")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<SquadDTO> getPlayerSquad(@PathVariable Long gameID, @PathVariable Long playerID) {
-        HttpStatus status;
-        Squad squad = playerService.getPlayerSquad(gameID, playerID);
-        if (squad != null) {
-            status = HttpStatus.OK;
-            return new ResponseEntity<>(mapper.toSquadDTO(squad), status);
-        } else {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(null, status);
-        }
-    }
 }

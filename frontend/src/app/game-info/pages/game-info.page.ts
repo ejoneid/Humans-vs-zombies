@@ -68,12 +68,12 @@ export class GameInfoPage implements OnInit {
       });
     this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
       .then((response) => {
-        response.subscribe((squad) => {
+        response.subscribe((squads) => {
           const members: PlayerInfo[] = [];
-          for (let member of squad.members) {
+          for (let member of squads[0].members) {
             members.push({name: member.name, state: member.human});
           }
-          this.gameInfo.squad_info = {name: squad.name, members: members, id: squad.id};
+          this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id};
         });
       });
 

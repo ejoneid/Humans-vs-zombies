@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,17 +40,20 @@ public class SquadController {
     private HttpStatus status;
 
     @GetMapping
-    public ResponseEntity<List<SquadDTO>> getAllSquads(@PathVariable Long gameID) {
-        List<Squad> squads = squadService.getAllSquads(gameID);
-        List<SquadDTO> squadDTOs = null;
-        if(squads == null) {
-            status = HttpStatus.NOT_FOUND;
+    public ResponseEntity<List<SquadDTO>> getAllSquads(@PathVariable Long gameID, @RequestParam Optional<String> playerId) {
+        List<SquadDTO> squadDTOs = new ArrayList<>();
+        List<Squad> squads;
+        if (playerId.isPresent()) {
+            Squad squad = squadService.getSquadByPlayer(gameID, Long.parseLong(playerId.get()));
+            SquadDTO squadDTO = mapper.toSquadDTO(squad);
+            squadDTOs.add(squadDTO);
         }
         else {
-            status = HttpStatus.OK;
+            squads = squadService.getAllSquads(gameID);
             squadDTOs = squads.stream().map(mapper::toSquadDTO).collect(Collectors.toList());
         }
-        return new ResponseEntity<>(squadDTOs,status);
+
+        return new ResponseEntity<>(squadDTOs,HttpStatus.OK);
     }
 
     @GetMapping("/{squadID}")
