@@ -26,7 +26,7 @@ export class GameInfoPage implements OnInit {
     description: "",
     bite_code: "ERROR: No bite code found",
     squad_info: null,
-    map_info: null,
+    map_info: {nw_lat: null, nw_long: null, se_lat: null, se_long: null},
     //TODO: Filter messages in HEAD
     messages: [],
     kills: [],

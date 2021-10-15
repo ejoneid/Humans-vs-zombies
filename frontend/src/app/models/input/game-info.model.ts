@@ -14,7 +14,7 @@ export interface GameInfo {
   /*player_count: number,*/ //Not implemented
   bite_code: string,
   squad_info: SquadInfo | null,
-  map_info: MapBorder | null,
+  map_info: MapBorder,
   messages: Message[],
   kills: Kill[],
   missions: Mission[]

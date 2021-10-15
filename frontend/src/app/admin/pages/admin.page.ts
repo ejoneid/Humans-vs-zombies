@@ -14,19 +14,20 @@ import {GameOutput} from "../../models/output/game-output.model";
 })
 export class AdminPage implements OnInit {
   //Holder for the game, initialized in ngOnInit
+  //All the variables are initialized in safe states or error states.
   private gameInfo: GameInfoAdmin = {
     id: 0,
-    //All the variables are initialized in safe states or error states.
     name: "ERROR: No game name found",
     state: "ERROR: No game state found",
     description: "",
     squad_info: null,
-    map_info: null,
+    map_info: {nw_lat: null, nw_long: null, se_lat: null, se_long: null},
     kills: [],
     missions: [],
     players: []
   };
 
+  //Used for the selects in the map component.
   private humanBiteCodesArray: {name: string, biteCode: string}[] = [];
   private zombieIDsArray: {name: string, id: number}[] = [];
 
@@ -43,22 +44,25 @@ export class AdminPage implements OnInit {
     this.updatePlayers();
   }
 
+  //Saves the changes made by the admin. Runs when the Save button is clicked.
   saveChanges(): void {
     console.log(this.gameInfo)
     const updateGame: GameOutput = {
       description: this.gameInfo.description,
       gameState: this.gameInfo.state,
       name: this.gameInfo.name,
-      nw_lat: this.gameInfo.map_info?.nw_lat,
-      nw_long: this.gameInfo.map_info?.nw_long,
-      se_lat: this.gameInfo.map_info?.se_lat,
-      se_long: this.gameInfo.map_info?.se_long
+      nw_lat: this.gameInfo.map_info.nw_lat,
+      nw_long: this.gameInfo.map_info.nw_long,
+      se_lat: this.gameInfo.map_info.se_lat,
+      se_long: this.gameInfo.map_info.se_long
     }
     this.adminAPI.updateGame(this.gameInfo.id, updateGame)
       .then(res => res.subscribe(
         data => console.log(data)
       ));
   }
+
+  //methods that update the objects referenced in their names.
 
   updateMissions() {
     const tempMissions: Mission[] = [];
@@ -147,6 +151,7 @@ export class AdminPage implements OnInit {
       });
   }
 
+  //Getters
   get humanBiteCodes(): {name: string, biteCode: string}[] {
     return this.humanBiteCodesArray;
   }
