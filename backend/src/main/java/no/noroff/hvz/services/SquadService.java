@@ -29,19 +29,33 @@ public class SquadService {
     @Autowired
     PlayerRepository playerRepository;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
     public List<Squad> getAllSquads(Long gameID) {
         List<Squad> squads = new ArrayList<>();
         if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
+            Game game = gameRepository.getById(gameID);
             squads = new ArrayList<>(game.getSquads());
         }
         return squads;
     }
 
+
+
     public Squad getSpecificSquad(Long gameID, Long squadID) {
         Squad squad = new Squad();
         if (squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
-            squad = squadRepository.findById(squadID).get();
+            squad = squadRepository.getById(squadID);
+        }
+        return squad;
+    }
+
+    public Squad getSquadByPlayer(Long gameID, Long playerID) {
+        Squad squad = new Squad();
+        if (playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
+            SquadMember member= squadMemberRepository.getByPlayer(playerRepository.getById(playerID));
+            squad = squadRepository.getById(member.getSquad().getId());
         }
         return squad;
     }
@@ -49,7 +63,7 @@ public class SquadService {
     public Squad createNewSquad(Long gameID, Squad squad) {
         Squad createdSquad = null;
         if(gameRepository.existsById(gameID)) {
-            squad.setGame(gameRepository.findById(gameID).get());
+            squad.setGame(gameRepository.getById(gameID));
             createdSquad = squadRepository.save(squad);
         }
         return createdSquad;
@@ -75,7 +89,7 @@ public class SquadService {
     public Squad deleteSquad(Long gameID, Long squadID) {
         Squad deletedSquad = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            deletedSquad = squadRepository.findById(squadID).get();
+            deletedSquad = squadRepository.getById(squadID);
             squadRepository.deleteById(squadID);
         }
         return deletedSquad;
@@ -84,21 +98,21 @@ public class SquadService {
     public List<Message> getSquadChat(Long gameID, Long squadID) {
         List<Message> chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            Squad squad = squadRepository.findById(squadID).get();
+            Squad squad = squadRepository.getById(squadID);
             chat = squad.getMessages().stream()
                     .sorted(Comparator.comparing(Message::getChatTime)).collect(Collectors.toList());
         }
         return chat;
     }
 
-    public Message createSquadChat(Long gameID, Long squadID, Long playerID, Message message) {
+    public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
         Message chat = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
             //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
-            message.setGame(gameRepository.findById(gameID).get());
-            message.setSquad(squadRepository.findById(squadID).get());
-            message.setPlayer(playerRepository.findById(playerID).get());
-            message.setHuman(playerRepository.findById(playerID).get().isHuman());
+            message.setGame(gameRepository.getById(gameID));
+            message.setSquad(squadRepository.getById(squadID));
+            message.setUser(user);
+            message.setHuman(playerRepository.getPlayerByGameAndUser(gameRepository.getById(gameID),user).isHuman());
             message.setGlobal(false);
             message.setChatTime(new Date());
             chat = messageRepository.save(message);
@@ -109,7 +123,7 @@ public class SquadService {
     public List<SquadCheckIn> getSquadCheckIn(Long gameID, Long squadID) {
         List<SquadCheckIn> checkins = null;
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            Squad squad = squadRepository.findById(squadID).get();
+            Squad squad = squadRepository.getById(squadID);
             Set<SquadMember> members = squad.getMembers();
             for (SquadMember m : members) {
                 checkins.addAll(m.getCheckIns());

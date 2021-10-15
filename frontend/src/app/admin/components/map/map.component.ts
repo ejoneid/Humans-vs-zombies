@@ -3,16 +3,18 @@ import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
-import {MapBorder} from "../../../models/map-border.model";
-import {Kill} from "../../../models/kill.model";
-import {Mission} from "../../../models/mission.model";
-import {MapMarker} from "../../../models/map-marker.model";
+import {MapBorder} from "../../../models/input/map-border.model";
+import {Kill} from "../../../models/input/kill.model";
+import {Mission} from "../../../models/input/mission.model";
+import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow} from "@angular/google-maps";
 import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
 import LatLng = google.maps.LatLng;
 import {CreateMarkerComponent} from "../create-marker/create-marker.component";
+import {KillEditComponent} from "../kill-edit/kill-edit.component";
+import {KillOutput} from "../../../models/output/kill-output.model";
 
 @Component({
   selector: 'app-map-admin',
@@ -22,13 +24,19 @@ import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 export class MapComponent implements OnInit, OnChanges {
 
   @Input()
-  mapInfo!: MapBorder | null;
+  mapInfo!: MapBorder;
+  @Output()
+  mapInfoChange = new EventEmitter<MapBorder>();
   @Input()
   kills!: Kill[];
   @Input()
   missions!: Mission[];
   @Input()
   public gameID!: number;
+  @Input()
+  public biteCodes!: {name: string, biteCode: string}[];
+  @Input()
+  public ids!: {name: string, id: number}[];
   @Output()
   missionUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Output()
@@ -46,17 +54,24 @@ export class MapComponent implements OnInit, OnChanges {
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
+  changeArea: boolean = false;
+  lastNorthWest = false;
+  corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
+
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
   }
 
+  /**
+   * Creates the map and applies the borders (If any)
+   */
   ngOnInit() {
-    if (this.mapInfo != null) {
+    if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.options.restriction = {latLngBounds: {
-        east: this.mapInfo.se_long,
-        north: this.mapInfo.nw_lat,
-        south: this.mapInfo.se_lat,
-        west: this.mapInfo.nw_long
-      }};
+          east: this.mapInfo.se_long,
+          north: this.mapInfo.nw_lat,
+          south: this.mapInfo.se_lat,
+          west: this.mapInfo.nw_long
+        }};
     }
     //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
@@ -66,6 +81,9 @@ export class MapComponent implements OnInit, OnChanges {
       );
   }
 
+  /**
+   * Updates the markers-array for the map
+   */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
     this.markers = [];
@@ -94,17 +112,58 @@ export class MapComponent implements OnInit, OnChanges {
         });
       }
     }
+    if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
+      this.corners = {
+        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
+        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
+      };
+    }
   }
 
-  initMap(): void {
-    // Styles a map in night mode.
-    new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      this.options
-    );
+  /**
+   * Just switches the value of the variable
+   */
+  toggleAreaChange(): void {
+    this.changeArea = !this.changeArea;
+    this.lastNorthWest = false;
   }
 
-  //Checks if the selected marker is for a kill or a mission and opens the proper method.
+  /**
+   * Decides whether a marker should be placed or the borders should be edited.
+   * @param position where the map was clicked
+   */
+  mapClick(position: LatLng): void {
+    if (this.changeArea) {
+      this.placeCorner(position);
+    }
+    else {
+      this.createMarker(position)
+    }
+  }
+
+  /**
+   * Places a corner for the map borders
+   * @param position where the corner is
+   */
+  placeCorner(position: LatLng) {
+    if (this.lastNorthWest) {
+      this.corners.nw = position;
+      this.mapInfo!.nw_lat = position.lat()
+      this.mapInfo!.nw_long = position.lng()
+    }
+    else {
+      this.corners.se = position;
+      this.mapInfo!.se_lat = position.lat()
+      this.mapInfo!.se_long = position.lng()
+    }
+    this.lastNorthWest = !this.lastNorthWest;
+  }
+
+  /**
+   * Checks if the selected marker is for a kill or a mission and opens the proper method.
+   * @param id what is the id of the marker (Used to find it in the kills and missions lists)
+   * @param isMission should a mission or kill be edited
+   */
   public editMarker(id: number, isMission: boolean): void {
     if (isMission) {
       const mission = this.missions.find(m => m.id === id);
@@ -120,6 +179,10 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Checks if the admin wants to create a kill- or mission marker.
+   * @param position Where the marker is placed
+   */
   public createMarker(position: LatLng): void {
     const dialogRef = this.dialog.open(CreateMarkerComponent, {
       height: "fit-content",
@@ -138,16 +201,99 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //TODO: Opens a dialog window for the specified kill
-  private editKill(kill: Kill): void {
+  /**
+   * Opens a dialog window for the specified kill
+   * @param kill the kill that should be edited
+   */
+  editKill(kill: Kill): void {
+    let outputKill: KillOutput = {
+      biteCode: this.biteCodes.find(b => b.name === kill.victimName)!.biteCode,
+      id: kill.id,
+      killerID: this.ids.find(b => b.name === kill.killerName)!.id,
+      lat: kill.lat,
+      lng: kill.lng,
+      story: kill.story,
+      timeOfDeath: ""
+    }
+    const dialogRef = this.dialog.open(KillEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        killerName: kill.killerName,
+        victimName: kill.victimName,
+        timeOfDeath: kill.timeOfDeath,
+        story: kill.story,
+        ids: this.ids,
+        biteCodes: this.biteCodes
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        if (!result) {
+          this.adminAPI.deleteKill(this.gameID, kill.id)
+            .then(result => result.subscribe(() => {
+              this.killUpdate.emit();
+            }));
+        }
+        else {
+          outputKill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+          outputKill.biteCode = result.victimName;
+          outputKill.story = result.story;
+          outputKill.timeOfDeath = result.timeOfDeath;
+          this.adminAPI.updateKill(this.gameID, outputKill.id, outputKill)
+            .then(result => result.subscribe(() => {
+              this.killUpdate.emit();
+            }));
+        }
+      }
+    });
   }
 
-  //Creates a new kill
-  private createKill(position: LatLng): void {
+  /**
+   * Creates a new kill
+   * @param position where the marker is
+   */
+  createKill(position: LatLng): void {
+    let kill: KillOutput = {
+      timeOfDeath: "",
+      killerID: 0,
+      biteCode: "",
+      story: "",
+      id: 0,
+      lat: position.lat(),
+      lng: position.lng()
+    }
+    const dialogRef = this.dialog.open(KillEditComponent, {
+      height: "fit-content",
+      width: "fit-content",
+      data: {
+        timeOfDeath: null,
+        killerName: null,
+        victimName: null,
+        story: null,
+        biteCodes: this.biteCodes,
+        ids: this.ids
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        kill.killerID = parseInt(result.killerName); //For ease of coding, killerName holds the id and victimName holds the biteCode
+        kill.biteCode = result.victimName;
+        kill.story = result.story;
+        kill.timeOfDeath = result.timeOfDeath;
+        this.adminAPI.createKill(this.gameID, kill)
+          .then(result => result.subscribe(() => {
+            this.killUpdate.emit();
+          }));
+      }
+    });
   }
 
-  //Opens a dialog window for the specified mission.
-  private editMission(mission: Mission): void {
+  /**
+   * Opens a dialog window for the specified mission.
+   * @param mission the mission that should be edited
+   */
+  editMission(mission: Mission): void {
     const dialogRef = this.dialog.open(MissionEditComponent, {
       height: "fit-content",
       width: "fit-content",
@@ -182,8 +328,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //Creates a new mission
-  private createMission(position: LatLng): void {
+  /**
+   * Creates a new mission
+   * @param position where the mission is
+   */
+  createMission(position: LatLng): void {
     let mission: Mission = {
       name: "",
       description: "",
@@ -219,5 +368,14 @@ export class MapComponent implements OnInit, OnChanges {
           }));
       }
     });
+  }
+
+  //Used as a callback function for the map in ngOnInit.
+  initMap(): void {
+    // Styles a map in night mode.
+    new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      this.options
+    );
   }
 }

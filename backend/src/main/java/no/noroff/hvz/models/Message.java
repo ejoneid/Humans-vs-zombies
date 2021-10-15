@@ -1,7 +1,5 @@
 package no.noroff.hvz.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -29,39 +27,15 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "chat_id")
-    private Player player;
-
-    @JsonGetter("player")
-    public Long playerGetter() {
-        if (player != null) {
-            return player.getId();
-        }
-        return null;
-    }
+    private AppUser user;
 
     @ManyToOne
     @JoinColumn(name = "message_id")
     private Game game;
 
-    @JsonGetter("game")
-    public Long gameGetter() {
-        if (game != null) {
-            return game.getId();
-        }
-        return null;
-    }
-
     @ManyToOne
     @JoinColumn(name = "squad_message_id")
     private Squad squad;
-
-    @JsonGetter("squad")
-    public Long squadGetter() {
-        if (squad != null) {
-            return squad.getId();
-        }
-        return null;
-    }
 
     public Long getId() {
         return id;
@@ -103,12 +77,12 @@ public class Message {
         this.chatTime = chatTime;
     }
 
-    public Player getPlayer() {
-        return player;
+    public AppUser getUser() {
+        return user;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setUser(AppUser user) {
+        this.user = user;
     }
 
     public Game getGame() {

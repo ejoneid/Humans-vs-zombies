@@ -1,0 +1,10 @@
+<mat-card-title>{{data.name}}</mat-card-title>
+<h3>Bite Code: {{data.biteCode}}</h3>
+<mat-slide-toggle [(ngModel)]="data.human">
+  <p *ngIf="data.human">Human</p>
+  <p *ngIf="!data.human">Zombie</p>
+</mat-slide-toggle>
+<mat-dialog-actions>
+  <button (click)="closeDialog(false)">DELETE</button>
+  <button (click)="closeDialog(true)">Save</button>
+</mat-dialog-actions>

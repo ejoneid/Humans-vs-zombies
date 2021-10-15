@@ -1,10 +1,12 @@
+<button (click)="toggleAreaChange()">Change area</button>
+<p *ngIf="changeArea">Changing map corners</p>
 <section class="greyBackground">
   <!--Needs both the versions of width and height to work-->
   <google-map #gmap
               [options]="options"
               height="100%" width="100%"
               style="height: 100%; width: 100%"
-              (mapClick)="createMarker($event.latLng)"
+              (mapClick)="mapClick($event.latLng)"
   >
     <map-marker
       *ngFor="let marker of markers"

@@ -27,6 +27,12 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
+
+    /**
+     * Method for getting a specific user
+     * @param principal Auth token som inneholder openID
+     * @return the specific user DTO
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
@@ -45,6 +51,13 @@ public class AppUserController {
         return new ResponseEntity<>(mapper.toAppUserDTOReg(appUser), status);
     }
 
+    /**
+     * Method for creating a new user
+     * @param userDTO DTO for a new user
+     * @param principal Auth token
+     * @return the created user DTO
+     * @throws DataIntegrityViolationException
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {

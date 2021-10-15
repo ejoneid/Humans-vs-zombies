@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AdminAPI} from "../../api/admin.api";
 
 @Component({
   selector: 'app-game-title-admin',
@@ -9,10 +10,16 @@ export class GameTitleComponent implements OnInit {
 
   @Input()
   public gameTitle: string = "ERROR: No game title found";
+  @Output()
+  public gameTitleChange = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  saveChanges(): void {
+    this.gameTitleChange.emit(this.gameTitle);
   }
 
 }

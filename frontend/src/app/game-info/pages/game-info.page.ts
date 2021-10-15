@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
-import {PlayerInfo} from "../../models/player-info.model";
-import {GameInfo} from "../../models/game-info.model";
-import {Mission} from "../../models/mission.model";
-import {Kill} from "../../models/kill.model";
-import {Message} from "../../models/message.model";
+import {PlayerInfo} from "../../models/input/player-info.model";
+import {GameInfo} from "../../models/input/game-info.model";
+import {Mission} from "../../models/input/mission.model";
+import {Kill} from "../../models/input/kill.model";
+import {Message} from "../../models/input/message.model";
+import {WebSocketAPI} from "../api/WebSocketApi.api";
 
 @Component({
   selector: 'app-game-info-page',
@@ -25,7 +26,7 @@ export class GameInfoPage implements OnInit {
     description: "",
     bite_code: "ERROR: No bite code found",
     squad_info: null,
-    map_info: null,
+    map_info: {nw_lat: null, nw_long: null, se_lat: null, se_long: null},
     //TODO: Filter messages in HEAD
     messages: [],
     kills: [],
@@ -35,6 +36,8 @@ export class GameInfoPage implements OnInit {
 
   private selectedChat = "Global";
   private prevMessageSent: String | undefined;
+
+  private webSocketAPI!: WebSocketAPI;
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
@@ -47,7 +50,7 @@ export class GameInfoPage implements OnInit {
       .then((response) => {
         response.subscribe((game) => {
             this.gameInfo.name = game.name;
-            this.gameInfo.state = game.state;
+            this.gameInfo.state = game.gameState;
             this.gameInfo.description = game.description;
             this.gameInfo.map_info = {
               nw_lat: game.nw_lat,
@@ -58,7 +61,6 @@ export class GameInfoPage implements OnInit {
             this.messagesURL = game.messages;
           });
       });
-
     //Getting information about the specific player.
     this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.id, this.gameInfo.player_id)
       .then((response) => {
@@ -68,12 +70,12 @@ export class GameInfoPage implements OnInit {
       });
     this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
       .then((response) => {
-        response.subscribe((squad) => {
+        response.subscribe((squads) => {
           const members: PlayerInfo[] = [];
-          for (let member of squad.members) {
+          for (let member of squads[0].members) {
             members.push({name: member.name, state: member.human});
           }
-          this.gameInfo.squad_info = {name: squad.name, members: members, id: squad.id};
+          this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id};
         });
       });
 
@@ -134,13 +136,41 @@ export class GameInfoPage implements OnInit {
           this.gameInfo.messages = tempMessages;
         })
       });
+
+    this.webSocketAPI = new WebSocketAPI(this);
+    this.connect();
+  }
+
+  registerUser(): void {
+    this.gameInfoAPI.registerForGame(this.gameInfo.id, {userID: this.gameInfo.player_id})
+      .then(res => res.subscribe(
+        data => console.log(data)
+      ))
+  }
+
+  connect(){
+    this.webSocketAPI._connect();
+  }
+
+  disconnect(){
+    this.webSocketAPI._disconnect();
+  }
+
+  sendMessage(){
+    this.webSocketAPI._send(this.gameInfo.id);
+  }
+
+  handleMessage(){
+    if (this.selectedChat == "Global") this.loadGlobalChat();
+    else if (this.selectedChat == "Faction") this.loadFactionChat();
+    else if (this.selectedChat == "Squad") this.loadSquadChat();
   }
 
   get game(): GameInfo {
     return this.gameInfo;
   }
 
-  loadGlobalChat() {
+  public loadGlobalChat() {
     this.selectedChat = "Global";
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getGameChat(this.gameInfo.id)
@@ -229,5 +259,6 @@ export class GameInfoPage implements OnInit {
           })
         });
     }
+    this.sendMessage();
   }
 }

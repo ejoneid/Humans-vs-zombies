@@ -1,6 +1,7 @@
 <body>
 <app-game-title
   [gameTitle]="game.name"
+  (joinGame)="registerUser()"
 ></app-game-title>
 <main class="gameInfoPageContainer">
   <app-game-description id="gameDescriptionElement"
