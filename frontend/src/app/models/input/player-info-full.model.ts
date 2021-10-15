@@ -3,7 +3,7 @@ import {Message} from "./message.model";
 
 export interface PlayerInfoFull {
   id: number,
-  isHuman: boolean,
+  human: boolean,
   biteCode: string,
   name: string,
   kills: Kill[],

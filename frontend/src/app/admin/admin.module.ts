@@ -19,6 +19,7 @@ import { KillEditComponent } from './components/kill-edit/kill-edit.component';
 import {MatCardModule} from "@angular/material/card";
 import { SinglePlayerComponent } from './components/player-view/single-player.component';
 import {MatSelectModule} from "@angular/material/select";
+import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatSelectModule} from "@angular/material/select";
     MissionEditComponent,
     CreateMarkerComponent,
     KillEditComponent,
-    SinglePlayerComponent
+    SinglePlayerComponent,
+    PlayerEditComponent
   ],
   imports: [
     CommonModule,

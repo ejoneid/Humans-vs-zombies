@@ -140,7 +140,7 @@ export class AdminPage implements OnInit {
             tempPlayers.push({ //Used in the players component as a list
               id: player.id,
               name: player.user.firstName + " " + player.user.lastName,
-              isHuman: player.human,
+              human: player.human,
               biteCode: player.biteCode,
               kills: player.kills,
               messages: player.messages
