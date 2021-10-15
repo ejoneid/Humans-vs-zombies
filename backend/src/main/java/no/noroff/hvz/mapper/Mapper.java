@@ -64,6 +64,25 @@ public class Mapper {
         return appUser;
     }
 
+    public Game toGame(GameDTOReg gameDTO) {
+        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+    }
+    public Game toGame(GameDTO gameDTO) {
+        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+    }
+
+    public Game toGame(GameDTOUpdate gameDTOUpdate, Long id) {
+        Game game = gameRepository.getById(id);
+        game.setName(gameDTOUpdate.getName());
+        game.setGameState(gameDTOUpdate.getGameState());
+        game.setDescription(gameDTOUpdate.getDescription());
+        game.setNw_lat(gameDTOUpdate.getNw_lat());
+        game.setSe_lat(gameDTOUpdate.getSe_lat());
+        game.setNw_long(gameDTOUpdate.getNw_long());
+        game.setSe_long(gameDTOUpdate.getSe_long());
+        return game;
+    }
+
     public GameDTO toGameDTO(Game game) {
         String gameUrl = url + game.getId();
         String squadsUrl = gameUrl + "/squad";
@@ -167,10 +186,5 @@ public class Mapper {
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 
-    public Game toGame(GameDTOReg gameDTO) {
-        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
-    }
-    public Game toGame(GameDTOUpdate gameDTO) {
-        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
-    }
+
 }

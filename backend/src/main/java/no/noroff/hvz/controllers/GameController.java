@@ -70,9 +70,9 @@ public class GameController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTOUpdate gameDTOUpdate) {
+    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTOUpdate gameDTO) {
         HttpStatus status = HttpStatus.OK;
-        Game game = mapper.toGame(gameDTOUpdate);
+        Game game = mapper.toGame(gameDTO, id);
         Game updatedGame = gameService.updateSpecificGame(id, game);
         return new ResponseEntity<>(mapper.toGameDTO(updatedGame),status);
     }

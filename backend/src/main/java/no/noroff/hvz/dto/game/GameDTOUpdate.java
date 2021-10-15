@@ -9,13 +9,8 @@ public class GameDTOUpdate {
     private String se_lat;
     private String nw_long;
     private String se_long;
-    private String squadsUrl;
-    private String missionsUrl;
-    private String killsUrl;
-    private String chatUrl;
-    private String playersUrl;
 
-    public GameDTOUpdate(String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
+    public GameDTOUpdate( String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
         this.name = name;
         this.gameState = gameState;
         this.description = description;
@@ -23,11 +18,6 @@ public class GameDTOUpdate {
         this.se_lat = se_lat;
         this.nw_long = nw_long;
         this.se_long = se_long;
-        this.squadsUrl = squadsUrl;
-        this.missionsUrl = missionsUrl;
-        this.killsUrl = killsUrl;
-        this.chatUrl = chatUrl;
-        this.playersUrl = playersUrl;
     }
 
     public String getName() {
@@ -86,43 +76,5 @@ public class GameDTOUpdate {
         this.se_long = se_long;
     }
 
-    public String getSquadsUrl() {
-        return squadsUrl;
-    }
 
-    public void setSquadsUrl(String squadsUrl) {
-        this.squadsUrl = squadsUrl;
-    }
-
-    public String getMissionsUrl() {
-        return missionsUrl;
-    }
-
-    public void setMissionsUrl(String missionsUrl) {
-        this.missionsUrl = missionsUrl;
-    }
-
-    public String getKillsUrl() {
-        return killsUrl;
-    }
-
-    public void setKillsUrl(String killsUrl) {
-        this.killsUrl = killsUrl;
-    }
-
-    public String getChatUrl() {
-        return chatUrl;
-    }
-
-    public void setChatUrl(String chatUrl) {
-        this.chatUrl = chatUrl;
-    }
-
-    public String getPlayersUrl() {
-        return playersUrl;
-    }
-
-    public void setPlayersUrl(String playersUrl) {
-        this.playersUrl = playersUrl;
-    }
 }
