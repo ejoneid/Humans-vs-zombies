@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.user.AppUserDTO;
+import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
@@ -52,7 +53,7 @@ public class AppUserController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException {
+    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
         AppUserDTO addedUserDTO = mapper.toAppUserDTO(appUserService.createUser(appUser));

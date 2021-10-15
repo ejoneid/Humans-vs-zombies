@@ -7,6 +7,7 @@ import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.dto.mission.MissionDTO;
+import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
 import no.noroff.hvz.dto.user.AppUserDTO;
@@ -47,10 +48,12 @@ public class Mapper {
                 mission.getStartTime(), mission.getEndTime(), mission.isHuman(), mission.getLat(), mission.getLng(),mission.getGame().getId());
     }
 
-    public Mission toMission(MissionDTO missionDTO) {
-        Game game = gameRepository.getById(missionDTO.getGameId());
-        return new Mission(missionDTO.getId(), missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
-                missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
+    public Mission toMission(MissionDTOReg missionDTO, long gameID) {
+        Game game = gameRepository.getById(gameID);
+        Mission mission = new Mission();
+        customMapper.updateMissionFromDto(missionDTO, mission);
+        mission.setGame(game);
+        return mission;
     }
 
     public AppUserDTO toAppUserDTO(AppUser user) {

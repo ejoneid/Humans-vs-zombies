@@ -1,5 +1,6 @@
 package no.noroff.hvz.exceptionhandlers;
 
+import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.exceptions.MissingPermissionsException;
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException e, WebRequest r) {
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
@@ -44,5 +45,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MissingPermissionsException.class)
     public ResponseEntity<Object> handleInvalidBiteCodeException(MissingPermissionsException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AppUserAlreadyExistException.class)
+    public ResponseEntity<Object> handleInvalidBiteCodeException(AppUserAlreadyExistException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }

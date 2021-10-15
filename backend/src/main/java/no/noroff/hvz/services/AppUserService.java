@@ -1,5 +1,6 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -36,7 +37,8 @@ public class AppUserService {
         return player;
     }
 
-    public AppUser createUser(AppUser addedUser) {
+    public AppUser createUser(AppUser addedUser) throws AppUserAlreadyExistException {
+        if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException();
         return appUserRepository.save(addedUser);
     }
 }

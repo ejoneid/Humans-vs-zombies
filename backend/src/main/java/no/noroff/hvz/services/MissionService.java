@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,11 +64,9 @@ public class MissionService {
     }
 
     public Mission deleteMission(Long gameID, Long missionID) {
-        Mission deletedMission = new Mission();
-        if(gameRepository.existsById(gameID) && missionRepository.existsById(missionID)) {
-            deletedMission = missionRepository.findById(missionID).get();
-            missionRepository.deleteById(missionID);
-        }
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Mission deletedMission = missionRepository.findById(missionID).get();
+        missionRepository.deleteById(missionID);
         return deletedMission;
     }
 }

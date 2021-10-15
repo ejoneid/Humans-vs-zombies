@@ -53,11 +53,10 @@ public class KillerService {
     }
 
     public Kill updateKill(Long gameID, Long killID, KillDTOReg killDto) {
-
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
-        updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
-        updatedKill.setVictim(playerRepository.getPlayerByGame_IdAndBiteCode(gameID, killDto.getBiteCode()));
+        if (killDto.getKillerID() != null) updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
+        if (killDto.getBiteCode() != null) updatedKill.setVictim(playerRepository.getPlayerByGame_IdAndBiteCode(gameID, killDto.getBiteCode()));
         return killerRepository.save(updatedKill);
     }
 

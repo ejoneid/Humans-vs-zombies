@@ -1,7 +1,9 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.mission.MissionDTO;
+import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.MissingPermissionsException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
@@ -43,98 +45,59 @@ public class MissionController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
-        try {
+        List<MissionDTO> missionDTOs;
+        List<Mission> missions;
+        if(SecurityUtils.isAdmin(authorization)) {
+            missions = missionService.getAllMissions(gameID);
+        }
+        else {
             Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
-            List<MissionDTO> missionDTOs;
-            List<Mission> missions;
-            if(SecurityUtils.isAdmin(authorization)) {
-                missions = missionService.getAllMissions(gameID);
-            }
-            else {
-                missions = missionService.getAllMissionsFaction(gameID, player.isHuman());
-            }
-            missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
-            status = HttpStatus.OK;
-            return new ResponseEntity<>(missionDTOs, status);
+            missions = missionService.getAllMissionsFaction(gameID, player.isHuman());
         }
-        catch(NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(null, status);
-        }
+        missionDTOs = missions.stream().map(mapper::toMissionDTO).collect(Collectors.toList());
+        status = HttpStatus.OK;
+        return new ResponseEntity<>(missionDTOs, status);
     }
 
     @GetMapping("/{missionID}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
-        HttpStatus status;
-        try {
+    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+        Mission mission = missionService.getSpecificMission(gameID,missionID);
+        if(!SecurityUtils.isAdmin(authorization)) {
             Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
-            Mission mission = missionService.getSpecificMission(gameID,missionID);
-            if(!SecurityUtils.isAdmin(authorization)) {
-                if(mission.isHuman() != player.isHuman()) {
-                    status = HttpStatus.FORBIDDEN;
-                    return new ResponseEntity<>(null, status);
-                }
+            if(mission.isHuman() != player.isHuman()) {
+                throw new MissingPermissionsException("User does not have the right permissions for this operation");
             }
-            status = HttpStatus.OK;
-            return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
         }
-        catch(NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(null, status);
-        }
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody MissionDTO missionDTO) {
-        HttpStatus status;
-        MissionDTO addedMissionDTO = null;
-        try {
-            Mission mission = mapper.toMission(missionDTO);
-            Mission addedMission = missionService.createNewMission(gameID, mission);
-            addedMissionDTO = mapper.toMissionDTO(addedMission);
-            status = HttpStatus.CREATED;
-        }
-        catch (NullPointerException e) {
-            //Game not found
-            status = HttpStatus.NOT_FOUND;
-        }
+    public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody MissionDTOReg missionDTO) {
+        Mission mission = mapper.toMission(missionDTO, gameID);
+        mission = missionService.createNewMission(gameID, mission);
+        MissionDTO addedMissionDTO = mapper.toMissionDTO(mission);
+        HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(addedMissionDTO, status);
     }
 
     @PutMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTO missionDTO) {
-        HttpStatus status;
-        MissionDTO updatedMissionDTO = null;
-        if(!Objects.equals(missionID,missionDTO.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toMissionDTO(new Mission()),status);
-        }
-        try {
-            Mission mission = mapper.toMission(missionDTO);
-            Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
-            updatedMissionDTO = mapper.toMissionDTO(updatedMission);
-            status = HttpStatus.OK;
-        }
-        catch (NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        return new ResponseEntity<>(updatedMissionDTO,status);
+    public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTOReg missionDTO) {
+        Mission mission = mapper.toMission(missionDTO, gameID);
+        Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
+        MissionDTO updatedMissionDTO = mapper.toMissionDTO(updatedMission);
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(updatedMissionDTO, status);
     }
 
     @DeleteMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<MissionDTO> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
-        HttpStatus status;
         Mission deletedMission = missionService.deleteMission(gameID, missionID);
-        if(deletedMission.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-        }
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(mapper.toMissionDTO(deletedMission), status);
     }
 }
