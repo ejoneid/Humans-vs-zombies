@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
-import {PlayerInfo} from "../../models/input/player-info.model";
-import {GameInfo} from "../../models/input/game-info.model";
-import {Mission} from "../../models/input/mission.model";
-import {Kill} from "../../models/input/kill.model";
-import {Message} from "../../models/input/message.model";
+import {PlayerInfo} from "../../models/player-info.model";
+import {GameInfo} from "../../models/game-info.model";
+import {Mission} from "../../models/mission.model";
+import {Kill} from "../../models/kill.model";
+import {Message} from "../../models/message.model";
+import {WebSocketAPI} from "../api/WebSocketApi.api";
 
 @Component({
   selector: 'app-game-info-page',
@@ -35,6 +36,8 @@ export class GameInfoPage implements OnInit {
 
   private selectedChat = "Global";
   private prevMessageSent: String | undefined;
+
+  private webSocketAPI!: WebSocketAPI;
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
@@ -134,13 +137,34 @@ export class GameInfoPage implements OnInit {
           this.gameInfo.messages = tempMessages;
         })
       });
+
+    this.webSocketAPI = new WebSocketAPI(this);
+    this.connect();
+  }
+
+  connect(){
+    this.webSocketAPI._connect();
+  }
+
+  disconnect(){
+    this.webSocketAPI._disconnect();
+  }
+
+  sendMessage(){
+    this.webSocketAPI._send(this.gameInfo.id);
+  }
+
+  handleMessage(){
+    if (this.selectedChat == "Global") this.loadGlobalChat();
+    else if (this.selectedChat == "Faction") this.loadFactionChat();
+    else if (this.selectedChat == "Squad") this.loadSquadChat();
   }
 
   get game(): GameInfo {
     return this.gameInfo;
   }
 
-  loadGlobalChat() {
+  public loadGlobalChat() {
     this.selectedChat = "Global";
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getGameChat(this.gameInfo.id)
@@ -229,5 +253,6 @@ export class GameInfoPage implements OnInit {
           })
         });
     }
+    this.sendMessage();
   }
 }

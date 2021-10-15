@@ -3,6 +3,7 @@ package no.noroff.hvz.controllers;
 import com.sun.net.httpserver.Headers;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
+import no.noroff.hvz.dto.game.GameDTOUpdate;
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.message.MessageDTOreg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -51,11 +52,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id, @RequestHeader Map<String, String> headers) throws NoSuchElementException {
-
-        headers.forEach((key, value) -> {
-            System.out.println("Header "+ key+" = "+ value);
-        });
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
 
         Game game = gameService.getSpecificGame(id);
         HttpStatus status = HttpStatus.OK;
@@ -73,13 +70,9 @@ public class GameController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTO gameDTO) {
+    public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTOUpdate gameDTOUpdate) {
         HttpStatus status = HttpStatus.OK;
-        Game game = mapper.toGame(gameDTO);
-        if(!Objects.equals(id,game.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(null, status);
-        }
+        Game game = mapper.toGame(gameDTOUpdate);
         Game updatedGame = gameService.updateSpecificGame(id, game);
         return new ResponseEntity<>(mapper.toGameDTO(updatedGame),status);
     }
@@ -102,7 +95,7 @@ public class GameController {
                                                      ) throws NullPointerException, AppUserNotFoundException {
         HttpStatus status;
         List<Message> messages;
-        List<MessageDTO> messageDTOs = null;
+        List<MessageDTO> messageDTOs;
         if(SecurityUtils.isAdmin(authorization)) {
             if (playerID != null) messages = gameService.getGameChat(id, playerID);
             else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));

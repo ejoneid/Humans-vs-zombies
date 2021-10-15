@@ -1,11 +1,7 @@
 package no.noroff.hvz.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 public class Player {
@@ -31,10 +27,14 @@ public class Player {
     @JoinColumn(name = "user_id")
     private AppUser user;
 
-    @OneToMany
-    @JoinColumn(name = "killer_id")
+    @OneToMany(mappedBy ="killer",cascade = CascadeType.REMOVE)
     private Set<Kill> kills;
 
+    @OneToOne(mappedBy = "player", cascade = CascadeType.REMOVE)
+    private SquadMember membership;
+
+    @OneToOne(mappedBy = "victim", cascade = CascadeType.REMOVE)
+    private Kill death;
 
     public Long getId() {
         return id;
@@ -90,5 +90,21 @@ public class Player {
 
     public void setPatientZero(boolean patientZero) {
         isPatientZero = patientZero;
+    }
+
+    public SquadMember getMembership() {
+        return membership;
+    }
+
+    public void setMembership(SquadMember membership) {
+        this.membership = membership;
+    }
+
+    public Kill getDeath() {
+        return death;
+    }
+
+    public void setDeath(Kill death) {
+        this.death = death;
     }
 }
