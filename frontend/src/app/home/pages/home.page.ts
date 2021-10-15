@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActiveGame} from "../../models/active-game.model";
+import {ActiveGame} from "../../models/input/active-game.model";
 import {HomeAPI} from "../api/home.api";
 import {CreateGameComponent} from "../components/create-game/create-game.component";
 import {MatDialog} from "@angular/material/dialog";

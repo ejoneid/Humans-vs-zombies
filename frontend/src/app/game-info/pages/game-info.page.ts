@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {GameInfoAPI} from "../api/game-info.api";
 import {ActivatedRoute} from "@angular/router";
-import {PlayerInfo} from "../../models/player-info.model";
-import {GameInfo} from "../../models/game-info.model";
-import {Mission} from "../../models/mission.model";
-import {Kill} from "../../models/kill.model";
-import {Message} from "../../models/message.model";
+import {PlayerInfo} from "../../models/input/player-info.model";
+import {GameInfo} from "../../models/input/game-info.model";
+import {Mission} from "../../models/input/mission.model";
+import {Kill} from "../../models/input/kill.model";
+import {Message} from "../../models/input/message.model";
 
 @Component({
   selector: 'app-game-info-page',

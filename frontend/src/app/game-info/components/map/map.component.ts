@@ -3,10 +3,10 @@ import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
-import {MapBorder} from "../../../models/map-border.model";
-import {Kill} from "../../../models/kill.model";
-import {Mission} from "../../../models/mission.model";
-import {MapMarker} from "../../../models/map-marker.model";
+import {MapBorder} from "../../../models/input/map-border.model";
+import {Kill} from "../../../models/input/kill.model";
+import {Mission} from "../../../models/input/mission.model";
+import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps";
 
 @Component({
