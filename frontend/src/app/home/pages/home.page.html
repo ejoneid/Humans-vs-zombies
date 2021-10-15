@@ -7,7 +7,10 @@
     </section>
   </section>
   <section class="activeGamesSection">
-    <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
+    <section id="titleSection">
+      <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
+      <button class="normalGreyButton" (click)="createGame()">New Game</button>
+    </section>
     <ul class="activeGameList">
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"

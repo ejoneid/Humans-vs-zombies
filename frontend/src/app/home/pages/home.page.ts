@@ -26,6 +26,10 @@ export class HomePage implements OnInit {
       })
   }
 
+  createGame(): void {
+
+  }
+
   public get games(): ActiveGame[] {
     return this.activeGames;
   }
