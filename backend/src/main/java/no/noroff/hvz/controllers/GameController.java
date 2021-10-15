@@ -1,5 +1,6 @@
 package no.noroff.hvz.controllers;
 
+import com.sun.net.httpserver.Headers;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
@@ -50,7 +51,12 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id, @RequestHeader Map<String, String> headers) throws NoSuchElementException {
+
+        headers.forEach((key, value) -> {
+            System.out.println("Header "+ key+" = "+ value);
+        });
+
         Game game = gameService.getSpecificGame(id);
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(mapper.toGameDTO(game),status);

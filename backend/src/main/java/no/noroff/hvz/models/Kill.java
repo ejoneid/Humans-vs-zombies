@@ -27,7 +27,7 @@ public class Kill {
     private String lng;
 
     @ManyToOne
-    @JoinColumn(name = "kill_id")
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
     @JsonGetter("game")

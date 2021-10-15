@@ -9,10 +9,8 @@ import no.noroff.hvz.repositories.KillerRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,38 +26,29 @@ public class KillerService {
     private CustomMapper mapper;
 
     public List<Kill> getAllKills(Long gameID) {
-        List<Kill> kills = null;
-        if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
-            kills = new ArrayList<>(game.getKills());
+        if(!gameRepository.existsById(gameID)) {
+            throw new NoSuchElementException("Could not find game with id: " + gameID);
         }
-        return kills;
+        return killerRepository.getKillsByGame_Id(gameID);
     }
 
     public List<Kill> getAllKills(Long gameID, Long killerID) {
-        List<Kill> kills = null;
-        if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
-            kills = game.getKills().stream().filter(k -> Objects.equals(k.getKiller().getId(), killerID)).collect(Collectors.toList());
+        if(!gameRepository.existsById(gameID)) {
+            throw new NoSuchElementException("Could not find game with id: " + gameID);
         }
-        return kills;
+        return killerRepository.getKillsByGame_IdAndKiller_Id(gameID, killerID);
     }
 
     public Kill getSpecificKill( Long gameID, Long killID) {
-        Kill kill = new Kill();
-        if(gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
-            kill = killerRepository.findById(killID).get();
-        }
-        return kill;
+        if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        return killerRepository.findById(killID).get();
     }
 
     public Kill createNewKill(Long gameID, Kill kill) {
-        if(gameRepository.existsById(gameID) && kill != null) {
-            kill.setGame(gameRepository.findById(gameID).get());
-            kill.getVictim().setHuman(false);
-            if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
-            kill = killerRepository.save(kill);
-        }
+        kill.setGame(gameRepository.findById(gameID).get());
+        kill.getVictim().setHuman(false);
+        if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
+        kill = killerRepository.save(kill);
         return kill;
     }
 
@@ -67,20 +56,15 @@ public class KillerService {
 
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
-        try {
-            updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
-        } catch (Exception exception) {
-            System.out.println("COULD NOT FIND PLAYER!");
-        }
+        updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
+        updatedKill.setVictim(playerRepository.getPlayerByGame_IdAndBiteCode(gameID, killDto.getBiteCode()));
         return killerRepository.save(updatedKill);
     }
 
     public Kill deleteKill(Long gameID, Long killID) {
-        Kill deletedKill = new Kill();
-        if (gameRepository.existsById(gameID) && killerRepository.existsById(killID)) {
-            deletedKill = killerRepository.findById(killID).get();
-            killerRepository.deleteById(killID);
-        }
+        if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Kill deletedKill = killerRepository.findById(killID).get();
+        killerRepository.deleteById(killID);
         return deletedKill;
     }
 }
