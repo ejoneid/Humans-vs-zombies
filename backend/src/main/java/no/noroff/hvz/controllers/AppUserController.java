@@ -29,6 +29,11 @@ public class AppUserController {
 
     private HttpStatus status = HttpStatus.OK;
 
+    /**
+     * Method for getting a specific user
+     * @param principal Auth token som inneholder openID
+     * @return the specific user DTO
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> getSpecificUser(@AuthenticationPrincipal Jwt principal) {
@@ -46,10 +51,16 @@ public class AppUserController {
             status = HttpStatus.OK;
             appUserDTO = mapper.toAppUserDTO(appUser);
         }
-
         return new ResponseEntity<>(appUserDTO,status);
     }
 
+    /**
+     * Method for creating a new user
+     * @param userDTO DTO for a new user
+     * @param principal Auth token
+     * @return the created user DTO
+     * @throws DataIntegrityViolationException
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTO userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException {
