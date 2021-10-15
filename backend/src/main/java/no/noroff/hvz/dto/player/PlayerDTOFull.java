@@ -7,14 +7,16 @@ public class PlayerDTOFull implements PlayerDTO {
 
     private Long id;
     private Boolean isHuman;
+    private Boolean patientZero;
     private String biteCode;
     private AppUserDTO user;
     private String killsUrl;
     private String messagesUrl;
 
-    public PlayerDTOFull(Long id, Boolean isHuman, String biteCode, AppUserDTO user, String killsUrl, String messagesUrl) {
+    public PlayerDTOFull(Long id, Boolean isHuman, Boolean patientZero, String biteCode, AppUserDTO user, String killsUrl, String messagesUrl) {
         this.id = id;
         this.isHuman = isHuman;
+        this.patientZero = patientZero;
         this.biteCode = biteCode;
         this.user = user;
         this.killsUrl = killsUrl;
@@ -69,5 +71,13 @@ public class PlayerDTOFull implements PlayerDTO {
 
     public void setMessagesUrl(String messagesUrl) {
         this.messagesUrl = messagesUrl;
+    }
+
+    public Boolean getPatientZero() {
+        return patientZero;
+    }
+
+    public void setPatientZero(Boolean patientZero) {
+        this.patientZero = patientZero;
     }
 }

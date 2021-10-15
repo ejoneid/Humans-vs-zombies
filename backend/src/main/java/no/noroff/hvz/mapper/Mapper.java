@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Component
 public class Mapper {
@@ -111,26 +110,33 @@ public class Mapper {
         return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
     }
 
-    public Player toPlayer(PlayerDTO playerDTO) {
-        return playerRepository.getById(playerDTO.getId());
-    }
-
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
         AppUserDTO userDTO = toAppUserDTO(player.getUser());
-        return new PlayerDTOFull(player.getId(),player.isHuman(), player.getBiteCode(),
+        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),
                userDTO ,killsUrl,messagesUrl);
     }
 
-    public Player regPlayerDTO(PlayerDTOReg p) {
+
+    public Player regPlayerDTO(PlayerDTORegAdmin playerDTORegAdmin) {
         Player player = new Player();
-        if (!appUserRepository.existsById(p.getUserID())) return null;
-        AppUser user = appUserRepository.getById(p.getUserID());
+        AppUser user = appUserRepository.getById(playerDTORegAdmin.getUserID());
         player.setUser(user);
-        player.setHuman(true);
-        player.setPatientZero(false);
+        player.setHuman(playerDTORegAdmin.isHuman());
+        player.setPatientZero(playerDTORegAdmin.isPatientZero());
         return player;
+    }
+
+    public Player toPlayer(PlayerDTOUpdate playerDTO, Long playerID) {
+        Player player = playerRepository.getById(playerID);
+        player.setHuman(playerDTO.isHuman());
+        player.setPatientZero(playerDTO.isPatientZero());
+        return player;
+    }
+
+    public Player toPlayer(PlayerDTO playerDTO) {
+        return playerRepository.getById(playerDTO.getId());
     }
 
     public SquadMember toSquadMember (SquadMemberFromDTO dto) {
