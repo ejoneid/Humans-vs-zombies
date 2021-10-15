@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlayerInfoFull} from "../../../models/player-info-full.model";
+import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 
 @Component({
   selector: 'app-single-player',

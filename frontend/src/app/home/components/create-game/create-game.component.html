@@ -1,0 +1,25 @@
+<mat-card-title>
+  <mat-error *ngIf="title.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
+  <textarea #title required placeholder="Game Name" [(ngModel)]="data.name"></textarea>
+</mat-card-title>
+<mat-dialog-content>
+  <textarea placeholder="Game description" [(ngModel)]="data.description"></textarea>
+  <mat-label>Choose a start and end date (Optional):</mat-label>
+  <mat-error *ngIf="illegalDate">End date can't be before start date</mat-error>
+  <section id="dateTimeContainer">
+    <mat-form-field appearance="fill">
+      <input matInput [matDatepicker]="startPicker" placeholder="Start date" [(ngModel)]="data.startTime">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput [matDatepicker]="endPicker" placeholder="End date" [(ngModel)]="data.endTime">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="normalGreyButton" (click)="closeDialog()">Create</button>
+</mat-dialog-actions>

@@ -52,11 +52,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id, @RequestHeader Map<String, String> headers) throws NoSuchElementException {
-
-        headers.forEach((key, value) -> {
-            System.out.println("Header "+ key+" = "+ value);
-        });
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
 
         Game game = gameService.getSpecificGame(id);
         HttpStatus status = HttpStatus.OK;

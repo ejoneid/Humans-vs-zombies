@@ -3,10 +3,10 @@ import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {options} from "src/assets/map-options";
-import {MapBorder} from "../../../models/map-border.model";
-import {Kill} from "../../../models/kill.model";
-import {Mission} from "../../../models/mission.model";
-import {MapMarker} from "../../../models/map-marker.model";
+import {MapBorder} from "../../../models/input/map-border.model";
+import {Kill} from "../../../models/input/kill.model";
+import {Mission} from "../../../models/input/mission.model";
+import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow} from "@angular/google-maps";
 import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -14,7 +14,7 @@ import {AdminAPI} from "../../api/admin.api";
 import LatLng = google.maps.LatLng;
 import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 import {KillEditComponent} from "../kill-edit/kill-edit.component";
-import {KillOutput} from "../../../models/kill-output.model";
+import {KillOutput} from "../../../models/output/kill-output.model";
 
 @Component({
   selector: 'app-map-admin',

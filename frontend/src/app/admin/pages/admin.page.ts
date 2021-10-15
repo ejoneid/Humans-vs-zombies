@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Mission} from "../../models/mission.model";
-import {Kill} from "../../models/kill.model";
+import {Mission} from "../../models/input/mission.model";
+import {Kill} from "../../models/input/kill.model";
 import {AdminAPI} from "../api/admin.api";
-import {GameInfoAdmin} from "../../models/game-info-admin.model";
-import {PlayerInfoFull} from "../../models/player-info-full.model";
+import {GameInfoAdmin} from "../../models/input/game-info-admin.model";
+import {PlayerInfoFull} from "../../models/input/player-info-full.model";
+import {GameOutput} from "../../models/output/game-output.model";
 
 @Component({
   selector: 'app-admin.page',
@@ -40,6 +41,23 @@ export class AdminPage implements OnInit {
     this.updateMissions();
     this.updateKills();
     this.updatePlayers();
+  }
+
+  saveChanges(): void {
+    console.log(this.gameInfo)
+    const updateGame: GameOutput = {
+      description: this.gameInfo.description,
+      gameState: this.gameInfo.state,
+      name: this.gameInfo.name,
+      nw_lat: this.gameInfo.map_info?.nw_lat,
+      nw_long: this.gameInfo.map_info?.nw_long,
+      se_lat: this.gameInfo.map_info?.se_lat,
+      se_long: this.gameInfo.map_info?.se_long
+    }
+    this.adminAPI.updateGame(this.gameInfo.id, updateGame)
+      .then(res => res.subscribe(
+        data => console.log(data)
+      ));
   }
 
   updateMissions() {

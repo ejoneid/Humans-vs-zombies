@@ -1,11 +1,11 @@
 <body>
-<app-game-title-admin [gameTitle]="game.name"></app-game-title-admin>
+<app-game-title-admin [(gameTitle)]="game.name" (gameTitleChange)="saveChanges()"></app-game-title-admin>
 <main class="adminContainer">
   <app-players
     [playerList]="game.players"
     (playerUpdate)="updatePlayers()"></app-players>
   <section class="componentContainer">
-    <app-game></app-game>
+    <app-game [(gameDescription)]="game.description"></app-game>
   </section>
   <section class="componentContainer">
     <app-map-admin id="map"
