@@ -1,7 +1,5 @@
 package no.noroff.hvz.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import javax.persistence.*;
 import java.util.Date;
 

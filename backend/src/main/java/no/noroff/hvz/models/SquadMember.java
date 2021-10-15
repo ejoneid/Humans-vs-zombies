@@ -1,11 +1,8 @@
 package no.noroff.hvz.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Entity
 public class SquadMember {
@@ -21,11 +18,11 @@ public class SquadMember {
     @JoinColumn(name = "squad_id")
     private Squad squad;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id")
     private Set<SquadCheckIn> checkIns;
 
