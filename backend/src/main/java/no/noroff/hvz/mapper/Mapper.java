@@ -16,7 +16,6 @@ import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 
 @Component
@@ -42,21 +41,45 @@ public class Mapper {
     @Autowired
     private CustomMapper customMapper;
 
+    /**
+     * Method for mapping missionDTO
+     * includes id, name, description, startime, endtime, faction, coordinates and gameID
+     * @param mission the mission
+     * @return DTO of the mission
+     */
     public MissionDTO toMissionDTO(Mission mission) {
         return new MissionDTO(mission.getId(),mission.getName(),mission.getDescription(),
                 mission.getStartTime(), mission.getEndTime(), mission.isHuman(), mission.getLat(), mission.getLng(),mission.getGame().getId());
     }
 
+    /**
+     * Method for mapping a mission from a missionDTO
+     * @param missionDTO DTO
+     * @return Mission
+     */
     public Mission toMission(MissionDTO missionDTO) {
+        //Gets the game form the database and uses the infor from the DTO to create the mission
         Game game = gameRepository.getById(missionDTO.getGameId());
         return new Mission(missionDTO.getId(), missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
+
+    /**
+     * Method for mapping DTO for user
+     * Includes firstname and lastname
+     * @param user AppUser
+     * @return DTO
+     */
     public AppUserDTO toAppUserDTO(AppUser user) {
         return new AppUserDTO(user.getFirstName(), user.getLastName());
     }
 
+    /**
+     * Method for mapping AppUser from DTO
+     * @param appUserDTO DTO
+     * @return USER
+     */
     public AppUser toAppUser(AppUserDTO appUserDTO) {
         AppUser appUser = new AppUser();
         appUser.setLastName(appUserDTO.getLastName());
@@ -64,15 +87,26 @@ public class Mapper {
         return appUser;
     }
 
+    /**
+     * Method for mapping from DTO to game for a new game
+     * Sets gameState to default Registration
+     * @param gameDTO new game contents
+     * @return a new game
+     */
     public Game toGame(GameDTOReg gameDTO) {
         return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
     }
-    public Game toGame(GameDTO gameDTO) {
-        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
-    }
 
+    /**
+     * Method for mapping from DTO to game for updating
+     * @param gameDTOUpdate DTO with updated contents
+     * @param id ID of game
+     * @return updated game
+     */
     public Game toGame(GameDTOUpdate gameDTOUpdate, Long id) {
+        //gets the game from database
         Game game = gameRepository.getById(id);
+        //Updates contents from DTO
         game.setName(gameDTOUpdate.getName());
         game.setGameState(gameDTOUpdate.getGameState());
         game.setDescription(gameDTOUpdate.getDescription());
@@ -83,6 +117,12 @@ public class Mapper {
         return game;
     }
 
+    /**
+     * Method for mapping from game to gameDTO
+     * includes id, name, gameState, description, coordinates and  urls for getting other database objects
+     * @param game game to be mapped
+     * @return DTO of game
+     */
     public GameDTO toGameDTO(Game game) {
         String gameUrl = url + game.getId();
         String squadsUrl = gameUrl + "/squad";
@@ -94,6 +134,12 @@ public class Mapper {
                 game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
     }
 
+    /**
+     * Method for mapping from Kill til DTO
+     * Includs ID, timeOfDeath, story, coordinates and the names of killer and victim
+     * @param kill kill object
+     * @return kill DTO
+     */
     public KillDTO toKillDTO(Kill kill) {
         String killerName = kill.getKiller().getUser().getFirstName() + " " + kill.getKiller().getUser().getLastName();
         String victimName = kill.getVictim().getUser().getFirstName() + " " + kill.getVictim().getUser().getLastName();
@@ -101,22 +147,43 @@ public class Mapper {
                 killerName, victimName);
     }
 
+    /**
+     * Method for mapping from DTO with new content to a new kill
+     * @param killDTO DTO with new content
+     * @return the new kill
+     * @throws InvalidBiteCodeException if the bitecode provided in the dto does not match a player or is already dead
+     */
     public Kill regKillDTO(KillDTOReg killDTO) throws InvalidBiteCodeException {
         Kill kill = new Kill();
+        //uses customMapper to mapp new contents onto the kill object
         customMapper.updateKillFromDto(killDTO, kill);
+        //gets the killer and victim
         Player killer = playerRepository.getById(killDTO.getKillerID());
         Player victim = playerRepository.getPlayerByGameAndBiteCode(killer.getGame(), killDTO.getBiteCode());
+        //checks if no victim was found or the victim was already killed
         if (victim == null) throw new InvalidBiteCodeException("BiteCode did not match any players in this game!");
+        if(!victim.isHuman()) throw new InvalidBiteCodeException("The victim is already a zombie");
         kill.setKiller(killer);
         kill.setVictim(victim);
         return kill;
     }
 
+    /**
+     * Method for mapping from message to DTO
+     * Includes id, mesage, time, name and the cahts the message id for
+     * @param message original object
+     * @return DTO of message
+     */
     public MessageDTO toMessageDTO(Message message) {
         String name = message.getUser().getFirstName() + " " + message.getUser().getLastName();
         return new MessageDTO(message.getId(), message.getMessage(),message.getChatTime(),name , message.isHuman(), message.isGlobal(), message.isFaction());
     }
 
+    /**
+     * Method for mapping from DTO with new contents to message
+     * @param dto DTO with new content
+     * @return new message
+     */
     public Message toMessage(MessageDTOreg dto) {
         Message message = new Message();
         message.setMessage(dto.getMessage());
@@ -124,11 +191,23 @@ public class Mapper {
         return message;
     }
 
+    /**
+     * Method for mapping from Player to PlayerDTO for normal users
+     * Includes name, id, status and bitecode
+     * @param player player object
+     * @return DTO for normal users
+     */
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
         String name = player.getUser().getFirstName() + " " + player.getUser().getLastName();
         return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
     }
 
+    /**
+     * Method for mapping from Player to PlayerDTO for admins
+     * Includes name, id, status, patientZero bitecode, UserDTO and urls for kills and messages
+     * @param player player object
+     * @return DTO for admin
+     */
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
@@ -138,8 +217,14 @@ public class Mapper {
     }
 
 
+    /**
+     * Method for mapping from new player DTO to player
+     * @param playerDTORegAdmin DTO with new content for when admins create players
+     * @return the new player
+     */
     public Player regPlayerDTO(PlayerDTORegAdmin playerDTORegAdmin) {
         Player player = new Player();
+        //gets the user and sets the values in the new player
         AppUser user = appUserRepository.getById(playerDTORegAdmin.getUserID());
         player.setUser(user);
         player.setHuman(playerDTORegAdmin.isHuman());
@@ -147,25 +232,50 @@ public class Mapper {
         return player;
     }
 
+    /**
+     * Method for mapping from Update DTO to player
+     * @param playerDTO DTO with updated contents
+     * @param playerID ID of player
+     * @return updated player
+     */
     public Player toPlayer(PlayerDTOUpdate playerDTO, Long playerID) {
+        //gets the player form the database and sets the new values
         Player player = playerRepository.getById(playerID);
         player.setHuman(playerDTO.isHuman());
         player.setPatientZero(playerDTO.isPatientZero());
         return player;
     }
 
+    /**
+     * Method for mapping from PlayerDTO to player
+     * @param playerDTO DTO of player
+     * @return player
+     */
     public Player toPlayer(PlayerDTO playerDTO) {
+        //returns the player form the database
         return playerRepository.getById(playerDTO.getId());
     }
 
+    /**
+     * Method for mapping from DTO to squadmember
+     * @param dto SquadDTO
+     * @return member
+     */
     public SquadMember toSquadMember (SquadMemberFromDTO dto) {
         SquadMember member = new SquadMember();
+        //gets the player form databse and sets the provided rank
         Player player = playerRepository.getById(dto.getPlayerID());
         member.setPlayer(player);
         member.setRank(dto.getRank());
         return member;
     }
 
+    /**
+     * Method for mapping from squad to DTO
+     * Includes ID, squadName and members
+     * @param squad object
+     * @return squad DTO
+     */
     public SquadDTO toSquadDTO(Squad squad) {
         ArrayList<PlayerDTO> members = new ArrayList<>();
         for (SquadMember member: squad.getMembers()) {
@@ -174,14 +284,25 @@ public class Mapper {
         return new SquadDTO(squad.getId(), squad.getName(),members);
     }
 
+    /**
+     * Method for mapping from squadCheckIn to DTO
+     * Includes ID, time, coordinates and playerDTO
+     * @param squadCheckIn object
+     * @return DTO
+     */
     public SquadCheckInDTO toSquadCheckInDTO(SquadCheckIn squadCheckIn) {
         PlayerDTO memberDTO = toPlayerDTOStandard(squadCheckIn.getMember().getPlayer());
         return new SquadCheckInDTO(squadCheckIn.getId(), squadCheckIn.getTime(),
                 squadCheckIn.getLat(), squadCheckIn.getLng(), memberDTO);
     }
 
+    /**
+     * Method for mapping from SquadCheckInDTO with new contents to SquadCheckIn
+     * @param squadCheckInDTO DTO with new contents
+     * @return SquadCheckIn
+     */
     public SquadCheckIn toSquadCheckIn(SquadCheckInDTO squadCheckInDTO) {
-        Player player = toPlayer(squadCheckInDTO.getMember());
+        Player player = playerRepository.getById(squadCheckInDTO.getId());
         SquadMember squadMember = squadMemberRepository.getByPlayer(player);
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
