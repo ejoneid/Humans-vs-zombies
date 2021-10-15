@@ -3,6 +3,7 @@ import {ActiveGame} from "../../models/active-game.model";
 import {HomeAPI} from "../api/home.api";
 import {CreateGameComponent} from "../components/create-game/create-game.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog) {
+  constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
   }
 
   ngOnInit(): void {
@@ -34,7 +35,7 @@ export class HomePage implements OnInit {
       if (result != undefined) {
         this.homeAPI.createGame(result)
           .then(res => res.subscribe(
-            data => console.log(data)
+            data => this.router.navigate(["game/"+data.id+"/admin"])
           ));
       }
     });
