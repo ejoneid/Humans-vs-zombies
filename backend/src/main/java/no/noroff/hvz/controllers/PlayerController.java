@@ -1,22 +1,26 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.player.PlayerDTOReg;
-import no.noroff.hvz.dto.squad.SquadDTO;
+import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
+import no.noroff.hvz.dto.player.PlayerDTOUpdate;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
+import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Player;
-import no.noroff.hvz.models.Squad;
 import no.noroff.hvz.security.SecurityUtils;
+import no.noroff.hvz.services.AppUserService;
 import no.noroff.hvz.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,6 +32,8 @@ public class PlayerController {
     private PlayerService playerService;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    private AppUserService appUserService;
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -74,38 +80,36 @@ public class PlayerController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody PlayerDTOReg player) {
+    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTO> player,
+                                                     @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
-        Player newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO(player));
-        if(newPlayer == null) {
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(null,status);
+        Player newPlayer;
+        PlayerDTO playerDTO;
+        if(SecurityUtils.isAdmin(authorization)) {
+            newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO((PlayerDTORegAdmin) player.get()));
+            playerDTO = mapper.toPlayerDTOFull(newPlayer);
         }
         else {
-            PlayerDTO playerDTO = mapper.toPlayerDTOFull(newPlayer);
-            status = HttpStatus.CREATED;
-            return new ResponseEntity<>(playerDTO,status);
+            AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            newPlayer = playerService.createNewPlayer(gameID, user);
+            playerDTO = mapper.toPlayerDTOStandard(newPlayer);
         }
+
+        status = HttpStatus.CREATED;
+        return new ResponseEntity<>(playerDTO,status);
+
     }
 
     @PutMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestBody Player player) {
+    public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
+                                                  @RequestBody PlayerDTOUpdate playerDTO) {
         HttpStatus status;
-        if(!Objects.equals(playerID,player.getId())) {
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(mapper.toPlayerDTOStandard(new Player()),status);
-        }
+        Player player = mapper.toPlayer(playerDTO, playerID);
         Player updatedPlayer = playerService.updatePlayer(gameID, playerID, player);
-        PlayerDTO playerDTO = null;
-        if(updatedPlayer.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-            playerDTO = mapper.toPlayerDTOFull(player);
-        }
-        return new ResponseEntity<>(playerDTO, status);
+        PlayerDTO updatedPlayerDTO = mapper.toPlayerDTOFull(updatedPlayer);
+        status = HttpStatus.OK;
+        return new ResponseEntity<>(updatedPlayerDTO, status);
     }
 
     @DeleteMapping("/{playerID}")

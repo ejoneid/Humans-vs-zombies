@@ -30,7 +30,7 @@ public class PlayerService {
     public List<Player> getAllPlayers(Long gameID) {
         List<Player> players = new ArrayList<>();
         if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.findById(gameID).get();
+            Game game = gameRepository.getById(gameID);
             players = new ArrayList<>(game.getPlayers());
         }
         return players;
@@ -39,7 +39,7 @@ public class PlayerService {
     public Player getSpecificPlayer( Long gameID, Long playerID) {
         Player player = new Player();
         if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
-            player = playerRepository.findById(playerID).get();
+            player = playerRepository.getById(playerID);
         }
         return player;
     }
@@ -64,14 +64,14 @@ public class PlayerService {
 
     /**
      * Method for putting in default info to a new user generated player
-     * @param gameID
-     * @param player
+     * @param gameID ID of game
+     * @param player New player
      * @return player || null
      */
     public Player createNewPlayer(Long gameID, Player player) {
         if(gameRepository.existsById(gameID)) {
             // Set the players default info
-            player.setGame(gameRepository.findById(gameID).get());
+            player.setGame(gameRepository.getById(gameID));
             String randomBiteCode = createRandomBiteCode(10);
             // Create a random bitecode -> if the bitecode already exist creates a new one
             String finalRandomBiteCode = randomBiteCode;
@@ -84,13 +84,43 @@ public class PlayerService {
             player.setBiteCode(randomBiteCode);
             player = playerRepository.save(player);
         }
-        // If game exist -> return the new player, else return null
+        //TODO throw correct exception
+        return player;
+    }
+
+    /**
+     * Method that creates a default player
+     * @param gameID Id of game
+     * @param user The user that creates the player
+     * @return the new player
+     */
+    public Player createNewPlayer(Long gameID, AppUser user) {
+        Player player = new Player();
+        if(gameRepository.existsById(gameID)) {
+            // Set the players default info
+            player.setUser(user);
+            player.setHuman(true);
+            player.setPatientZero(false);
+            player.setGame(gameRepository.getById(gameID));
+            String randomBiteCode = createRandomBiteCode(10);
+            // Create a random bitecode -> if the bitecode already exist creates a new one
+            String finalRandomBiteCode = randomBiteCode;
+            List<Player> existingBiteCode = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), finalRandomBiteCode)).collect(Collectors.toList());
+            while (existingBiteCode.size() > 0) {
+                randomBiteCode = createRandomBiteCode(10);
+                String finalRandomBiteCode1 = randomBiteCode;
+                existingBiteCode = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), finalRandomBiteCode1)).collect(Collectors.toList());
+            }
+            player.setBiteCode(randomBiteCode);
+            player = playerRepository.save(player);
+        }
+        //TODO throw correct exception
         return player;
     }
 
     /**
      * Method for creating a random bitecode
-     * @param len
+     * @param len length
      * @return biteCode
      */
     public static String createRandomBiteCode(int len) {
@@ -114,7 +144,7 @@ public class PlayerService {
     public Player deletePlayer(Long gameID, Long playerID) {
         Player deletedPlayer = new Player();
         if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
-            deletedPlayer = playerRepository.findById(playerID).get();
+            deletedPlayer = playerRepository.getById(playerID);
             playerRepository.deleteById(playerID);
         }
         return deletedPlayer;
