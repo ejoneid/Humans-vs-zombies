@@ -27,6 +27,11 @@ public class PlayerService {
     @Autowired
     private SquadRepository squadRepository;
 
+    /**
+     * Method for getting all players for a game
+     * @param gameID ID og game
+     * @return returns all players in the game
+     */
     public List<Player> getAllPlayers(Long gameID) {
         List<Player> players = new ArrayList<>();
         if(gameRepository.existsById(gameID)) {
@@ -36,6 +41,12 @@ public class PlayerService {
         return players;
     }
 
+    /**
+     * Method for getting a specific player
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @return the specified player
+     */
     public Player getSpecificPlayer( Long gameID, Long playerID) {
         Player player = new Player();
         if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
@@ -44,20 +55,17 @@ public class PlayerService {
         return player;
     }
 
+    /**
+     * Method for getting a users player in a game
+     * @param gameId ID of game
+     * @param user user object
+     * @return the users player in the game
+     */
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) {
         Player player = null;
         Game game = gameRepository.getById(gameId);
         if(playerRepository.existsByGameAndUser(game,user)) {
             player = playerRepository.getPlayerByGameAndUser(game,user);
-        }
-        return player;
-    }
-
-    public Player getPlayerByGameAndBiteCode(Long gameId, String biteCode) {
-        Player player = null;
-        Game game = gameRepository.getById(gameId);
-        if(playerRepository.existsByGameAndBiteCode(game,biteCode)) {
-            player = playerRepository.getPlayerByGameAndBiteCode(game,biteCode);
         }
         return player;
     }
@@ -133,6 +141,13 @@ public class PlayerService {
         return name.toString();
     }
 
+    /**
+     * Method for updating a player
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @param player Player object with new info
+     * @return the updated player
+     */
     public Player updatePlayer(Long gameID, Long playerID, Player player) {
         Player updatedPlayer = new Player();
         if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
@@ -141,6 +156,12 @@ public class PlayerService {
         return updatedPlayer ;
     }
 
+    /**
+     * Method for deleting player
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @return the deleted player
+     */
     public Player deletePlayer(Long gameID, Long playerID) {
         Player deletedPlayer = new Player();
         if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
@@ -148,22 +169,5 @@ public class PlayerService {
             playerRepository.deleteById(playerID);
         }
         return deletedPlayer;
-    }
-
-    public Squad getPlayerSquad(Long gameID, Long playerID) {
-        Squad squad = null;
-        if (gameRepository.existsById(gameID) && playerRepository.existsById(playerID)) {
-            List<Squad> squads = squadRepository.findAll().stream().toList();
-            for (Squad s : squads) {
-                List<SquadMember> members = s.getMembers().stream().toList();
-                for (SquadMember m : members) {
-                    if (Objects.equals(m.getPlayer().getId(), playerID)) {
-                        squad = s;
-                        break;
-                    }
-                }
-            }
-        }
-        return squad;
     }
 }

@@ -10,6 +10,7 @@ import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.AppUserService;
 import no.noroff.hvz.services.PlayerService;
+import org.hibernate.result.NoMoreReturnsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,12 @@ public class PlayerController {
     @Autowired
     private AppUserService appUserService;
 
+    /**
+     * Method for getting all players
+     * @param gameID ID of game
+     * @param authorization Auth token
+     * @return list of players
+     */
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @RequestHeader String authorization) {
@@ -47,6 +54,7 @@ public class PlayerController {
         }
         else{
             status = HttpStatus.OK;
+            //Returns different info based on if the requester is admin
             if (SecurityUtils.isAdmin(authorization)) {
                 playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
             }
@@ -57,6 +65,13 @@ public class PlayerController {
         return new ResponseEntity<>(playerDTOs, status);
     }
 
+    /**
+     * Method for getting a specific player
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @param authorization Auth token
+     * @return the player
+     */
     @GetMapping("/{playerID}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestHeader String authorization) {
@@ -68,6 +83,7 @@ public class PlayerController {
         }
         else {
             status = HttpStatus.OK;
+            //Returns different info based on if the requester is admin
             if (SecurityUtils.isAdmin(authorization)) {
                 playerDTO = mapper.toPlayerDTOFull(player);
             }
@@ -78,6 +94,15 @@ public class PlayerController {
         return new ResponseEntity<>(playerDTO, status);
     }
 
+    /**
+     * Method for creating a new player, different for an admin
+     * @param gameID ID of game
+     * @param player Optinioal DTO with info about the new player
+     * @param authorization Auth token
+     * @param principal Auth token
+     * @return the created player
+     * @throws AppUserNotFoundException if the provided user does not exists
+     */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTO> player,
@@ -85,6 +110,7 @@ public class PlayerController {
         HttpStatus status;
         Player newPlayer;
         PlayerDTO playerDTO;
+        //Admins can specify some fields, while a normal user gets a default player
         if(SecurityUtils.isAdmin(authorization)) {
             newPlayer = playerService.createNewPlayer(gameID, mapper.regPlayerDTO((PlayerDTORegAdmin) player.get()));
             playerDTO = mapper.toPlayerDTOFull(newPlayer);
@@ -100,6 +126,13 @@ public class PlayerController {
 
     }
 
+    /**
+     * Method for updating a player, admin only
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @param playerDTO DTO with new info
+     * @return the updated player
+     */
     @PutMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
@@ -112,6 +145,12 @@ public class PlayerController {
         return new ResponseEntity<>(updatedPlayerDTO, status);
     }
 
+    /**
+     * Method for deleting a player, admin only
+     * @param gameID ID of game
+     * @param playerID ID of player
+     * @return the deleted player
+     */
     @DeleteMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
