@@ -129,9 +129,8 @@ public class Mapper {
     }
 
     public Player regPlayerDTO(PlayerDTOReg p) {
-        Player player = new Player();
-        if (!appUserRepository.existsById(p.getUserID())) return null;
         AppUser user = appUserRepository.findById(p.getUserID()).get();
+        Player player = new Player();
         player.setUser(user);
         player.setHuman(true);
         player.setPatientZero(false);

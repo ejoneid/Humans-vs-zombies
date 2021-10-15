@@ -1,8 +1,5 @@
 package no.noroff.hvz.dto.player;
 
-import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.user.AppUserDTO;
-
 public class PlayerDTOStandard implements PlayerDTO {
 
     private Long id;

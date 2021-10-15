@@ -1,18 +1,17 @@
 package no.noroff.hvz.dto.player;
 
-import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.user.AppUserDTO;
+import no.noroff.hvz.dto.user.AppUserDTOReg;
 
 public class PlayerDTOFull implements PlayerDTO {
 
     private Long id;
     private Boolean isHuman;
     private String biteCode;
-    private AppUserDTO user;
+    private AppUserDTOReg user;
     private String killsUrl;
     private String messagesUrl;
 
-    public PlayerDTOFull(Long id, Boolean isHuman, String biteCode, AppUserDTO user, String killsUrl, String messagesUrl) {
+    public PlayerDTOFull(Long id, Boolean isHuman, String biteCode, AppUserDTOReg user, String killsUrl, String messagesUrl) {
         this.id = id;
         this.isHuman = isHuman;
         this.biteCode = biteCode;
@@ -47,11 +46,11 @@ public class PlayerDTOFull implements PlayerDTO {
         this.biteCode = biteCode;
     }
 
-    public AppUserDTO getUser() {
+    public AppUserDTOReg getUser() {
         return user;
     }
 
-    public void setUser(AppUserDTO user) {
+    public void setUser(AppUserDTOReg user) {
         this.user = user;
     }
 
