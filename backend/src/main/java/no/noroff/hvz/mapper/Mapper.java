@@ -10,7 +10,8 @@ import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
-import no.noroff.hvz.dto.user.AppUserDTO;
+import no.noroff.hvz.dto.user.AppUserDTOFull;
+import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Component
 public class Mapper {
@@ -56,11 +56,15 @@ public class Mapper {
         return mission;
     }
 
-    public AppUserDTO toAppUserDTO(AppUser user) {
-        return new AppUserDTO(user.getFirstName(), user.getLastName());
+    public AppUserDTOReg toAppUserDTOReg(AppUser user) {
+        return new AppUserDTOReg(user.getFirstName(), user.getLastName());
     }
 
-    public AppUser toAppUser(AppUserDTO appUserDTO) {
+    public AppUserDTOFull toAppUserDTOFull(AppUser user) {
+        return new AppUserDTOFull(user.getId(), user.getFirstName(), user.getLastName(), user.getPlayers());
+    }
+
+    public AppUser toAppUser(AppUserDTOReg appUserDTO) {
         AppUser appUser = new AppUser();
         appUser.setLastName(appUserDTO.getLastName());
         appUser.setFirstName(appUserDTO.getFirstName());
@@ -119,7 +123,7 @@ public class Mapper {
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        AppUserDTO userDTO = toAppUserDTO(player.getUser());
+        AppUserDTOReg userDTO = toAppUserDTOReg(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(), player.getBiteCode(),
                userDTO ,killsUrl,messagesUrl);
     }
