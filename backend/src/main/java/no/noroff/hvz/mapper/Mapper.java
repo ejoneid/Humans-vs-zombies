@@ -2,6 +2,7 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
+import no.noroff.hvz.dto.game.GameDTOUpdate;
 import no.noroff.hvz.dto.kill.KillDTO;
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
@@ -61,6 +62,25 @@ public class Mapper {
         appUser.setLastName(appUserDTO.getLastName());
         appUser.setFirstName(appUserDTO.getFirstName());
         return appUser;
+    }
+
+    public Game toGame(GameDTOReg gameDTO) {
+        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+    }
+    public Game toGame(GameDTO gameDTO) {
+        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+    }
+
+    public Game toGame(GameDTOUpdate gameDTOUpdate, Long id) {
+        Game game = gameRepository.getById(id);
+        game.setName(gameDTOUpdate.getName());
+        game.setGameState(gameDTOUpdate.getGameState());
+        game.setDescription(gameDTOUpdate.getDescription());
+        game.setNw_lat(gameDTOUpdate.getNw_lat());
+        game.setSe_lat(gameDTOUpdate.getSe_lat());
+        game.setNw_long(gameDTOUpdate.getNw_long());
+        game.setSe_long(gameDTOUpdate.getSe_long());
+        return game;
     }
 
     public GameDTO toGameDTO(Game game) {
@@ -166,10 +186,5 @@ public class Mapper {
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 
-    public Game toGame(GameDTOReg gameDTO) {
-        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
-    }
-    public Game toGame(GameDTO gameDTO) {
-        return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
-    }
+
 }
