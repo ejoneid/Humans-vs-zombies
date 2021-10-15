@@ -56,11 +56,8 @@ public class KillerService {
 
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
-//        try {
-            updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
-//        } catch (Exception exception) {
-//            System.out.println("COULD NOT FIND PLAYER!");
-//        }
+        updatedKill.setKiller(playerRepository.findById(killDto.getKillerID()).get());
+        updatedKill.setVictim(playerRepository.getPlayerByGame_IdAndBiteCode(gameID, killDto.getBiteCode()));
         return killerRepository.save(updatedKill);
     }
 

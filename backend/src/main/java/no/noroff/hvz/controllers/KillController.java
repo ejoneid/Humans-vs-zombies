@@ -58,8 +58,8 @@ public class KillController {
     }
 
     @PutMapping("/{killID}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
-        HttpStatus status = HttpStatus.OK;
         Kill unchangedKill = killerService.getSpecificKill(gameID, killID);
         String userOpenId = principal.getClaimAsString("sub");
         // Checks if the user is authorized as admin or the killer
@@ -67,6 +67,7 @@ public class KillController {
             throw new MissingPermissionsException("User does not have the right permissions for this operation");
         }
         Kill updatedKill = killerService.updateKill(gameID, killID, kill);
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(mapper.toKillDTO(updatedKill), status);
     }
 
