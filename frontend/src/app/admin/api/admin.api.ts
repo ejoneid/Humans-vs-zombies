@@ -5,6 +5,7 @@ import {baseURL} from "../../../assets/base-url";
 import {Mission} from "../../models/input/mission.model";
 import {KillOutput} from "../../models/output/kill-output.model";
 import {GameOutput} from "../../models/output/game-output.model";
+import {PlayerInfoFull} from "../../models/input/player-info-full.model";
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +54,8 @@ export class AdminAPI {
   }
   public async updateGame(gameID: number, game: GameOutput): Promise<Observable<any>> {
     return await this.http.put<any>(baseURL+"api/game/"+gameID, game);
-}
+  }
+  public async updatePlayer(gameID: number, playerID: number, player: PlayerInfoFull): Promise<Observable<any>> {
+    return await this.http.put<any>(baseURL+"api/game/"+gameID+"/player/"+playerID, player)
+  }
 }

@@ -3,6 +3,7 @@
 <main class="adminContainer">
   <app-players
     [playerList]="game.players"
+    [gameID]="game.id"
     (playerUpdate)="updatePlayers()"></app-players>
   <section class="componentContainer">
     <app-game [(gameDescription)]="game.description"></app-game>
