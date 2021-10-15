@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
-import {options} from "../../../assets/map-options";
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +44,8 @@ export class GameInfoAPI {
   }
   public async sendSquadChat(gameID: number, squadID: number, message: String): Promise<Observable<any>> {
     return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
+  }
+  public async registerForGame(gameID: number, user: {userID: number}): Promise<Observable<any>> {
+    return await this.http.post(baseURL + "api/game/" + gameID + "/player", user);
   }
 }

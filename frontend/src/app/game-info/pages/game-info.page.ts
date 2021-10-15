@@ -61,7 +61,6 @@ export class GameInfoPage implements OnInit {
             this.messagesURL = game.messages;
           });
       });
-
     //Getting information about the specific player.
     this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.id, this.gameInfo.player_id)
       .then((response) => {
@@ -140,6 +139,13 @@ export class GameInfoPage implements OnInit {
 
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
+  }
+
+  registerUser(): void {
+    this.gameInfoAPI.registerForGame(this.gameInfo.id, {userID: this.gameInfo.player_id})
+      .then(res => res.subscribe(
+        data => console.log(data)
+      ))
   }
 
   connect(){
