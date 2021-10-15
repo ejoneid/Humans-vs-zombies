@@ -44,7 +44,9 @@ export class KillEditComponent implements OnInit {
                   biteCodes: {name: string, biteCode: string}[]
                 }) {
     if (data.victimName != null) this.selectedVictimBiteCode = data.biteCodes.find(v => v.name === data.victimName)!.biteCode;
+    else this.selectedVictimBiteCode = data.biteCodes[0].biteCode
     if (data.killerName != null) this.selectedKillerID = data.ids.find(k => k.name === data.killerName)!.id;
+    else this.selectedKillerID = data.ids[0].id
   }
 
   ngOnInit(): void {
