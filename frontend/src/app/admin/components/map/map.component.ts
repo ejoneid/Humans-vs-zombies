@@ -24,7 +24,9 @@ import {KillOutput} from "../../../models/output/kill-output.model";
 export class MapComponent implements OnInit, OnChanges {
 
   @Input()
-  mapInfo!: MapBorder | null;
+  mapInfo!: MapBorder;
+  @Output()
+  mapInfoChange = new EventEmitter<MapBorder>();
   @Input()
   kills!: Kill[];
   @Input()
@@ -63,13 +65,13 @@ export class MapComponent implements OnInit, OnChanges {
    * Creates the map and applies the borders (If any)
    */
   ngOnInit() {
-    if (this.mapInfo != null) {
+    if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.options.restriction = {latLngBounds: {
-        east: this.mapInfo.se_long,
-        north: this.mapInfo.nw_lat,
-        south: this.mapInfo.se_lat,
-        west: this.mapInfo.nw_long
-      }};
+          east: this.mapInfo.se_long,
+          north: this.mapInfo.nw_lat,
+          south: this.mapInfo.se_lat,
+          west: this.mapInfo.nw_long
+        }};
     }
     //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
@@ -110,7 +112,7 @@ export class MapComponent implements OnInit, OnChanges {
         });
       }
     }
-    if (this.mapInfo != null) {
+    if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.corners = {
         nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
         se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
@@ -144,8 +146,16 @@ export class MapComponent implements OnInit, OnChanges {
    * @param position where the corner is
    */
   placeCorner(position: LatLng) {
-    if (this.lastNorthWest) this.corners.nw = position;
-    else this.corners.se = position;
+    if (this.lastNorthWest) {
+      this.corners.nw = position;
+      this.mapInfo!.nw_lat = position.lat()
+      this.mapInfo!.nw_long = position.lng()
+    }
+    else {
+      this.corners.se = position;
+      this.mapInfo!.se_lat = position.lat()
+      this.mapInfo!.se_long = position.lng()
+    }
     this.lastNorthWest = !this.lastNorthWest;
   }
 

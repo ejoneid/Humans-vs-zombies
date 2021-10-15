@@ -10,7 +10,7 @@ export interface GameInfoAdmin {
   state: string,
   description: string,
   squad_info: SquadInfo | null,
-  map_info: MapBorder | null,
+  map_info: MapBorder,
   kills: Kill[],
   missions: Mission[],
   players: PlayerInfoFull[]

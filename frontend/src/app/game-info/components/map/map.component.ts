@@ -17,7 +17,7 @@ import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps"
 export class MapComponent implements OnInit, OnChanges {
 
   @Input()
-  mapInfo!: MapBorder | null;
+  mapInfo!: MapBorder;
   @Input()
   kills!: Kill[];
   @Input()
@@ -67,7 +67,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.mapInfo != null) {
+    if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.options.restriction = {latLngBounds: {
         east: this.mapInfo.se_long,
         north: this.mapInfo.nw_lat,
