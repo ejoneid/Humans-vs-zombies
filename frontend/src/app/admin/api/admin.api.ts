@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
-import {Mission} from "../../models/mission.model";
-import {KillOutput} from "../../models/kill-output.model";
+import {Mission} from "../../models/input/mission.model";
+import {KillOutput} from "../../models/output/kill-output.model";
+import {GameOutput} from "../../models/output/game-output.model";
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,7 @@ export class AdminAPI {
   public async deleteKill(gameID: number, killID: number): Promise<Observable<any>> {
     return await this.http.delete<any>(baseURL+"api/game/"+gameID+"/kill/"+killID);
   }
+  public async updateGame(gameID: number, game: GameOutput): Promise<Observable<any>> {
+    return await this.http.put<any>(baseURL+"api/game/"+gameID, game);
+}
 }

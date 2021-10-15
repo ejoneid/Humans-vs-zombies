@@ -16,20 +16,20 @@ export class AuthButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.idTokenClaims$.subscribe((token) => {
-      if (!this.getRequestSent) {
+      if (!this.getRequestSent) { //Ensures only one request is sent
+        this.getRequestSent = true;
         this.homeAPI.checkUser()
           .then(res => {
             res.subscribe(
-              data => data,
-              () => {
-                if (!this.postRequestSent) {
-                  this.homeAPI.createUser({firstName: token!.given_name, lastName: token!.family_name})
-                    .then(res => {res.subscribe(data => data)});
-                  this.postRequestSent = true;
-                }
-              });
-          });
-        this.getRequestSent = true;
+            data => data, //If the user is found
+            () => { //If user doesn't exist
+              if (!this.postRequestSent) { //Ensures only one request is sent
+                this.postRequestSent = true;
+                this.homeAPI.createUser({firstName: token!.given_name, lastName: token!.family_name})
+                  .then(res => {res.subscribe(data => data)});
+              }
+            });
+        });
       }
     });
   }

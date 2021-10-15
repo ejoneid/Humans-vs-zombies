@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlayerInfo} from "../../../models/player-info.model";
-import {SquadInfo} from "../../../models/squad-info.model";
+import {PlayerInfo} from "../../../models/input/player-info.model";
+import {SquadInfo} from "../../../models/input/squad-info.model";
 
 @Component({
   selector: 'app-squad',

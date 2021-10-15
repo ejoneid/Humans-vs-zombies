@@ -1,5 +1,5 @@
 <section class="gameTitleContainer">
-  <h1 id="title">{{gameTitle}}</h1>
-  <button class="normalGreyButton">Save Changes</button>
+  <textarea id="title" [(ngModel)]="gameTitle" cdkTextareaAutosize></textarea>
+  <button class="normalGreyButton" (click)="saveChanges()">Save Changes</button>
 </section>
 

@@ -4,3 +4,6 @@
   max-height: 60vh;
   overflow-y: scroll;
 }
+#gameDesc {
+  width: 100%;
+}

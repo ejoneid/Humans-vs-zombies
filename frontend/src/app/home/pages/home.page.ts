@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActiveGame} from "../../models/active-game.model";
+import {ActiveGame} from "../../models/input/active-game.model";
 import {HomeAPI} from "../api/home.api";
+import {CreateGameComponent} from "../components/create-game/create-game.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -11,7 +14,7 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  constructor(private readonly homeAPI: HomeAPI) {
+  constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
   }
 
   ngOnInit(): void {
@@ -24,6 +27,18 @@ export class HomePage implements OnInit {
           )
         }
       })
+  }
+
+  createGame(): void {
+    const dialogRef = this.dialog.open(CreateGameComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        this.homeAPI.createGame(result)
+          .then(res => res.subscribe(
+            data => this.router.navigate(["game/"+data.id+"/admin"])
+          ));
+      }
+    });
   }
 
   public get games(): ActiveGame[] {
