@@ -50,7 +50,7 @@ export class GameInfoPage implements OnInit {
       .then((response) => {
         response.subscribe((game) => {
             this.gameInfo.name = game.name;
-            this.gameInfo.state = game.state;
+            this.gameInfo.state = game.gameState;
             this.gameInfo.description = game.description;
             this.gameInfo.map_info = {
               nw_lat: game.nw_lat,
