@@ -2,6 +2,7 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
+import no.noroff.hvz.dto.game.GameDTOUpdate;
 import no.noroff.hvz.dto.kill.KillDTO;
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.message.MessageDTO;
@@ -163,7 +164,7 @@ public class Mapper {
     public Game toGame(GameDTOReg gameDTO) {
         return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
     }
-    public Game toGame(GameDTO gameDTO) {
+    public Game toGame(GameDTOUpdate gameDTO) {
         return new Game(gameDTO.getName(),gameDTO.getGameState(), gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
     }
 }
