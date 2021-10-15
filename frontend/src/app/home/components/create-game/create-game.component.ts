@@ -29,13 +29,36 @@ export const MY_FORMATS = {
 })
 export class CreateGameComponent implements OnInit {
 
+  buttonClicked = false;
+  illegalDate = false;
+  data: {name: string, description: string | null, startTime: null | string, endTime: null | string} =
+    {name: "", description: null, startTime: null, endTime: null};
+
   constructor(public dialogRef: MatDialogRef<CreateGameComponent>) { }
 
   ngOnInit(): void {
   }
 
-  closeDialog(): void {
+  closeDialog() {
+    this.buttonClicked = true;
+    if (this.checkDate()) {
+      if (this.data.name.length > 0) {
+        this.dialogRef.close(this.data);
+      }
+    } else {
+      this.illegalDate = true;
+    }
+  }
 
+  checkDate(): boolean {
+    if (this.data.startTime != null) this.data.startTime = JSON.stringify(this.data.startTime).split("\"")[1];
+    if (this.data.endTime != null) this.data.endTime = JSON.stringify(this.data.endTime).split("\"")[1];
+    if (this.data.startTime != null && this.data.endTime != null) {
+      if (this.data.startTime > this.data.endTime) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

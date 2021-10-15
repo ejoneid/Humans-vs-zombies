@@ -7,6 +7,10 @@ import { ActiveGameComponent } from './components/active-game/active-game.compon
 import { CreateGameComponent } from './components/create-game/create-game.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import {MatDialogModule} from "@angular/material/dialog";
     CommonModule,
     HomeRoutingModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    FormsModule,
+    MatInputModule
   ],
   exports: [
   ]
