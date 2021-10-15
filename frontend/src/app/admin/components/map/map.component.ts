@@ -186,8 +186,6 @@ export class MapComponent implements OnInit, OnChanges {
 
   //Creates a new kill
   private createKill(position: LatLng): void {
-    console.log(this.ids)
-    console.log(this.biteCodes)
     let kill: KillOutput = {
       timeOfDeath: "",
       killerID: 0,
@@ -201,10 +199,10 @@ export class MapComponent implements OnInit, OnChanges {
       height: "fit-content",
       width: "fit-content",
       data: {
-        timeOfDeath: "",
-        killerName: "",
-        victimName: "",
-        story: "",
+        timeOfDeath: null,
+        killerName: null,
+        victimName: null,
+        story: null,
         biteCodes: this.biteCodes,
         ids: this.ids
       }
