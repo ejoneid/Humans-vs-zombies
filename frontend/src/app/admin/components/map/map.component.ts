@@ -52,10 +52,16 @@ export class MapComponent implements OnInit, OnChanges {
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
+  changeArea: boolean = false;
+  lastNorthWest = false;
+  corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
+
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
   }
 
-  //Creates the map and applies the borders (If any)
+  /**
+   * Creates the map and applies the borders (If any)
+   */
   ngOnInit() {
     if (this.mapInfo != null) {
       this.options.restriction = {latLngBounds: {
@@ -73,7 +79,9 @@ export class MapComponent implements OnInit, OnChanges {
       );
   }
 
-  //Updates the markers-array for the map
+  /**
+   * Updates the markers-array for the map
+   */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
     this.markers = [];
@@ -102,9 +110,50 @@ export class MapComponent implements OnInit, OnChanges {
         });
       }
     }
+    if (this.mapInfo != null) {
+      this.corners = {
+        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
+        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
+      };
+    }
   }
 
-  //Checks if the selected marker is for a kill or a mission and opens the proper method.
+  /**
+   * Just switches the value of the variable
+   */
+  toggleAreaChange(): void {
+    this.changeArea = !this.changeArea;
+    this.lastNorthWest = false;
+  }
+
+  /**
+   * Decides whether a marker should be placed or the borders should be edited.
+   * @param position where the map was clicked
+   */
+  mapClick(position: LatLng): void {
+    if (this.changeArea) {
+      this.placeCorner(position);
+    }
+    else {
+      this.createMarker(position)
+    }
+  }
+
+  /**
+   * Places a corner for the map borders
+   * @param position where the corner is
+   */
+  placeCorner(position: LatLng) {
+    if (this.lastNorthWest) this.corners.nw = position;
+    else this.corners.se = position;
+    this.lastNorthWest = !this.lastNorthWest;
+  }
+
+  /**
+   * Checks if the selected marker is for a kill or a mission and opens the proper method.
+   * @param id what is the id of the marker (Used to find it in the kills and missions lists)
+   * @param isMission should a mission or kill be edited
+   */
   public editMarker(id: number, isMission: boolean): void {
     if (isMission) {
       const mission = this.missions.find(m => m.id === id);
@@ -120,7 +169,10 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
 
-  //Checks if the admin wants to create a kill- or mission marker.
+  /**
+   * Checks if the admin wants to create a kill- or mission marker.
+   * @param position Where the marker is placed
+   */
   public createMarker(position: LatLng): void {
     const dialogRef = this.dialog.open(CreateMarkerComponent, {
       height: "fit-content",
@@ -139,8 +191,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //Opens a dialog window for the specified kill
-  private editKill(kill: Kill): void {
+  /**
+   * Opens a dialog window for the specified kill
+   * @param kill the kill that should be edited
+   */
+  editKill(kill: Kill): void {
     let outputKill: KillOutput = {
       biteCode: this.biteCodes.find(b => b.name === kill.victimName)!.biteCode,
       id: kill.id,
@@ -184,8 +239,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //Creates a new kill
-  private createKill(position: LatLng): void {
+  /**
+   * Creates a new kill
+   * @param position where the marker is
+   */
+  createKill(position: LatLng): void {
     let kill: KillOutput = {
       timeOfDeath: "",
       killerID: 0,
@@ -221,8 +279,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //Opens a dialog window for the specified mission.
-  private editMission(mission: Mission): void {
+  /**
+   * Opens a dialog window for the specified mission.
+   * @param mission the mission that should be edited
+   */
+  editMission(mission: Mission): void {
     const dialogRef = this.dialog.open(MissionEditComponent, {
       height: "fit-content",
       width: "fit-content",
@@ -257,8 +318,11 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  //Creates a new mission
-  private createMission(position: LatLng): void {
+  /**
+   * Creates a new mission
+   * @param position where the mission is
+   */
+  createMission(position: LatLng): void {
     let mission: Mission = {
       name: "",
       description: "",
