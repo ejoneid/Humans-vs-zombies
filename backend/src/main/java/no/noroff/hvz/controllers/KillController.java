@@ -34,6 +34,7 @@ public class KillController {
     Mapper mapper;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestParam(required = false) Long killerID) {
         List<Kill> kills;
         if (killerID != null) kills = killerService.getAllKills(gameID, killerID);
@@ -44,6 +45,7 @@ public class KillController {
     }
 
     @GetMapping("/{killID}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> getSpecificKill(@PathVariable Long gameID, @PathVariable Long killID) {
         Kill kill = killerService.getSpecificKill(gameID, killID);
         HttpStatus status = HttpStatus.OK;
@@ -51,6 +53,7 @@ public class KillController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody KillDTOReg kill) throws InvalidBiteCodeException {
         Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
         HttpStatus status = HttpStatus.CREATED;
@@ -59,11 +62,11 @@ public class KillController {
 
     @PutMapping("/{killID}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+    public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         Kill unchangedKill = killerService.getSpecificKill(gameID, killID);
         String userOpenId = principal.getClaimAsString("sub");
         // Checks if the user is authorized as admin or the killer
-        if (!(SecurityUtils.isAdmin(authorization) || unchangedKill.getKiller().getUser().equals( appUserService.getSpecificUser(userOpenId) ))) {
+        if (!(SecurityUtils.isAdmin(principal.getTokenValue()) || unchangedKill.getKiller().getUser().equals( appUserService.getSpecificUser(userOpenId) ))) {
             throw new MissingPermissionsException("User does not have the right permissions for this operation");
         }
         Kill updatedKill = killerService.updateKill(gameID, killID, kill);
