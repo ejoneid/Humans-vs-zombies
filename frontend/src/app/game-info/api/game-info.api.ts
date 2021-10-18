@@ -62,5 +62,6 @@ export class GameInfoAPI {
     })
   }
   public async createKill(gameID: number, kill: KillOutput): Promise<Observable<any>> {
-    return await this.http.post<any>(baseURL+"api/game/"+gameID+"/kill/", kill);
+    return await this.http.post<any>(baseURL + "api/game/" + gameID + "/kill/", kill);
+  }
 }
