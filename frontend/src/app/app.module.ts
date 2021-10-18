@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule, HttpMethod } from '@auth0/auth0-angular';
 import {HomeModule} from "./home/home.module";
 import {GameInfoModule} from "./game-info/game-info.module";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
@@ -36,17 +36,18 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
       // Specify configuration for the interceptor
       httpInterceptor: {
         allowedList: [
-        {
-          uriMatcher: (url: string) => {
-            if (url == "http://localhost:8080/api/game") {return false}
-            if (url.match("http://localhost:8080/api/.*")) {return true}
-            return false;
-          }
-        },
-        {
-          httpMethod: "post",
-          uri: "http://localhost:8080/api/game"
-        }
+          {
+            httpMethod: HttpMethod.Post,
+            uri: "http://localhost:8080/api/*"
+          },
+          {
+            httpMethod: HttpMethod.Get,
+            uriMatcher: (url: string) => {
+              if (url == "http://localhost:8080/api/game") {return false}
+              if (url.match("http://localhost:8080/api/.*")) {return true}
+              return false;
+            }
+          },        
         ],
       }
     }),

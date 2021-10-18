@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -8,6 +8,7 @@ import {Kill} from "../../../models/input/kill.model";
 import {Mission} from "../../../models/input/mission.model";
 import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps";
+import LatLng = google.maps.LatLng;
 
 @Component({
   selector: 'app-map',
@@ -22,6 +23,10 @@ export class MapComponent implements OnInit, OnChanges {
   kills!: Kill[];
   @Input()
   missions!: Mission[];
+  @Input()
+  locationRequested: boolean = false;
+  @Output()
+  currentLocation = new EventEmitter<LatLng>();
 
   //Is defined from ngAfterViewInit()
   @ViewChild("gmap") gmap!: ElementRef;
@@ -39,29 +44,39 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // Populating the marker list
-    for (let mission of this.missions) {
-      this.markers.push({
-        id: mission.id,
-        isMission: true,
-        description: mission.description,
-        position: {lat: mission.lat, lng: mission.lng},
-        label: {text: mission.name, color: "#B2BBBD"},
-        options: {icon: "../assets/mission-icon.svg"},
-        title: mission.name
-      });
-    }
-    for (let kill of this.kills) {
-      if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
-        this.markers.push({
-          id: kill.id,
-          isMission: false,
-          description: kill.story,
-          position: {lat: kill.lat, lng: kill.lng},
-          label: {text: kill.killerName, color: "#B2BBBD"},
-          options: {icon: "../assets/tombstone-icon.svg"},
-          title: "Kill"
+    if (this.locationRequested) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.currentLocation.emit(new LatLng(position.coords.latitude, position.coords.longitude))
+          this.locationRequested = false;
         });
+      }
+    }
+    else {
+      // Populating the marker list
+      for (let mission of this.missions) {
+        this.markers.push({
+          id: mission.id,
+          isMission: true,
+          description: mission.description,
+          position: {lat: mission.lat, lng: mission.lng},
+          label: {text: mission.name, color: "#B2BBBD"},
+          options: {icon: "../assets/mission-icon.svg"},
+          title: mission.name
+        });
+      }
+      for (let kill of this.kills) {
+        if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
+          this.markers.push({
+            id: kill.id,
+            isMission: false,
+            description: kill.story,
+            position: {lat: kill.lat, lng: kill.lng},
+            label: {text: kill.killerName, color: "#B2BBBD"},
+            options: {icon: "../assets/tombstone-icon.svg"},
+            title: "Kill"
+          });
+        }
       }
     }
   }

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
+import {KillOutput} from "../../models/output/kill-output.model";
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,8 @@ export class GameInfoAPI {
   }
   public async registerForGame(gameID: number, user: {userID: number}): Promise<Observable<any>> {
     return await this.http.post(baseURL + "api/game/" + gameID + "/player", user);
+  }
+  public async createKill(gameID: number, kill: KillOutput): Promise<Observable<any>> {
+    return await this.http.post<any>(baseURL+"api/game/"+gameID+"/kill/", kill);
   }
 }
