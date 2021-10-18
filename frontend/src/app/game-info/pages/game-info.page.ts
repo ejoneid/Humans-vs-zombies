@@ -137,6 +137,7 @@ export class GameInfoPage implements OnInit {
         })
       });
 
+    // Connecting the WebSocket
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
   }
@@ -148,18 +149,23 @@ export class GameInfoPage implements OnInit {
       ))
   }
 
+  // Connect to the WebSocket
   connect(){
     this.webSocketAPI._connect();
   }
 
+  // Disconnect from the WebSocket
   disconnect(){
     this.webSocketAPI._disconnect();
   }
 
+  // Send a message to the backend
   sendMessage(){
     this.webSocketAPI._send(this.gameInfo.id);
   }
 
+  // Handle message from backend (notification)
+  // Reloads the chat
   handleMessage(){
     if (this.selectedChat == "Global") this.loadGlobalChat();
     else if (this.selectedChat == "Faction") this.loadFactionChat();
@@ -170,6 +176,7 @@ export class GameInfoPage implements OnInit {
     return this.gameInfo;
   }
 
+  // Loads the global chat into the chat window
   public loadGlobalChat() {
     this.selectedChat = "Global";
     const tempMessages: Message[] = [];
@@ -191,6 +198,7 @@ export class GameInfoPage implements OnInit {
       });
   }
 
+  // Loads the faction chat into the chat window
   loadFactionChat() {
     this.selectedChat = "Faction";
     const tempMessages: Message[] = [];
@@ -212,6 +220,7 @@ export class GameInfoPage implements OnInit {
       });
   }
 
+  // Loads the squad chat into the chat window
   loadSquadChat() {
     this.selectedChat = "Squad";
     const tempMessages: Message[] = [];
@@ -233,12 +242,14 @@ export class GameInfoPage implements OnInit {
       });
   }
 
+  // Method for sending a new chat message to the selected chat
   sendChatMessage(message: String) {
     if (this.selectedChat == "Global") {
       this.gameInfoAPI.sendGlobalChat(this.gameInfo.id, message)
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            // Reload chat when a message is sent
             this.loadGlobalChat();
           })
         });
@@ -247,6 +258,7 @@ export class GameInfoPage implements OnInit {
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            // Reload chat when a message is sent
             this.loadFactionChat();
           })
         });
@@ -255,6 +267,7 @@ export class GameInfoPage implements OnInit {
         .then((res) => {
           res.subscribe(msg => {
             this.prevMessageSent = msg.message;
+            // Reload chat when a message is sent
             this.loadSquadChat();
           })
         });

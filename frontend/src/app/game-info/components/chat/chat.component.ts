@@ -22,6 +22,7 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Emits a request to load the correct chat
   @Output() globalChat: EventEmitter<any> = new EventEmitter<any>();
   displayGlobal() {
     this.globalChat.emit();
@@ -37,6 +38,7 @@ export class ChatComponent implements OnInit {
     this.squadChat.emit();
   }
 
+  // Emits the message to be sent and clears the input
   @Output() sendChat: EventEmitter<any> = new EventEmitter<any>();
   submitChat() {
     if (this.submitText != "") {
