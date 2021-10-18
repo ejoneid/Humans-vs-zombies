@@ -44,11 +44,8 @@ public class SquadService {
 
 
     public Squad getSpecificSquad(Long gameID, Long squadID) {
-        Squad squad = new Squad();
-        if (squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
-            squad = squadRepository.getById(squadID);
-        }
-        return squad;
+        if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        return squadRepository.findById(squadID).get();
     }
 
     public Squad getSquadByPlayer(Long gameID, Long playerID) {
@@ -61,11 +58,9 @@ public class SquadService {
     }
 
     public Squad createNewSquad(Long gameID, Squad squad) {
-        Squad createdSquad = null;
-        if(gameRepository.existsById(gameID)) {
-            squad.setGame(gameRepository.getById(gameID));
-            createdSquad = squadRepository.save(squad);
-        }
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        squad.setGame(gameRepository.getById(gameID));
+        Squad createdSquad = squadRepository.save(squad);
         return createdSquad;
     }
 

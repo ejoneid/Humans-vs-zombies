@@ -6,6 +6,8 @@ import no.noroff.hvz.dto.squad.SquadCheckInDTO;
 import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.MissingPermissionsException;
+import no.noroff.hvz.exceptions.MissingPlayerException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.security.SecurityUtils;
@@ -19,10 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,52 +58,47 @@ public class SquadController {
     @GetMapping("/{squadID}")
     public ResponseEntity<SquadDTO> getSpecificSquad(@PathVariable Long gameID, @PathVariable Long squadID) {
         Squad squad = squadService.getSpecificSquad(gameID, squadID);
-        SquadDTO squadDTO= null;
-        if (squad== null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        else {
-            status = HttpStatus.OK;
-            squadDTO = mapper.toSquadDTO(squad);
-        }
-
+        SquadDTO squadDTO = mapper.toSquadDTO(squad);
+        status = HttpStatus.OK;
         return new ResponseEntity<>(squadDTO, status);
     }
 
     @PostMapping
     public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody Squad squad,
-                                                   @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
-        SquadDTO squadDTO = null;
-        try {
-            AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-            Player player = appUserService.getPlayerByGameAndUser(gameID, user);
-            Squad createdSquad = squadService.createNewSquad(gameID, squad);
+                                                   @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+        AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        Squad createdSquad;
+
+        if (SecurityUtils.isAdmin(principal.getTokenValue())) {
+            createdSquad = squadService.createNewSquad(gameID, squad);
+        }
+        else {
+            Player player;
+            // Denne try-catch'en må være her ettersom det ikke skal returne 404 som er standard for NoSuchElementException.
+            try {
+                player = appUserService.getPlayerByGameAndUser(gameID, user);
+            } catch (MissingPlayerException e) {
+                throw new MissingPermissionsException("User is not a player in this game");
+            }
+            createdSquad = squadService.createNewSquad(gameID, squad);
             SquadMember member = new SquadMember();
             member.setRank(1);
             member.setPlayer(player);
-            member = squadService.joinSquad(gameID, createdSquad.getId(), member);
-            status = HttpStatus.CREATED;
+            squadService.joinSquad(gameID, createdSquad.getId(), member);
             //Gets the updated squad with the new member
             createdSquad = squadService.getSpecificSquad(gameID,member.getSquad().getId());
-            squadDTO = mapper.toSquadDTO(createdSquad);
         }
-        catch (NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
-        }
+
+        status = HttpStatus.CREATED;
+        SquadDTO squadDTO = mapper.toSquadDTO(createdSquad);
         return new ResponseEntity<>(squadDTO, status);
     }
 
     @PostMapping("/{squadID}/join")
     public ResponseEntity<SquadDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
-        SquadDTO squadDTO = null;
-        try {
-            SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
-            squadDTO = mapper.toSquadDTO(squadService.getSpecificSquad(gameID, addedSquadMember.getSquad().getId()));
-            status = HttpStatus.CREATED;
-        }
-        catch (NullPointerException e) {
-            status = HttpStatus.NOT_FOUND;
-        }
+        SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
+        SquadDTO squadDTO = mapper.toSquadDTO(squadService.getSpecificSquad(gameID, addedSquadMember.getSquad().getId()));
+        status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(squadDTO, status);
     }

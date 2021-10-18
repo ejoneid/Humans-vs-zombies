@@ -212,7 +212,7 @@ public class Mapper {
      */
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
         String name = player.getUser().getFirstName() + " " + player.getUser().getLastName();
-        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
+        return new PlayerDTOStandard(player.getId(), player.isHuman(), player.getBiteCode(), name);
     }
 
     /**
@@ -291,10 +291,12 @@ public class Mapper {
      */
     public SquadDTO toSquadDTO(Squad squad) {
         ArrayList<PlayerDTO> members = new ArrayList<>();
-        for (SquadMember member: squad.getMembers()) {
-            members.add(toPlayerDTOStandard(member.getPlayer()));
+        if (squad.getMembers() != null) {
+            for (SquadMember member: squad.getMembers()) {
+                members.add(toPlayerDTOStandard(member.getPlayer()));
+            }
         }
-        return new SquadDTO(squad.getId(), squad.getName(),members);
+        return new SquadDTO(squad.getId(), squad.getName(), members);
     }
 
     /**

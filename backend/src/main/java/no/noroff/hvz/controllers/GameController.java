@@ -93,6 +93,7 @@ public class GameController {
                                                      @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
                                                      ) throws NullPointerException, AppUserNotFoundException {
+        System.out.println(principal.getTokenValue());
         HttpStatus status;
         List<Message> messages;
         List<MessageDTO> messageDTOs;
