@@ -20,6 +20,9 @@ import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -279,7 +282,6 @@ public class Mapper {
         //gets the player form databse and sets the provided rank
         Player player = playerRepository.getById(dto.getPlayerID());
         member.setPlayer(player);
-        member.setRank(dto.getRank());
         return member;
     }
 
@@ -290,11 +292,21 @@ public class Mapper {
      * @return squad DTO
      */
     public SquadDTO toSquadDTO(Squad squad) {
-        ArrayList<PlayerDTO> members = new ArrayList<>();
+        List<SquadMemberDTO> members = new ArrayList<>();
+        int numDead = 0;
         for (SquadMember member: squad.getMembers()) {
-            members.add(toPlayerDTOStandard(member.getPlayer()));
+            members.add(toSquadMemberDTO(member));
+            if (!member.getPlayer().isHuman()) numDead++;
         }
-        return new SquadDTO(squad.getId(), squad.getName(),members);
+        // Sort by rank
+        members = members.stream()
+                .sorted(Comparator.comparing(SquadMemberDTO::getRank))
+                .collect(Collectors.toList());
+        return new SquadDTO(squad.getId(), squad.getName(),members, numDead);
+    }
+
+    public SquadMemberDTO toSquadMemberDTO(SquadMember member) {
+        return new SquadMemberDTO(toPlayerDTOStandard(member.getPlayer()), member.getRank());
     }
 
     /**

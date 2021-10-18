@@ -12,6 +12,7 @@ public class SquadMember {
     private Long id;
 
     @Column(nullable = false, length = 2)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rank;
 
     @ManyToOne
