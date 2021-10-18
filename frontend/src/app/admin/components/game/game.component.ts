@@ -17,4 +17,8 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  outputDesc(): void {
+    this.gameDescriptionChange.emit(this.gameDescription)
+  }
+
 }
