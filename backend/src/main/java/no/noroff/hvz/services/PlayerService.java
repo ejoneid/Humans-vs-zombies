@@ -1,6 +1,7 @@
 package no.noroff.hvz.services;
 
 import no.noroff.hvz.dto.player.PlayerDTOPUT;
+import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
@@ -70,13 +71,33 @@ public class PlayerService {
 
     /**
      * Method for putting in default info to a new user generated player
-     * @param gameID ID of game
-     * @param player New player
-     * @return player || null
+     * @param gameID
+     * @param player
+     * @exception NoSuchElementException
+     * @return player
      */
     public Player createNewPlayer(Long gameID, Player player) {
+        Game game = gameRepository.findById(gameID).get();
+        player.setGame(game);
+        player.setBiteCode(createRandomBiteCode(10));
+        player.setPatientZero(false);
+        player = playerRepository.save(player);
+        return player;
+    }
+
+    /**
+     * Method that creates a default player
+     * @param gameID Id of game
+     * @param user The user that creates the player
+     * @return the new player
+     */
+    public Player createNewPlayer(Long gameID, AppUser user) {
+        Player player = new Player();
         if(gameRepository.existsById(gameID)) {
             // Set the players default info
+            player.setUser(user);
+            player.setHuman(true);
+            player.setPatientZero(false);
             player.setGame(gameRepository.getById(gameID));
             String randomBiteCode = createRandomBiteCode(10);
             // Create a random bitecode -> if the bitecode already exist creates a new one
@@ -94,21 +115,6 @@ public class PlayerService {
         return player;
     }
 
-    /**
-     * Method for putting in default info to a new user generated player
-     * @param gameID
-     * @param player
-     * @exception NoSuchElementException
-     * @return player
-     */
-    public Player createNewPlayer(Long gameID, Player player) {
-        Game game = gameRepository.findById(gameID).get();
-        player.setGame(game);
-        player.setBiteCode(createRandomBiteCode(10));
-        player.setPatientZero(false);
-        player = playerRepository.save(player);
-        return player;
-    }
 
     /**
      * Method for creating a random bitecode
@@ -132,7 +138,7 @@ public class PlayerService {
      * @param player Player object with new info
      * @return the updated player
      */
-    public Player updatePlayer(Long gameID, Long playerID, PlayerDTOPUT playerDto) {
+    public Player updatePlayer(Long gameID, Long playerID, PlayerDTOUpdate playerDto) {
         if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         Player player = playerRepository.findById(playerID).get();
         customMapper.updatePlayerFromDto(playerDto, player);

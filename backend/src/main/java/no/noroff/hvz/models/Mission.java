@@ -35,8 +35,7 @@ public class Mission {
     @JoinColumn(name = "mission_id")
     private Game game;
 
-    public Mission(Long id, String name, boolean isHuman, String description, Date startTime, Date endTime, String lat, String lng, Game game) {
-        this.id = id;
+    public Mission(String name, boolean isHuman, String description, Date startTime, Date endTime, String lat, String lng, Game game) {
         this.name = name;
         this.isHuman = isHuman;
         this.description = description;

@@ -11,6 +11,7 @@ import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
+import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
@@ -59,10 +60,10 @@ public class Mapper {
      * @param missionDTO DTO
      * @return Mission
      */
-    public Mission toMission(MissionDTO missionDTO) {
+    public Mission toMission(MissionDTOReg missionDTO, long gameId) {
         //Gets the game form the database and uses the infor from the DTO to create the mission
-        Game game = gameRepository.getById(missionDTO.getGameId());
-        return new Mission(missionDTO.getId(), missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
+        Game game = gameRepository.getById(gameId);
+        return new Mission(missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
@@ -73,7 +74,7 @@ public class Mapper {
      * @param user AppUser
      * @return DTO
      */
-    public AppUserDTOReg toAppUserDTO(AppUser user) {
+    public AppUserDTOReg toAppUserDTOReg(AppUser user) {
         return new AppUserDTOReg(user.getFirstName(), user.getLastName());
     }
 
@@ -223,7 +224,7 @@ public class Mapper {
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        AppUserDTO userDTO = toAppUserDTO(player.getUser());
+        AppUserDTO userDTO = toAppUserDTOReg(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),
                userDTO ,killsUrl,messagesUrl);
     }

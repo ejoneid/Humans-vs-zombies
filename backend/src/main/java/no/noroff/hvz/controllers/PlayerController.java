@@ -1,8 +1,6 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.player.PlayerDTOPUT;
-import no.noroff.hvz.dto.player.PlayerDTOReg;
 import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
@@ -98,7 +96,7 @@ public class PlayerController {
      */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTO> player,
+    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTORegAdmin> player,
                                                      @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         Player newPlayer;
@@ -130,8 +128,7 @@ public class PlayerController {
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
                                                   @RequestBody PlayerDTOUpdate playerDTO) {
         HttpStatus status;
-        Player player = mapper.toPlayer(playerDTO, playerID);
-        Player updatedPlayer = playerService.updatePlayer(gameID, playerID, player);
+        Player updatedPlayer = playerService.updatePlayer(gameID, playerID, playerDTO);
         PlayerDTO updatedPlayerDTO = mapper.toPlayerDTOFull(updatedPlayer);
         status = HttpStatus.OK;
         return new ResponseEntity<>(updatedPlayerDTO, status);

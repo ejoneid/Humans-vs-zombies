@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.player;
 
+import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 
 public class PlayerDTOFull implements PlayerDTO {
@@ -8,11 +9,11 @@ public class PlayerDTOFull implements PlayerDTO {
     private Boolean isHuman;
     private Boolean patientZero;
     private String biteCode;
-    private AppUserDTOReg user;
+    private AppUserDTO user;
     private String killsUrl;
     private String messagesUrl;
 
-    public PlayerDTOFull(Long id, Boolean isHuman, Boolean patientZero, String biteCode, AppUserDTOReg user, String killsUrl, String messagesUrl) {
+    public PlayerDTOFull(Long id, Boolean isHuman, Boolean patientZero, String biteCode, AppUserDTO user, String killsUrl, String messagesUrl) {
         this.id = id;
         this.isHuman = isHuman;
         this.patientZero = patientZero;
@@ -48,7 +49,7 @@ public class PlayerDTOFull implements PlayerDTO {
         this.biteCode = biteCode;
     }
 
-    public AppUserDTOReg getUser() {
+    public AppUserDTO getUser() {
         return user;
     }
 
