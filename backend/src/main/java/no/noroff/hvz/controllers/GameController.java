@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import com.sun.net.httpserver.Headers;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.game.GameDTOUpdate;
@@ -40,6 +41,7 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
+    @Tag(name = "getAllGames", description = "API for getting all games, optional parameter state -> only returns games with provided state")
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games;
         if (state.isPresent()) {
