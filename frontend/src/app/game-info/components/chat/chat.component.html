@@ -6,7 +6,7 @@
     <button class="normalGreyButton" *ngIf="!playerIsHuman" (click)="displayFaction()">Zombie</button>
     <button class="normalGreyButton" *ngIf="playerHasSquad" (click)="displaySquad()">Squad</button>
   </section>
-  <section class="chatContainer">
+  <section class="chatContainer" #scrollMe [scrollTop]="scrollMe.scrollHeight">
     <app-message *ngFor="let message of chatMessages"
                  [timeSent]="message.time"
                  [sender]="message.sender"
