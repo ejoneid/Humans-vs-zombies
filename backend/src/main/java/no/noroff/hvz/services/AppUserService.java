@@ -21,6 +21,12 @@ public class AppUserService {
     @Autowired
     private PlayerRepository playerRepository;
 
+    /**
+     * Method for getting a specific user from the DB
+     * @param openId
+     * @return The requested AppUser
+     * @throws AppUserNotFoundException
+     */
     public AppUser getSpecificUser(String openId) throws AppUserNotFoundException {
         if(!appUserRepository.existsAppUserByOpenId(openId)) {
             throw new AppUserNotFoundException("Could not find user");
@@ -28,6 +34,12 @@ public class AppUserService {
         return appUserRepository.getAppUserByOpenId(openId);
     }
 
+    /**
+     * Method for getting a player based on the user and game
+     * @param gameId
+     * @param user
+     * @return The wanted player object
+     */
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) {
         Player player = null;
         Game game = gameRepository.getById(gameId);
@@ -37,6 +49,12 @@ public class AppUserService {
         return player;
     }
 
+    /**
+     * Method for adding a user to the DB
+     * @param addedUser
+     * @return Saved object/error
+     * @throws AppUserAlreadyExistException
+     */
     public AppUser createUser(AppUser addedUser) throws AppUserAlreadyExistException {
         if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException();
         return appUserRepository.save(addedUser);
