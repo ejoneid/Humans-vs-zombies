@@ -17,12 +17,19 @@
              [mapInfo]="game.map_info"
              [kills]="game.kills"
              [missions]="game.missions"
+             [locationRequested]="locationRequested"
+             (currentLocation)="locationFound($event)"
     ></app-map>
   </section>
   <section class="componentContainer">
     <app-bite-code
       [biteCode]="game.bite_code"
-    ></app-bite-code>
+      (requestLocation)="getLocation()"
+      [locationOfKill]="biteLocation"
+      [playerID]="game.player_id"
+      [gameID]="game.id"
+      (updateKills)="updateKills()"
+    ><!--[isHuman]="game.player_is_human"--></app-bite-code>
     <app-chat id="chat"
               [chatMessages]="game.messages"
               [playerIsHuman]="game.player_is_human"

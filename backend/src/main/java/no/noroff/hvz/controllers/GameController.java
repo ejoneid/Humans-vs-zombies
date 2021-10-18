@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import com.sun.net.httpserver.Headers;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
 import no.noroff.hvz.dto.game.GameDTOUpdate;
@@ -40,6 +41,7 @@ public class GameController {
     private Mapper mapper;
 
     @GetMapping
+    @Tag(name = "getAllGames", description = "API for getting all games, optional parameter state -> only returns games with provided state")
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games;
         if (state.isPresent()) {
@@ -90,13 +92,12 @@ public class GameController {
     public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id,
                                                      @RequestHeader(required = false) Long playerID,
                                                      @RequestHeader(required = false) String human,
-                                                     @RequestHeader String authorization,
                                                      @AuthenticationPrincipal Jwt principal
                                                      ) throws NullPointerException, AppUserNotFoundException {
         HttpStatus status;
         List<Message> messages;
         List<MessageDTO> messageDTOs;
-        if(SecurityUtils.isAdmin(authorization)) {
+        if(SecurityUtils.isAdmin(principal.getTokenValue())) {
             if (playerID != null) messages = gameService.getGameChat(id, playerID);
             else if (human != null) messages = gameService.getGameChat(id, Boolean.valueOf(human));
             else messages = gameService.getGameChat(id);
@@ -104,7 +105,6 @@ public class GameController {
         else {
             AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
             Player player = appUserService.getPlayerByGameAndUser(id, user);
-            //TODO skal en vanlig spiller kunne hente ut messagene til noen andre ller bare seg selv?
             if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
             else messages = gameService.getGameChat(id, player.isHuman());
         }
@@ -116,9 +116,8 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
+    public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-        Player player = appUserService.getPlayerByGameAndUser(id, appUser);
         Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);

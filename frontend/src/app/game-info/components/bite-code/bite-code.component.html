@@ -1,4 +1,14 @@
-<section class="greyBackground">
+<section class="greyBackground" *ngIf="isHuman">
   <h2>Bite Code:</h2>
   <h3 id="biteCode">{{biteCode}}</h3>
+</section>
+<section class="greyBackground" *ngIf="!isHuman">
+  <h2>Register Bite Code</h2>
+  <mat-error *ngIf="biteCodeError">Invalid bite code</mat-error>
+  <input placeholder="Bite code" [(ngModel)]="biteCodeInput">
+  <textarea placeholder="Kill story (Optional)" [(ngModel)]="storyInput"></textarea>
+  <form id="buttonContainer">
+    <button (click)="getLocation()" class="normalGreyButton">Add location</button>
+    <button (click)="saveKill()" class="normalGreyButton">Save</button>
+  </form>
 </section>
