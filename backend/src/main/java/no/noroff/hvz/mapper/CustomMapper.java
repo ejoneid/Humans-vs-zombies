@@ -2,7 +2,6 @@ package no.noroff.hvz.mapper;
 
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
-import no.noroff.hvz.dto.player.PlayerDTOPUT;
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.models.Mission;

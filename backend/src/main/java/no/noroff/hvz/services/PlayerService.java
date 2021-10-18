@@ -1,6 +1,5 @@
 package no.noroff.hvz.services;
 
-import no.noroff.hvz.dto.player.PlayerDTOPUT;
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.mapper.Mapper;
