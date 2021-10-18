@@ -7,6 +7,7 @@ import {Mission} from "../../models/input/mission.model";
 import {Kill} from "../../models/input/kill.model";
 import {Message} from "../../models/input/message.model";
 import {WebSocketAPI} from "../api/WebSocketApi.api";
+import LatLng = google.maps.LatLng;
 
 @Component({
   selector: 'app-game-info-page',
@@ -38,6 +39,10 @@ export class GameInfoPage implements OnInit {
   private prevMessageSent: String | undefined;
 
   private webSocketAPI!: WebSocketAPI;
+
+  locationRequested: boolean = false;
+
+  biteLocation: LatLng | null = null;
 
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
@@ -139,6 +144,15 @@ export class GameInfoPage implements OnInit {
 
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
+  }
+
+  getLocation(): void {
+    this.locationRequested = true;
+  }
+
+  locationFound(location: LatLng): void {
+    this.locationRequested = false;
+    this.biteLocation = location;
   }
 
   registerUser(): void {
