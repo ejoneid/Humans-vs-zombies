@@ -279,7 +279,7 @@ class AppStartupRunner implements ApplicationRunner {
         gameService.createNewChat(2L, message6, user3);
 
         squadService.createSquadChat(1L, 1L, user1, message7);
-        squadService.createSquadChat(1L, 1L, user3, message8);
+        squadService.createSquadChat(1L, 1L, user2, message8);
 
         member1.setRank(1);
         member1.setPlayer(player1);
