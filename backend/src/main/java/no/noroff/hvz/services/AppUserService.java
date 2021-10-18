@@ -11,6 +11,8 @@ import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AppUserService {
 
@@ -20,6 +22,10 @@ public class AppUserService {
     private GameRepository gameRepository;
     @Autowired
     private PlayerRepository playerRepository;
+
+    public List<AppUser> getAllUsers() {
+        return appUserRepository.findAll();
+    }
 
     /**
      * Method for getting a specific user from the DB
