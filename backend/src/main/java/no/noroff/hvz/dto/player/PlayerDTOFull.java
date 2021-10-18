@@ -1,7 +1,7 @@
 package no.noroff.hvz.dto.player;
 
-import no.noroff.hvz.dto.player.PlayerDTO;
 import no.noroff.hvz.dto.user.AppUserDTO;
+import no.noroff.hvz.dto.user.AppUserDTOReg;
 
 public class PlayerDTOFull implements PlayerDTO {
 
@@ -53,7 +53,7 @@ public class PlayerDTOFull implements PlayerDTO {
         return user;
     }
 
-    public void setUser(AppUserDTO user) {
+    public void setUser(AppUserDTOReg user) {
         this.user = user;
     }
 

@@ -1,5 +1,8 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.dto.player.PlayerDTOUpdate;
+import no.noroff.hvz.mapper.CustomMapper;
+import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
@@ -11,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,21 +24,21 @@ public class PlayerService {
     private PlayerRepository playerRepository;
     @Autowired
     private GameRepository gameRepository;
-
     @Autowired
     private SquadRepository squadRepository;
+    @Autowired
+    private Mapper mapper;
+    @Autowired
+    private CustomMapper customMapper;
 
     /**
      * Method for getting all players for a game
      * @param gameID ID og game
      * @return returns all players in the game
      */
-    public List<Player> getAllPlayers(Long gameID) {
-        List<Player> players = new ArrayList<>();
-        if(gameRepository.existsById(gameID)) {
-            Game game = gameRepository.getById(gameID);
-            players = new ArrayList<>(game.getPlayers());
-        }
+    public Set<Player> getAllPlayers(Long gameID) {
+        Game game = gameRepository.findById(gameID).get();
+        Set<Player> players = game.getPlayers();
         return players;
     }
 
@@ -48,11 +49,8 @@ public class PlayerService {
      * @return the specified player
      */
     public Player getSpecificPlayer( Long gameID, Long playerID) {
-        Player player = new Player();
-        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
-            player = playerRepository.getById(playerID);
-        }
-        return player;
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        return playerRepository.findById(playerID).get();
     }
 
     /**
@@ -72,27 +70,17 @@ public class PlayerService {
 
     /**
      * Method for putting in default info to a new user generated player
-     * @param gameID ID of game
-     * @param player New player
-     * @return player || null
+     * @param gameID
+     * @param player
+     * @exception NoSuchElementException
+     * @return player
      */
     public Player createNewPlayer(Long gameID, Player player) {
-        if(gameRepository.existsById(gameID)) {
-            // Set the players default info
-            player.setGame(gameRepository.getById(gameID));
-            String randomBiteCode = createRandomBiteCode(10);
-            // Create a random bitecode -> if the bitecode already exist creates a new one
-            String finalRandomBiteCode = randomBiteCode;
-            List<Player> existingBiteCode = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), finalRandomBiteCode)).collect(Collectors.toList());
-            while (existingBiteCode.size() > 0) {
-                randomBiteCode = createRandomBiteCode(10);
-                String finalRandomBiteCode1 = randomBiteCode;
-                existingBiteCode = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), finalRandomBiteCode1)).collect(Collectors.toList());
-            }
-            player.setBiteCode(randomBiteCode);
-            player = playerRepository.save(player);
-        }
-        //TODO throw correct exception
+        Game game = gameRepository.findById(gameID).get();
+        player.setGame(game);
+        player.setBiteCode(createRandomBiteCode(10));
+        player.setPatientZero(false);
+        player = playerRepository.save(player);
         return player;
     }
 
@@ -126,6 +114,7 @@ public class PlayerService {
         return player;
     }
 
+
     /**
      * Method for creating a random bitecode
      * @param len length
@@ -148,12 +137,11 @@ public class PlayerService {
      * @param player Player object with new info
      * @return the updated player
      */
-    public Player updatePlayer(Long gameID, Long playerID, Player player) {
-        Player updatedPlayer = new Player();
-        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
-            updatedPlayer = playerRepository.save(player);
-        }
-        return updatedPlayer ;
+    public Player updatePlayer(Long gameID, Long playerID, PlayerDTOUpdate playerDto) {
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Player player = playerRepository.findById(playerID).get();
+        customMapper.updatePlayerFromDto(playerDto, player);
+        return playerRepository.save(player);
     }
 
     /**

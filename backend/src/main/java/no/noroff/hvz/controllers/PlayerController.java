@@ -1,6 +1,7 @@
 package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
+import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,23 +48,17 @@ public class PlayerController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @RequestHeader String authorization) {
-        playerService.getAllPlayers(gameID);
-        HttpStatus status;
-        List<PlayerDTO> playerDTOs = new ArrayList<>();
-        List<Player> players = playerService.getAllPlayers(gameID);
-        if(players == null) {
-            status = HttpStatus.NOT_FOUND;
+        List<PlayerDTO> playerDTOs;
+        Set<Player> players = playerService.getAllPlayers(gameID);
+
+        // Checks if user is admin or not
+        if (SecurityUtils.isAdmin(authorization)) {
+            playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
         }
-        else{
-            status = HttpStatus.OK;
-            //Returns different info based on if the requester is admin
-            if (SecurityUtils.isAdmin(authorization)) {
-                playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
-            }
-            else {
-                playerDTOs = players.stream().map(mapper::toPlayerDTOStandard).collect(Collectors.toList());
-            }
+        else {
+            playerDTOs = players.stream().map(mapper::toPlayerDTOStandard).collect(Collectors.toList());
         }
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(playerDTOs, status);
     }
 
@@ -75,22 +72,16 @@ public class PlayerController {
     @GetMapping("/{playerID}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @RequestHeader String authorization) {
-        HttpStatus status;
         Player player = playerService.getSpecificPlayer(gameID, playerID);
-        PlayerDTO playerDTO = null;
-        if(player.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
+        PlayerDTO playerDTO;
+        // Checks if user is admin
+        if (SecurityUtils.isAdmin(authorization)) {
+            playerDTO = mapper.toPlayerDTOFull(player);
         }
         else {
-            status = HttpStatus.OK;
-            //Returns different info based on if the requester is admin
-            if (SecurityUtils.isAdmin(authorization)) {
-                playerDTO = mapper.toPlayerDTOFull(player);
-            }
-            else {
-                playerDTO = mapper.toPlayerDTOStandard(player);
-            }
+            playerDTO = mapper.toPlayerDTOStandard(player);
         }
+        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(playerDTO, status);
     }
 
@@ -105,7 +96,7 @@ public class PlayerController {
      */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTO> player,
+    public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTORegAdmin> player,
                                                      @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         Player newPlayer;
@@ -123,7 +114,6 @@ public class PlayerController {
 
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(playerDTO,status);
-
     }
 
     /**
@@ -138,8 +128,7 @@ public class PlayerController {
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
                                                   @RequestBody PlayerDTOUpdate playerDTO) {
         HttpStatus status;
-        Player player = mapper.toPlayer(playerDTO, playerID);
-        Player updatedPlayer = playerService.updatePlayer(gameID, playerID, player);
+        Player updatedPlayer = playerService.updatePlayer(gameID, playerID, playerDTO);
         PlayerDTO updatedPlayerDTO = mapper.toPlayerDTOFull(updatedPlayer);
         status = HttpStatus.OK;
         return new ResponseEntity<>(updatedPlayerDTO, status);
