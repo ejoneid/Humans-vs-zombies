@@ -8,12 +8,14 @@ public class SquadDTO {
 
     private Long id;
     private String name;
-    private List<PlayerDTO> members;
+    private List<SquadMemberDTO> members;
+    private int numDead;
 
-    public SquadDTO(Long id, String name, List<PlayerDTO> players) {
+    public SquadDTO(Long id, String name, List<SquadMemberDTO> players, int numDead) {
         this.id = id;
         this.name = name;
         this.members = players;
+        this.numDead = numDead;
     }
 
     public Long getId() {
@@ -32,11 +34,19 @@ public class SquadDTO {
         this.name = name;
     }
 
-    public List<PlayerDTO> getMembers() {
+    public List<SquadMemberDTO> getMembers() {
         return members;
     }
 
-    public void setMembers(List<PlayerDTO> members) {
+    public void setMembers(List<SquadMemberDTO> members) {
         this.members = members;
+    }
+
+    public int getNumDead() {
+        return numDead;
+    }
+
+    public void setNumDead(int numDead) {
+        this.numDead = numDead;
     }
 }

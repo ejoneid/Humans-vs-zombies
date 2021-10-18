@@ -25,7 +25,7 @@ public class Squad {
     @JoinColumn(name = "squad_message_id")
     private Set<Message> messages;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "squad_id")
     private Set<SquadMember> members;
 

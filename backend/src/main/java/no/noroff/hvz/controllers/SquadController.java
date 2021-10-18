@@ -80,7 +80,6 @@ public class SquadController {
             Player player = appUserService.getPlayerByGameAndUser(gameID, user);
             Squad createdSquad = squadService.createNewSquad(gameID, squad);
             SquadMember member = new SquadMember();
-            member.setRank(1);
             member.setPlayer(player);
             member = squadService.joinSquad(gameID, createdSquad.getId(), member);
             status = HttpStatus.CREATED;

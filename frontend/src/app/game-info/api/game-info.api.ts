@@ -48,4 +48,16 @@ export class GameInfoAPI {
   public async registerForGame(gameID: number, user: {userID: number}): Promise<Observable<any>> {
     return await this.http.post(baseURL + "api/game/" + gameID + "/player", user);
   }
+  public async getAllSquads(gameID: number) {
+    return await this.http.get<any>(baseURL + "api/game/"+gameID+"/squad");
+  }
+  public async joinSquad(gameID: number, squadID: number, playerID: number) {
+    return await this.http.post(baseURL+"/api/game/"+gameID+"/squad/"+squadID+"/join", {playerID: playerID})
+  }
+  public async createSquad(gameID: number, squadName: string, human: boolean) {
+    return this.http.post(baseURL+"api/game/"+gameID+"/squad", {
+      name: squadName,
+      isHuman: human
+    })
+  }
 }

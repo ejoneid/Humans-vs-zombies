@@ -287,15 +287,15 @@ class AppStartupRunner implements ApplicationRunner {
         member2.setRank(2);
         member2.setPlayer(player2);
 
-        memberPatrick.setRank(3);
-        memberPatrick.setPlayer(playerPatrick);
+//        memberPatrick.setRank(3);
+//        memberPatrick.setPlayer(playerPatrick);
 
         memberFredrik.setRank(4);
         memberFredrik.setPlayer(playerFredrik);
 
         squadService.joinSquad(1L, 1L, member1);
         squadService.joinSquad(1L, 1L, member2);
-        squadService.joinSquad(1L, 1L, memberPatrick);
+//        squadService.joinSquad(1L, 1L, memberPatrick);
         squadService.joinSquad(1L, 1L, memberFredrik);
 
         sci1.setMember(member1);

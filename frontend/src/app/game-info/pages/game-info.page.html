@@ -8,7 +8,11 @@
                         [gameDescription]="game.description"
   ></app-game-description>
   <section class="componentContainer">
-    <app-squad [squad]="game.squad_info"></app-squad>
+    <app-squad [squad]="game.squad_info"
+               [allSquads]="this.allSquads"
+               (joinThis)="joinSquad($event)"
+               (createThis)="createSquad($event)"
+    ></app-squad>
     <app-map id="map"
              [mapInfo]="game.map_info"
              [kills]="game.kills"

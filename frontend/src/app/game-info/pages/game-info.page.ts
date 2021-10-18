@@ -32,6 +32,8 @@ export class GameInfoPage implements OnInit {
     kills: [],
     missions: []
   };
+  public allSquads = null;
+
   private messagesURL!: string;
 
   private selectedChat = "Global";
@@ -73,7 +75,7 @@ export class GameInfoPage implements OnInit {
         response.subscribe((squads) => {
           const members: PlayerInfo[] = [];
           for (let member of squads[0].members) {
-            members.push({name: member.name, state: member.human});
+            members.push({name: member.player.name, state: member.player.human});
           }
           this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id};
         });
@@ -135,6 +137,11 @@ export class GameInfoPage implements OnInit {
           }
           this.gameInfo.messages = tempMessages;
         })
+      });
+
+    this.gameInfoAPI.getAllSquads(this.gameInfo.id)
+      .then(res => {
+        res.subscribe(squads => this.allSquads = squads)
       });
 
     // Connecting the WebSocket
@@ -273,5 +280,32 @@ export class GameInfoPage implements OnInit {
         });
     }
     this.sendMessage();
+  }
+
+  updateSquad() {
+    this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.id, this.gameInfo.player_id)
+      .then((response) => {
+        response.subscribe((squads) => {
+          const members: PlayerInfo[] = [];
+          for (let member of squads[0].members) {
+            members.push({name: member.player.name, state: member.player.human});
+          }
+          this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id};
+        });
+      });
+  }
+
+  joinSquad(squadID: number) {
+    this.gameInfoAPI.joinSquad(this.gameInfo.id, squadID, this.gameInfo.player_id)
+      .then(res => {
+        this.updateSquad();
+      });
+  }
+
+  createSquad(squadName: string) {
+    this.gameInfoAPI.createSquad(this.gameInfo.id, squadName, this.gameInfo.player_is_human)
+      .then(res => {
+        this.updateSquad();
+      })
   }
 }
