@@ -25,6 +25,11 @@ public class KillerService {
     @Autowired
     private CustomMapper mapper;
 
+    /**
+     * Method for getting all killsin the DB
+     * @param gameID
+     * @return Lsit of kills
+     */
     public List<Kill> getAllKills(Long gameID) {
         if(!gameRepository.existsById(gameID)) {
             throw new NoSuchElementException("Could not find game with id: " + gameID);
@@ -32,6 +37,12 @@ public class KillerService {
         return killerRepository.getKillsByGame_Id(gameID);
     }
 
+    /**
+     * Method for getting a players kills
+     * @param gameID
+     * @param killerID
+     * @return List of kills
+     */
     public List<Kill> getAllKills(Long gameID, Long killerID) {
         if(!gameRepository.existsById(gameID)) {
             throw new NoSuchElementException("Could not find game with id: " + gameID);
@@ -39,19 +50,37 @@ public class KillerService {
         return killerRepository.getKillsByGame_IdAndKiller_Id(gameID, killerID);
     }
 
+    /**
+     * Method for getting a specific kill
+     * @param gameID
+     * @param killID
+     * @return The requested kill
+     */
     public Kill getSpecificKill( Long gameID, Long killID) {
         if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         return killerRepository.findById(killID).get();
     }
 
+    /**
+     * Method for creating a new kill
+     * @param gameID
+     * @param kill
+     * @return Yhe saved kill/error
+     */
     public Kill createNewKill(Long gameID, Kill kill) {
         kill.setGame(gameRepository.findById(gameID).get());
         kill.getVictim().setHuman(false);
         if (kill.getTimeOfDeath() == null) kill.setTimeOfDeath(new Date());
-        kill = killerRepository.save(kill);
-        return kill;
+        return killerRepository.save(kill);
     }
 
+    /**
+     * Method for updating a kill
+     * @param gameID
+     * @param killID
+     * @param killDto
+     * @return The updated kill
+     */
     public Kill updateKill(Long gameID, Long killID, KillDTOReg killDto) {
         Kill updatedKill = getSpecificKill(gameID, killID);
         mapper.updateKillFromDto(killDto, updatedKill);
@@ -60,6 +89,12 @@ public class KillerService {
         return killerRepository.save(updatedKill);
     }
 
+    /**
+     * Method for deleting a kill
+     * @param gameID
+     * @param killID
+     * @return The deleted kill
+     */
     public Kill deleteKill(Long gameID, Long killID) {
         if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         Kill deletedKill = killerRepository.findById(killID).get();

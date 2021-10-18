@@ -10,6 +10,10 @@ export class WebSocketAPI {
   constructor(appComponent: GameInfoPage){
     this.game = appComponent;
   }
+
+  /**
+   * Method for connecting and subscribing to the backend
+   */
   _connect() {
     console.log("Initialize WebSocket Connection");
     let ws = new SockJS(this.webSocketEndPoint);
@@ -23,6 +27,9 @@ export class WebSocketAPI {
     }, this.errorCallBack);
   };
 
+  /**
+   * Method for disconnecting from the backend
+   */
   _disconnect() {
     if (this.stompClient !== null) {
       this.stompClient.disconnect();
@@ -39,7 +46,7 @@ export class WebSocketAPI {
   }
 
   /**
-   * Send message to sever via web socket
+   * Send message to sever via web socket (if needed, not used)
    * @param {*} message
    */
   _send(message: string | number) {
@@ -47,6 +54,11 @@ export class WebSocketAPI {
     this.stompClient.send("/app/websocket", {}, JSON.stringify(message));
   }
 
+  /**
+   * Method for handling a message recieved from the backend
+   * Only used for notification for now
+   * @param message
+   */
   onMessageReceived(message: String) {
     console.log("New message recieved!");
     this.game.handleMessage();
