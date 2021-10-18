@@ -1,8 +1,7 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {AuthService} from "@auth0/auth0-angular";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import LatLng = google.maps.LatLng;
-import {Kill} from "../../../models/input/kill.model";
 import {KillOutput} from "../../../models/output/kill-output.model";
+import {GameInfoAPI} from "../../api/game-info.api";
 
 @Component({
   selector: 'app-bite-code',
@@ -16,19 +15,29 @@ export class BiteCodeComponent implements OnInit {
   @Input()
   playerID!: number;
   @Input()
-  public biteCode: string = "ERROR: No bite code found";
+  public biteCode: string = "";
   @Input()
   locationOfKill: LatLng | null = null;
+  @Input()
+  public biteCodeError: boolean = false;
+  @Input()
+  public gameID!: number
+  @Output()
+  updateKills = new EventEmitter<any>();
+
   @Output()
   requestLocation = new EventEmitter<any>();
 
-  constructor() {}
+  public biteCodeInput: string = "";
+  public storyInput: string = "";
+
+  constructor(private readonly gameInfoAPI: GameInfoAPI) {}
 
   ngOnInit(): void {
   }
 
-  saveKill(story: string | null, biteCode: string | null): void {
-    if (biteCode != null) {
+  saveKill(): void {
+    if (this.biteCodeInput.length === 10) {
       let lat = null;
       let lng = null;
       if (this.locationOfKill != null) {
@@ -36,15 +45,28 @@ export class BiteCodeComponent implements OnInit {
         lng = this.locationOfKill.lng();
       }
       const kill: KillOutput = {
-        biteCode: biteCode,
+        biteCode: this.biteCodeInput,
         killerID: this.playerID,
         id: 0,
         lat: lat,
         lng: lng,
-        story: story,
+        story: this.storyInput,
         timeOfDeath: new Date().getTime().toString()
       };
       console.log(kill)
+      this.gameInfoAPI.createKill(this.gameID, kill)
+        .then(res => res.subscribe(
+          () => {
+            this.biteCodeError = false;
+            this.updateKills.emit()
+          },
+          () => {
+            this.biteCodeError = true;
+          }
+        ))
+    }
+    else {
+      this.biteCodeError = true;
     }
   }
 

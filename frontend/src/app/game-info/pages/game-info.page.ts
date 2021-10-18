@@ -105,24 +105,7 @@ export class GameInfoPage implements OnInit {
           this.gameInfo.missions = tempMissions;
         });
       });
-    const tempKills: Kill[] = [];
-    this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
-      .then((response) => {
-        response.subscribe((kills) => {
-          for (let kill of kills) {
-            tempKills.push({
-              id: kill.id,
-              killerName: kill.killerName.toString(),
-              lat: parseFloat(kill.lat),
-              lng: parseFloat(kill.lng),
-              story: kill.story.toString(),
-              timeOfDeath: kill.timeOfDeath.toString(),
-              victimName: kill.victimName.toString()
-            });
-          }
-          this.gameInfo.kills = tempKills;
-        });
-      });
+    this.updateKills()
 
     const tempMessages: Message[] = [];
     this.gameInfoAPI.getGameChat(this.gameInfo.id)
@@ -144,6 +127,27 @@ export class GameInfoPage implements OnInit {
 
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
+  }
+
+  updateKills() {
+    const tempKills: Kill[] = [];
+    this.gameInfoAPI.getKillsByGame(this.gameInfo.id)
+      .then((response) => {
+        response.subscribe((kills) => {
+          for (let kill of kills) {
+            tempKills.push({
+              id: kill.id,
+              killerName: kill.killerName.toString(),
+              lat: parseFloat(kill.lat),
+              lng: parseFloat(kill.lng),
+              story: kill.story,
+              timeOfDeath: kill.timeOfDeath.toString(),
+              victimName: kill.victimName.toString()
+            });
+          }
+          this.gameInfo.kills = tempKills;
+        });
+      });
   }
 
   getLocation(): void {

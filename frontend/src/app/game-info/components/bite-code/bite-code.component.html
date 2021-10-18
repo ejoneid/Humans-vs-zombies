@@ -4,10 +4,11 @@
 </section>
 <section class="greyBackground" *ngIf="!isHuman">
   <h2>Register Bite Code</h2>
-  <textarea placeholder="Bite code" #biteCode></textarea>
-  <textarea placeholder="Kill story (Optional)" #story></textarea>
+  <mat-error *ngIf="biteCodeError">Invalid bite code</mat-error>
+  <input placeholder="Bite code" [(ngModel)]="biteCodeInput">
+  <textarea placeholder="Kill story (Optional)" [(ngModel)]="storyInput"></textarea>
   <form id="buttonContainer">
     <button (click)="getLocation()" class="normalGreyButton">Add location</button>
-    <button (click)="saveKill(story.textContent, biteCode.textContent)" class="normalGreyButton">Save</button>
+    <button (click)="saveKill()" class="normalGreyButton">Save</button>
   </form>
 </section>

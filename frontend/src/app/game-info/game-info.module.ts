@@ -11,6 +11,7 @@ import { MapComponent } from './components/map/map.component';
 import {GoogleMapsModule} from "@angular/google-maps";
 import { MessageComponent } from './components/message/message.component';
 import {FormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {FormsModule} from "@angular/forms";
         CommonModule,
         GameInfoRoutingModule,
         GoogleMapsModule,
-        FormsModule
+        FormsModule,
+        MatFormFieldModule
     ],
   exports: [
     BiteCodeComponent,
