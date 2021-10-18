@@ -30,9 +30,11 @@ export class HomePage implements OnInit {
   }
 
   createGame(): void {
+    let gameCreated = false;
     const dialogRef = this.dialog.open(CreateGameComponent);
     dialogRef.afterClosed().subscribe(result => {
-      if (result != undefined) {
+      if (result != undefined && !gameCreated) {
+        gameCreated = true; //Ensures only one request is sent to the server.
         this.homeAPI.createGame(result)
           .then(res => res.subscribe(
             data => this.router.navigate(["game/"+data.id+"/admin"])
