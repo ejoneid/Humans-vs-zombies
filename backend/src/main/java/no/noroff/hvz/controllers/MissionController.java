@@ -43,11 +43,11 @@ public class MissionController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID,@RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
+    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         List<MissionDTO> missionDTOs;
         List<Mission> missions;
-        if(SecurityUtils.isAdmin(authorization)) {
+        if(SecurityUtils.isAdmin(principal.getTokenValue())) {
             missions = missionService.getAllMissions(gameID);
         }
         else {
@@ -61,9 +61,9 @@ public class MissionController {
 
     @GetMapping("/{missionID}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+    public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         Mission mission = missionService.getSpecificMission(gameID,missionID);
-        if(!SecurityUtils.isAdmin(authorization)) {
+        if(!SecurityUtils.isAdmin(principal.getTokenValue())) {
             Player player = playerService.getPlayerByGameAndUser(gameID, appUserService.getSpecificUser(principal.getClaimAsString("sub")));
             if(mission.isHuman() != player.isHuman()) {
                 throw new MissingPermissionsException("User does not have the right permissions for this operation");
