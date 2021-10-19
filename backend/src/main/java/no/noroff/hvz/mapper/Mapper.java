@@ -14,9 +14,13 @@ import no.noroff.hvz.dto.squad.*;
 import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.*;
-import no.noroff.hvz.repositories.*;
+import no.noroff.hvz.services.AppUserService;
+import no.noroff.hvz.services.GameService;
+import no.noroff.hvz.services.PlayerService;
+import no.noroff.hvz.services.SquadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -30,22 +34,19 @@ public class Mapper {
     private final String url = "/api/game/";
 
     @Autowired
-    private PlayerRepository playerRepository;
+    private PlayerService playerService;
 
     @Autowired
-    private SquadRepository squadRepository;
+    private AppUserService appUserService;
 
     @Autowired
-    private AppUserRepository appUserRepository;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private SquadMemberRepository squadMemberRepository;
+    private SquadService squadService;
 
     @Autowired
     private CustomMapper customMapper;
+
+    @Autowired
+    private GameService gameService;
 
     /**
      * Method for mapping missionDTO
@@ -65,7 +66,7 @@ public class Mapper {
      */
     public Mission toMission(MissionDTOReg missionDTO, long gameId) {
         //Gets the game form the database and uses the infor from the DTO to create the mission
-        Game game = gameRepository.getById(gameId);
+        Game game = gameService.getSpecificGame(gameId);
         return new Mission(missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
@@ -123,7 +124,7 @@ public class Mapper {
      */
     public Game toGame(GameDTOUpdate gameDTOUpdate, Long id) {
         //gets the game from database
-        Game game = gameRepository.getById(id);
+        Game game = gameService.getSpecificGame(id);
         //Updates contents from DTO
         game.setName(gameDTOUpdate.getName());
         game.setGameState(gameDTOUpdate.getGameState());
@@ -171,13 +172,13 @@ public class Mapper {
      * @return the new kill
      * @throws InvalidBiteCodeException if the bitecode provided in the dto does not match a player or is already dead
      */
-    public Kill regKillDTO(KillDTOReg killDTO) throws InvalidBiteCodeException {
+    public Kill regKillDTO(KillDTOReg killDTO, Long gameID) throws InvalidBiteCodeException {
         Kill kill = new Kill();
         //uses customMapper to mapp new contents onto the kill object
         customMapper.updateKillFromDto(killDTO, kill);
         //gets the killer and victim
-        Player killer = playerRepository.getById(killDTO.getKillerID());
-        Player victim = playerRepository.getPlayerByGameAndBiteCode(killer.getGame(), killDTO.getBiteCode());
+        Player killer = playerService.getSpecificPlayer(gameID, killDTO.getKillerID());
+        Player victim = playerService.getPlayerByGameAndBiteCode(gameID, killDTO.getBiteCode());
         //checks if no victim was found or the victim was already killed
         if (victim == null) throw new InvalidBiteCodeException("BiteCode did not match any players in this game!");
         if(!victim.isHuman()) throw new InvalidBiteCodeException("The victim is already a zombie");
@@ -240,9 +241,9 @@ public class Mapper {
      * @param playerDTORegAdmin DTO with new content for when admins create players
      * @return the new player
      */
-    public Player regPlayerDTO(PlayerDTORegAdmin playerDTORegAdmin) {
+    public Player regPlayerDTO(PlayerDTORegAdmin playerDTORegAdmin) throws AppUserNotFoundException {
         //gets the user and sets the values in the new player
-        AppUser user = appUserRepository.getById(playerDTORegAdmin.getUserID());
+        AppUser user = appUserService.getSpecificUser(playerDTORegAdmin.getUserID());
         Player player = new Player();
         player.setUser(user);
         player.setHuman(playerDTORegAdmin.isHuman());
@@ -251,27 +252,13 @@ public class Mapper {
     }
 
     /**
-     * Method for mapping from Update DTO to player
-     * @param playerDTO DTO with updated contents
-     * @param playerID ID of player
-     * @return updated player
-     */
-    public Player toPlayer(PlayerDTOUpdate playerDTO, Long playerID) {
-        //gets the player form the database and sets the new values
-        Player player = playerRepository.getById(playerID);
-        player.setHuman(playerDTO.isHuman());
-        player.setPatientZero(playerDTO.isPatientZero());
-        return player;
-    }
-
-    /**
      * Method for mapping from PlayerDTO to player
      * @param playerDTO DTO of player
      * @return player
      */
-    public Player toPlayer(PlayerDTO playerDTO) {
+    public Player toPlayer(PlayerDTO playerDTO, Long gameID) {
         //returns the player form the database
-        return playerRepository.getById(playerDTO.getId());
+        return playerService.getSpecificPlayer(gameID,playerDTO.getId());
     }
 
     /**
@@ -279,10 +266,10 @@ public class Mapper {
      * @param dto SquadDTO
      * @return member
      */
-    public SquadMember toSquadMember (SquadMemberFromDTO dto) {
+    public SquadMember toSquadMember (SquadMemberFromDTO dto, Long gameID) {
         SquadMember member = new SquadMember();
         //gets the player form databse and sets the provided rank
-        Player player = playerRepository.getById(dto.getPlayerID());
+        Player player = playerService.getSpecificPlayer(gameID, dto.getPlayerID());
         member.setPlayer(player);
         return member;
     }
@@ -328,9 +315,9 @@ public class Mapper {
      * @param squadCheckInDTO DTO with new contents
      * @return SquadCheckIn
      */
-    public SquadCheckIn toSquadCheckIn(SquadCheckInDTO squadCheckInDTO) {
-        Player player = playerRepository.getById(squadCheckInDTO.getId());
-        SquadMember squadMember = squadMemberRepository.getByPlayer(player);
+    public SquadCheckIn toSquadCheckIn(SquadCheckInDTO squadCheckInDTO, Long gameID) {
+        Player player = playerService.getSpecificPlayer(gameID,squadCheckInDTO.getId());
+        SquadMember squadMember = squadService.getSquadMemberByPlayer(player);
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 

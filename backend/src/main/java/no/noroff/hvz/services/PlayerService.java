@@ -69,6 +69,21 @@ public class PlayerService {
     }
 
     /**
+     * Method for getting a player from bitecode
+     * @param gameId ID of game
+     * @param biteCode bitecode
+     * @return the bitecodes player in the game
+     */
+    public Player getPlayerByGameAndBiteCode(Long gameId, String biteCode) {
+        Player player = null;
+        Game game = gameRepository.getById(gameId);
+        if(playerRepository.existsByGameAndBiteCode(game,biteCode)) {
+            player = playerRepository.getPlayerByGameAndBiteCode(game,biteCode);
+        }
+        return player;
+    }
+
+    /**
      * Method for putting in default info to a new user generated player
      * @param gameID
      * @param player
@@ -134,7 +149,7 @@ public class PlayerService {
      * Method for updating a player
      * @param gameID ID of game
      * @param playerID ID of player
-     * @param player Player object with new info
+     * @param playerDto Player object with new info
      * @return the updated player
      */
     public Player updatePlayer(Long gameID, Long playerID, PlayerDTOUpdate playerDto) {
