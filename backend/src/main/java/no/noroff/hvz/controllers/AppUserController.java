@@ -41,14 +41,13 @@ public class AppUserController {
 
     //TODO er dette sikkerhetsproblematisk? bør vi kun sende med openId i token? trenger jo bare å hente seg selv
     /**
-     * Method for getting a specific user
-     * @param openID opedId of requested User
+     * Method for getting your user
      * @param principal Auth token som inneholder openID
      * @return the specific user DTO
      */
-    @GetMapping("/{openID}")
+    @GetMapping("/log-in")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> getSpecificUser(@PathVariable String openID, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<AppUserDTO> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
         AppUser appUser;
         // Her må det være try-catch fordi det skal returnes en annen httpstatus enn det som er vanlig for AppUserNotFoundException
         try {
@@ -56,13 +55,8 @@ public class AppUserController {
         } catch (AppUserNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
         HttpStatus status = HttpStatus.OK;
-        //Checks if the requester is admin or the same user
-        if (SecurityUtils.isAdmin(principal.getTokenValue()) || openID.equals(principal.getClaimAsString("sub"))) {
-            return new ResponseEntity<>(mapper.toAppUserDTOFull(appUser), status);
-        }
-        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(mapper.toAppUserDTOFull(appUser), status);
     }
 
     /**
