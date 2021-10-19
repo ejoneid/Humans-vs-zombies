@@ -1,6 +1,5 @@
 package no.noroff.hvz.controllers;
 
-import com.sun.net.httpserver.Headers;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.game.GameDTO;
 import no.noroff.hvz.dto.game.GameDTOReg;
