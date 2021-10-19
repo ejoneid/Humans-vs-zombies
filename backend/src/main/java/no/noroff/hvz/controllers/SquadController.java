@@ -162,10 +162,10 @@ public class SquadController {
 
     @GetMapping("/{squadID}/check-in")
     public ResponseEntity<List<SquadCheckInDTO>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                                 @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+                                                                 @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         List<SquadCheckInDTO> checkInDTOs;
         List<SquadCheckIn> checkins = squadService.getSquadCheckIn(gameID, squadID);
-        if(SecurityUtils.isAdmin(authorization)) {
+        if(SecurityUtils.isAdmin(principal.getTokenValue())) {
             checkInDTOs = checkins.stream().map(mapper::toSquadCheckInDTO).collect(Collectors.toList());
             status = HttpStatus.OK;
         }

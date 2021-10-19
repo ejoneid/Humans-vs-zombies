@@ -12,6 +12,7 @@ import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -62,6 +63,7 @@ public class AppUserService {
      */
     public AppUser createUser(AppUser addedUser) throws AppUserAlreadyExistException {
         if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException();
+        addedUser.setPlayers(new HashSet<>());
         return appUserRepository.save(addedUser);
     }
 }
