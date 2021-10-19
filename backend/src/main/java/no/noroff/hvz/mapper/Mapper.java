@@ -88,7 +88,9 @@ public class Mapper {
      * @return DTO
      */
     public AppUserDTOFull toAppUserDTOFull(AppUser user) {
-        return new AppUserDTOFull(user.getId(), user.getFirstName(), user.getLastName(), user.getPlayers());
+        return new AppUserDTOFull(user.getId(), user.getFirstName(), user.getLastName(),
+                user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet())
+        );
     }
 
     /**
