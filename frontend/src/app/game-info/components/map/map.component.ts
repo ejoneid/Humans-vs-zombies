@@ -9,6 +9,7 @@ import {Mission} from "../../../models/input/mission.model";
 import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps";
 import LatLng = google.maps.LatLng;
+import {createMapMarkers} from "../../../shared/maps/map.functions";
 
 @Component({
   selector: 'app-map',
@@ -28,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges {
   @Output()
   currentLocation = new EventEmitter<LatLng>();
 
-  //Is defined from ngAfterViewInit()
+  //Defined from ngAfterViewInit()
   @ViewChild("gmap") gmap!: ElementRef;
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
@@ -43,6 +44,7 @@ export class MapComponent implements OnInit, OnChanges {
   constructor(private readonly httpClient: HttpClient) {
   }
 
+  //Either loads new markers or requests the user's current location
   ngOnChanges() {
     if (this.locationRequested) {
       if (navigator.geolocation) {
@@ -54,33 +56,14 @@ export class MapComponent implements OnInit, OnChanges {
     }
     else {
       // Populating the marker list
-      for (let mission of this.missions) {
-        this.markers.push({
-          id: mission.id,
-          isMission: true,
-          description: mission.description,
-          position: {lat: mission.lat, lng: mission.lng},
-          label: {text: mission.name, color: "#B2BBBD"},
-          options: {icon: "../assets/mission-icon.svg"},
-          title: mission.name
-        });
-      }
-      for (let kill of this.kills) {
-        if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
-          this.markers.push({
-            id: kill.id,
-            isMission: false,
-            description: kill.story,
-            position: {lat: kill.lat, lng: kill.lng},
-            label: {text: kill.killerName, color: "#B2BBBD"},
-            options: {icon: "../assets/tombstone-icon.svg"},
-            title: "Kill"
-          });
-        }
-      }
+      this.markers = createMapMarkers(this.kills, this.missions);
     }
   }
 
+  /**
+   * Creates the map and applies the borders (If any)
+   * This is a duplicate code, but it creates a specific part for this component, so it should be here.
+   */
   ngOnInit() {
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.options.restriction = {latLngBounds: {

@@ -1,19 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from "@angular/material-moment-adapter";
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'DD MM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'DDDD MMMM YYYY',
-  },
-};
+import {DATE_FORMAT} from "../../../../assets/date.format";
 
 @Component({
   selector: 'app-mission-edit',
@@ -24,17 +13,21 @@ export const MY_FORMATS = {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    {provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT},
   ],
 })
-export class MissionEditComponent implements OnInit {
+export class MissionEditComponent {
 
+  //Whether error messages should be shown
   buttonClicked = false;
   illegalDate = false;
 
   constructor(public dialogRef: MatDialogRef<MissionEditComponent>, @Inject(MAT_DIALOG_DATA) public data: {name: string | null, description: string | null, startTime: string | null, endTime: string | null, isHuman: boolean}) {
   }
 
+   /*Checks if the provided dates are correct. Needs no parameters because of [(ngModel)].
+   Also formats the dates properly
+    */
   checkDate(): boolean {
     if (this.data.startTime != null) this.data.startTime = JSON.stringify(this.data.startTime).split("\"")[1];
     if (this.data.endTime != null) this.data.endTime = JSON.stringify(this.data.endTime).split("\"")[1];
@@ -46,6 +39,10 @@ export class MissionEditComponent implements OnInit {
     return true;
   }
 
+  /**
+   * Is run whenever the save or delete buttons are clicked. Checks whether the created mission has all necessary parameters
+   * @param edit whether the mission should be edited/created or deleted. If false, it means the delete button has been pressed
+   */
   closeDialog(edit: boolean) {
     if (edit) {
       this.buttonClicked = true;
@@ -62,8 +59,5 @@ export class MissionEditComponent implements OnInit {
     else {
       this.dialogRef.close(false);
     }
-  }
-
-  ngOnInit(): void {
   }
 }

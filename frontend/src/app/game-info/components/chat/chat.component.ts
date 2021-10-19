@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Message} from "../../../models/input/message.model";
 
 @Component({
@@ -6,7 +6,7 @@ import {Message} from "../../../models/input/message.model";
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent {
 
   @Input()
   public chatMessages: Message[] | null = null;
@@ -18,9 +18,6 @@ export class ChatComponent implements OnInit {
   public submitText: String = "";
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   // Emits a request to load the correct chat
   @Output() globalChat: EventEmitter<any> = new EventEmitter<any>();
