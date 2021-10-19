@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import LatLng = google.maps.LatLng;
 import {KillOutput} from "../../../models/output/kill-output.model";
 import {GameInfoAPI} from "../../api/game-info.api";
@@ -8,7 +8,7 @@ import {GameInfoAPI} from "../../api/game-info.api";
   templateUrl: './bite-code.component.html',
   styleUrls: ['./bite-code.component.css']
 })
-export class BiteCodeComponent implements OnInit {
+export class BiteCodeComponent {
 
   @Input()
   public isHuman!: boolean;
@@ -22,10 +22,10 @@ export class BiteCodeComponent implements OnInit {
   public biteCodeError: boolean = false;
   @Input()
   public gameID!: number
-  @Output()
+  @Output() //Emits when a kill has been added
   updateKills = new EventEmitter<any>();
 
-  @Output()
+  @Output() //Emits when the location button is clicked
   requestLocation = new EventEmitter<any>();
 
   public biteCodeInput: string = "";
@@ -33,9 +33,7 @@ export class BiteCodeComponent implements OnInit {
 
   constructor(private readonly gameInfoAPI: GameInfoAPI) {}
 
-  ngOnInit(): void {
-  }
-
+  //Saves the new kill
   saveKill(): void {
     if (this.biteCodeInput.length === 10) {
       let lat = null;
@@ -70,6 +68,7 @@ export class BiteCodeComponent implements OnInit {
     }
   }
 
+  //Requests the location of the player.
   getLocation(): void {
     this.requestLocation.emit();
   }

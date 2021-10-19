@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 
 @Component({
@@ -6,7 +6,9 @@ import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
   templateUrl: './single-player.component.html',
   styleUrls: ['./single-player.component.css']
 })
-export class SinglePlayerComponent implements OnInit {
+
+//A component that holds information about a single player.
+export class SinglePlayerComponent {
 
   public playerName: string = "";
 
@@ -14,9 +16,6 @@ export class SinglePlayerComponent implements OnInit {
   public playerInfo!: PlayerInfoFull;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   get player(): PlayerInfoFull {
     return this.playerInfo;

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PlayerInfo} from "../../../models/input/player-info.model";
 import {SquadInfo} from "../../../models/input/squad-info.model";
 
 @Component({

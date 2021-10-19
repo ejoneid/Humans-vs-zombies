@@ -62,9 +62,11 @@ export class AdminPage implements OnInit {
       ));
   }
 
-  //methods that update the objects referenced in their names.
+  /*
+  Methods that update the objects referenced in their names.
+   */
 
-  updateMissions() {
+  updateMissions(): void {
     const tempMissions: Mission[] = [];
     this.adminAPI.getMissionsByGame(this.gameInfo.id)
       .then((response) => {
@@ -87,7 +89,7 @@ export class AdminPage implements OnInit {
       });
   }
 
-  updateKills() {
+  updateKills(): void {
     const tempKills: Kill[] = [];
     this.adminAPI.getKillsByGame(this.gameInfo.id)
       .then((response) => {
@@ -108,7 +110,7 @@ export class AdminPage implements OnInit {
       });
   }
 
-  updateGame() {
+  updateGame(): void {
     this.adminAPI.getGameById(this.gameInfo.id)
       .then((response) => {
         response.subscribe((game) => {
@@ -125,7 +127,7 @@ export class AdminPage implements OnInit {
       });
   }
 
-  updatePlayers() {
+  updatePlayers(): void {
     const tempPlayers: PlayerInfoFull[] = [];
     this.adminAPI.getAllPlayers(this.game.id)
       .then((response) => {

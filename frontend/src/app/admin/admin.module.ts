@@ -17,7 +17,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateMarkerComponent } from './components/create-marker/create-marker.component';
 import { KillEditComponent } from './components/kill-edit/kill-edit.component';
 import {MatCardModule} from "@angular/material/card";
-import { SinglePlayerComponent } from './components/player-view/single-player.component';
+import { SinglePlayerComponent } from './components/single-player/single-player.component';
 import {MatSelectModule} from "@angular/material/select";
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 

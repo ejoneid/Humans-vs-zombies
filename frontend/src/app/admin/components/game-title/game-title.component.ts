@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AdminAPI} from "../../api/admin.api";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-game-title-admin',
   templateUrl: './game-title.component.html',
   styleUrls: ['./game-title.component.css']
 })
-export class GameTitleComponent implements OnInit {
+export class GameTitleComponent {
 
+  //A custom [(ngModel)] that keeps track of what an updated title contains.
   @Input()
   public gameTitle: string = "ERROR: No game title found";
   @Output()
@@ -15,9 +15,7 @@ export class GameTitleComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  //Called when the save button is clicked
   saveChanges(): void {
     this.gameTitleChange.emit(this.gameTitle);
   }

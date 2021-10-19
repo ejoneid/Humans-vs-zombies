@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
@@ -9,28 +9,31 @@ import {PlayerEditComponent} from "../player-edit/player-edit.component";
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.css']
 })
-export class PlayersComponent implements OnInit {
+export class PlayersComponent {
 
-  @Input()
+  @Input() //All the players in the current game
   public playerList!: PlayerInfoFull[];
+
   @Input()
   public gameID!: number;
 
+  //If the Admin Page needs to update the player list with an api call.
   @Output()
   public playerUpdate: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private dialog: MatDialog, private readonly adminAPI: AdminAPI) { }
 
-  ngOnInit(): void {
-  }
-
+  /**
+   * Creates a popup window for editing a player.
+   * @param player info about the player that should be edited
+   */
   editPlayer(player: PlayerInfoFull): void {
     const dialogRef = this.dialog.open(PlayerEditComponent, {data: player});
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
         this.adminAPI.updatePlayer(this.gameID, player.id, result)
           .then(res => res.subscribe(
-            data => console.log(data)
+            () => this.playerUpdate.emit()
           ));
       }
     });

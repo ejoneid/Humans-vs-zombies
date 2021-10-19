@@ -1,21 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-game-title',
   templateUrl: './game-title.component.html',
   styleUrls: ['./game-title.component.css']
 })
-export class GameTitleComponent implements OnInit {
+export class GameTitleComponent {
 
   @Input()
   public gameTitle: string = "ERROR: No game title found";
-  @Output()
+  @Output() //Emits when the "join game" button is pressed
   public joinGame = new EventEmitter<any>();
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   joinGameClicked(): void {
     this.joinGame.emit();

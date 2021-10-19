@@ -7,7 +7,6 @@ import {MapBorder} from "../../../models/input/map-border.model";
 import {Kill} from "../../../models/input/kill.model";
 import {Mission} from "../../../models/input/mission.model";
 import {MapMarker} from "../../../models/input/map-marker.model";
-import {MapInfoWindow} from "@angular/google-maps";
 import {MissionEditComponent} from "../mission-edit/mission-edit.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
@@ -15,6 +14,7 @@ import LatLng = google.maps.LatLng;
 import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 import {KillEditComponent} from "../kill-edit/kill-edit.component";
 import {KillOutput} from "../../../models/output/kill-output.model";
+import {createMapMarkers} from "../../../shared/maps/map.functions";
 
 @Component({
   selector: 'app-map-admin',
@@ -23,28 +23,29 @@ import {KillOutput} from "../../../models/output/kill-output.model";
 })
 export class MapComponent implements OnInit, OnChanges {
 
+  //Current borders of the map as a custom [(ngModel)]
   @Input()
   mapInfo!: MapBorder;
   @Output()
   mapInfoChange = new EventEmitter<MapBorder>();
-  @Input()
+
+  @Input() //Kills in the game
   kills!: Kill[];
-  @Input()
+  @Input() //Missions in the game
   missions!: Mission[];
   @Input()
   public gameID!: number;
-  @Input()
+  @Input() //The names of the humans in the game and their corresponding bite codes
   public biteCodes!: {name: string, biteCode: string}[];
-  @Input()
+  @Input() //The names of the zombies in the game and their corresponding ids
   public ids!: {name: string, id: number}[];
-  @Output()
+  @Output() //Emits whenever a mission is updated
   missionUpdate: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
+  @Output() //Emits whenever a kill is updated
   killUpdate: EventEmitter<any> = new EventEmitter<any>();
 
   //Is defined from ngAfterViewInit()
-  @ViewChild("gmap") gmap!: ElementRef;
-  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+  @ViewChild("gmap") gmap!: ElementRef; //The Google Map component
 
   apiLoaded!: Observable<boolean>;
 
@@ -54,8 +55,11 @@ export class MapComponent implements OnInit, OnChanges {
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
+  //If the toggle for changing the map borders is on or not
   changeArea: boolean = false;
+  //What corner should be edited next
   lastNorthWest = false;
+  //The current borders of the map
   corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
 
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
@@ -63,6 +67,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   /**
    * Creates the map and applies the borders (If any)
+   * This is a duplicate code, but it creates a specific part for this component, so it should be here.
    */
   ngOnInit() {
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
@@ -73,7 +78,6 @@ export class MapComponent implements OnInit, OnChanges {
           west: this.mapInfo.nw_long
         }};
     }
-    //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
       .pipe(
         map(() => true),
@@ -86,32 +90,7 @@ export class MapComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
-    this.markers = [];
-    // Populating the marker list
-    for (let mission of this.missions) {
-      this.markers.push({
-        id: mission.id,
-        isMission: true,
-        description: mission.description,
-        position: {lat: mission.lat, lng: mission.lng},
-        label: {text: mission.name, color: "#B2BBBD"},
-        options: {icon: "../assets/mission-icon.svg"},
-        title: mission.name
-      });
-    }
-    for (let kill of this.kills) {
-      if (kill.lat != null && kill.lng != null) { //Position data for kills is optional.
-        this.markers.push({
-          id: kill.id,
-          isMission: false,
-          description: kill.story,
-          position: {lat: kill.lat, lng: kill.lng},
-          label: {text: kill.killerName, color: "#B2BBBD"},
-          options: {icon: "../assets/tombstone-icon.svg"},
-          title: "Kill"
-        });
-      }
-    }
+    this.markers = createMapMarkers(this.kills, this.missions);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.corners = {
         nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
