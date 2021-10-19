@@ -97,7 +97,7 @@ public class SquadController {
     public ResponseEntity<SquadDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
         SquadDTO squadDTO = null;
         try {
-            SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member));
+            SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member, gameID));
             squadDTO = mapper.toSquadDTO(squadService.getSpecificSquad(gameID, addedSquadMember.getSquad().getId()));
             status = HttpStatus.CREATED;
         }
@@ -232,7 +232,7 @@ public class SquadController {
             Squad squad= squadService.getSpecificSquad(gameID, squadID);
             //check if player and squad is same faction
             if(player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) {
-                SquadCheckIn addedCheckIn = squadService.createSquadCheckIn(gameID, squadID, mapper.toSquadCheckIn(checkInDTO));
+                SquadCheckIn addedCheckIn = squadService.createSquadCheckIn(gameID, squadID, mapper.toSquadCheckIn(checkInDTO,gameID));
                 status = HttpStatus.OK;
                 addedCheckInDTO = mapper.toSquadCheckInDTO(addedCheckIn);
             }

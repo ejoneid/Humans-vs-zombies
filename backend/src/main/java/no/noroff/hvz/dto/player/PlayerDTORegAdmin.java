@@ -2,15 +2,15 @@ package no.noroff.hvz.dto.player;
 
 public class PlayerDTORegAdmin {
 
-    private Long userID;
+    private String userID;
     private boolean human;
     private boolean patientZero;
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

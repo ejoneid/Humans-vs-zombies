@@ -55,7 +55,7 @@ public class KillController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody KillDTOReg kill) throws InvalidBiteCodeException {
-        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill));
+        Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill,gameID));
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toKillDTO(addedKill), status);
     }

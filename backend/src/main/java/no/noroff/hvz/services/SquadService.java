@@ -148,4 +148,8 @@ public class SquadService {
         }
         return false;
     }
+
+    public SquadMember getSquadMemberByPlayer(Player player) {
+        return squadMemberRepository.getByPlayer(player);
+    }
 }
