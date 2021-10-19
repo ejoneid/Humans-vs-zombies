@@ -236,9 +236,8 @@ public class Mapper {
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        AppUserDTOFull userDTO = toAppUserDTOFull(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
-               userDTO ,killsUrl,messagesUrl);
+               killsUrl,messagesUrl);
     }
 
 
