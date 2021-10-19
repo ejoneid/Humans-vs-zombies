@@ -49,8 +49,9 @@ export class GameInfoPage implements OnInit {
   constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    //Finding gameID from the optional params
+    //Finding gameID and playerID from the optional params
     this.gameInfo.id = parseInt(this.route.snapshot.paramMap.get("id")!);
+    this.gameInfo.player_id = parseInt(this.route.snapshot.paramMap.get("playerId")!);
 
     //Getting information about the specific game
     this.gameInfoAPI.getGameById(this.gameInfo.id)
