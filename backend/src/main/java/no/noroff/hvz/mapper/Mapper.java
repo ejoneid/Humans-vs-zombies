@@ -218,7 +218,7 @@ public class Mapper {
      */
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
         String name = player.getUser().getFirstName() + " " + player.getUser().getLastName();
-        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
+        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name, player.getGame().getId());
     }
 
     /**
@@ -231,7 +231,7 @@ public class Mapper {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
         AppUserDTO userDTO = toAppUserDTOReg(player.getUser());
-        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),
+        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
                userDTO ,killsUrl,messagesUrl);
     }
 

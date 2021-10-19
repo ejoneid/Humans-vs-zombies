@@ -6,12 +6,14 @@ public class PlayerDTOStandard implements PlayerDTO {
     private Boolean isHuman;
     private String biteCode;
     private String name;
+    private Long gameID;
 
-    public PlayerDTOStandard(Long id, Boolean isHuman, String biteCode, String name) {
+    public PlayerDTOStandard(Long id, Boolean isHuman, String biteCode, String name, Long gameID) {
         this.id = id;
         this.isHuman = isHuman;
         this.biteCode = biteCode;
         this.name = name;
+        this.gameID = gameID;
     }
 
     @Override
@@ -46,5 +48,13 @@ public class PlayerDTOStandard implements PlayerDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(Long gameID) {
+        this.gameID = gameID;
     }
 }

@@ -1,9 +1,6 @@
 package no.noroff.hvz.exceptionhandlers;
 
-import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
-import no.noroff.hvz.exceptions.AppUserNotFoundException;
-import no.noroff.hvz.exceptions.InvalidBiteCodeException;
-import no.noroff.hvz.exceptions.MissingPermissionsException;
+import no.noroff.hvz.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +47,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppUserAlreadyExistException.class)
     public ResponseEntity<Object> handleInvalidBiteCodeException(AppUserAlreadyExistException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MissingPlayerException.class)
+    public ResponseEntity<Object> handleInvalidBiteCodeException(MissingPlayerException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

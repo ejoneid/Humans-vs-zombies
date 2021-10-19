@@ -166,11 +166,9 @@ public class PlayerService {
      * @return the deleted player
      */
     public Player deletePlayer(Long gameID, Long playerID) {
-        Player deletedPlayer = new Player();
-        if(playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
-            deletedPlayer = playerRepository.getById(playerID);
-            playerRepository.deleteById(playerID);
-        }
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Player deletedPlayer = playerRepository.findById(playerID).get();
+        playerRepository.deleteById(playerID);
         return deletedPlayer;
     }
 }
