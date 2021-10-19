@@ -53,4 +53,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleInvalidBiteCodeException(MissingPlayerException e, WebRequest r) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(PlayerAlreadyExistException.class)
+    public ResponseEntity<Object> handleInvalidBiteCodeException(PlayerAlreadyExistException e, WebRequest r) {
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
 }
