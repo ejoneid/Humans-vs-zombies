@@ -14,6 +14,8 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
+  public players: {name: string, id: number}[] = [];
+
   constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
   }
 

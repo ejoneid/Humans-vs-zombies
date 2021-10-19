@@ -168,6 +168,11 @@ export class GameInfoPage implements OnInit {
   }
 
   registerUser(): void {
+    //Check if the user has a player
+
+    //Create a player if not
+
+    //Register for the game
     this.gameInfoAPI.registerForGame(this.gameInfo.id, {userID: this.gameInfo.player_id})
       .then(res => res.subscribe(
         data => console.log(data)
