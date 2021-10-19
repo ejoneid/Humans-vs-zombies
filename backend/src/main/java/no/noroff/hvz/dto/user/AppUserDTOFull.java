@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.user;
 
+import no.noroff.hvz.dto.player.PlayerDTOFull;
 import no.noroff.hvz.models.Player;
 
 import java.util.Set;
@@ -8,9 +9,9 @@ public class AppUserDTOFull implements AppUserDTO{
     private Long id;
     private String firstName;
     private String lastName;
-    private Set<Player> players;
+    private Set<PlayerDTOFull> players;
 
-    public AppUserDTOFull(Long id, String firstName, String lastName, Set<Player> players) {
+    public AppUserDTOFull(Long id, String firstName, String lastName, Set<PlayerDTOFull> players) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,11 +42,11 @@ public class AppUserDTOFull implements AppUserDTO{
         this.lastName = lastName;
     }
 
-    public Set<Player> getPlayers() {
+    public Set<PlayerDTOFull> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Set<Player> players) {
+    public void setPlayers(Set<PlayerDTOFull> players) {
         this.players = players;
     }
 }
