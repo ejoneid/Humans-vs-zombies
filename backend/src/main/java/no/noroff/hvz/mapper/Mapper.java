@@ -327,5 +327,14 @@ public class Mapper {
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 
-
+    /**
+     * Method to create a squad object from the join DTO
+     * @param dto
+     * @return Squad
+     */
+    public Squad joinToSquad(SquadJoinDTO dto) {
+        Squad s = new Squad();
+        s.setName(dto.getName());
+        return s;
+    }
 }

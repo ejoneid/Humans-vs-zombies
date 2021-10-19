@@ -8,6 +8,7 @@ import {Kill} from "../../models/input/kill.model";
 import {Message} from "../../models/input/message.model";
 import {WebSocketAPI} from "../api/WebSocketApi.api";
 import LatLng = google.maps.LatLng;
+import {log} from "util";
 
 @Component({
   selector: 'app-game-info-page',
@@ -322,14 +323,18 @@ export class GameInfoPage implements OnInit {
   joinSquad(squadID: number) {
     this.gameInfoAPI.joinSquad(this.gameInfo.id, squadID, this.gameInfo.player_id)
       .then(res => {
-        this.updateSquad();
+        res.subscribe(msg => {
+          this.updateSquad();
+        })
       });
   }
 
   createSquad(squadName: string) {
-    this.gameInfoAPI.createSquad(this.gameInfo.id, squadName, this.gameInfo.player_is_human)
+    this.gameInfoAPI.createSquad(this.gameInfo.id, squadName)
       .then(res => {
-        this.updateSquad();
+        res.subscribe(msg => {
+          this.updateSquad();
+        })
       })
   }
 }
