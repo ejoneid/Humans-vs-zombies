@@ -31,7 +31,6 @@ export class AuthButtonComponent implements OnInit {
                 data => {
                   this.players = data.players;
                   this.playersChange.emit(this.players);
-                  console.log(this.players)
                 }, //If the user is found
                 err => {
                   if (err.status == 404) {//If user doesn't exist
