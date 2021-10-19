@@ -1,5 +1,7 @@
 package no.noroff.hvz.services;
 
+import no.noroff.hvz.dto.squad.SquadDTOUpdate;
+import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class SquadService {
 
     @Autowired
     AppUserRepository appUserRepository;
+
+    @Autowired
+    CustomMapper customMapper;
 
     public List<Squad> getAllSquads(Long gameID) {
         List<Squad> squads = new ArrayList<>();
@@ -73,20 +78,18 @@ public class SquadService {
         return addedSquadMember;
     }
 
-    public Squad updateSquad(Long gameID, Long squadID, Squad squad) {
-        Squad updatedSquad = null;
-        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            updatedSquad = squadRepository.save(squad);
-        }
+    public Squad updateSquad(Long gameID, Long squadID, SquadDTOUpdate squadDTO) {
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Squad updatedSquad = squadRepository.findById(squadID).get();
+        customMapper.updateSquadFromDto(squadDTO, updatedSquad);
+        updatedSquad = squadRepository.save(updatedSquad);
         return updatedSquad;
     }
 
     public Squad deleteSquad(Long gameID, Long squadID) {
-        Squad deletedSquad = null;
-        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            deletedSquad = squadRepository.getById(squadID);
-            squadRepository.deleteById(squadID);
-        }
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        Squad deletedSquad = squadRepository.findById(squadID).get();
+        squadRepository.deleteById(squadID);
         return deletedSquad;
     }
 
@@ -102,16 +105,16 @@ public class SquadService {
 
     public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
         Message chat = null;
-        if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
-            //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
-            message.setGame(gameRepository.getById(gameID));
-            message.setSquad(squadRepository.getById(squadID));
-            message.setUser(user);
-            message.setHuman(playerRepository.getPlayerByGameAndUser(gameRepository.getById(gameID),user).isHuman());
-            message.setGlobal(false);
-            message.setChatTime(new Date());
-            chat = messageRepository.save(message);
-        }
+        if(!(gameRepository.existsById(gameID) && squadRepository.existsById(squadID))) throw new NoSuchElementException();
+        //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
+        message.setGame(gameRepository.getById(gameID));
+        message.setSquad(squadRepository.getById(squadID));
+        message.setUser(user);
+        message.setHuman(playerRepository.getPlayerByGameAndUser(gameRepository.getById(gameID),user).isHuman());
+        message.setGlobal(false);
+        message.setFaction(false);
+        message.setChatTime(new Date());
+        chat = messageRepository.save(message);
         return chat;
     }
 
