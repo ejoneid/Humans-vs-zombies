@@ -44,7 +44,7 @@ export class ActiveGameComponent implements OnInit, OnChanges {
   toGameInfo(gameId: number, playerId: number | null): Promise<boolean> | void {
     if (playerId == null) {
       this.homeAPI.createPlayer(gameId)
-        .then(res => res.subscribe( //TODO: Fix the 404 here
+        .then(res => res.subscribe( //TODO: Fix the 404 here. Currently, an admin can't look at the info of a game.
           data => {
             playerId = data.id
             return this.router.navigate(["game/"+gameId+"/player/"+playerId]);
