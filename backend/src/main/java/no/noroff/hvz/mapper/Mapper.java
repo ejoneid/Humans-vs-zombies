@@ -11,7 +11,6 @@ import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
-import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -71,6 +70,13 @@ public class Mapper {
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
+    public Mission toMissionUpdate(MissionDTOReg missionDTO, long gameId, Long missionID) {
+        //Gets the game form the database and uses the infor from the DTO to create the mission
+        Game game = gameService.getSpecificGame(gameId);
+        return new Mission(missionID,missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
+                missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
+    }
+
 
     /**
      * Method for mapping DTO for user
@@ -89,7 +95,7 @@ public class Mapper {
      * @return DTO
      */
     public AppUserDTOFull toAppUserDTOFull(AppUser user) {
-        return new AppUserDTOFull(user.getId(), user.getFirstName(), user.getLastName(),
+        return new AppUserDTOFull(user.getOpenId(), user.getFirstName(), user.getLastName(),
                 user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet())
         );
     }
@@ -230,7 +236,7 @@ public class Mapper {
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        AppUserDTO userDTO = toAppUserDTOReg(player.getUser());
+        AppUserDTOFull userDTO = toAppUserDTOFull(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
                userDTO ,killsUrl,messagesUrl);
     }
@@ -321,5 +327,14 @@ public class Mapper {
         return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 
-
+    /**
+     * Method to create a squad object from the join DTO
+     * @param dto
+     * @return Squad
+     */
+    public Squad joinToSquad(SquadJoinDTO dto) {
+        Squad s = new Squad();
+        s.setName(dto.getName());
+        return s;
+    }
 }

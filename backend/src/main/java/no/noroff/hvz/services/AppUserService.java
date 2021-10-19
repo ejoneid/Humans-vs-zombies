@@ -12,6 +12,7 @@ import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -30,9 +31,9 @@ public class AppUserService {
 
     /**
      * Method for getting a specific user from the DB
-     * @param openId
+     * @param openId auth0 id
      * @return The requested AppUser
-     * @throws AppUserNotFoundException
+     * @throws AppUserNotFoundException when appUser is not found
      */
     public AppUser getSpecificUser(String openId) throws AppUserNotFoundException {
         if(!appUserRepository.existsAppUserByOpenId(openId)) {
@@ -43,25 +44,25 @@ public class AppUserService {
 
     /**
      * Method for getting a player based on the user and game
-     * @param gameId
-     * @param user
+     * @param gameId id of game
+     * @param user user we want player from
      * @return The wanted player object
      */
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) throws MissingPlayerException {
         Game game = gameRepository.findById(gameId).get();
         if(!playerRepository.existsByGameAndUser(game,user)) throw new MissingPlayerException();
-        Player player = playerRepository.getPlayerByGameAndUser(game,user);
-        return player;
+        return playerRepository.getPlayerByGameAndUser(game,user);
     }
 
     /**
      * Method for adding a user to the DB
-     * @param addedUser
+     * @param addedUser the user to be added
      * @return Saved object/error
-     * @throws AppUserAlreadyExistException
+     * @throws AppUserAlreadyExistException when the user already exists
      */
     public AppUser createUser(AppUser addedUser) throws AppUserAlreadyExistException {
         if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException();
+        addedUser.setPlayers(new HashSet<>());
         return appUserRepository.save(addedUser);
     }
 }

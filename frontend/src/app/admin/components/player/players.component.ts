@@ -3,6 +3,7 @@ import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 import {MatDialog} from "@angular/material/dialog";
 import {AdminAPI} from "../../api/admin.api";
 import {PlayerEditComponent} from "../player-edit/player-edit.component";
+import {PlayerCreateComponent} from "../player-create/player-create.component";
 
 @Component({
   selector: 'app-players',
@@ -37,6 +38,23 @@ export class PlayersComponent {
           ));
       }
     });
+  }
+
+  createPlayer(): void {
+    this.adminAPI.getAllUsers()
+      .then(res => res.subscribe(
+        resp => {
+          const dialogRef = this.dialog.open(PlayerCreateComponent, {data: {gameID: this.gameID, allUsers: resp}});
+          dialogRef.afterClosed().subscribe(result => {
+            if (result != undefined) {
+              this.adminAPI.createPlayer(this.gameID, result)
+                .then(res => res.subscribe(
+                  () => this.playerUpdate.emit()
+                ));
+            }
+          });
+        }
+      ))
   }
 
   get players(): PlayerInfoFull[] {

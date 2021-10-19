@@ -6,6 +6,7 @@ import {Mission} from "../../models/input/mission.model";
 import {KillOutput} from "../../models/output/kill-output.model";
 import {GameOutput} from "../../models/output/game-output.model";
 import {PlayerInfoFull} from "../../models/input/player-info-full.model";
+import {PlayerAdminOutput} from "../../models/output/player-admin-output.model";
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,11 @@ export class AdminAPI {
   }
   public async updatePlayer(gameID: number, playerID: number, player: PlayerInfoFull): Promise<Observable<any>> {
     return await this.http.put<any>(baseURL+"api/game/"+gameID+"/player/"+playerID, player)
+  }
+  public async createPlayer(gameID: number, player: PlayerAdminOutput): Promise<Observable<any>> {
+    return await this.http.post<any>(baseURL+"api/game/"+gameID+"/player", player);
+  }
+  public async getAllUsers(): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL+"api/user");
   }
 }

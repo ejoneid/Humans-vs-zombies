@@ -1,13 +1,11 @@
 package no.noroff.hvz.controllers;
 
-import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
-import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +46,7 @@ public class AppUserController {
      */
     @GetMapping("/log-in")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<AppUserDTOFull> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
         AppUser appUser;
         // Her må det være try-catch fordi det skal returnes en annen httpstatus enn det som er vanlig for AppUserNotFoundException
         try {
@@ -68,15 +67,12 @@ public class AppUserController {
      */
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<AppUserDTO> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
+    public ResponseEntity<AppUserDTOFull> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
         AppUser addedUser = appUserService.createUser(appUser);
         HttpStatus status = HttpStatus.CREATED;
-        if (SecurityUtils.isAdmin(principal.getTokenValue())) {
-            return new ResponseEntity<>(mapper.toAppUserDTOFull(addedUser), status);
-        }
-        return new ResponseEntity<>(mapper.toAppUserDTOReg(addedUser), status);
+        return new ResponseEntity<>(mapper.toAppUserDTOFull(addedUser), status);
     }
 
 

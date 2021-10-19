@@ -86,7 +86,7 @@ public class MissionController {
     @PutMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTOReg missionDTO) {
-        Mission mission = mapper.toMission(missionDTO, gameID);
+        Mission mission = mapper.toMissionUpdate(missionDTO, gameID, missionID);
         Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
         MissionDTO updatedMissionDTO = mapper.toMissionDTO(updatedMission);
         HttpStatus status = HttpStatus.OK;

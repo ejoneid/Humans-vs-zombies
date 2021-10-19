@@ -33,10 +33,12 @@ export class SquadComponent implements OnInit {
 
   @Output() createThis: EventEmitter<any> = new EventEmitter<any>();
   createSquad() {
-    this.createThis.emit(this.createSquadName);
-    this.createSquadName = "";
-    this.join = false;
-    this.create = false;
+    if (this.createSquadName != "") {
+      this.createThis.emit(this.createSquadName);
+      this.createSquadName = "";
+      this.join = false;
+      this.create = false;
+    }
   }
 
 }
