@@ -1,6 +1,9 @@
 package no.noroff.hvz.services;
 
 import no.noroff.hvz.dto.squad.SquadDTOUpdate;
+import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
+import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.PlayerAlreadyExistException;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.*;
 import no.noroff.hvz.repositories.*;
@@ -69,12 +72,11 @@ public class SquadService {
         return createdSquad;
     }
 
-    public SquadMember joinSquad(Long gameID, Long squadID, SquadMember member) {
-        SquadMember addedSquadMember = null;
-        if(squadRepository.existsById(squadID) && gameRepository.existsById(gameID)) {
-            member.setSquad(squadRepository.getById(squadID));
-            addedSquadMember = squadMemberRepository.save(member);
-        }
+    public SquadMember joinSquad(Long gameID, Long squadID, SquadMember member) throws PlayerAlreadyExistException {
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        if(squadMemberRepository.existsBySquad_IdAndPlayer_Id(squadID, member.getPlayer().getId())) throw new PlayerAlreadyExistException();
+        member.setSquad(squadRepository.findById(squadID).get());
+        SquadMember addedSquadMember = squadMemberRepository.save(member);
         return addedSquadMember;
     }
 
