@@ -2,6 +2,7 @@ import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/c
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 import {HomeAPI} from "../../api/home.api";
+import {UserPlayer} from "../../../models/input/user-player.model";
 
 @Component({
   selector: 'app-auth-button',
@@ -15,9 +16,9 @@ export class AuthButtonComponent implements OnInit {
   constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService, private readonly homeAPI: HomeAPI) { }
 
   @Input()
-  players!: {name: string, id: number}[];
+  players!: UserPlayer[];
   @Output()
-  playersChange = new EventEmitter<{name: string, id: number}[]>();
+  playersChange = new EventEmitter<UserPlayer[]>();
 
   ngOnInit(): void {
     this.auth.idTokenClaims$.subscribe((token) => {
@@ -30,6 +31,7 @@ export class AuthButtonComponent implements OnInit {
                 data => {
                   this.players = data.players;
                   this.playersChange.emit(this.players);
+                  console.log(this.players)
                 }, //If the user is found
                 err => {
                   if (err.status == 404) {//If user doesn't exist

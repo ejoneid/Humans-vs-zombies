@@ -4,6 +4,7 @@ import {HomeAPI} from "../api/home.api";
 import {CreateGameComponent} from "../components/create-game/create-game.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import {UserPlayer} from "../../models/input/user-player.model";
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  public players: {name: string, id: number}[] = [];
+  public players: UserPlayer[] = [];
 
   constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
   }
