@@ -20,6 +20,8 @@ import {MatCardModule} from "@angular/material/card";
 import { SinglePlayerComponent } from './components/single-player/single-player.component';
 import {MatSelectModule} from "@angular/material/select";
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
+import {PlayerCreateComponent} from "./components/player-create/player-create.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
     CreateMarkerComponent,
     KillEditComponent,
     SinglePlayerComponent,
-    PlayerEditComponent
+    PlayerEditComponent,
+    PlayerCreateComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +49,8 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   entryComponents: [
     MissionEditComponent
