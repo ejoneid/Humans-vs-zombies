@@ -1,6 +1,6 @@
 package no.noroff.hvz.dto.user;
 
-public class AppUserDTOReg implements AppUserDTO {
+public class AppUserDTOReg {
     private String firstName;
     private String lastName;
 

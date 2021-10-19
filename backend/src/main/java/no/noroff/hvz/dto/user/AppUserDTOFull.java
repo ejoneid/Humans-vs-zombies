@@ -5,7 +5,7 @@ import no.noroff.hvz.models.Player;
 
 import java.util.Set;
 
-public class AppUserDTOFull implements AppUserDTO{
+public class AppUserDTOFull {
     private Long id;
     private String firstName;
     private String lastName;
