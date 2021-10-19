@@ -54,6 +54,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
+    @Tag(name = "getGameByID", description = "Returns a specific game.")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
 
         Game game = gameService.getSpecificGame(id);
@@ -62,6 +63,7 @@ public class GameController {
     }
 
     @PostMapping
+    @Tag(name = "postGame", description = "Creates a new game from details provided in the request body. Admin only")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> createNewGame(@RequestBody GameDTOReg gameDTOReg) {
         Game game = mapper.toGame(gameDTOReg);
