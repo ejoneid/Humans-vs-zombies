@@ -71,6 +71,13 @@ public class Mapper {
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
+    public Mission toMissionUpdate(MissionDTOReg missionDTO, long gameId, Long missionID) {
+        //Gets the game form the database and uses the infor from the DTO to create the mission
+        Game game = gameService.getSpecificGame(gameId);
+        return new Mission(missionID,missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
+                missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
+    }
+
 
     /**
      * Method for mapping DTO for user
