@@ -28,8 +28,7 @@ export class AuthButtonComponent implements OnInit {
             .then(res => {
               res.subscribe(
                 data => {
-                  console.log(data)
-                  this.players = data;
+                  this.players = data.players;
                   this.playersChange.emit(this.players);
                 }, //If the user is found
                 err => {
