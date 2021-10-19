@@ -11,7 +11,6 @@ import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.dto.squad.*;
-import no.noroff.hvz.dto.user.AppUserDTO;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -237,7 +236,7 @@ public class Mapper {
     public PlayerDTOFull toPlayerDTOFull(Player player) {
         String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
         String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        AppUserDTO userDTO = toAppUserDTOReg(player.getUser());
+        AppUserDTOFull userDTO = toAppUserDTOFull(player.getUser());
         return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
                userDTO ,killsUrl,messagesUrl);
     }
