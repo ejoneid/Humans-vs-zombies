@@ -46,6 +46,18 @@ public class Mission {
         this.game = game;
     }
 
+    public Mission(Long id, String name, boolean isHuman, String description, Date startTime, Date endTime, String lat, String lng, Game game) {
+        this.id = id;
+        this.name = name;
+        this.isHuman = isHuman;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.lat = lat;
+        this.lng = lng;
+        this.game = game;
+    }
+
     public Mission(){}
 
     public Long getId() {
