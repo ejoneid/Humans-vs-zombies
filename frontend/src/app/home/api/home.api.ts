@@ -15,7 +15,7 @@ export class HomeAPI {
     return this.http.get<any>(baseURL+"api/game");
   }
   public async checkUser() {
-    return this.http.get<any>(baseURL + "api/user");
+    return this.http.get<any>(baseURL + "api/user/login");
   }
   public async createUser(user: any) {
     return this.http.post<any>(baseURL + "api/user", user);

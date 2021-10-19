@@ -19,6 +19,8 @@ export class ActiveGameComponent implements OnInit {
   public gameStatus: String = "";
   @Input()
   public gameId: number = 0;
+  @Input()
+  public playerId: number = 0;
 
   constructor(private readonly router: Router, public auth: AuthService) { }
 
