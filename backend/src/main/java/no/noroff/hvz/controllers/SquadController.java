@@ -2,10 +2,7 @@ package no.noroff.hvz.controllers;
 
 import no.noroff.hvz.dto.message.MessageDTO;
 import no.noroff.hvz.dto.message.MessageDTOreg;
-import no.noroff.hvz.dto.squad.SquadCheckInDTO;
-import no.noroff.hvz.dto.squad.SquadDTO;
-import no.noroff.hvz.dto.squad.SquadDTOUpdate;
-import no.noroff.hvz.dto.squad.SquadMemberFromDTO;
+import no.noroff.hvz.dto.squad.*;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.MissingPermissionsException;
 import no.noroff.hvz.exceptions.MissingPlayerException;
@@ -65,13 +62,14 @@ public class SquadController {
     }
 
     @PostMapping
-    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody Squad squad,
+    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody SquadJoinDTO squad,
                                                    @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Squad createdSquad;
 
         if (SecurityUtils.isAdmin(principal.getTokenValue())) {
-            createdSquad = squadService.createNewSquad(gameID, squad);
+            createdSquad = squadService.createNewSquad(gameID, mapper.joinToSquad(squad));
+            createdSquad.setMembers(new HashSet<>());
         }
         else {
             Player player;
@@ -81,7 +79,8 @@ public class SquadController {
             } catch (MissingPlayerException e) {
                 throw new MissingPermissionsException("User is not a player in this game");
             }
-            createdSquad = squadService.createNewSquad(gameID, squad);
+            createdSquad = squadService.createNewSquad(gameID, mapper.joinToSquad(squad));
+            createdSquad.setHuman(player.isHuman());
             SquadMember member = new SquadMember();
             member.setPlayer(player);
             squadService.joinSquad(gameID, createdSquad.getId(), member);
