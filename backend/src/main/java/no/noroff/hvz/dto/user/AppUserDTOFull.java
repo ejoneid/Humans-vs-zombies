@@ -6,24 +6,24 @@ import no.noroff.hvz.models.Player;
 import java.util.Set;
 
 public class AppUserDTOFull {
-    private Long id;
+    private String openID;
     private String firstName;
     private String lastName;
     private Set<PlayerDTOFull> players;
 
-    public AppUserDTOFull(Long id, String firstName, String lastName, Set<PlayerDTOFull> players) {
-        this.id = id;
+    public AppUserDTOFull(String openID, String firstName, String lastName, Set<PlayerDTOFull> players) {
+        this.openID = openID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.players = players;
     }
 
-    public Long getId() {
-        return id;
+    public String getOpenID() {
+        return openID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOpenID(String openID) {
+        this.openID = openID;
     }
 
     public String getFirstName() {
