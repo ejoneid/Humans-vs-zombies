@@ -2,6 +2,7 @@ package no.noroff.hvz.services;
 
 import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.MissingPlayerException;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
@@ -46,12 +47,10 @@ public class AppUserService {
      * @param user
      * @return The wanted player object
      */
-    public Player getPlayerByGameAndUser(Long gameId, AppUser user) {
-        Player player = null;
-        Game game = gameRepository.getById(gameId);
-        if(playerRepository.existsByGameAndUser(game,user)) {
-            player = playerRepository.getPlayerByGameAndUser(game,user);
-        }
+    public Player getPlayerByGameAndUser(Long gameId, AppUser user) throws MissingPlayerException {
+        Game game = gameRepository.findById(gameId).get();
+        if(!playerRepository.existsByGameAndUser(game,user)) throw new MissingPlayerException();
+        Player player = playerRepository.getPlayerByGameAndUser(game,user);
         return player;
     }
 

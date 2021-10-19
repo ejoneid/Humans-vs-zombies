@@ -218,7 +218,7 @@ public class Mapper {
      */
     public PlayerDTOStandard toPlayerDTOStandard(Player player) {
         String name = player.getUser().getFirstName() + " " + player.getUser().getLastName();
-        return new PlayerDTOStandard(player.getId(),player.isHuman(), player.getBiteCode(), name);
+        return new PlayerDTOStandard(player.getId(), player.isHuman(), player.getBiteCode(), name);
     }
 
     /**

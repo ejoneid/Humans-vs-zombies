@@ -142,19 +142,9 @@ public class PlayerController {
     @DeleteMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
-
-        HttpStatus status;
         Player deletedPlayer = playerService.deletePlayer(gameID, playerID);
-        PlayerDTO playerDTO = null;
-        if(deletedPlayer.getId() == null) {
-            status = HttpStatus.NOT_FOUND;
-
-        }
-        else {
-            status = HttpStatus.OK;
-            playerDTO = mapper.toPlayerDTOFull(deletedPlayer);
-        }
-
+        HttpStatus status = HttpStatus.OK;
+        PlayerDTO playerDTO = mapper.toPlayerDTOFull(deletedPlayer);
         return new ResponseEntity<>(playerDTO, status);
     }
 }
