@@ -56,7 +56,7 @@ export class GameInfoAPI {
     return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/join", {playerID: playerID})
   }
   public async createSquad(gameID: number, squadName: string) {
-    return this.http.post(baseURL+"api/game/"+gameID+"/squad", {squadName: squadName})
+    return this.http.post(baseURL+"api/game/"+gameID+"/squad", {name: squadName})
   }
   public async createKill(gameID: number, kill: KillOutput): Promise<Observable<any>> {
     return await this.http.post<any>(baseURL + "api/game/" + gameID + "/kill/", kill);

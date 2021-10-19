@@ -81,6 +81,7 @@ public class SquadController {
             }
             createdSquad = squadService.createNewSquad(gameID, mapper.joinToSquad(squad));
             createdSquad.setHuman(player.isHuman());
+            createdSquad.setMembers(new HashSet<>());
             SquadMember member = new SquadMember();
             member.setPlayer(player);
             squadService.joinSquad(gameID, createdSquad.getId(), member);
