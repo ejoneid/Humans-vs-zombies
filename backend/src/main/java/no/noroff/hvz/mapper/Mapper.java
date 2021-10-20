@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -324,10 +325,10 @@ public class Mapper {
      * @param squadCheckInDTO DTO with new contents
      * @return SquadCheckIn
      */
-    public SquadCheckIn toSquadCheckIn(SquadCheckInDTO squadCheckInDTO, Long gameID) {
-        Player player = playerService.getSpecificPlayer(gameID,squadCheckInDTO.getId());
+    public SquadCheckIn toSquadCheckIn(SquadCheckInDTOReg squadCheckInDTO, Long gameID) {
+        Player player = playerService.getSpecificPlayer(gameID,squadCheckInDTO.getPlayerID());
         SquadMember squadMember = squadService.getSquadMemberByPlayer(player);
-        return new SquadCheckIn(squadCheckInDTO.getId(), squadCheckInDTO.getTime(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
+        return new SquadCheckIn( new Date(), squadCheckInDTO.getLat(), squadCheckInDTO.getLng(), squadMember);
     }
 
     /**

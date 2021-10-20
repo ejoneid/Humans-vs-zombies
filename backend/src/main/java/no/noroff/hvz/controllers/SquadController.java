@@ -156,11 +156,16 @@ public class SquadController {
     @Tag(name = "createSquadChat", description = "Method for creating a new message in the squad chat. Players must be part of the squad and the correct faction.")
     public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-        //TODO admin får lov å poste uteen å være med i squad, players må være medlem og riktig faction
-        try {
-            appUserService.getPlayerByGameAndUser(gameID, appUser);
-        } catch (NoSuchElementException e) {
-            throw new MissingPermissionsException("User is not a member of this squad.");
+        if(!SecurityUtils.isAdmin(principal.getTokenValue())) {
+            try {
+                Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+                Squad squad= squadService.getSpecificSquad(gameID, squadID);
+                if(player.isHuman() != squad.isHuman() || !squadService.isMemberOfSquad(squad,player)) {
+                    throw new MissingPermissionsException("Player is not allowed to post messages in this squad");
+                }
+            } catch (NoSuchElementException e) {
+                throw new MissingPermissionsException("User is not a member of this squad.");
+            }
         }
         Message chat = squadService.createSquadChat(gameID, squadID, appUser, mapper.toMessage(message));
         status = HttpStatus.CREATED;
@@ -199,13 +204,14 @@ public class SquadController {
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquadCheckIn", description = "Method for creating a squadCheckIn for a squad in a game. User must be part of the squad and the correct faction.")
     public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                              @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+                                                              @RequestBody SquadCheckInDTOReg checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         SquadCheckInDTO addedCheckInDTO;
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
         Squad squad= squadService.getSpecificSquad(gameID, squadID);
-        //check if player and squad is same faction
-        if(player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) {
+        //check if player and squad is same faction or admin
+        if((player.isHuman() == squad.isHuman() && squadService.isMemberOfSquad(squad,player)) ||
+                SecurityUtils.isAdmin(principal.getTokenValue())) {
             SquadCheckIn addedCheckIn = squadService.createSquadCheckIn(gameID, squadID, mapper.toSquadCheckIn(checkInDTO, gameID));
             status = HttpStatus.OK;
             addedCheckInDTO = mapper.toSquadCheckInDTO(addedCheckIn);

@@ -130,7 +130,7 @@ public class SquadService {
     }
 
     public List<SquadCheckIn> getSquadCheckIn(Long gameID, Long squadID) {
-        List<SquadCheckIn> checkins = null;
+        List<SquadCheckIn> checkins = new ArrayList<>();
         if(gameRepository.existsById(gameID) && squadRepository.existsById(squadID)) {
             Squad squad = squadRepository.getById(squadID);
             Set<SquadMember> members = squad.getMembers();

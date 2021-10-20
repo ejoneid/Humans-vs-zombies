@@ -26,8 +26,7 @@ public class SquadCheckIn {
     public SquadCheckIn() {
     }
 
-    public SquadCheckIn(Long id, Date time, String lat, String lng, SquadMember member) {
-        this.id = id;
+    public SquadCheckIn( Date time, String lat, String lng, SquadMember member) {
         this.time = time;
         this.lat = lat;
         this.lng = lng;
