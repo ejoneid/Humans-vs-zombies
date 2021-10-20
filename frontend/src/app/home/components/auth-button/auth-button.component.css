@@ -7,19 +7,36 @@
   align-self: center;
   margin-left: 15%;
 }
-#infoContainer {
+.infoContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-#name {
+.name {
   color: #00FF00;
 }
-#buttonContainer {
+.buttonContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.normalGreyButton {
-  font-size: 150%;
+#normalButton {
+   font-size: 150%;
+ }
+
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#mobileText {
+  height: 10px;
+}
+#authContainerMobile {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 70%;
+  align-self: center;
+  margin-left: 15%;
 }

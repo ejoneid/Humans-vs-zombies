@@ -19,6 +19,8 @@ export class AuthButtonComponent implements OnInit {
   players!: UserPlayer[];
   @Output()
   playersChange = new EventEmitter<UserPlayer[]>();
+  @Input()
+  public isMobile!: boolean;
 
   ngOnInit(): void {
     this.auth.idTokenClaims$.subscribe((token) => {

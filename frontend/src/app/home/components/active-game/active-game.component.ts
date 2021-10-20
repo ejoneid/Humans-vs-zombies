@@ -23,6 +23,8 @@ export class ActiveGameComponent implements OnChanges {
   public gameId: number = 0;
   @Input()
   public activePlayers: UserPlayer[] | null = null;
+  @Input()
+  public isMobile!: boolean;
 
   public playerID: number | null = null;
 

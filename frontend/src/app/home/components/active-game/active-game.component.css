@@ -43,26 +43,44 @@
   display: flex;
   justify-content: space-around;
 }
-#status {
+.status {
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusOpen {
+.statusOpen {
   color: #00FF00;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusClosed {
+.statusClosed {
   color: #B2BBBD;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusFinished {
+.statusFinished {
   color: red;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
+}
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#mobileName {
+  line-height: 40px;
+  margin: 0;
+  align-self: center;
+}
+#mobileBackground {
+  width: fit-content;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+#mobileButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 2%;
 }
