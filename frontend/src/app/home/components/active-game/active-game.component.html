@@ -1,19 +1,40 @@
-<section class="blackBackground">
+<section class="blackBackground" *ngIf="!isMobile">
   <h2 id="name">{{gameName}}</h2>
-  <!--TODO: Add check to see if user is admin or not-->
-  <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)">Game Info</button>
-  <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button>
+  <section id="buttonContainer" *ngIf="auth.user$ | async as user">
+    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete'">Game Info</button>
+    <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button><!--TODO: Add check to see if user is admin or not-->
+  </section>
 
   <section class="infoContainer">
-    <div class="timeContainer">
-      <h3 class="time">Game Start: {{gameStart}}</h3>
-      <h3 class="time">Game End: &nbsp; &nbsp;{{gameEnd}}</h3>
-    </div>
     <div class="statusContainer">
-      <h3 id="status">Status: &nbsp;</h3>
-      <h3 id="statusOpen" *ngIf="gameStatus == 'Open'">Open</h3>
-      <h3 id="statusClosed" *ngIf="gameStatus == 'Closed'">Ongoing</h3>
-      <h3 id="statusFinished" *ngIf="gameStatus == 'Finished'">Finished</h3>
+      <h3 class="status">Status: &nbsp;</h3>
+      <h3 class="statusOpen" *ngIf="gameStatus == 'Registration'">Can register</h3>
+      <h3 class="statusClosed" *ngIf="gameStatus == 'Closed'">In progress</h3>
+      <h3 class="statusFinished" *ngIf="gameStatus == 'Complete'">Finished</h3>
+    </div>
+    <div class="joinedContainer" *ngIf="playerID != null">
+      <h4 class="joined">Joined</h4>
+    </div>
+  </section>
+</section>
+
+<!-- ************************************************  MOBILE VIEW  ************************************************ -->
+<section class="blackBackground" id="mobileBackground" *ngIf="isMobile">
+  <h4 id="mobileName">{{gameName}}</h4>
+  <section id="mobileButtonContainer" *ngIf="auth.user$ | async as user">
+    <button class="normalGreyButtonMobile" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete'">Game Info</button>
+    <button class="normalGreyButtonMobile" (click)="toGameInfoAdmin(gameId)">Manage Game</button><!--TODO: Add check to see if user is admin or not-->
+  </section>
+
+  <section class="infoContainer">
+    <div class="statusContainer" *ngIf="playerID == null">
+      <h5 class="status">Status: &nbsp;</h5>
+      <h5 class="statusOpen" *ngIf="gameStatus == 'Registration'">Can register</h5>
+      <h5 class="statusClosed" *ngIf="gameStatus == 'Closed'">In progress</h5>
+      <h5 class="statusFinished" *ngIf="gameStatus == 'Complete'">Finished</h5>
+    </div>
+    <div class="joinedContainer" *ngIf="playerID != null">
+      <h5 class="joined">Joined</h5>
     </div>
   </section>
 </section>

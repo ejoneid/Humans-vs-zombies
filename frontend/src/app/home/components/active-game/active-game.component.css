@@ -2,6 +2,11 @@
   display: flex;
   justify-content: space-between;
 }
+#buttonContainer {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2%;
+}
 #name {
   line-height: 40px;
   margin: 0;
@@ -16,6 +21,16 @@
   justify-content: space-evenly;
 }
 .time {
+  line-height: 18px;
+  margin: 0;
+}
+.joinedContainer {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+}
+.joined {
+  color: #00FF00;
   line-height: 20px;
   margin: 0;
 }
@@ -28,26 +43,44 @@
   display: flex;
   justify-content: space-around;
 }
-#status {
+.status {
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusOpen {
+.statusOpen {
   color: #00FF00;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusClosed {
-  color: blue;
+.statusClosed {
+  color: #B2BBBD;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
 }
-#statusFinished {
+.statusFinished {
   color: red;
   align-self: flex-end;
   line-height: 20px;
   margin: 0;
+}
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#mobileName {
+  line-height: 40px;
+  margin: 0;
+  align-self: center;
+}
+#mobileBackground {
+  width: fit-content;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+#mobileButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 2%;
 }

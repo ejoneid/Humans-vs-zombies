@@ -1,17 +1,15 @@
 <body>
-<main class="homePageContainer">
+<main class="homePageContainer" *ngIf="!isMobile">
   <section class="loginSection">
-    <section class="blackBackground" id="authWindow">
-      <h1>Place Authentication Here :)</h1>
-      <app-auth-button [(players)]="players"></app-auth-button>
-    </section>
+    <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
+    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSection">
-    <section id="titleSection">
-      <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
-      <button class="normalGreyButton" (click)="createGame()">New Game</button>
+    <section class="titleSection">
+      <h2 class="activeGamesTitle">Active Games:</h2>
+      <button class="normalGreyButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
     </section>
-    <ul class="activeGameList">
+    <ul id="activeGameList">
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"
                        [gameName]="game.name"
@@ -19,6 +17,34 @@
                        [gameEnd]="'31.10'"
                        [gameStatus]="game.gameState"
                        [activePlayers]="players"
+                       [isMobile]="isMobile"
+                       class="activeGameElement"
+      ></app-active-game>
+    </ul>
+  </section>
+</main>
+
+
+<!-- ************************************************  MOBILE VIEW  ************************************************ -->
+<main class="homePageContainerMobile" *ngIf="isMobile">
+  <section class="loginSectionMobile">
+    <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
+    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
+  </section>
+  <section class="activeGamesSectionMobile">
+    <section class="titleSection">
+      <h2 class="activeGamesTitle">Active Games:</h2>
+      <button class="normalGreyButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
+    </section>
+    <ul id="activeGameListMobile">
+      <app-active-game *ngFor="let game of games"
+                       [gameId]="game.id"
+                       [gameName]="game.name"
+                       [gameStart]="'05.10'"
+                       [gameEnd]="'31.10'"
+                       [gameStatus]="game.gameState"
+                       [activePlayers]="players"
+                       [isMobile]="isMobile"
                        class="activeGameElement"
       ></app-active-game>
     </ul>

@@ -17,7 +17,10 @@ export class HomePage implements OnInit {
 
   public players: UserPlayer[] = [];
 
+  public isMobile: boolean;
+
   constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
+    this.isMobile = window.innerWidth < 768;
   }
 
   ngOnInit(): void {

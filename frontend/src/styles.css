@@ -29,6 +29,23 @@ body {
   align-items: center;
   color: #FEA520;
 }
+.normalGreyButtonMobile {
+  /* Button Background */
+  background: #272D2D;
+  border: 2px solid #B2BBBD;
+  box-sizing: border-box;
+  padding: 5px;
+  height: fit-content;
+  min-width: fit-content;
+  /* Button Text */
+  font-family: Gemunu Libre, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 89%;
+  align-items: center;
+  color: #FEA520;
+}
 .greyBackground {
   border: 2px solid #FEA520;
   background: #272D2D;
