@@ -50,7 +50,7 @@ public class AppUserService {
      */
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) throws MissingPlayerException {
         Game game = gameRepository.findById(gameId).get();
-        if(!playerRepository.existsByGameAndUser(game,user)) throw new MissingPlayerException();
+        if(!playerRepository.existsByGameAndUser(game,user)) throw new MissingPlayerException("Player not found");
         return playerRepository.getPlayerByGameAndUser(game,user);
     }
 
@@ -61,7 +61,7 @@ public class AppUserService {
      * @throws AppUserAlreadyExistException when the user already exists
      */
     public AppUser createUser(AppUser addedUser) throws AppUserAlreadyExistException {
-        if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException();
+        if (appUserRepository.existsAppUserByOpenId(addedUser.getOpenId())) throw new AppUserAlreadyExistException("User already exists");
         addedUser.setPlayers(new HashSet<>());
         return appUserRepository.save(addedUser);
     }
