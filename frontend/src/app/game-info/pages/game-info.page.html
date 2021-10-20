@@ -4,7 +4,7 @@
   (joinGame)="registerUser()"
   [playerHasJoined]="game.player_id != null"
 ></app-game-title>
-<main class="gameInfoPageContainer">
+<main id="gameInfoPageContainer" *ngIf="!isMobile">
   <app-game-description id="gameDescriptionElement"
                         [gameDescription]="game.description"
   ></app-game-description>
@@ -14,7 +14,7 @@
                (joinThis)="joinSquad($event)"
                (createThis)="createSquad($event)"
     ></app-squad>
-    <app-map id="map"
+    <app-map class="map"
              [mapInfo]="game.map_info"
              [kills]="game.kills"
              [missions]="game.missions"
@@ -32,7 +32,46 @@
       (updateKills)="updateKills()"
       [isHuman]="game.player_is_human"
     ></app-bite-code>
-    <app-chat id="chat"
+    <app-chat class="chat"
+              [chatMessages]="game.messages"
+              [playerIsHuman]="game.player_is_human"
+              [playerHasSquad]="game.squad_info != null"
+              (globalChat)="loadGlobalChat()"
+              (factionChat)="loadFactionChat()"
+              (squadChat)="loadSquadChat()"
+              (sendChat)="sendChatMessage($event)"
+    ></app-chat>
+  </section>
+</main>
+<main id="gameInfoPageContainerMobile" *ngIf="isMobile">
+  <app-game-description
+                        [gameDescription]="game.description"
+  ></app-game-description>
+  <section class="componentContainer">
+    <app-squad [squad]="game.squad_info"
+               [allSquads]="this.allSquads"
+               (joinThis)="joinSquad($event)"
+               (createThis)="createSquad($event)"
+    ></app-squad>
+    <app-map class="map"
+             [mapInfo]="game.map_info"
+             [kills]="game.kills"
+             [missions]="game.missions"
+             [locationRequested]="locationRequested"
+             (currentLocation)="locationFound($event)"
+    ></app-map>
+  </section>
+  <section class="componentContainer">
+    <app-bite-code
+      [biteCode]="game.bite_code"
+      (requestLocation)="getLocation()"
+      [locationOfKill]="biteLocation"
+      [playerID]="game.player_id"
+      [gameID]="game.id"
+      (updateKills)="updateKills()"
+      [isHuman]="game.player_is_human"
+    ></app-bite-code>
+    <app-chat class="chat"
               [chatMessages]="game.messages"
               [playerIsHuman]="game.player_is_human"
               [playerHasSquad]="game.squad_info != null"

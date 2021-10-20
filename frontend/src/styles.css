@@ -24,7 +24,7 @@ body {
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 120%;
   line-height: 89%;
   align-items: center;
   color: #FEA520;
@@ -41,7 +41,7 @@ body {
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 90%;
   line-height: 89%;
   align-items: center;
   color: #FEA520;
