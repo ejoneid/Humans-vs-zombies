@@ -5,6 +5,7 @@
 .gameInfoPageContainer {
   display: flex;
   justify-content: space-evenly;
+  height: 85%;
 }
 #chat {
   baseline-shift: unset;

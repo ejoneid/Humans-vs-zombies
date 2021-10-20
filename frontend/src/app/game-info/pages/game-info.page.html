@@ -29,7 +29,8 @@
       [playerID]="game.player_id"
       [gameID]="game.id"
       (updateKills)="updateKills()"
-    ><!--[isHuman]="game.player_is_human"--></app-bite-code>
+      [isHuman]="game.player_is_human"
+    ></app-bite-code>
     <app-chat id="chat"
               [chatMessages]="game.messages"
               [playerIsHuman]="game.player_is_human"
