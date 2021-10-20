@@ -41,6 +41,14 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
             uri: "http://localhost:8080/api/*"
           },
           {
+            httpMethod: HttpMethod.Put,
+            uri: "http://localhost:8080/api/*"
+          },
+          {
+            httpMethod: HttpMethod.Delete,
+            uri: "http://localhost:8080/api/*"
+          },
+          {
             httpMethod: HttpMethod.Get,
             uriMatcher: (url: string) => {
               if (url == "http://localhost:8080/api/game") {return false}
