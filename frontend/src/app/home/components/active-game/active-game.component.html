@@ -1,8 +1,10 @@
 <section class="blackBackground">
   <h2 id="name">{{gameName}}</h2>
   <!--TODO: Add check to see if user is admin or not-->
-  <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)">Game Info</button>
-  <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button>
+  <section id="buttonContainer" *ngIf="auth.user$ | async as user">
+    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)">Game Info</button>
+    <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button>
+  </section>
 
   <section class="infoContainer">
     <div class="timeContainer">

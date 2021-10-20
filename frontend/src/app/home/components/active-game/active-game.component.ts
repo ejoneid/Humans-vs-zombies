@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserPlayer} from "../../../models/input/user-player.model";
 import {HomeAPI} from "../../api/home.api";
+import {AuthService} from "@auth0/auth0-angular";
 
 @Component({
   selector: 'app-active-game',
@@ -25,7 +26,7 @@ export class ActiveGameComponent implements OnInit, OnChanges {
 
   public playerID: number | null = null;
 
-  constructor(private readonly router: Router, private readonly homeAPI: HomeAPI) { }
+  constructor(private readonly router: Router, private readonly homeAPI: HomeAPI, public auth: AuthService) { }
 
   ngOnInit(): void {
 
