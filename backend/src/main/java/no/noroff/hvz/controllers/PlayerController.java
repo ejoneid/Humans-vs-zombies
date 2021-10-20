@@ -1,5 +1,6 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.player.PlayerDTO;
 import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
@@ -47,10 +48,10 @@ public class PlayerController {
      */
     @GetMapping
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getAllPlayers", description = "Method for getting all players in a game. Players get limited information.")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) {
         List<PlayerDTO> playerDTOs;
         Set<Player> players = playerService.getAllPlayers(gameID);
-
         // Checks if user is admin or not
         if (SecurityUtils.isAdmin(principal.getTokenValue())) {
             playerDTOs = players.stream().map(mapper::toPlayerDTOFull).collect(Collectors.toList());
@@ -71,6 +72,7 @@ public class PlayerController {
      */
     @GetMapping("/{playerID}")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getSpecificPlayer", description = "Method for getting a specific player in a game. Players get limited information.")
     public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @AuthenticationPrincipal Jwt principal) {
         Player player = playerService.getSpecificPlayer(gameID, playerID);
         PlayerDTO playerDTO;
@@ -95,6 +97,7 @@ public class PlayerController {
      */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "createPlayer", description = "Method for a new player in a game. Admins can create players without default values.")
     public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTORegAdmin> player,
                                                       @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
@@ -110,7 +113,6 @@ public class PlayerController {
             newPlayer = playerService.createNewPlayer(gameID, user);
             playerDTO = mapper.toPlayerDTOStandard(newPlayer);
         }
-
         status = HttpStatus.CREATED;
         return new ResponseEntity<>(playerDTO,status);
     }
@@ -124,6 +126,7 @@ public class PlayerController {
      */
     @PutMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "updatePlayer", description = "Method for updating a player in a game. Admin only.")
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
                                                   @RequestBody PlayerDTOUpdate playerDTO) {
         HttpStatus status;
@@ -141,6 +144,7 @@ public class PlayerController {
      */
     @DeleteMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "deletePlayer", description = "Method for deleting a player in a game. Admin only.")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
         Player deletedPlayer = playerService.deletePlayer(gameID, playerID);
         HttpStatus status = HttpStatus.OK;

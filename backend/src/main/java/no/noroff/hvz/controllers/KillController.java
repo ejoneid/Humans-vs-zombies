@@ -1,5 +1,6 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.kill.KillDTO;
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -35,6 +36,7 @@ public class KillController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getAllKills", description = "Method for getting all kills in a game.")
     public ResponseEntity<List<KillDTO>> getAllKills(@PathVariable Long gameID, @RequestParam(required = false) Long killerID) {
         List<Kill> kills;
         if (killerID != null) kills = killerService.getAllKills(gameID, killerID);
@@ -46,6 +48,7 @@ public class KillController {
 
     @GetMapping("/{killID}")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getSpecificKill", description = "Method for getting a specific kill in a game.")
     public ResponseEntity<KillDTO> getSpecificKill(@PathVariable Long gameID, @PathVariable Long killID) {
         Kill kill = killerService.getSpecificKill(gameID, killID);
         HttpStatus status = HttpStatus.OK;
@@ -54,6 +57,7 @@ public class KillController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "createKill", description = "Method for creating a new kill in a game.")
     public ResponseEntity<KillDTO> createNewKill(@PathVariable Long gameID, @RequestBody KillDTOReg kill) throws InvalidBiteCodeException {
         Kill addedKill = killerService.createNewKill(gameID, mapper.regKillDTO(kill,gameID));
         HttpStatus status = HttpStatus.CREATED;
@@ -62,6 +66,7 @@ public class KillController {
 
     @PutMapping("/{killID}")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "updateKill", description = "Method for updating a kill in a game. Admin or the player who created the kill.")
     public ResponseEntity<KillDTO> updateKill(@PathVariable Long gameID, @PathVariable Long killID, @RequestBody KillDTOReg kill, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         Kill unchangedKill = killerService.getSpecificKill(gameID, killID);
         String userOpenId = principal.getClaimAsString("sub");
@@ -76,6 +81,7 @@ public class KillController {
 
     @DeleteMapping("/{killID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "deleteKill", description = "Method for deleting a kill in a game.")
     public ResponseEntity<KillDTO> deleteKill(@PathVariable Long gameID, @PathVariable Long killID) {
         Kill deletedKill = killerService.deleteKill(gameID, killID);
         HttpStatus status = HttpStatus.OK;
