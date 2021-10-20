@@ -1,0 +1,9 @@
+<section class="greyBackground" id="playersContainer">
+  <div id="topContainer">
+    <h1>Players:</h1>
+    <button id="newPlayerButton" class="normalGreyButton" (click)="createPlayer()">Create Player</button>
+  </div>
+  <ul id="playerContainer">
+    <app-single-player id="player" *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
+  </ul>
+</section>

@@ -5,7 +5,7 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import { MapComponent } from './components/map/map.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { GameComponent } from './components/game/game.component';
-import { PlayersComponent } from './components/player/players.component';
+import { PlayersComponent } from './components/players/players.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
