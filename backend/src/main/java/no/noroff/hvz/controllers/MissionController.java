@@ -1,12 +1,11 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.exceptions.MissingPermissionsException;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.AppUser;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
@@ -20,11 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,7 +38,11 @@ public class MissionController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<MissionDTO>> getAllMissions(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
+    @Tag(name = "getAllMissions", description = "Method for getting all missions in a game. Admin get all missions, " +
+            "players get their factions missions")
+    public ResponseEntity<List<MissionDTO>> getAllMissions(
+            @PathVariable Long gameID,
+            @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
         List<MissionDTO> missionDTOs;
         List<Mission> missions;
@@ -61,6 +60,7 @@ public class MissionController {
 
     @GetMapping("/{missionID}")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getSpecificMission", description = "Method for getting a specific mission in a game. Players can only get their factions missions.")
     public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         Mission mission = missionService.getSpecificMission(gameID,missionID);
         if(!SecurityUtils.isAdmin(principal.getTokenValue())) {
@@ -75,6 +75,7 @@ public class MissionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "createMission", description = "Method for creating a new mission in a game. Admin only")
     public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody MissionDTOReg missionDTO) {
         Mission mission = mapper.toMission(missionDTO, gameID);
         mission = missionService.createNewMission(gameID, mission);
@@ -85,6 +86,7 @@ public class MissionController {
 
     @PutMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "updateMission", description = "Method for updating a mission in a game. Admin only")
     public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTOReg missionDTO) {
         Mission mission = mapper.toMissionUpdate(missionDTO, gameID, missionID);
         Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
@@ -95,6 +97,7 @@ public class MissionController {
 
     @DeleteMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "deleteMission", description = "Method for deleting a mission in a game. Admin only")
     public ResponseEntity<MissionDTO> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
         Mission deletedMission = missionService.deleteMission(gameID, missionID);
         HttpStatus status = HttpStatus.OK;
