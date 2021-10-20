@@ -37,7 +37,6 @@ public class SquadController {
 
     private HttpStatus status;
 
-    //Todo add auth
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "getAllSquads", description = "Method for getting all squads in a game. Optional player id returns that players squad instead.")
@@ -70,14 +69,13 @@ public class SquadController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquad", description = "Method for creating a squad in a game. If created by a player, thet player is added as first member")
-    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody SquadJoinDTO squad,
+    public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody SquadDTOReg squad,
                                                    @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Squad createdSquad;
 
         if (SecurityUtils.isAdmin(principal.getTokenValue())) {
-            createdSquad = squadService.createNewSquad(gameID, mapper.joinToSquad(squad));
-            createdSquad.setMembers(new HashSet<>());
+            createdSquad = squadService.createNewSquad(gameID, mapper.toSquad(squad));
         }
         else {
             Player player;
@@ -87,15 +85,7 @@ public class SquadController {
             } catch (MissingPlayerException e) {
                 throw new MissingPermissionsException("User is not a player in this game");
             }
-            //TODO Move logic to service
-            createdSquad = squadService.createNewSquad(gameID, mapper.joinToSquad(squad));
-            createdSquad.setHuman(player.isHuman());
-            createdSquad.setMembers(new HashSet<>());
-            SquadMember member = new SquadMember();
-            member.setPlayer(player);
-            squadService.joinSquad(gameID, createdSquad.getId(), member);
-            //Gets the updated squad with the new member
-            createdSquad = squadService.getSpecificSquad(gameID,member.getSquad().getId());
+            createdSquad = squadService.createNewSquad(gameID, mapper.toSquad(squad), player);
         }
 
         status = HttpStatus.CREATED;

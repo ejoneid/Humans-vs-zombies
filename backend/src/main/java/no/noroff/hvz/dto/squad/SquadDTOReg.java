@@ -1,8 +1,9 @@
 package no.noroff.hvz.dto.squad;
 
-public class SquadJoinDTO {
+public class SquadDTOReg {
 
     private String name;
+    private boolean human;
 
     public String getName() {
         return name;
@@ -10,5 +11,13 @@ public class SquadJoinDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isHuman() {
+        return human;
+    }
+
+    public void setHuman(Boolean human) {
+        this.human = human;
     }
 }

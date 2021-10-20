@@ -49,8 +49,6 @@ public class SquadService {
         return squads;
     }
 
-
-
     public Squad getSpecificSquad(Long gameID, Long squadID) {
         if (!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         return squadRepository.findById(squadID).get();
@@ -68,7 +66,19 @@ public class SquadService {
     public Squad createNewSquad(Long gameID, Squad squad) {
         if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         squad.setGame(gameRepository.getById(gameID));
+        return squadRepository.save(squad);
+    }
+
+    public Squad createNewSquad(Long gameID, Squad squad, Player player) {
+        if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
+        squad.setGame(gameRepository.getById(gameID));
+        SquadMember member = new SquadMember();
+        member.setPlayer(player);
+        squad.setMembers(new HashSet<>());
         Squad createdSquad = squadRepository.save(squad);
+        joinSquad(gameID, createdSquad.getId(), member);
+        //gets the squad with the member
+        createdSquad = squadRepository.getById(createdSquad.getId());
         return createdSquad;
     }
 
@@ -76,8 +86,7 @@ public class SquadService {
         if(!gameRepository.existsById(gameID)) throw new NoSuchElementException();
         if(squadMemberRepository.existsBySquad_IdAndPlayer_Id(squadID, member.getPlayer().getId())) throw new PlayerAlreadyExistException();
         member.setSquad(squadRepository.findById(squadID).get());
-        SquadMember addedSquadMember = squadMemberRepository.save(member);
-        return addedSquadMember;
+        return squadMemberRepository.save(member);
     }
 
     public Squad updateSquad(Long gameID, Long squadID, SquadDTOUpdate squadDTO) {
@@ -106,7 +115,7 @@ public class SquadService {
     }
 
     public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
-        Message chat = null;
+        Message chat;
         if(!(gameRepository.existsById(gameID) && squadRepository.existsById(squadID))) throw new NoSuchElementException();
         //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
         message.setGame(gameRepository.getById(gameID));

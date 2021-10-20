@@ -2,7 +2,7 @@ package no.noroff.hvz.dto.squad;
 
 public class SquadDTOUpdate {
     private String name;
-    private boolean isHuman;
+    private boolean human;
 
     public String getName() {
         return name;
@@ -13,10 +13,10 @@ public class SquadDTOUpdate {
     }
 
     public boolean isHuman() {
-        return isHuman;
+        return human;
     }
 
     public void setHuman(boolean human) {
-        isHuman = human;
+        this.human = human;
     }
 }
