@@ -1,21 +1,19 @@
 <section class="blackBackground">
   <h2 id="name">{{gameName}}</h2>
-  <!--TODO: Add check to see if user is admin or not-->
   <section id="buttonContainer" *ngIf="auth.user$ | async as user">
-    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)">Game Info</button>
-    <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button>
+    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete'">Game Info</button>
+    <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)">Manage Game</button><!--TODO: Add check to see if user is admin or not-->
   </section>
 
   <section class="infoContainer">
-    <div class="timeContainer">
-      <h3 class="time">Game Start: {{gameStart}}</h3>
-      <h3 class="time">Game End: &nbsp; &nbsp;{{gameEnd}}</h3>
-    </div>
     <div class="statusContainer">
       <h3 id="status">Status: &nbsp;</h3>
-      <h3 id="statusOpen" *ngIf="gameStatus == 'Open'">Open</h3>
-      <h3 id="statusClosed" *ngIf="gameStatus == 'Closed'">Ongoing</h3>
-      <h3 id="statusFinished" *ngIf="gameStatus == 'Finished'">Finished</h3>
+      <h3 id="statusOpen" *ngIf="gameStatus == 'Registration'">Can register</h3>
+      <h3 id="statusClosed" *ngIf="gameStatus == 'Closed'">In progress</h3>
+      <h3 id="statusFinished" *ngIf="gameStatus == 'Complete'">Finished</h3>
+    </div>
+    <div class="joinedContainer" *ngIf="playerID != null">
+      <h4 class="joined">Joined</h4>
     </div>
   </section>
 </section>

@@ -16,20 +16,28 @@
 }
 .activeGamesSection {
   display: flex;
-  flex-wrap: wrap;
   width: 70%;
-  justify-content: flex-end;
   flex-direction: column;
 }
+#titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  width: 100%;
+}
 .activeGamesTitle {
+  align-self: center;
+  font-size: 200%;
+  margin-left: 10%;
+}
+#newGameButton {
+  margin-right: 5%;
   align-self: center;
 }
 .activeGameList {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  width: 92%;
-  max-height: 80%;
   justify-content: space-evenly;
   row-gap: 15px;
   overflow-y: scroll;

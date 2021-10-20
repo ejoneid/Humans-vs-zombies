@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserPlayer} from "../../../models/input/user-player.model";
 import {HomeAPI} from "../../api/home.api";
@@ -9,7 +9,7 @@ import {AuthService} from "@auth0/auth0-angular";
   templateUrl: './active-game.component.html',
   styleUrls: ['./active-game.component.css']
 })
-export class ActiveGameComponent implements OnInit, OnChanges {
+export class ActiveGameComponent implements OnChanges {
 
   @Input()
   public gameName: String = "";
@@ -28,10 +28,6 @@ export class ActiveGameComponent implements OnInit, OnChanges {
 
   constructor(private readonly router: Router, private readonly homeAPI: HomeAPI, public auth: AuthService) { }
 
-  ngOnInit(): void {
-
-  }
-
   ngOnChanges() {
     if (this.activePlayers != null) {
       for (let player of this.activePlayers) {
@@ -43,7 +39,7 @@ export class ActiveGameComponent implements OnInit, OnChanges {
   }
 
   toGameInfo(gameId: number, playerId: number | null): Promise<boolean> | void {
-    if (playerId == null) {
+    if (playerId == null) { //TODO: Make this only apply when a game is actually joined. This will also fix the issues with admin access.
       this.homeAPI.createPlayer(gameId)
         .then(res => res.subscribe(
           data => { //If the response is ok, there is a player that can be used.

@@ -6,8 +6,8 @@
   </section>
   <section class="activeGamesSection">
     <section id="titleSection">
-      <h1 style="color: #B2BBBD" class="activeGamesTitle">Active Games:</h1>
-      <button class="normalGreyButton" (click)="createGame()">New Game</button>
+      <h2 class="activeGamesTitle">Active Games:</h2>
+      <button class="normalGreyButton" id="newGameButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
     </section>
     <ul class="activeGameList">
       <app-active-game *ngFor="let game of games"
