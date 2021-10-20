@@ -204,7 +204,7 @@ public class SquadController {
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquadCheckIn", description = "Method for creating a squadCheckIn for a squad in a game. User must be part of the squad and the correct faction.")
     public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
-                                                              @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+                                                              @RequestBody SquadCheckInDTOReg checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         SquadCheckInDTO addedCheckInDTO;
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);

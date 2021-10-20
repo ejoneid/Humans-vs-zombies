@@ -21,12 +21,10 @@ public class Squad {
     @JoinColumn(name = "squad_id")
     private Game game;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "squad_message_id")
+    @OneToMany(mappedBy = "squad",cascade = CascadeType.REMOVE)
     private Set<Message> messages;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "squad_id")
+    @OneToMany(mappedBy = "squad",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<SquadMember> members;
 
     public Long getId() {

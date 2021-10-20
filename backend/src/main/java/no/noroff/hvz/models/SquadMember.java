@@ -23,8 +23,7 @@ public class SquadMember {
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "member_id")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private Set<SquadCheckIn> checkIns;
 
     public Long getId() {
