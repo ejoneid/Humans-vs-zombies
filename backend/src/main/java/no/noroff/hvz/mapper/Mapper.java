@@ -273,7 +273,7 @@ public class Mapper {
      */
     public SquadMember toSquadMember (SquadMemberFromDTO dto, Long gameID) {
         SquadMember member = new SquadMember();
-        //gets the player form databse and sets the provided rank
+        //gets the player form database and sets the provided rank
         Player player = playerService.getSpecificPlayer(gameID, dto.getPlayerID());
         member.setPlayer(player);
         return member;
@@ -288,14 +288,18 @@ public class Mapper {
     public SquadDTO toSquadDTO(Squad squad) {
         List<SquadMemberDTO> members = new ArrayList<>();
         int numDead = 0;
-        for (SquadMember member: squad.getMembers()) {
-            members.add(toSquadMemberDTO(member));
-            if (!member.getPlayer().isHuman()) numDead++;
+        if(squad.getMembers() != null) {
+            for (SquadMember member: squad.getMembers()) {
+                members.add(toSquadMemberDTO(member));
+                if (!member.getPlayer().isHuman()) numDead++;
+            }
         }
         // Sort by rank
-        members = members.stream()
-                .sorted(Comparator.comparing(SquadMemberDTO::getRank))
-                .collect(Collectors.toList());
+        if(!members.isEmpty()) {
+            members = members.stream()
+                    .sorted(Comparator.comparing(SquadMemberDTO::getRank))
+                    .collect(Collectors.toList());
+        }
         return new SquadDTO(squad.getId(), squad.getName(),members, numDead);
     }
 
@@ -327,13 +331,14 @@ public class Mapper {
     }
 
     /**
-     * Method to create a squad object from the join DTO
-     * @param dto
-     * @return Squad
+     * Method to create a squad object from the reg DTO
+     * @param dto dto with content for creating the new squad
+     * @return the new Squad
      */
-    public Squad joinToSquad(SquadJoinDTO dto) {
+    public Squad toSquad(SquadDTOReg dto) {
         Squad s = new Squad();
         s.setName(dto.getName());
+        s.setHuman(dto.isHuman());
         return s;
     }
 }
