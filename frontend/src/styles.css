@@ -60,6 +60,19 @@ body {
   width: 100%;
   padding: 5px;
 }
+textarea {
+  background-color: black;
+  border: 1px solid #B2BBBD;
+  width: 100%;
+  padding: 5px;
+  color: #B2BBBD;
+}
+
+mat-dialog-container {
+  border: 2px solid #FEA520;
+  border-radius: 0 !important;
+  background-color: #272D2D !important;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
