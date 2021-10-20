@@ -1,7 +1,7 @@
 <div class="mat-dialog-background">
   <mat-card-title>
     <mat-error *ngIf="title.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
-    <textarea #title id="title" required cdkTextareaAutosize placeholder="Game name" [(ngModel)]="data.name"></textarea>
+    <textarea #title id="title" required cdkTextareaAutosize placeholder="Game name" maxlength="255" [(ngModel)]="data.name"></textarea>
   </mat-card-title>
   <mat-dialog-content>
     <textarea id="description" placeholder="Game description (Optional)" cdkTextareaAutosize [(ngModel)]="data.description"></textarea>

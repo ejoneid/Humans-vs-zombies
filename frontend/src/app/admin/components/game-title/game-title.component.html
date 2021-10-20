@@ -1,5 +1,5 @@
 <section class="gameTitleContainer">
-  <textarea id="title" [(ngModel)]="gameTitle" cdkTextareaAutosize></textarea>
+  <textarea id="title" maxlength="255" [(ngModel)]="gameTitle" cdkTextareaAutosize></textarea>
   <button class="normalGreyButton" (click)="saveChanges()">Save Changes</button>
 </section>
 

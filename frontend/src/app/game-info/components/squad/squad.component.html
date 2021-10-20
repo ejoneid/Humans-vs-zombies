@@ -1,14 +1,16 @@
 <section class="greyBackground">
   <section class="squadContainer" *ngIf="squad != null">
     <h2>{{squad.name}}</h2>
-    <h3>Members:</h3>
-    <ul>
-      <li *ngFor="let member of squad.members" id="memberItem">
-        <p>{{member.name}}</p>
-        <p *ngIf="member.state" id="living">Alive</p>
-        <p *ngIf="!member.state" id="dead">Zombie</p>
-      </li>
-    </ul>
+    <div id="memberContainer">
+      <h3>Members:</h3>
+      <ul>
+        <li *ngFor="let member of squad.members" id="memberItem">
+          <p>{{member.name}}</p>
+          <p *ngIf="member.state" id="living">Alive</p>
+          <p *ngIf="!member.state" id="dead">Zombie</p>
+        </li>
+      </ul>
+    </div>
   </section>
   <section class="noSquadContainer" *ngIf="squad == null && !this.join && !this.create">
     <h2 style="padding: 1vh">Squad</h2>
