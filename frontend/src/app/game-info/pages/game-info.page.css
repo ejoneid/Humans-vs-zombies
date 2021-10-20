@@ -8,8 +8,6 @@
   height: 85%;
 }
 #chat {
-  baseline-shift: unset;
-  align-self: baseline;
   height: 100%;
 }
 #map {

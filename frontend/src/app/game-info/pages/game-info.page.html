@@ -2,6 +2,7 @@
 <app-game-title
   [gameTitle]="game.name"
   (joinGame)="registerUser()"
+  [playerHasJoined]="game.player_id != null"
 ></app-game-title>
 <main class="gameInfoPageContainer">
   <app-game-description id="gameDescriptionElement"
@@ -29,6 +30,7 @@
       [playerID]="game.player_id"
       [gameID]="game.id"
       (updateKills)="updateKills()"
+      [isHuman]="game.player_is_human"
     ></app-bite-code>
     <app-chat id="chat"
               [chatMessages]="game.messages"

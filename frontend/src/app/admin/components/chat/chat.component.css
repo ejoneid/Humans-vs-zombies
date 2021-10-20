@@ -1,4 +1,4 @@
-.chatContainer {
+.messageContainer {
   max-height: 64vh;
   overflow-y: scroll;
   display: flex;
