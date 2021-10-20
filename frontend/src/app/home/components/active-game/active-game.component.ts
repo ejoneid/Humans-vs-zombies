@@ -45,11 +45,11 @@ export class ActiveGameComponent implements OnInit, OnChanges {
     if (playerId == null) {
       this.homeAPI.createPlayer(gameId)
         .then(res => res.subscribe(
-          data => {
+          data => { //If the response is ok, there is a player that can be used.
             playerId = data.id
             return this.router.navigate(["game/"+gameId+"/player/"+playerId]);
           },
-          () => {
+          () => { //If the user is an admin, they can't get a player, so we send them in without any player info.
             return this.router.navigate(["game/"+gameId]);
           }
         ));

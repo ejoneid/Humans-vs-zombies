@@ -30,7 +30,6 @@ export class AdminPage implements OnInit {
   //Used for the selects in the map component.
   private humanBiteCodesArray: {name: string, biteCode: string}[] = [];
   private zombieIDsArray: {name: string, id: number}[] = [];
-  public playerName: string = "Fix Me"; //TODO: FIX to use user instead
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
@@ -63,9 +62,10 @@ export class AdminPage implements OnInit {
       ));
   }
 
-  /*
-  Methods that update the objects referenced in their names.
-   */
+
+  /* ************************************************************
+   * Methods that update the objects referenced in their names. *
+   ************************************************************ */
 
   updateMissions(): void {
     const tempMissions: Mission[] = [];
@@ -130,26 +130,30 @@ export class AdminPage implements OnInit {
 
   updatePlayers(): void {
     const tempPlayers: PlayerInfoFull[] = [];
-    this.adminAPI.getAllPlayers(this.game.id)
+    this.adminAPI.getAllUsers()
       .then((response) => {
-        response.subscribe((players) => {
-          for (let player of players) {
-            if (player.human) { //Used in the map component for creating and updating kills.
-              this.humanBiteCodesArray.push({name: this.playerName, biteCode: player.biteCode});
+        response.subscribe((users) => {
+          for (let user of users) {
+            for (let player of user.players) {
+              if (player.gameID == this.gameInfo.id) {
+                if (player.human) { //Used in the map component for creating and updating kills.
+                  this.humanBiteCodesArray.push({name: user.firstName + " " + user.lastName, biteCode: player.biteCode});
+                }
+                else {
+                  this.zombieIDsArray.push({name: user.firstName + " " + user.lastName, id: player.id});
+                }
+                tempPlayers.push({ //Used in the players component as a list
+                  id: player.id,
+                  name: user.firstName + " " + user.lastName,
+                  human: player.human,
+                  biteCode: player.biteCode,
+                  kills: player.kills,
+                  messages: player.messages
+                });
+              }
+              this.gameInfo.players = tempPlayers;
             }
-            else {
-              this.zombieIDsArray.push({name: this.playerName, id: player.id});
-            }
-            tempPlayers.push({ //Used in the players component as a list
-              id: player.id,
-              name: this.playerName,
-              human: player.human,
-              biteCode: player.biteCode,
-              kills: player.kills,
-              messages: player.messages
-            });
           }
-          this.gameInfo.players = tempPlayers;
         });
       });
   }
