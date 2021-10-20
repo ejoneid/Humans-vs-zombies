@@ -110,7 +110,7 @@ class AppStartupRunner implements ApplicationRunner {
         SquadMember memberPatrick = new SquadMember();
         SquadMember memberFredrik = new SquadMember();
 
-        game1.setGameState("Open");
+        game1.setGameState("Registration");
         game1.setName("Game numero uno");
         game1.setDescription("An open game, which is numero uno");
         game1.setNw_lat("59.934319");
