@@ -39,6 +39,7 @@ public class SquadController {
 
     //Todo add auth
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "getAllSquads", description = "Method for getting all squads in a game. Optional player id returns that players squad instead.")
     public ResponseEntity<List<SquadDTO>> getAllSquads(@PathVariable Long gameID, @RequestParam Optional<String> playerId) {
         List<SquadDTO> squadDTOs = new ArrayList<>();
@@ -57,6 +58,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "getSpecificSquad", description = "Method for getting a squad in a game.")
     public ResponseEntity<SquadDTO> getSpecificSquad(@PathVariable Long gameID, @PathVariable Long squadID) {
         Squad squad = squadService.getSpecificSquad(gameID, squadID);
@@ -66,6 +68,7 @@ public class SquadController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquad", description = "Method for creating a squad in a game. If created by a player, thet player is added as first member")
     public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody SquadJoinDTO squad,
                                                    @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
@@ -101,6 +104,7 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/join")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "joinSquad", description = "Method for joining a squad in a game.")
     public ResponseEntity<SquadDTO> joinSquad(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody SquadMemberFromDTO member) {
         SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member, gameID));
@@ -130,6 +134,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/chat")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "getSquadChat", description = "Method for getting the chat in a squad in a game. Players will only get messages if they are in the squad and matches the squads faction.")
     public ResponseEntity<List<MessageDTO>> getSquadChat(@PathVariable Long gameID, @PathVariable Long squadID,
                                                          @RequestHeader String authorization, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
@@ -157,6 +162,7 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/chat")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquadChat", description = "Method for creating a new message in the squad chat. Players must be part of the squad and the correct faction.")
     public ResponseEntity<MessageDTO> createSquadChat(@PathVariable Long gameID, @PathVariable Long squadID, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
@@ -173,6 +179,7 @@ public class SquadController {
     }
 
     @GetMapping("/{squadID}/check-in")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "getAllSquadCheckIns", description = "Method for getting all squadCheckIns for a squad in a game. Players must be part of the squad and the correct faction.")
     public ResponseEntity<List<SquadCheckInDTO>> getSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
                                                                  @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
@@ -199,6 +206,7 @@ public class SquadController {
     }
 
     @PostMapping("/{squadID}/check-in")
+    @PreAuthorize("isAuthenticated()")
     @Tag(name = "createSquadCheckIn", description = "Method for creating a squadCheckIn for a squad in a game. User must be part of the squad and the correct faction.")
     public ResponseEntity<SquadCheckInDTO> createSquadCheckIn(@PathVariable Long gameID, @PathVariable Long squadID,
                                                               @RequestBody SquadCheckInDTO checkInDTO, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
