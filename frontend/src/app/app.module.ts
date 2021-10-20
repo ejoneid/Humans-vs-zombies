@@ -47,7 +47,7 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
               if (url.match("http://localhost:8080/api/.*")) {return true}
               return false;
             }
-          },        
+          },
         ],
       }
     }),
