@@ -1,6 +1,17 @@
 .gameDescriptionContainer {
   display: flex;
-  flex-wrap: wrap;
-  max-height: 85vh;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+#rules {
+  border-top: #FEA520 1px solid;
+}
+#description {
+  width: 100%;
   overflow-y: scroll;
+  height: 100%;
+}
+li {
+  margin-top: 1%;
 }

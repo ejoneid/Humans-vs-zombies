@@ -8,7 +8,6 @@ import {Kill} from "../../models/input/kill.model";
 import {Message} from "../../models/input/message.model";
 import {WebSocketAPI} from "../api/WebSocketApi.api";
 import LatLng = google.maps.LatLng;
-import {log} from "util";
 
 @Component({
   selector: 'app-game-info-page',
@@ -47,7 +46,11 @@ export class GameInfoPage implements OnInit {
 
   biteLocation: LatLng | null = null;
 
-  constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) { }
+  public isMobile: boolean;
+
+  constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnInit(): void {
     //Finding gameID and playerID from the optional params
@@ -323,7 +326,7 @@ export class GameInfoPage implements OnInit {
   joinSquad(squadID: number) {
     this.gameInfoAPI.joinSquad(this.gameInfo.id, squadID, this.gameInfo.player_id)
       .then(res => {
-        res.subscribe(msg => {
+        res.subscribe(() => {
           this.updateSquad();
         })
       });
@@ -332,7 +335,7 @@ export class GameInfoPage implements OnInit {
   createSquad(squadName: string) {
     this.gameInfoAPI.createSquad(this.gameInfo.id, squadName)
       .then(res => {
-        res.subscribe(msg => {
+        res.subscribe(() => {
           this.updateSquad();
         })
       })

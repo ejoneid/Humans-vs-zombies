@@ -1,24 +1,30 @@
 <section class="greyBackground">
-  <section class="chatHeaderContainer">
-    <h2>Chat</h2>
-    <button class="normalGreyButton" (click)="displayGlobal()">Global</button>
-    <button class="normalGreyButton" *ngIf="playerIsHuman" (click)="displayFaction()">Human</button>
-    <button class="normalGreyButton" *ngIf="!playerIsHuman" (click)="displayFaction()">Zombie</button>
-    <button class="normalGreyButton" *ngIf="playerHasSquad" (click)="displaySquad()">Squad</button>
-  </section>
-  <section class="chatContainer" #chat [scrollTop]="chat.scrollHeight">
-    <app-message #messages *ngFor="let message of chatMessages"
-                 [timeSent]="message.time"
-                 [sender]="message.sender"
-                 [message]="message.content">
-    </app-message>
-  </section>
-  <section class="sendContainer">
-    <form>
-      <input type="text" [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
-      <button type="submit" (click)="submitChat()">
+  <div class="chatContainer">
+    <section class="chatHeaderContainer">
+      <h2 id="chatTitle">Chat</h2>
+      <div id="buttonContainer">
+        <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="playerIsHuman && selectedChat !== 'HUMAN'" (click)="displayFaction()" >Human</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="!playerIsHuman && selectedChat !== 'ZOMBIE'" (click)="displayFaction()">Zombie</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="playerHasSquad && selectedChat !== 'SQUAD'" (click)="displaySquad()">Squad</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'SQUAD'">Squad</button>
+      </div>
+    </section>
+    <section class="messageContainer" #chat [scrollTop]="chat.scrollHeight">
+      <app-message *ngFor="let message of chatMessages"
+                   [timeSent]="message.time"
+                   [sender]="message.sender"
+                   [message]="message.content">
+      </app-message>
+    </section>
+    <form class="sendContainer">
+      <input id="chatInput" type="text" placeholder="Type a chat message..." [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
+      <button id="chatButton" class="normalGreyButton" type="submit" (click)="submitChat()">
         Send
       </button>
     </form>
-  </section>
+  </div>
 </section>

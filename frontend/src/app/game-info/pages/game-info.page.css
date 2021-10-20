@@ -2,16 +2,20 @@
 #gameDescriptionElement {
   width: 30%;
 }
-.gameInfoPageContainer {
+#gameInfoPageContainer {
   display: flex;
   justify-content: space-evenly;
+  height: 85%;
 }
-#chat {
-  baseline-shift: unset;
-  align-self: baseline;
+#gameInfoPageContainerMobile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.chat {
   height: 100%;
 }
-#map {
+.map {
   row-gap: 0;
   align-self: flex-end;
   width: 100%;

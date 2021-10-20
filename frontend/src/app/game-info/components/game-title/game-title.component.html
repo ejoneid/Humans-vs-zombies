@@ -1,5 +1,5 @@
 <section class="gameTitleContainer">
   <h1 id="title">{{gameTitle}}</h1>
-  <button class="normalGreyButton" (click)="joinGameClicked()">Join Game</button>
+  <button class="normalGreyButton" (click)="joinGameClicked()" *ngIf="!playerHasJoined">Join Game</button>
 </section>
 

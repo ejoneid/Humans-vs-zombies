@@ -3,13 +3,22 @@
   display: flex;
   justify-content: space-evenly;
 }
-#time {
+.dateTime {
+  font-size: 70%;
   color: #00FF00;
+  line-height: 13px;
+  margin: 0;
 }
 #sender {
   color: #FEA520;
   height: 0;
+  margin-bottom: 22%;
 }
 #message {
   width: 70%;
+}
+#messageInfo {
+  width: 24%;
+  padding-right: 1%;
+  border-right: #FEA520 1px solid;
 }

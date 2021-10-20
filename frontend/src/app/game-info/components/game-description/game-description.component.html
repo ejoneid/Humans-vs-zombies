@@ -1,19 +1,31 @@
 <section class="greyBackground">
   <section class="gameDescriptionContainer">
-    <h2>Game description:</h2>
-    <p>{{gameDescription}}</p>
-    <h2>Rules:</h2>
-    <p>Humans vs. Zombies (HvZ) is a game of tag played at schools, camps, neighborhoods, libraries, and conventions around the world. The game simulates the exponential spread of a fictional zombie infection through a population. The game is played as follows:</p>
-    <ol>
-      <li>
-        The game begins with one or more “Original Zombies” (OZ) or patient zero. The purpose of the OZ is to infect human players by tagging them. Once tagged, a human becomes a zombie for the remainder of the game.
-      </li>
-      <li>
-        Human players are able to defend themselves against the zombie horde using Nerf weapons and clean, rolled-up socks which may be thrown to stun an unsuspecting zombie.
-      </li>
-      <li>
-        Many variants of the game rules exist which introduce additional rules and activities into the game; for example, the Rhodes University variant introduces a web-based game map where markers appear showing the location of missions and supplies. The appearance of supplies forces humans to leave their safe zones and risk being turned.
-      </li>
-    </ol>
+    <div id="description" *ngIf="gameDescription.length > 0">
+      <h2>Game description:</h2>
+      <p>{{gameDescription}}</p>
+    </div>
+    <div id="rules">
+      <h2>Rules:</h2>
+      <ol>
+        <li>
+          There are two factions playing the game: Humans and Zombies.
+        </li>
+        <li>
+          The job of a human is to remain human. The goal of a zombie is to convert as many humans as possible.
+        </li>
+        <li>
+          To convert a human, a zombie has to tag them. To tag someone means to touch them.
+        </li>
+        <li>
+          Once converted, a player is a zombie for the rest of the game.
+        </li>
+        <li>
+          In order to stop a zombie from tagging them, a human can shoot them with a Nerf gun or throw a clean, rolled up sock at them. This stuns the zombie
+        </li>
+        <li>
+          A stunned zombie has to stand still for 10 seconds.
+        </li>
+      </ol>
+    </div>
   </section>
 </section>

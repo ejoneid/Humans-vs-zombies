@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -27,7 +27,7 @@ export const MY_FORMATS = {
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
   ],
 })
-export class CreateGameComponent implements OnInit {
+export class CreateGameComponent {
 
   buttonClicked = false;
   illegalDate = false;
@@ -35,9 +35,6 @@ export class CreateGameComponent implements OnInit {
     {name: "", description: null, startTime: null, endTime: null};
 
   constructor(public dialogRef: MatDialogRef<CreateGameComponent>) { }
-
-  ngOnInit(): void {
-  }
 
   closeDialog() {
     this.buttonClicked = true;
