@@ -23,6 +23,15 @@
   align-self: flex-end;
   column-gap: 2%;
 }
+.normalGreyButton {
+  font-size: 150%;
+}
+#chatTitle {
+  align-self: flex-end;
+  margin-left: 5%;
+  font-size: 200%;
+  line-height: 20%;
+}
 .sendContainer {
   display: flex;
   justify-content: space-between;
