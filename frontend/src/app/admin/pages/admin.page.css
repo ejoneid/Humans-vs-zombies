@@ -1,6 +1,7 @@
 .adminContainer {
   display: flex;
   justify-content: space-evenly;
+  height: 85%;
 }
 #map {
   row-gap: 0;
@@ -9,7 +10,17 @@
   height: 100%;
 }
 #chat {
-  baseline-shift: unset;
-  align-self: baseline;
-  height: 100%;
+  width: 100%;
+  height: 60%;
+}
+#description {
+  height: 39%;
+}
+#player {
+  width: 30%;
+}
+#gameInfoPageContainerMobile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }

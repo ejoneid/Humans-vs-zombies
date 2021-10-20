@@ -22,6 +22,7 @@ import {MatSelectModule} from "@angular/material/select";
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import {PlayerCreateComponent} from "./components/player-create/player-create.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {GameInfoModule} from "../game-info/game-info.module";
 
 @NgModule({
   declarations: [
@@ -38,20 +39,21 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     PlayerEditComponent,
     PlayerCreateComponent
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    GoogleMapsModule,
-    FormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatDatepickerModule,
-    ReactiveFormsModule,
-    MatSlideToggleModule,
-    MatCardModule,
-    MatSelectModule,
-    MatCheckboxModule
-  ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        GoogleMapsModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatDatepickerModule,
+        ReactiveFormsModule,
+        MatSlideToggleModule,
+        MatCardModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        GameInfoModule
+    ],
   entryComponents: [
     MissionEditComponent
   ]
