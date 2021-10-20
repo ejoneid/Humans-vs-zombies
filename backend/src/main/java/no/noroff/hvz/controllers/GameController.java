@@ -54,6 +54,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     @Tag(name = "getGameByID", description = "Returns a specific game.")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable Long id) throws NoSuchElementException {
 
         Game game = gameService.getSpecificGame(id);
