@@ -1,5 +1,6 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
 import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
@@ -30,15 +31,19 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
+    /**
+     * Method for getting all users. Admin only.
+     * @return List of appUser DTOs
+     */
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "getAllUsers", description = "Method for getting all users. Admin only")
     public ResponseEntity<List<AppUserDTOFull>> getAllUsers() {
         List<AppUser> users= appUserService.getAllUsers();
         List<AppUserDTOFull> userDtOs = users.stream().map(mapper::toAppUserDTOFull).collect(Collectors.toList());
         return  new ResponseEntity<>(userDtOs,HttpStatus.OK);
     }
 
-    //TODO er dette sikkerhetsproblematisk? bør vi kun sende med openId i token? trenger jo bare å hente seg selv
     /**
      * Method for getting your user
      * @param principal Auth token som inneholder openID
@@ -46,6 +51,7 @@ public class AppUserController {
      */
     @GetMapping("/log-in")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "getCurrentUser", description = "Method for getting the current user from the database. Uses auth0 token to identify user")
     public ResponseEntity<AppUserDTOFull> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
         AppUser appUser;
         // Her må det være try-catch fordi det skal returnes en annen httpstatus enn det som er vanlig for AppUserNotFoundException
@@ -67,6 +73,7 @@ public class AppUserController {
      */
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "createUser", description = "Method for creating a user in the database for the current user.")
     public ResponseEntity<AppUserDTOFull> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
