@@ -72,6 +72,7 @@ public class GameController {
     }
 
     @PutMapping("/{id}")
+    @Tag(name = "updateGame", description = "Method for updating a game. Admin only")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
     public ResponseEntity<GameDTO> updateSpecificGame(@PathVariable Long id, @RequestBody GameDTOUpdate gameDTO) {
         HttpStatus status = HttpStatus.OK;
@@ -82,6 +83,7 @@ public class GameController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
+    @Tag(name = "deleteGame", description = "Method for deleting a game. Admin only")
     public ResponseEntity<GameDTO> deleteGame(@PathVariable Long id) {
         Game deletedGame = gameService.deleteGame(id);
         HttpStatus status = HttpStatus.OK;
@@ -89,6 +91,9 @@ public class GameController {
     }
 
     @GetMapping("/{id}/chat")
+    @Tag(name = "getGameChat", description = "Method for getting chat for a game. Admins get all messages, " +
+            "players get global and faction messages. Optional playerID returns the players messages. " +
+            "Optional faction boolean returns only that factions messages")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<MessageDTO>> getGameChat(@PathVariable Long id,
                                                      @RequestHeader(required = false) Long playerID,
@@ -118,6 +123,7 @@ public class GameController {
 
     @PostMapping("/{id}/chat")
     @PreAuthorize("isAuthenticated()")
+    @Tag(name = "createMessage", description = "Method for posting a new message in game chat.")
     public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
