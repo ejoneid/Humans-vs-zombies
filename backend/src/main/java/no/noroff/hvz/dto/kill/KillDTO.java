@@ -12,14 +12,14 @@ public class KillDTO {
     private String killerName;
     private String victimName;
 
-    public KillDTO(Long id, Date timeOfDeath, String story, String lat, String lng, String killerUrl, String victimUrl) {
+    public KillDTO(Long id, Date timeOfDeath, String story, String lat, String lng, String killerName, String victimName) {
         this.id = id;
         this.timeOfDeath = timeOfDeath;
         this.story = story;
         this.lat = lat;
         this.lng = lng;
-        this.killerName = killerUrl;
-        this.victimName = victimUrl;
+        this.killerName = killerName;
+        this.victimName = victimName;
     }
 
     public Long getId() {
