@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.player;
 
+@SuppressWarnings("unused")
 public class PlayerDTOStandard implements PlayerDTO {
 
     private Long id;

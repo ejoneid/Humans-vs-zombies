@@ -48,7 +48,7 @@ public class Mapper {
 
     /**
      * Method for mapping missionDTO
-     * includes id, name, description, startime, endtime, faction, coordinates and gameID
+     * includes id, name, description, startTime, endTime, faction, coordinates and gameID
      * @param mission the mission
      * @return DTO of the mission
      */
@@ -63,14 +63,14 @@ public class Mapper {
      * @return Mission
      */
     public Mission toMission(MissionDTOReg missionDTO, long gameId) {
-        //Gets the game form the database and uses the infor from the DTO to create the mission
+        //Gets the game form the database and uses the information from the DTO to create the mission
         Game game = gameService.getSpecificGame(gameId);
         return new Mission(missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
     public Mission toMissionUpdate(MissionDTOReg missionDTO, long gameId, Long missionID) {
-        //Gets the game form the database and uses the infor from the DTO to create the mission
+        //Gets the game form the database and uses the information from the DTO to create the mission
         Game game = gameService.getSpecificGame(gameId);
         return new Mission(missionID,missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
@@ -145,7 +145,7 @@ public class Mapper {
 
     /**
      * Method for mapping from Kill til DTO
-     * Includs ID, timeOfDeath, story, coordinates and the names of killer and victim
+     * Includes ID, timeOfDeath, story, coordinates and the names of killer and victim
      * @param kill kill object
      * @return kill DTO
      */
@@ -160,11 +160,11 @@ public class Mapper {
      * Method for mapping from DTO with new content to a new kill
      * @param killDTO DTO with new content
      * @return the new kill
-     * @throws InvalidBiteCodeException if the bitecode provided in the dto does not match a player or is already dead
+     * @throws InvalidBiteCodeException if the biteCode provided in the dto does not match a player or is already dead
      */
     public Kill regKillDTO(KillDTOReg killDTO, Long gameID) throws InvalidBiteCodeException {
         Kill kill = new Kill();
-        //uses customMapper to mapp new contents onto the kill object
+        //uses customMapper to map new contents onto the kill object
         customMapper.updateKillFromDto(killDTO, kill);
         //gets the killer and victim
         Player killer = playerService.getSpecificPlayer(gameID, killDTO.getKillerID());
@@ -179,7 +179,7 @@ public class Mapper {
 
     /**
      * Method for mapping from message to DTO
-     * Includes id, mesage, time, name and the cahts the message id for
+     * Includes id, message, time, name and the chat the message is for
      * @param message original object
      * @return DTO of message
      */
@@ -202,7 +202,7 @@ public class Mapper {
 
     /**
      * Method for mapping from Player to PlayerDTO for normal users
-     * Includes name, id, status and bitecode
+     * Includes name, id, status and biteCode
      * @param player player object
      * @return DTO for normal users
      */
@@ -213,7 +213,7 @@ public class Mapper {
 
     /**
      * Method for mapping from Player to PlayerDTO for admins
-     * Includes name, id, status, patientZero bitecode, UserDTO and urls for kills and messages
+     * Includes name, id, status, patientZero biteCode, UserDTO and urls for kills and messages
      * @param player player object
      * @return DTO for admin
      */
@@ -238,7 +238,7 @@ public class Mapper {
     }
 
     /**
-     * Method for mapping from DTO to squadmember
+     * Method for mapping from DTO to squadMember
      * @param dto SquadDTO
      * @return member
      */

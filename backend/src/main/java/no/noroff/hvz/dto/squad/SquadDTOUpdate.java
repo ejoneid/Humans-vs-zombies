@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.squad;
 
+@SuppressWarnings("unused")
 public class SquadDTOUpdate {
     private String name;
     private boolean human;

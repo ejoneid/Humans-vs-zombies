@@ -85,10 +85,10 @@ public class PlayerController {
     /**
      * Method for creating a new player, different for an admin
      * @param gameID ID of game
-     * @param player Optinioal DTO with info about the new player
+     * @param player Optional DTO with info about the new player
      * @param principal Auth token
      * @return the created player
-     * @throws AppUserNotFoundException if the provided user does not exists
+     * @throws AppUserNotFoundException if the provided user do not exists
      */
     @PostMapping
     @PreAuthorize("isAuthenticated()")

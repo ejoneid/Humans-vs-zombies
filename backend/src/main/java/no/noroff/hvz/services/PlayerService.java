@@ -49,10 +49,10 @@ public class PlayerService {
     }
 
     /**
-     * Method for getting a users player in a game
+     * Method for getting a user's player in a game
      * @param gameId ID of game
      * @param user user object
-     * @return the users player in the game
+     * @return the user's player in the game
      */
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) {
         Player player = null;
@@ -64,10 +64,10 @@ public class PlayerService {
     }
 
     /**
-     * Method for getting a player from bitecode
+     * Method for getting a player from biteCode
      * @param gameId ID of game
      * @param biteCode bitecode
-     * @return the bitecodes player in the game
+     * @return the biteCodes player in the game
      */
     public Player getPlayerByGameAndBiteCode(Long gameId, String biteCode) {
         Player player = null;
@@ -96,7 +96,7 @@ public class PlayerService {
 
     /**
      * Method that creates a default player
-     * @param gameID Id of game
+     * @param gameID ID of game
      * @param user The user that creates the player
      * @return the new player
      */
@@ -109,7 +109,7 @@ public class PlayerService {
             player.setPatientZero(false);
             player.setGame(gameRepository.getById(gameID));
             String randomBiteCode = createRandomBiteCode(10);
-            // Create a random bitecode -> if the bitecode already exist creates a new one
+            // Create a random biteCode -> if the bitecode already exist creates a new one
             String finalRandomBiteCode = randomBiteCode;
             List<Player> existingBiteCode = playerRepository.findAll().stream().filter(p -> Objects.equals(p.getBiteCode(), finalRandomBiteCode)).collect(Collectors.toList());
             while (existingBiteCode.size() > 0) {
@@ -125,7 +125,7 @@ public class PlayerService {
 
 
     /**
-     * Method for creating a random bitecode
+     * Method for creating a random biteCode
      * @param len length
      * @return biteCode
      */
@@ -143,7 +143,7 @@ public class PlayerService {
      * Method for updating a player
      * @param gameID ID of game
      * @param playerID ID of player
-     * @param playerDto Player object with new info
+     * @param playerDto player object with new info
      * @return the updated player
      */
     public Player updatePlayer(Long gameID, Long playerID, PlayerDTOUpdate playerDto) {

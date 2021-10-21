@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.user;
 
+@SuppressWarnings("unused")
 public class AppUserDTOReg {
     private String firstName;
     private String lastName;
@@ -21,7 +22,6 @@ public class AppUserDTOReg {
         return lastName;
     }
 
-    @SuppressWarnings("unused")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
