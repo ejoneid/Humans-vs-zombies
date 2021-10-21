@@ -114,10 +114,11 @@ public class GameController {
             AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
             Player player = appUserService.getPlayerByGameAndUser(id, user);
             if (playerID != null && playerID.equals(player.getId())) messages = gameService.getGameChat(id, playerID);
-            else messages = gameService.getGameChat(id, player.isHuman());
+            else if (human != null) messages = gameService.getGameChat(id, player.isHuman());
+            else messages = gameService.getGameChat(id);
         }
         status = HttpStatus.OK;
-         messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
+        messageDTOs = messages.stream().map(mapper::toMessageDTO).collect(Collectors.toList());
 
         return new ResponseEntity<>(messageDTOs,status);
     }
