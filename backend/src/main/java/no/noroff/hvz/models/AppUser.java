@@ -3,6 +3,7 @@ package no.noroff.hvz.models;
 import javax.persistence.*;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @Entity
 public class AppUser {
 

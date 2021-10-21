@@ -2,16 +2,13 @@ package no.noroff.hvz.services;
 
 import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.mapper.CustomMapper;
-import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Kill;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.KillerRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class KillerService {
@@ -26,9 +23,9 @@ public class KillerService {
     private CustomMapper mapper;
 
     /**
-     * Method for getting all killsin the DB
-     * @param gameID
-     * @return Lsit of kills
+     * Method for getting all kills in the DB
+     * @param gameID id of game
+     * @return List of kills
      */
     public List<Kill> getAllKills(Long gameID) {
         if(!gameRepository.existsById(gameID)) {
@@ -39,8 +36,8 @@ public class KillerService {
 
     /**
      * Method for getting a players kills
-     * @param gameID
-     * @param killerID
+     * @param gameID id of game
+     * @param killerID id of killer
      * @return List of kills
      */
     public List<Kill> getAllKills(Long gameID, Long killerID) {
@@ -52,8 +49,8 @@ public class KillerService {
 
     /**
      * Method for getting a specific kill
-     * @param gameID
-     * @param killID
+     * @param gameID id of game
+     * @param killID id of kill
      * @return The requested kill
      */
     public Kill getSpecificKill( Long gameID, Long killID) {
@@ -63,8 +60,8 @@ public class KillerService {
 
     /**
      * Method for creating a new kill
-     * @param gameID
-     * @param kill
+     * @param gameID id of game
+     * @param kill kill to be saved in database
      * @return Yhe saved kill/error
      */
     public Kill createNewKill(Long gameID, Kill kill) {
@@ -76,9 +73,9 @@ public class KillerService {
 
     /**
      * Method for updating a kill
-     * @param gameID
-     * @param killID
-     * @param killDto
+     * @param gameID id of game
+     * @param killID id of kill
+     * @param killDto kill to be updated
      * @return The updated kill
      */
     public Kill updateKill(Long gameID, Long killID, KillDTOReg killDto) {
@@ -91,8 +88,8 @@ public class KillerService {
 
     /**
      * Method for deleting a kill
-     * @param gameID
-     * @param killID
+     * @param gameID id of game
+     * @param killID id of kill
      * @return The deleted kill
      */
     public Kill deleteKill(Long gameID, Long killID) {

@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 class AppStartupRunner implements ApplicationRunner {
@@ -61,7 +58,7 @@ class AppStartupRunner implements ApplicationRunner {
     GameService gameService;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         logger.info("Your application started with option names : {}", args.getOptionNames());
 
         AppUser user1 = new AppUser();

@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SquadMemberRepository extends JpaRepository<SquadMember, Long> {
     SquadMember getByPlayer(Player player);
-    SquadMember getSquadMemberBySquad_IdAndPlayer_Id(long squad_Id, long player_Id);
     boolean existsBySquad_IdAndPlayer_Id(long squad_Id, long player_Id);
 }

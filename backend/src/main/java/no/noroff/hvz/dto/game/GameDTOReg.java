@@ -1,6 +1,5 @@
 package no.noroff.hvz.dto.game;
 
-import javax.persistence.Column;
 
 public class GameDTOReg {
 

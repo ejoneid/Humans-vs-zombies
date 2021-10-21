@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 @Component
 public class Mapper {
 
-    private final String url = "/api/game/";
-
     @Autowired
     private PlayerService playerService;
 
@@ -79,15 +77,6 @@ public class Mapper {
     }
 
 
-    /**
-     * Method for mapping DTO for user
-     * Includes firstname and lastname
-     * @param user AppUser
-     * @return DTO
-     */
-    public AppUserDTOReg toAppUserDTOReg(AppUser user) {
-        return new AppUserDTOReg(user.getFirstName(), user.getLastName());
-    }
 
     /**
      * Method for mapping DTO for user
@@ -246,16 +235,6 @@ public class Mapper {
         player.setHuman(playerDTORegAdmin.isHuman());
         player.setPatientZero(playerDTORegAdmin.isPatientZero());
         return player;
-    }
-
-    /**
-     * Method for mapping from PlayerDTO to player
-     * @param playerDTO DTO of player
-     * @return player
-     */
-    public Player toPlayer(PlayerDTO playerDTO, Long gameID) {
-        //returns the player form the database
-        return playerService.getSpecificPlayer(gameID,playerDTO.getId());
     }
 
     /**

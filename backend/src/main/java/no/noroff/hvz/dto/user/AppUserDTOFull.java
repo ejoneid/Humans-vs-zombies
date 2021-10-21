@@ -1,8 +1,6 @@
 package no.noroff.hvz.dto.user;
 
 import no.noroff.hvz.dto.player.PlayerDTOFull;
-import no.noroff.hvz.models.Player;
-
 import java.util.Set;
 
 public class AppUserDTOFull {
@@ -18,34 +16,42 @@ public class AppUserDTOFull {
         this.players = players;
     }
 
+    @SuppressWarnings("unused")
     public String getOpenID() {
         return openID;
     }
 
+    @SuppressWarnings("unused")
     public void setOpenID(String openID) {
         this.openID = openID;
     }
 
+    @SuppressWarnings("unused")
     public String getFirstName() {
         return firstName;
     }
 
+    @SuppressWarnings("unused")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @SuppressWarnings("unused")
     public String getLastName() {
         return lastName;
     }
 
+    @SuppressWarnings("unused")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    @SuppressWarnings("unused")
     public Set<PlayerDTOFull> getPlayers() {
         return players;
     }
 
+    @SuppressWarnings("unused")
     public void setPlayers(Set<PlayerDTOFull> players) {
         this.players = players;
     }
