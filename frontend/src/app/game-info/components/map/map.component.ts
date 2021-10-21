@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -33,7 +33,6 @@ export class MapComponent implements OnInit, OnChanges {
   currentLocation = new EventEmitter<LatLng>();
 
   //Defined from ngAfterViewInit()
-  @ViewChild("gmap") gmap!: ElementRef;
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
   apiLoaded!: Observable<boolean>;
@@ -44,7 +43,10 @@ export class MapComponent implements OnInit, OnChanges {
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
+  public isMobile: boolean;
+
   constructor(private readonly httpClient: HttpClient) {
+    this.isMobile = window.innerWidth < 768;
   }
 
   //Either loads new markers or requests the user's current location
