@@ -86,4 +86,8 @@ export class AdminAPI {
   public async getSquadChat(gameID: number, squadID: number) {
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat");
   }
+  public async getPlayerChat(gameID: number, playerID: number) {
+    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/chat", {headers: header});
+  }
 }

@@ -12,6 +12,9 @@
         <select (click)="loadSquadChat($event)">
           <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
         </select>
+        <select (click)="loadPlayerChat($event)">
+          <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
+        </select>
       </div>
     </section>
     <section class="messageContainer" #chat [scrollTop]="chat.scrollHeight">

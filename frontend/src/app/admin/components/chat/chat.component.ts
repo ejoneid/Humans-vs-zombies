@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Message} from "../../../models/input/message.model";
+import {PlayerInfo} from "../../../models/input/player-info.model";
+import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 
 @Component({
   selector: 'app-chat-admin',
@@ -16,9 +18,13 @@ export class ChatComponent {
   public submitText: String = "";
 
   private selectedSquadID = 0;
+  private selectedPlayerID = 0;
 
   @Input()
   public squads = null;
+
+  @Input()
+  public players: PlayerInfoFull[] = [];
 
   constructor() { }
 
@@ -54,5 +60,12 @@ export class ChatComponent {
     this.selectedChat = "SQUAD"
     this.selectedSquadID = parseInt((event.target as HTMLSelectElement).value);
     this.squadLoad.emit(this.selectedSquadID);
+  }
+
+  @Output() playerLoad: EventEmitter<any> = new EventEmitter<any>();
+  loadPlayerChat(event: Event) {
+    this.selectedChat = "PLAYER"
+    this.selectedPlayerID = parseInt((event.target as HTMLSelectElement).value);
+    this.playerLoad.emit(this.selectedPlayerID);
   }
 }

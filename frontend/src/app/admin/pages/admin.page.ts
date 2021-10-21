@@ -254,6 +254,27 @@ export class AdminPage implements OnInit {
       });
   }
 
+  loadPlayerChat(playerID: number) {
+    this.selectedChat = "Player";
+    const tempMessages: Message[] = [];
+    this.adminAPI.getPlayerChat(this.gameInfo.id, playerID)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.loadedMessages = tempMessages;
+        })
+      });
+  }
+
   sendChatMessage(message: String) {
     if (this.selectedChat == "Global") {
       this.adminAPI.sendGlobalChat(this.gameInfo.id, message)
