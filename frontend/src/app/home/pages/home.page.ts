@@ -52,4 +52,8 @@ export class HomePage implements OnInit {
   public get games(): ActiveGame[] {
     return this.activeGames;
   }
+
+  public localError() {
+    throw Error('The app component has thrown an error!');
+  }
 }
