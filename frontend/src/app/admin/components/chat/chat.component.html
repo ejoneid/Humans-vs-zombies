@@ -1,18 +1,17 @@
 <section class="greyBackground">
   <div class="chatContainer">
     <section class="chatHeaderContainer">
-      <h2 id="chatTitle">Chat</h2>
       <div id="buttonContainer">
-        <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
-        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
-        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'HUMAN'" (click)="displayHuman()" >Human</button>
-        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
-        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
-        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
-        <select (click)="loadSquadChat($event)">
+        <button class="chatHeaderContent" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
+        <button class="chatHeaderContent" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
+        <button class="chatHeaderContent" style="color: #B2BBBD;" *ngIf="selectedChat !== 'HUMAN'" (click)="displayHuman()" >Human</button>
+        <button class="chatHeaderContent" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
+        <button class="chatHeaderContent" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
+        <button class="chatHeaderContent" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
+        <select class="chatHeaderContent" (click)="loadSquadChat($event)">
           <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
         </select>
-        <select (click)="loadPlayerChat($event)">
+        <select class="chatHeaderContent" (click)="loadPlayerChat($event)">
           <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
         </select>
       </div>
