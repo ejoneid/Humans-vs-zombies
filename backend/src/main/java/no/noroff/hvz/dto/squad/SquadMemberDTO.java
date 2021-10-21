@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.squad;
 
 import no.noroff.hvz.dto.player.PlayerDTO;
 
+@SuppressWarnings("unused")
 public class SquadMemberDTO {
 
     private PlayerDTO player;

@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.kill;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class KillDTO {
 
     private Long id;

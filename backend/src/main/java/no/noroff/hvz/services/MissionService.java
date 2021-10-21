@@ -35,7 +35,7 @@ public class MissionService {
      * Method for getting all missions for a faction in a game
      * @param gameID ID of game
      * @param isHuman true for human faction
-     * @return list of faction missions in agme
+     * @return list of faction missions in game
      */
     public List<Mission> getAllMissionsFaction(Long gameID, boolean isHuman) {
         List<Mission> missions = null;

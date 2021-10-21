@@ -116,7 +116,6 @@ public class SquadService {
     public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
         Message chat;
         if(!(gameRepository.existsById(gameID) && squadRepository.existsById(squadID))) throw new NoSuchElementException();
-        //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
         message.setGame(gameRepository.getById(gameID));
         message.setSquad(squadRepository.getById(squadID));
         message.setUser(user);

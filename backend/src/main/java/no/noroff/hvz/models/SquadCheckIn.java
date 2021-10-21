@@ -3,6 +3,7 @@ package no.noroff.hvz.models;
 import javax.persistence.*;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @Entity
 public class SquadCheckIn {
 

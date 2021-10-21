@@ -44,7 +44,7 @@ public class AppUserController {
 
     /**
      * Method for getting your user
-     * @param principal Auth token som inneholder openID
+     * @param principal Auth token with openID
      * @return the specific user DTO
      */
     @GetMapping("/log-in")
@@ -52,7 +52,7 @@ public class AppUserController {
     @Tag(name = "getCurrentUser", description = "Method for getting the current user from the database. Uses auth0 token to identify user")
     public ResponseEntity<AppUserDTOFull> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
         AppUser appUser;
-        // Her må det være try-catch fordi det skal returnes en annen httpstatus enn det som er vanlig for AppUserNotFoundException
+        // try catch because we send a different Http status code than usually with AppUserNotFoundException
         try {
             appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         } catch (AppUserNotFoundException e) {

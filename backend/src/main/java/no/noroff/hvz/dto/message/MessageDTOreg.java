@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.message;
 
+@SuppressWarnings("unused")
 public class MessageDTOreg {
 
     private String message;

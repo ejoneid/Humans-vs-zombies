@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.game;
 
+@SuppressWarnings("unused")
 public class GameDTOUpdate {
 
     private String name;
@@ -9,16 +10,6 @@ public class GameDTOUpdate {
     private String se_lat;
     private String nw_long;
     private String se_long;
-
-    public GameDTOUpdate( String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
-        this.name = name;
-        this.gameState = gameState;
-        this.description = description;
-        this.nw_lat = nw_lat;
-        this.se_lat = se_lat;
-        this.nw_long = nw_long;
-        this.se_long = se_long;
-    }
 
     public String getName() {
         return name;

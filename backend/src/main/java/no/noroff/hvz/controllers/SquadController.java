@@ -68,7 +68,7 @@ public class SquadController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "createSquad", description = "Method for creating a squad in a game. If created by a player, thet player is added as first member")
+    @Tag(name = "createSquad", description = "Method for creating a squad in a game. If created by a player, the player is added as first member")
     public ResponseEntity<SquadDTO> createNewSquad(@PathVariable Long gameID, @RequestBody SquadDTOReg squad,
                                                    @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
@@ -79,7 +79,7 @@ public class SquadController {
         }
         else {
             Player player;
-            // Denne try-catch'en må være her ettersom det ikke skal returne 404 som er standard for NoSuchElementException.
+            // Try catch is here because we do not return the usual Http status for NoSuchElementException.
             try {
                 player = appUserService.getPlayerByGameAndUser(gameID, user);
             } catch (MissingPlayerException e) {

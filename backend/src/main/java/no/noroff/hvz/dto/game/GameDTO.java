@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.game;
 
+@SuppressWarnings("unused")
 public class GameDTO {
 
     private Long id;

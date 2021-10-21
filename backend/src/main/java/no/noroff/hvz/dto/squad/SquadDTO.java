@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.squad;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class SquadDTO {
 
     private Long id;

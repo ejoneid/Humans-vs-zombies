@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.player;
 
+@SuppressWarnings("unused")
 public class PlayerDTORegAdmin {
 
     private String userID;

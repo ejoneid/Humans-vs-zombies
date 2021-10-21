@@ -4,6 +4,7 @@ import no.noroff.hvz.dto.player.PlayerDTO;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class SquadCheckInDTO {
 
     private Long id;
