@@ -333,11 +333,21 @@ export class GameInfoPage implements OnInit {
   }
 
   createSquad(squadName: string) {
-    this.gameInfoAPI.createSquad(this.gameInfo.id, squadName)
+    this.gameInfoAPI.createSquad(this.gameInfo.id, squadName, this.gameInfo.player_is_human)
       .then(res => {
         res.subscribe(() => {
           this.updateSquad();
         })
       })
+  }
+
+  leaveSquad() {
+    if (this.gameInfo.squad_info) {
+      this.gameInfoAPI.leaveSquad(this.gameInfo.id, this.gameInfo.squad_info!.id)
+        .then(res => {
+          res.subscribe()
+        });
+      this.gameInfo.squad_info = null;
+    }
   }
 }

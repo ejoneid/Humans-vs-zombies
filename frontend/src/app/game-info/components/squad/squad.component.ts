@@ -41,5 +41,11 @@ export class SquadComponent implements OnInit {
     }
   }
 
+  @Output() leaveThis: EventEmitter<any> = new EventEmitter<any>();
+  leaveSquad() {
+    if (this.squad != null) {
+      this.leaveThis.emit();
+    }
+  }
 }
 
