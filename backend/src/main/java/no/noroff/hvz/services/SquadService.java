@@ -3,6 +3,7 @@ package no.noroff.hvz.services;
 import no.noroff.hvz.dto.squad.SquadDTOUpdate;
 import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.MissingPermissionsException;
 import no.noroff.hvz.exceptions.PlayerAlreadyExistException;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.*;
@@ -162,11 +163,15 @@ public class SquadService {
         return squadMemberRepository.getByPlayer(player);
     }
 
-    public SquadMember leaveSquad(Long gameID, Long squadID, Player player) {
+    public SquadMember leaveSquad(Long gameID, Long squadID, Player player) throws MissingPermissionsException {
         if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
             throw  new NoSuchElementException("No such player in the squad");
         }
         SquadMember leaver = getSquadMemberByPlayer(player);
+        if(leaver.getSquad().getId() == squadID) {
+            throw new MissingPermissionsException("Cannot leave a squad you are not a member in");
+        }
+        squadMemberRepository.delete(leaver);
         return leaver;
     }
 }

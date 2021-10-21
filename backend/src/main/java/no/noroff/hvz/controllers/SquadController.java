@@ -224,10 +224,11 @@ public class SquadController {
     @DeleteMapping("/{squadID}/leave")
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "leaveSquad", description = "Method for leaving a squad in a game.")
-    public ResponseEntity<SquadMemberDTO> leaveSquad(@PathVariable Long gameID, @PathVariable Long squadID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
+    public ResponseEntity<SquadMemberDTO> leaveSquad(@PathVariable Long gameID, @PathVariable Long squadID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
-
-        return new ResponseEntity<>(null, status);
+        SquadMember leaver = squadService.leaveSquad(gameID,squadID,player);
+        SquadMemberDTO squadMemberDTO = mapper.toSquadMemberDTO(leaver);
+        return new ResponseEntity<>(squadMemberDTO, status);
     }
 }
