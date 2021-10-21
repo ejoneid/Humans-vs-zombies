@@ -201,6 +201,19 @@ public class Mapper {
     }
 
     /**
+     * Method for mapping from DTO with new contents to admin message
+     * @param dto DTO with new content
+     * @return new message
+     */
+    public Message toAdminMessage(MessageDTOreg dto) {
+        Message message = new Message();
+        message.setMessage(dto.getMessage());
+        message.setFaction(dto.isFaction());
+        message.setHuman(dto.isHuman());
+        return message;
+    }
+
+    /**
      * Method for mapping from Player to PlayerDTO for normal users
      * Includes name, id, status and biteCode
      * @param player player object

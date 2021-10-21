@@ -6,6 +6,7 @@ import no.noroff.hvz.models.Message;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.MessageRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
+import no.noroff.hvz.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -132,9 +133,8 @@ public class GameService {
             return null;
         }
         return gameRepository.findById(id).get().getMessages()
-                // Filter messages by human param and the state of the player who sent the message
-                .stream().filter(g -> Objects.equals(
-                        playerRepository.getPlayerByGameAndUser(gameRepository.getById(id),g.getUser()).isHuman(), human))
+                // Filter messages by human param and the state of the player who sent the message/state admin wants
+                .stream().filter(m ->  m.isHuman() == human)
                 // Filter messages by global and faction
                 .filter(Message::isGlobal).filter(Message::isFaction)
                 // Sort by time sent
@@ -161,6 +161,28 @@ public class GameService {
         if (user != null) {
             message.setUser(user);
             message.setHuman(playerRepository.getPlayerByGameAndUser(game,user).isHuman());
+        }
+        return messageRepository.save(message);
+    }
+
+    /**
+     * Method for admin sending a chat message
+     * @param id
+     * @param message
+     * @param user
+     * @return The saved message/error
+     */
+    public Message createNewAdminChat(Long id, Message message, AppUser user) {
+        if (!gameRepository.existsById(id)) {
+            throw new NoSuchElementException("Did not find game with id of " + id);
+        }
+        Game game = gameRepository.findById(id).get();
+        // Adds data to the  message
+        message.setGame(game);
+        message.setChatTime(new Date());
+        message.setGlobal(true);
+        if (user != null) {
+            message.setUser(user);
         }
         return messageRepository.save(message);
     }

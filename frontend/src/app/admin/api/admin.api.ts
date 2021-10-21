@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
 import {Mission} from "../../models/input/mission.model";
 import {KillOutput} from "../../models/output/kill-output.model";
@@ -63,5 +63,34 @@ export class AdminAPI {
   }
   public async getAllUsers(): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/user");
+  }
+  public async getGameChat(gameID: number): Promise<Observable<any>> {
+    return await this.http.get<any>(baseURL + "api/game/" + gameID + "/chat");
+  }
+  public async getFactionChat(gameID: number, isHuman: boolean) {
+    let header = new HttpHeaders({"human": JSON.stringify(isHuman)});
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/chat", {headers: header})
+  }
+  public async sendGlobalChat(gameID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":false});
+  }
+  public async sendHumanChat(gameID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true, "human":true});
+  }
+  public async sendZombieChat(gameID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true, "human":false});
+  }
+  public async getAllSquads(gameID: number) {
+    return await this.http.get<any>(baseURL + "api/game/"+gameID+"/squad");
+  }
+  public async getSquadChat(gameID: number, squadID: number) {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat");
+  }
+  public async getPlayerChat(gameID: number, playerID: number) {
+    let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/chat", {headers: header});
+  }
+  public async sendSquadChat(gameID: number, squadID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
   }
 }

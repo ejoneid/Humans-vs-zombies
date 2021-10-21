@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Message} from "../../../models/input/message.model";
+import {PlayerInfo} from "../../../models/input/player-info.model";
+import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 
 @Component({
   selector: 'app-chat-admin',
@@ -10,14 +12,19 @@ export class ChatComponent {
 
   @Input()
   public chatMessages: Message[] | null = null;
-  @Input()
-  public playerIsHuman: boolean = true;
-  @Input()
-  public playerHasSquad: boolean = false;
 
   public selectedChat: string = "GLOBAL";
 
   public submitText: String = "";
+
+  private selectedSquadID = 0;
+  private selectedPlayerID = 0;
+
+  @Input()
+  public squads = null;
+
+  @Input()
+  public players: PlayerInfoFull[] = [];
 
   constructor() { }
 
@@ -28,21 +35,15 @@ export class ChatComponent {
     this.globalChat.emit();
   }
 
-  @Output() factionChat: EventEmitter<any> = new EventEmitter<any>();
-  displayFaction() {
-    if (this.playerIsHuman) {
-      this.selectedChat = "HUMAN";
-    }
-    else {
-      this.selectedChat = "ZOMBIE";
-    }
-    this.factionChat.emit();
+  @Output() humanChat: EventEmitter<any> = new EventEmitter<any>();
+  displayHuman() {
+    this.selectedChat = "HUMAN";
+    this.humanChat.emit();
   }
-
-  @Output() squadChat: EventEmitter<any> = new EventEmitter<any>();
-  displaySquad() {
-    this.selectedChat = "SQUAD";
-    this.squadChat.emit();
+  @Output() zombieChat: EventEmitter<any> = new EventEmitter<any>();
+  displayZombie() {
+    this.selectedChat = "ZOMBIE";
+    this.zombieChat.emit();
   }
 
   // Emits the message to be sent and clears the input
@@ -52,5 +53,19 @@ export class ChatComponent {
       this.sendChat.emit(this.submitText);
       this.submitText = "";
     }
+  }
+
+  @Output() squadLoad: EventEmitter<any> = new EventEmitter<any>();
+  loadSquadChat(event: Event) {
+    this.selectedChat = "SQUAD"
+    this.selectedSquadID = parseInt((event.target as HTMLSelectElement).value);
+    this.squadLoad.emit(this.selectedSquadID);
+  }
+
+  @Output() playerLoad: EventEmitter<any> = new EventEmitter<any>();
+  loadPlayerChat(event: Event) {
+    this.selectedChat = "PLAYER"
+    this.selectedPlayerID = parseInt((event.target as HTMLSelectElement).value);
+    this.playerLoad.emit(this.selectedPlayerID);
   }
 }

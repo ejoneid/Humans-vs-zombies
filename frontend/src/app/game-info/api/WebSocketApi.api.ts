@@ -1,13 +1,14 @@
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { GameInfoPage} from "../pages/game-info.page";
+import {AdminPage} from "../../admin/pages/admin.page";
 
 export class WebSocketAPI {
   webSocketEndPoint: string = 'http://localhost:8080/api/websocket';
   topic: string = "/socket/notify";
   stompClient: any;
-  game: GameInfoPage;
-  constructor(appComponent: GameInfoPage){
+  game: GameInfoPage | AdminPage;
+  constructor(appComponent: GameInfoPage | AdminPage){
     this.game = appComponent;
   }
 
