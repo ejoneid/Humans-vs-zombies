@@ -127,9 +127,16 @@ public class GameController {
     @PreAuthorize("isAuthenticated()")
     @Tag(name = "createMessage", description = "Method for posting a new message in game chat.")
     public ResponseEntity<MessageDTO> createNewChat(@PathVariable Long id, @RequestBody MessageDTOreg message, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
-        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
-        Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
-        HttpStatus status = HttpStatus.CREATED;
-        return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        if (SecurityUtils.isAdmin(principal.getTokenValue())) {
+            AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Message createdMessage = gameService.createNewAdminChat(id, mapper.toAdminMessage(message), appUser);
+            HttpStatus status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        } else {
+            AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+            Message createdMessage = gameService.createNewChat(id, mapper.toMessage(message), appUser);
+            HttpStatus status = HttpStatus.CREATED;
+            return new ResponseEntity<>(mapper.toMessageDTO(createdMessage), status);
+        }
     }
 }

@@ -19,7 +19,13 @@
   </section>
   <section class="componentContainer">
     <app-game id="description" [(gameDescription)]="game.description"></app-game>
-    <app-chat-admin id="chat"></app-chat-admin>
+    <app-chat-admin id="chat"
+                    [chatMessages]="this.loadedMessages"
+                    (globalChat)="loadGlobalChat()"
+                    (humanChat)="loadHumanChat()"
+                    (zombieChat)="loadZombieChat()"
+                    (sendChat)="sendChatMessage($event)"
+    ></app-chat-admin>
   </section>
 </main>
 </body>

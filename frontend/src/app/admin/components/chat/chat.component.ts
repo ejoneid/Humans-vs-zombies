@@ -10,10 +10,6 @@ export class ChatComponent {
 
   @Input()
   public chatMessages: Message[] | null = null;
-  @Input()
-  public playerIsHuman: boolean = true;
-  @Input()
-  public playerHasSquad: boolean = false;
 
   public selectedChat: string = "GLOBAL";
 
@@ -28,21 +24,15 @@ export class ChatComponent {
     this.globalChat.emit();
   }
 
-  @Output() factionChat: EventEmitter<any> = new EventEmitter<any>();
-  displayFaction() {
-    if (this.playerIsHuman) {
-      this.selectedChat = "HUMAN";
-    }
-    else {
-      this.selectedChat = "ZOMBIE";
-    }
-    this.factionChat.emit();
+  @Output() humanChat: EventEmitter<any> = new EventEmitter<any>();
+  displayHuman() {
+    this.selectedChat = "HUMAN";
+    this.humanChat.emit();
   }
-
-  @Output() squadChat: EventEmitter<any> = new EventEmitter<any>();
-  displaySquad() {
-    this.selectedChat = "SQUAD";
-    this.squadChat.emit();
+  @Output() zombieChat: EventEmitter<any> = new EventEmitter<any>();
+  displayZombie() {
+    this.selectedChat = "ZOMBIE";
+    this.zombieChat.emit();
   }
 
   // Emits the message to be sent and clears the input
