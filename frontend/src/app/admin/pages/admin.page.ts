@@ -38,6 +38,7 @@ export class AdminPage implements OnInit {
   private webSocketAPI!: WebSocketAPI;
 
   public squads = null;
+  public selectedSquad: number = 0;
 
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
@@ -235,6 +236,7 @@ export class AdminPage implements OnInit {
 
   loadSquadChat(squadID: number) {
     this.selectedChat = "Squad";
+    this.selectedSquad = squadID;
     const tempMessages: Message[] = [];
     this.adminAPI.getSquadChat(this.gameInfo.id, squadID)
       .then((response) => {
@@ -298,6 +300,13 @@ export class AdminPage implements OnInit {
           res.subscribe(msg => {
             // Reload chat when a message is sent
             this.loadZombieChat();
+          })
+        });
+    } else if (this.selectedChat == "Squad") {
+      this.adminAPI.sendSquadChat(this.gameInfo.id, this.selectedSquad, message)
+        .then(res => {
+          res.subscribe(msg => {
+            this.loadSquadChat(this.selectedSquad)
           })
         });
     }

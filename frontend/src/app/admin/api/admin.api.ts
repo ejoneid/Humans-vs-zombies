@@ -90,4 +90,7 @@ export class AdminAPI {
     let header = new HttpHeaders({"playerID": JSON.stringify(playerID)});
     return await this.http.get<any>(baseURL+"api/game/"+gameID+"/chat", {headers: header});
   }
+  public async sendSquadChat(gameID: number, squadID: number, message: String): Promise<Observable<any>> {
+    return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
+  }
 }
