@@ -25,3 +25,8 @@ h2 {
 #dead {
   color: red;
 }
+#buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

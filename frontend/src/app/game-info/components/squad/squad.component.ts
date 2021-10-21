@@ -1,27 +1,59 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {SquadInfo} from "../../../models/input/squad-info.model";
+import {GameInfoAPI} from "../../api/game-info.api";
+import LatLng = google.maps.LatLng;
+import {SquadCheckInOutput} from "../../../models/output/squad-check-in-output";
 
 @Component({
   selector: 'app-squad',
   templateUrl: './squad.component.html',
   styleUrls: ['./squad.component.css']
 })
-export class SquadComponent implements OnInit {
+export class SquadComponent implements OnInit, OnChanges {
 
   @Input()
   public squad: SquadInfo | null = null;
   @Input()
   public allSquads = null;
+  @Input()
+  gameID!: number;
+  @Input()
+  playerID!: number;
+  @Input()
+  playerLocation: LatLng | null = null;
+  @Output()
+  requestLocation = new EventEmitter<any>();
+  @Output()
+  updateCheckIns = new EventEmitter<any>();
 
+  checkInRequested = false;
   public join = false;
   public create = false;
-  public squads = [];
-
   public createSquadName = "";
 
-  constructor() { }
+  constructor(private readonly gameInfoAPI: GameInfoAPI) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges() {
+    if (this.playerLocation != null && this.squad != null && this.checkInRequested) {
+      const checkIn: SquadCheckInOutput = {
+        playerID: this.playerID,
+        lat: this.playerLocation.lat(),
+        lng: this.playerLocation.lng(),
+      }
+      this.gameInfoAPI.squadCheckIn(this.gameID, this.squad.id, checkIn)
+        .then(res => res.subscribe( () => {
+          this.updateCheckIns.emit();
+        }));
+      this.checkInRequested = false;
+    }
+  }
+
+  squadCheckIn() {
+    this.requestLocation.emit();
+    this.checkInRequested = true;
   }
 
   @Output() joinThis: EventEmitter<any> = new EventEmitter<any>();

@@ -24,7 +24,8 @@ export class AdminPage implements OnInit {
     map_info: {nw_lat: null, nw_long: null, se_lat: null, se_long: null},
     kills: [],
     missions: [],
-    players: []
+    players: [],
+    squadCheckIns: []
   };
 
   //Used for the selects in the map component.

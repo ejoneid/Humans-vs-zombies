@@ -38,5 +38,8 @@
       <input type="text" [(ngModel)]="createSquadName" (keydown.enter)="createSquad()" name="squadName">
     </ng-form>
   </section>
-  <button class="normalGreyButton" (click)="leaveSquad()">Leave Squad</button>
+  <section id="buttonContainer">
+    <button class="normalGreyButton" (click)="leaveSquad()">Leave Squad</button>
+    <button class="normalGreyButton" (click)="squadCheckIn()">Check In</button>
+  </section>
 </section>
