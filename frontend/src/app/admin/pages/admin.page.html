@@ -1,24 +1,24 @@
 <body>
-<app-game-title-admin [(gameTitle)]="game.name" (gameTitleChange)="saveChanges()"></app-game-title-admin>
+<app-game-title-admin id="gameTitle" [(gameTitle)]="game.name" (gameTitleChange)="saveChanges()"></app-game-title-admin>
 <main class="adminContainer">
-  <app-players
+  <app-players id="player"
     [playerList]="game.players"
     [gameID]="game.id"
     (playerUpdate)="updatePlayers()"></app-players>
   <section class="componentContainer">
-    <app-game [(gameDescription)]="game.description"></app-game>
+    <app-map-admin id="map"
+                   [(mapInfo)]="game.map_info"
+                   [kills]="game.kills"
+                   [missions]="game.missions"
+                   [gameID]="game.id"
+                   [biteCodes]="humanBiteCodes"
+                   [ids]="zombieIDs"
+                   (missionUpdate)="updateMissions()"
+                   (killUpdate)="updateKills()"
+    ></app-map-admin>
   </section>
   <section class="componentContainer">
-    <app-map-admin id="map"
-      [(mapInfo)]="game.map_info"
-      [kills]="game.kills"
-      [missions]="game.missions"
-      [gameID]="game.id"
-      [biteCodes]="humanBiteCodes"
-      [ids]="zombieIDs"
-      (missionUpdate)="updateMissions()"
-      (killUpdate)="updateKills()"
-    ></app-map-admin>
+    <app-game id="description" [(gameDescription)]="game.description"></app-game>
     <app-chat-admin id="chat"></app-chat-admin>
   </section>
 </main>

@@ -27,3 +27,19 @@
   line-height: 0;
   height: 0;
 }
+#changeText {
+  color: #00FF00;
+  align-self: flex-start;
+  margin: 0;
+  padding-top: 1%;
+  padding-right: 1%;
+}
+#changeContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-top: #FEA520 2px solid;
+}
+#changeButton {
+  align-self: flex-start;
+}

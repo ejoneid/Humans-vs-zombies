@@ -1,7 +1,0 @@
-<section class="greyBackground">
-  <h1>Players:</h1>
-  <ul>
-    <app-single-player *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
-  </ul>
-  <button class="normalGreyButton" (click)="createPlayer()">Create Player</button>
-</section>

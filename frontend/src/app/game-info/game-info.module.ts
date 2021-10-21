@@ -9,7 +9,7 @@ import { BiteCodeComponent } from './components/bite-code/bite-code.component';
 import {GameInfoRoutingModule} from "./game-info-routing.module";
 import { MapComponent } from './components/map/map.component';
 import {GoogleMapsModule} from "@angular/google-maps";
-import { MessageComponent } from './components/message/message.component';
+import { MessageComponent } from '../shared/message/message.component';
 import {FormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {TextFieldModule} from "@angular/cdk/text-field";
@@ -38,7 +38,8 @@ import {TextFieldModule} from "@angular/cdk/text-field";
     ChatComponent,
     GameDescriptionComponent,
     GameTitleComponent,
-    SquadComponent
+    SquadComponent,
+    MessageComponent
   ]
 })
 export class GameInfoModule { }
