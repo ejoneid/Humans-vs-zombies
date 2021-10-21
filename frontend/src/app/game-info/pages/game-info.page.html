@@ -13,6 +13,7 @@
                [allSquads]="this.allSquads"
                (joinThis)="joinSquad($event)"
                (createThis)="createSquad($event)"
+               (leaveThis)="leaveSquad()"
     ></app-squad>
     <app-map class="map"
              [mapInfo]="game.map_info"

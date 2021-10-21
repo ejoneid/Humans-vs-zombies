@@ -340,4 +340,14 @@ export class GameInfoPage implements OnInit {
         })
       })
   }
+
+  leaveSquad() {
+    if (this.gameInfo.squad_info) {
+      this.gameInfoAPI.leaveSquad(this.gameInfo.id, this.gameInfo.squad_info!.id)
+        .then(res => {
+          res.subscribe()
+        });
+      this.gameInfo.squad_info = null;
+    }
+  }
 }
