@@ -23,6 +23,10 @@ export class PlayerCreateComponent {
     patientZero: false
   }
 
+  patientZeroChanged() {
+    if (this.player.patientZero) this.player.human = false;
+  }
+
   selectPlayer(event: Event) {
     this.player.openID = (event.target as HTMLSelectElement).value;
   }
