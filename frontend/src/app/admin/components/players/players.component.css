@@ -1,19 +1,19 @@
-#collapsibleInfoContainer {
-  visibility: collapse;
-}
 #playerContainer {
   width: 100%;
-  list-style: none;
-  padding-left: 0;
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow-y: scroll;
   border-top: #FEA520 2px solid;
   align-self: flex-end;
+  row-gap: 1%;
 }
 #player {
+  width: 94%;
+  align-self: center;
+}
+#playerSelected {
   width: 94%;
   align-self: center;
 }
@@ -25,7 +25,7 @@
 #newPlayerButton {
   align-self: center;
 }
-#playersContainer {
+#playersPageContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

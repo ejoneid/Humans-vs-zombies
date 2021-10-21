@@ -1,0 +1,11 @@
+.blackBackground {
+  margin: 0;
+  line-height: 12px;
+  width: 95%;
+}
+#idFactionContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}

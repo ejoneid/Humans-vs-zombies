@@ -174,7 +174,7 @@ export class MapComponent implements OnInit, OnChanges {
         if (result) {
           this.createMission(position);
         }
-        else {
+        else if ( result === false){
           this.createKill(position);
         }
     });
