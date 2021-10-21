@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,8 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
 import {MomentDateModule} from '@angular/material-moment-adapter';
+import {ErrorModule} from "./Errors/error.module";
+import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
 
 @NgModule({
   declarations: [
@@ -62,10 +64,12 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
     MatNativeDateModule,
     HttpClientModule,
     NoopAnimationsModule,
-    MomentDateModule
+    MomentDateModule,
+    ErrorModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    {provide: ErrorHandler, useClass: GlobalErrorHandler,}
   ],
   bootstrap: [AppComponent]
 })
