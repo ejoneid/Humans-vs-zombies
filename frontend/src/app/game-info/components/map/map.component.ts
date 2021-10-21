@@ -10,6 +10,7 @@ import {MapMarker} from "../../../models/input/map-marker.model";
 import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps";
 import LatLng = google.maps.LatLng;
 import {createMapMarkers} from "../../../shared/maps/map.functions";
+import {SquadCheckIn} from "../../../models/input/squad-check-in.model";
 
 @Component({
   selector: 'app-map',
@@ -24,6 +25,8 @@ export class MapComponent implements OnInit, OnChanges {
   kills!: Kill[];
   @Input()
   missions!: Mission[];
+  @Input()
+  squadCheckIns!: SquadCheckIn[];
   @Input()
   locationRequested: boolean = false;
   @Output()
@@ -56,7 +59,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
     else {
       // Populating the marker list
-      this.markers = createMapMarkers(this.kills, this.missions);
+      this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns);
     }
   }
 

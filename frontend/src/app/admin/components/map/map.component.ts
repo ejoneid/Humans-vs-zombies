@@ -15,6 +15,7 @@ import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 import {KillEditComponent} from "../kill-edit/kill-edit.component";
 import {KillOutput} from "../../../models/output/kill-output.model";
 import {createMapMarkers} from "../../../shared/maps/map.functions";
+import {SquadCheckIn} from "../../../models/input/squad-check-in.model";
 
 @Component({
   selector: 'app-map-admin',
@@ -33,6 +34,8 @@ export class MapComponent implements OnInit, OnChanges {
   kills!: Kill[];
   @Input() //Missions in the game
   missions!: Mission[];
+  @Input()
+  squadCheckIns!: SquadCheckIn[];
   @Input()
   public gameID!: number;
   @Input() //The names of the humans in the game and their corresponding bite codes
@@ -90,7 +93,7 @@ export class MapComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
-    this.markers = createMapMarkers(this.kills, this.missions);
+    this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.corners = {
         nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
@@ -141,16 +144,16 @@ export class MapComponent implements OnInit, OnChanges {
   /**
    * Checks if the selected marker is for a kill or a mission and opens the proper method.
    * @param id what is the id of the marker (Used to find it in the kills and missions lists)
-   * @param isMission should a mission or kill be edited
+   * @param type should a mission or kill be edited
    */
-  public editMarker(id: number, isMission: boolean): void {
-    if (isMission) {
+  public editMarker(id: number, type: string): void {
+    if (type === "MISSION") {
       const mission = this.missions.find(m => m.id === id);
       if (mission != undefined) {
         this.editMission(mission);
       }
     }
-    else {
+    else if (type === "KILL") {
       const kill = this.kills.find(k => k.id === id);
       if (kill != undefined) {
         this.editKill(kill);

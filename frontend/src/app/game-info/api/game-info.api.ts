@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {baseURL} from "../../../assets/base-url";
 import {KillOutput} from "../../models/output/kill-output.model";
+import {SquadCheckInOutput} from "../../models/output/squad-check-in-output";
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +64,11 @@ export class GameInfoAPI {
   }
   public async leaveSquad(gameID: number, squadID: number) {
     return await this.http.delete(baseURL + "api/game/" + gameID + "/squad/" + squadID + "/leave");
+  }
+  public async getSquadCheckIns(gameID: number, squadID: number) {
+    return await this.http.get<any>(baseURL + "api/game/"+gameID+"/squad/"+squadID+"/check-in");
+  }
+  public async squadCheckIn(gameID: number, squadID: number, checkIn: SquadCheckInOutput) {
+    return await this.http.post<any>(baseURL + "api/game/"+gameID+"/squad/"+squadID+"/check-in", checkIn);
   }
 }

@@ -3,10 +3,11 @@ import {MapBorder} from "./map-border.model";
 import {Message} from "./message.model";
 import {Kill} from "./kill.model";
 import {Mission} from "./mission.model";
+import {SquadCheckIn} from "./squad-check-in.model";
 
 export interface GameInfo {
-  id: number,
-  player_id: number,
+  gameID: number,
+  playerID: number,
   player_is_human: boolean,
   name: string,
   state: string,
@@ -17,5 +18,6 @@ export interface GameInfo {
   map_info: MapBorder,
   messages: Message[],
   kills: Kill[],
-  missions: Mission[]
+  missions: Mission[],
+  squadCheckIns: SquadCheckIn[]
 }
