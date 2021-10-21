@@ -100,7 +100,6 @@ public class SquadController {
         SquadMember addedSquadMember = squadService.joinSquad(gameID, squadID, mapper.toSquadMember(member, gameID));
         SquadDTO squadDTO = mapper.toSquadDTO(squadService.getSpecificSquad(gameID, addedSquadMember.getSquad().getId()));
         status = HttpStatus.CREATED;
-
         return new ResponseEntity<>(squadDTO, status);
     }
 
@@ -220,5 +219,16 @@ public class SquadController {
             throw new MissingPermissionsException("User is not a member of this squad.");
         }
         return new ResponseEntity<>(addedCheckInDTO, status);
+    }
+
+    @DeleteMapping("/{squadID}/leave")
+    @PreAuthorize("isAuthenticated()")
+    @Tag(name = "leaveSquad", description = "Method for leaving a squad in a game.")
+    public ResponseEntity<SquadMemberDTO> leaveSquad(@PathVariable Long gameID, @PathVariable Long squadID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
+        AppUser appUser = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
+        Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
+        SquadMember leaver = squadService.leaveSquad(gameID,squadID,player);
+        SquadMemberDTO squadMemberDTO = mapper.toSquadMemberDTO(leaver);
+        return new ResponseEntity<>(squadMemberDTO, status);
     }
 }
