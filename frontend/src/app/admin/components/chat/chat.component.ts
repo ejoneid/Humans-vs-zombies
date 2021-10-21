@@ -15,6 +15,11 @@ export class ChatComponent {
 
   public submitText: String = "";
 
+  private selectedSquadID = 0;
+
+  @Input()
+  public squads = null;
+
   constructor() { }
 
   // Emits a request to load the correct chat
@@ -42,5 +47,12 @@ export class ChatComponent {
       this.sendChat.emit(this.submitText);
       this.submitText = "";
     }
+  }
+
+  @Output() squadLoad: EventEmitter<any> = new EventEmitter<any>();
+  loadSquadChat(event: Event) {
+    this.selectedChat = "SQUAD"
+    this.selectedSquadID = parseInt((event.target as HTMLSelectElement).value);
+    this.squadLoad.emit(this.selectedSquadID);
   }
 }

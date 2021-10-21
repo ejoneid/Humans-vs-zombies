@@ -21,10 +21,12 @@
     <app-game id="description" [(gameDescription)]="game.description"></app-game>
     <app-chat-admin id="chat"
                     [chatMessages]="this.loadedMessages"
+                    [squads]="this.squads"
                     (globalChat)="loadGlobalChat()"
                     (humanChat)="loadHumanChat()"
                     (zombieChat)="loadZombieChat()"
                     (sendChat)="sendChatMessage($event)"
+                    (squadLoad)="loadSquadChat($event)"
     ></app-chat-admin>
   </section>
 </main>

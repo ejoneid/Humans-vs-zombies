@@ -37,6 +37,8 @@ export class AdminPage implements OnInit {
   public loadedMessages: Message[] = [];
   private webSocketAPI!: WebSocketAPI;
 
+  public squads = null;
+
   constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class AdminPage implements OnInit {
     // Connecting the WebSocket
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
+    this.getAllSquads();
   }
 
   //Saves the changes made by the admin. Runs when the Save button is clicked.
@@ -230,6 +233,27 @@ export class AdminPage implements OnInit {
     this.loadFactionChat(false);
   }
 
+  loadSquadChat(squadID: number) {
+    this.selectedChat = "Squad";
+    const tempMessages: Message[] = [];
+    this.adminAPI.getSquadChat(this.gameInfo.id, squadID)
+      .then((response) => {
+        response.subscribe((messages) => {
+          for (let message of messages) {
+            tempMessages.push({
+              id:message.id,
+              global: message.global,
+              human: message.human,
+              sender: message.playerName,
+              time: message.messageTime,
+              content: message.message
+            });
+          }
+          this.loadedMessages = tempMessages;
+        })
+      });
+  }
+
   sendChatMessage(message: String) {
     if (this.selectedChat == "Global") {
       this.adminAPI.sendGlobalChat(this.gameInfo.id, message)
@@ -278,5 +302,14 @@ export class AdminPage implements OnInit {
     if (this.selectedChat == "Global") this.loadGlobalChat();
     else if (this.selectedChat == "Human") this.loadHumanChat();
     else if (this.selectedChat == "Zombie") this.loadZombieChat();
+  }
+
+  getAllSquads() {
+    this.adminAPI.getAllSquads(this.gameInfo.id)
+      .then(res => {
+          res.subscribe(squads => {
+            this.squads = squads
+          })
+      });
   }
 }

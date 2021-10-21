@@ -80,4 +80,10 @@ export class AdminAPI {
   public async sendZombieChat(gameID: number, message: String): Promise<Observable<any>> {
     return await this.http.post(baseURL+"api/game/"+gameID+"/chat", {"message":message, "faction":true, "human":false});
   }
+  public async getAllSquads(gameID: number) {
+    return await this.http.get<any>(baseURL + "api/game/"+gameID+"/squad");
+  }
+  public async getSquadChat(gameID: number, squadID: number) {
+    return await this.http.get<any>(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat");
+  }
 }

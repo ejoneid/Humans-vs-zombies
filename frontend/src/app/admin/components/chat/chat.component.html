@@ -9,6 +9,9 @@
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
         <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
+        <select (click)="loadSquadChat($event)">
+          <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
+        </select>
       </div>
     </section>
     <section class="messageContainer" #chat [scrollTop]="chat.scrollHeight">
