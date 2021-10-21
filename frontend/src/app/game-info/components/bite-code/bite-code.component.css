@@ -44,3 +44,9 @@
 #saveButton {
   margin: 1%;
 }
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#biteCodeTitleMobile {
+  margin-left: 10%;
+}

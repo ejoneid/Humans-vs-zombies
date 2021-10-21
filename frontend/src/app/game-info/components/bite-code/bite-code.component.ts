@@ -30,8 +30,11 @@ export class BiteCodeComponent {
 
   public biteCodeInput: string = "";
   public storyInput: string = "";
+  public isMobile: boolean;
 
-  constructor(private readonly gameInfoAPI: GameInfoAPI) {}
+  constructor(private readonly gameInfoAPI: GameInfoAPI) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   //Saves the new kill
   saveKill(): void {
