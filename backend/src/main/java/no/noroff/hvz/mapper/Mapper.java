@@ -150,14 +150,8 @@ public class Mapper {
      * @return DTO of game
      */
     public GameDTO toGameDTO(Game game) {
-        String gameUrl = url + game.getId();
-        String squadsUrl = gameUrl + "/squad";
-        String missionsUrl = gameUrl + "/mission";
-        String killsUrl = gameUrl + "/kill";
-        String chatUrl = gameUrl + "/chat";
-        String playersUrl = gameUrl + "/player";
         return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getNw_lat(), game.getSe_lat(),
-                game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
+                game.getNw_long(),game.getSe_long());
     }
 
     /**
@@ -235,10 +229,7 @@ public class Mapper {
      * @return DTO for admin
      */
     public PlayerDTOFull toPlayerDTOFull(Player player) {
-        String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
-        String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
-               killsUrl,messagesUrl);
+        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId());
     }
 
 
