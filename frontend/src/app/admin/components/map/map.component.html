@@ -1,5 +1,3 @@
-<button (click)="toggleAreaChange()">Change area</button>
-<p *ngIf="changeArea">Changing map corners</p>
 <section class="greyBackground">
   <!--Needs both the versions of width and height to work-->
   <google-map #gmap
@@ -16,4 +14,8 @@
       (mapClick)="editMarker(marker.id, marker.isMission)">
     </map-marker>
   </google-map>
+  <section id="changeContainer">
+    <button class="normalGreyButton" id="changeButton" (click)="toggleAreaChange()">Change game area</button>
+    <p id="changeText" *ngIf="changeArea">Changing map corners</p>
+  </section>
 </section>
