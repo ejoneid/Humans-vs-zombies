@@ -3,6 +3,9 @@
   <section class="loginSection">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
     <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
+    <button mat-raised-button (click)="localError()">
+      Local front end error
+    </button>
   </section>
   <section class="activeGamesSection">
     <section class="titleSection">
