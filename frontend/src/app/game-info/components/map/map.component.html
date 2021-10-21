@@ -1,6 +1,6 @@
 <section class="greyBackground">
   <!--Needs both the versions of width and height to work-->
-  <google-map #gmap
+  <google-map *ngIf="!isMobile"
               [options]="options"
               height="100%" width="100%"
               style="height: 100%; width: 100%"
@@ -11,6 +11,23 @@
       [position]="marker.position"
       [options]="marker.options"
       (mapClick)="openInfoWindow(mapMarker, marker.description)"
+    ></map-marker>
+    <map-info-window></map-info-window>
+  </google-map>
+
+
+<!-- ************************************************  MOBILE VIEW  ************************************************ -->
+  <google-map *ngIf="isMobile"
+              [options]="options"
+              height="30vh" width="100%"
+              style="height: 100%; width: 100%"
+  >
+    <map-marker #mapMarker="mapMarker"
+                *ngFor="let marker of markers"
+                [label]="marker.label"
+                [position]="marker.position"
+                [options]="marker.options"
+                (mapClick)="openInfoWindow(mapMarker, marker.description)"
     ></map-marker>
     <map-info-window></map-info-window>
   </google-map>
