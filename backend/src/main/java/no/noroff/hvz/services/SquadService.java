@@ -161,4 +161,12 @@ public class SquadService {
     public SquadMember getSquadMemberByPlayer(Player player) {
         return squadMemberRepository.getByPlayer(player);
     }
+
+    public SquadMember leaveSquad(Long gameID, Long squadID, Player player) {
+        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
+            throw  new NoSuchElementException("No such player in the squad");
+        }
+        SquadMember leaver = getSquadMemberByPlayer(player);
+        return leaver;
+    }
 }
