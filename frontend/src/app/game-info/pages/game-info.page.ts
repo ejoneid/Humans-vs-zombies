@@ -195,7 +195,7 @@ export class GameInfoPage implements OnInit {
           for (let member of squads[0].members) {
             members.push({name: member.player.name, state: member.player.human});
           }
-          this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id};
+          this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id, numDead: squads[0].numDead};
           this.updateCheckIns();
         });
       });

@@ -30,8 +30,11 @@ export class SquadComponent implements OnInit, OnChanges {
   public join = false;
   public create = false;
   public createSquadName = "";
+  public isMobile: boolean;
 
-  constructor(private readonly gameInfoAPI: GameInfoAPI) { }
+  constructor(private readonly gameInfoAPI: GameInfoAPI) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnInit(): void {
   }

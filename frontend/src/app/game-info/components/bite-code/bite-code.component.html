@@ -1,6 +1,7 @@
 <section class="greyBackground">
   <div id="humanBiteCodeContainer" *ngIf="isHuman">
-    <h2 id="biteCodeTitle">Bite Code:</h2>
+    <h2 id="biteCodeTitle" *ngIf="!isMobile">Bite Code:</h2>
+    <h2 id="biteCodeTitleMobile" *ngIf="isMobile">Bite Code:</h2>
     <h2 id="biteCode">{{biteCode}}</h2>
   </div>
 

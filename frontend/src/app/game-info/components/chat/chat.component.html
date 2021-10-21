@@ -1,7 +1,7 @@
 <section class="greyBackground">
   <div class="chatContainer">
     <section class="chatHeaderContainer">
-      <h2 id="chatTitle">Chat</h2>
+      <h2 id="chatTitle" *ngIf="!isMobile">Chat</h2>
       <div id="buttonContainer">
         <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
@@ -13,7 +13,14 @@
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'SQUAD'">Squad</button>
       </div>
     </section>
-    <section class="messageContainer" #chat [scrollTop]="chat.scrollHeight">
+    <section id="messageContainer" #chat [scrollTop]="chat.scrollHeight" *ngIf="!isMobile">
+      <app-message *ngFor="let message of chatMessages"
+                   [timeSent]="message.time"
+                   [sender]="message.sender"
+                   [message]="message.content">
+      </app-message>
+    </section>
+    <section id="messageContainerMobile" *ngIf="isMobile">
       <app-message *ngFor="let message of chatMessages"
                    [timeSent]="message.time"
                    [sender]="message.sender"
