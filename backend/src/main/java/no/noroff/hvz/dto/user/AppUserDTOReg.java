@@ -21,6 +21,7 @@ public class AppUserDTOReg {
         return lastName;
     }
 
+    @SuppressWarnings("unused")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

@@ -8,11 +8,7 @@ import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import no.noroff.hvz.repositories.SquadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,8 +34,7 @@ public class PlayerService {
      */
     public Set<Player> getAllPlayers(Long gameID) {
         Game game = gameRepository.findById(gameID).get();
-        Set<Player> players = game.getPlayers();
-        return players;
+        return game.getPlayers();
     }
 
     /**
@@ -85,9 +80,9 @@ public class PlayerService {
 
     /**
      * Method for putting in default info to a new user generated player
-     * @param gameID
-     * @param player
-     * @exception NoSuchElementException
+     * @param gameID id of game
+     * @param player player to be saved in database
+     * @exception NoSuchElementException when the game is not found
      * @return player
      */
     public Player createNewPlayer(Long gameID, Player player) {
@@ -125,7 +120,6 @@ public class PlayerService {
             player.setBiteCode(randomBiteCode);
             player = playerRepository.save(player);
         }
-        //TODO throw correct exception
         return player;
     }
 

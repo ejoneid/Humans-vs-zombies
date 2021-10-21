@@ -16,8 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +67,7 @@ public class AppUserController {
      * @param userDTO DTO for a new user
      * @param principal Auth token
      * @return the created user DTO
-     * @throws DataIntegrityViolationException
+     * @throws DataIntegrityViolationException when the user already exists
      */
     @PostMapping()
     @PreAuthorize("isAuthenticated()")

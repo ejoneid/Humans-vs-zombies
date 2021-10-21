@@ -43,11 +43,7 @@ public class GameController {
     @Tag(name = "getAllGames", description = "API for getting all games, optional parameter state -> only returns games with provided state")
     public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam Optional<String> state) {
         List<GameDTO> games;
-        if (state.isPresent()) {
-            games = gameService.getAllGames(state.get()).stream().map(mapper::toGameDTO).collect(Collectors.toList());
-        } else {
-            games = gameService.getAllGames().stream().map(mapper::toGameDTO).collect(Collectors.toList());
-        }
+        games = state.map(s -> gameService.getAllGames(s).stream().map(mapper::toGameDTO).collect(Collectors.toList())).orElseGet(() -> gameService.getAllGames().stream().map(mapper::toGameDTO).collect(Collectors.toList()));
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(games, status);
     }

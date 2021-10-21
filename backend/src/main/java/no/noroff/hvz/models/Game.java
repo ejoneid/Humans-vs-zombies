@@ -61,17 +61,6 @@ public class Game {
         this.se_long = se_long;
     }
 
-    public Game(Long id, String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
-        this.id = id;
-        this.name = name;
-        this.gameState = gameState;
-        this.description = description;
-        this.nw_lat = nw_lat;
-        this.se_lat = se_lat;
-        this.nw_long = nw_long;
-        this.se_long = se_long;
-    }
-
     public Game() {
     }
 

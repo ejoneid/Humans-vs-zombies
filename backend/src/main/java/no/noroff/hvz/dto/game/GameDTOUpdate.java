@@ -10,7 +10,7 @@ public class GameDTOUpdate {
     private String nw_long;
     private String se_long;
 
-    public GameDTOUpdate( String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
+    public GameDTOUpdate( String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
         this.name = name;
         this.gameState = gameState;
         this.description = description;

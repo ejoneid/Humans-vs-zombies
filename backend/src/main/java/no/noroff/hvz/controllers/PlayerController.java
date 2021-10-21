@@ -2,7 +2,6 @@ package no.noroff.hvz.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.squad.SquadDTO;
 import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -12,7 +11,6 @@ import no.noroff.hvz.models.Player;
 import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.AppUserService;
 import no.noroff.hvz.services.PlayerService;
-import org.hibernate.result.NoMoreReturnsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;

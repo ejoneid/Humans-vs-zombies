@@ -1,6 +1,5 @@
 package no.noroff.hvz.repositories;
 
-import no.noroff.hvz.exceptions.InvalidBiteCodeException;
 import no.noroff.hvz.models.AppUser;
 import no.noroff.hvz.models.Game;
 import no.noroff.hvz.models.Player;
