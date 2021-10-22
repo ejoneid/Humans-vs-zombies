@@ -193,7 +193,7 @@ export class GameInfoPage implements OnInit {
         response.subscribe((squads) => {
           const members: PlayerInfo[] = [];
           for (let member of squads[0].members) {
-            members.push({name: member.player.name, state: member.player.human});
+            members.push({name: member.player.name, state: member.player.human, rank: member.rank});
           }
           this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id, numDead: squads[0].numDead};
           this.updateCheckIns();

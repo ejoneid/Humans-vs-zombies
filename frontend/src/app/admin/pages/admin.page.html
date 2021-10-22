@@ -6,6 +6,8 @@
     [gameID]="game.id"
     (playerUpdate)="updatePlayers()"></app-players>
   <section class="componentContainer">
+    <app-squad-admin [squads]="this.squads">
+    </app-squad-admin>
     <app-map-admin id="map"
                    [(mapInfo)]="game.map_info"
                    [kills]="game.kills"

@@ -23,6 +23,8 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
 import {PlayerCreateComponent} from "./components/player-create/player-create.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {GameInfoModule} from "../game-info/game-info.module";
+import {SquadComponent} from "./components/squad/squad.component";
+import {ViewsquadComponent} from "./components/squad/viewsquad.component";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import {GameInfoModule} from "../game-info/game-info.module";
     KillEditComponent,
     SinglePlayerComponent,
     PlayerEditComponent,
-    PlayerCreateComponent
+    PlayerCreateComponent,
+    SquadComponent,
+    ViewsquadComponent
   ],
     imports: [
         CommonModule,

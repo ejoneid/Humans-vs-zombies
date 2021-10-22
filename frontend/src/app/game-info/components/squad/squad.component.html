@@ -6,6 +6,7 @@
       <ul>
         <li *ngFor="let member of squad.members" id="memberItem">
           <p>{{member.name}}</p>
+          <p>Rank: {{member.rank}}</p>
           <p *ngIf="member.state" id="living">Alive</p>
           <p *ngIf="!member.state" id="dead">Zombie</p>
         </li>
