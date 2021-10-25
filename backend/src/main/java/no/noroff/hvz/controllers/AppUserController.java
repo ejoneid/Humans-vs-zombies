@@ -41,12 +41,12 @@ public class AppUserController {
      */
     @Operation(tags = "User", summary = "getAllUsers -ADMIN ONLY")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Users found",
+            @ApiResponse(responseCode = "200", description = "Users found.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = AppUserDTOFull.class)) }),
-            @ApiResponse(responseCode = "401", description = "User not logged in",
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
-            @ApiResponse(responseCode = "403", description = "User is not an admin",
+            @ApiResponse(responseCode = "403", description = "User is not an admin.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
     })
     @GetMapping
@@ -62,14 +62,14 @@ public class AppUserController {
      * @param principal Auth token with openID
      * @return the specific user DTO
      */
-    @Operation(tags = "User", summary = "getCurrentUser", description = "Method for getting the current user from the database. Uses auth0 token to identify user")
+    @Operation(tags = "User", summary = "getCurrentUser", description = "Method for getting the current user from the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Users found",
+            @ApiResponse(responseCode = "200", description = "Users found.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = AppUserDTOFull.class)) }),
-            @ApiResponse(responseCode = "401", description = "User not logged in",
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
-            @ApiResponse(responseCode = "403", description = "User is not an admin",
+            @ApiResponse(responseCode = "404", description = "User does not exist.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
     })
     @GetMapping("/log-in")
@@ -95,14 +95,17 @@ public class AppUserController {
      */
     @Operation(tags = "User", summary = "createUser", description = "Method for creating a user in the database for the current user.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Users found",
+            @ApiResponse(responseCode = "201", description = "Users created.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = AppUserDTOFull.class)) }),
-            @ApiResponse(responseCode = "401", description = "User not logged in",
+            @ApiResponse(responseCode = "400", description = "User registration json incorrect.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
-            @ApiResponse(responseCode = "403", description = "User is not an admin",
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "409", description = "User have already created a user.",
                     content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
     })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = AppUserDTOReg.class)))
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AppUserDTOFull> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
