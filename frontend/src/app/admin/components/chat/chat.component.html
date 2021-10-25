@@ -9,19 +9,11 @@
         <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
       </div>
-      <div class="selectorContainer" *ngIf="!isMobile">
+      <div class="selectorContainer">
         <select class="chatHeaderSelector" (click)="loadSquadChat($event)">
           <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
         </select>
         <select class="chatHeaderSelector" (click)="loadPlayerChat($event)">
-          <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
-        </select>
-      </div>
-      <div class="selectorContainer" *ngIf="isMobile">
-        <select class="chatHeaderSelectorMobile" (click)="loadSquadChat($event)">
-          <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
-        </select>
-        <select class="chatHeaderSelectorMobile" (click)="loadPlayerChat($event)">
           <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
         </select>
       </div>
@@ -37,7 +29,7 @@
         <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
       </div>
-      <div class="selectorContainer" *ngIf="isMobile">
+      <div class="selectorContainer">
         <select class="chatHeaderSelectorMobile" (click)="loadSquadChat($event)">
           <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
         </select>
