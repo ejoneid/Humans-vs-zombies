@@ -141,7 +141,7 @@ public class Mapper {
      * @return DTO of game
      */
     public GameDTO toGameDTO(Game game) {
-        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getNw_lat(), game.getSe_lat(),
+        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getPlayers().size(), game.getNw_lat(), game.getSe_lat(),
                 game.getNw_long(),game.getSe_long(), game.getStartDate(), game.getEndDate());
     }
 

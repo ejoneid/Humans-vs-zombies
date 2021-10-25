@@ -9,6 +9,7 @@ public class GameDTO {
     private String name;
     private String gameState;
     private String description;
+    private int playerAmount;
     private String nw_lat;
     private String se_lat;
     private String nw_long;
@@ -16,11 +17,12 @@ public class GameDTO {
     private Date startDate;
     private Date endDate;
 
-    public GameDTO(Long id, String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, Date startDate, Date endDate) {
+    public GameDTO(Long id, String name, String gameState, String description, int playerAmount, String nw_lat, String se_lat, String nw_long, String se_long, Date startDate, Date endDate) {
         this.id = id;
         this.name = name;
         this.gameState = gameState;
         this.description = description;
+        this.playerAmount = playerAmount;
         this.nw_lat = nw_lat;
         this.se_lat = se_lat;
         this.nw_long = nw_long;
@@ -107,5 +109,13 @@ public class GameDTO {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public int getPlayerAmount() {
+        return playerAmount;
+    }
+
+    public void setPlayerAmount(int playerAmount) {
+        this.playerAmount = playerAmount;
     }
 }
