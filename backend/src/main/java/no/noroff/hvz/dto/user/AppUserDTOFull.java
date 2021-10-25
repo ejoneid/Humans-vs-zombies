@@ -8,12 +8,14 @@ public class AppUserDTOFull {
     private String firstName;
     private String lastName;
     private Set<PlayerDTOFull> players;
+    private boolean isAdmin;
 
-    public AppUserDTOFull(String openID, String firstName, String lastName, Set<PlayerDTOFull> players) {
+    public AppUserDTOFull(String openID, String firstName, String lastName, Set<PlayerDTOFull> players, boolean isAdmin) {
         this.openID = openID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.players = players;
+        this.isAdmin = isAdmin;
     }
 
     @SuppressWarnings("unused")
@@ -54,5 +56,13 @@ public class AppUserDTOFull {
     @SuppressWarnings("unused")
     public void setPlayers(Set<PlayerDTOFull> players) {
         this.players = players;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

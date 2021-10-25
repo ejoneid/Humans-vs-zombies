@@ -84,9 +84,9 @@ public class Mapper {
      * @param user AppUser
      * @return DTO
      */
-    public AppUserDTOFull toAppUserDTOFull(AppUser user) {
+    public AppUserDTOFull toAppUserDTOFull(AppUser user, boolean isAdmin) {
         return new AppUserDTOFull(user.getOpenId(), user.getFirstName(), user.getLastName(),
-                user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet())
+                user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet()), isAdmin
         );
     }
 

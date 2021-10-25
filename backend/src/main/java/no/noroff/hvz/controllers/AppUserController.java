@@ -7,6 +7,7 @@ import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
+import no.noroff.hvz.security.SecurityUtils;
 import no.noroff.hvz.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,8 +39,8 @@ public class AppUserController {
     @Tag(name = "getAllUsers", description = "Method for getting all users. Admin only")
     public ResponseEntity<List<AppUserDTOFull>> getAllUsers() {
         List<AppUser> users= appUserService.getAllUsers();
-        List<AppUserDTOFull> userDtOs = users.stream().map(mapper::toAppUserDTOFull).collect(Collectors.toList());
-        return  new ResponseEntity<>(userDtOs,HttpStatus.OK);
+        List<AppUserDTOFull> userDTOs = users.stream().map(user -> mapper.toAppUserDTOFull(user, false)).collect(Collectors.toList());
+        return  new ResponseEntity<>(userDTOs,HttpStatus.OK);
     }
 
     /**
@@ -59,7 +60,7 @@ public class AppUserController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(mapper.toAppUserDTOFull(appUser), status);
+        return new ResponseEntity<>(mapper.toAppUserDTOFull(appUser, SecurityUtils.isAdmin(principal.getTokenValue())), status);
     }
 
     /**
@@ -77,7 +78,7 @@ public class AppUserController {
         appUser.setOpenId(principal.getClaimAsString("sub"));
         AppUser addedUser = appUserService.createUser(appUser);
         HttpStatus status = HttpStatus.CREATED;
-        return new ResponseEntity<>(mapper.toAppUserDTOFull(addedUser), status);
+        return new ResponseEntity<>(mapper.toAppUserDTOFull(addedUser, SecurityUtils.isAdmin(principal.getTokenValue())), status);
     }
 
 
