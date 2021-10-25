@@ -4,6 +4,7 @@ body {
   color: #B2BBBD;
   font-family: 'Gemunu Libre', sans-serif;
   font-weight: bold;
+  scrollbar-base-color: #272D2D;
 }
 .componentContainer {
   display: flex;
