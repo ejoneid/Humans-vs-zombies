@@ -1,4 +1,4 @@
-<section class="greyBackground" *ngIf="!isMobile">
+<section class="greyBackground" *ngIf="!isMobile && playerHasGame">
   <section class="squadContainer" *ngIf="squad != null">
     <h2>{{squad.name}}</h2>
     <div id="memberContainer">
@@ -40,11 +40,20 @@
     </ng-form>
   </section>
   <section id="buttonContainer">
-    <button class="normalGreyButton" (click)="leaveSquad()">Leave Squad</button>
-    <button class="normalGreyButton" (click)="squadCheckIn()">Check In</button>
+    <button class="normalGreyButton" (click)="leaveSquad()" *ngIf="squad != null">Leave Squad</button>
+    <button class="normalGreyButton" (click)="squadCheckIn()" *ngIf="squad != null">Check In</button>
   </section>
 </section>
-
+<section class="greyBackground" *ngIf="!isMobile && !playerHasGame">
+  <h2>Squads</h2>
+  <ul>
+    <li *ngFor="let squad of this.allSquads">
+      <p>Name: {{squad.name}}</p>
+      <p>Members: {{squad.members.length}}</p>
+      <p>Deceased: {{squad.numDead}}</p>
+    </li>
+  </ul>
+</section>
 
 <!-- ************************************************  MOBILE VIEW  ************************************************ -->
 <section class="greyBackground" *ngIf="isMobile">

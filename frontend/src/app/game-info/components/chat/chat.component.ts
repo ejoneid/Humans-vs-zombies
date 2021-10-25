@@ -15,6 +15,9 @@ export class ChatComponent {
   @Input()
   public playerHasSquad: boolean = false;
 
+  @Input()
+  public playerHasGame: boolean = false;
+
   public selectedChat: string = "GLOBAL";
 
   public submitText: String = "";
