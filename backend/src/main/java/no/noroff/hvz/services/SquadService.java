@@ -165,7 +165,7 @@ public class SquadService {
             throw  new NoSuchElementException("No such player in the squad");
         }
         SquadMember leaver = getSquadMemberByPlayer(player);
-        if(leaver.getSquad().getId().equals(squadID)) {
+        if(!leaver.getSquad().getId().equals(squadID)) {
             throw new MissingPermissionsException("Cannot leave a squad you are not a member in");
         }
         squadMemberRepository.delete(leaver);

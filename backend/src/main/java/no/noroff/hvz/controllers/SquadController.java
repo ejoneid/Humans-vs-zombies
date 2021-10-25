@@ -229,6 +229,7 @@ public class SquadController {
         Player player = appUserService.getPlayerByGameAndUser(gameID, appUser);
         SquadMember leaver = squadService.leaveSquad(gameID,squadID,player);
         SquadMemberDTO squadMemberDTO = mapper.toSquadMemberDTO(leaver);
+        status = HttpStatus.OK;
         return new ResponseEntity<>(squadMemberDTO, status);
     }
 }
