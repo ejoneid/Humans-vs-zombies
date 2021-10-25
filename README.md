@@ -47,13 +47,19 @@ API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui
         <td>https://nodejs.org/en/</td>
         <td>Yes</td>
     </tr>
+    <tr>
+        <td>pgAdmin</td>
+        <td>4</td>
+        <td>https://www.pgadmin.org/</td>
+        <td>No</td>
+    </tr>
 </table>
 
 ### Instuctions
 
 1. Install required external [dependencies](#-external-dependencies).
 
-2. Create a postgres database named `HvZ` by running ```psql -U postgres -c "CREATE DATABASE HvZ"```
+2. Create a postgres database named `HvZ` by running ```psql -U postgres -c "CREATE DATABASE HvZ"``` or using pgAdmin.
 
 2. Clone the project  
 ``https://gitlab.com/EirikJoneid/hvz_case.git`` or ``git@gitlab.com:EirikJoneid/hvz_case.git``
