@@ -1,10 +1,17 @@
 <section class="blackBackground" *ngIf="!isMobile">
-  <h2 id="name">{{gameName}}</h2>
+  <section id="header">
+    <h2 id="name">{{gameName}}</h2>
+    <h2 id="playerAmount">{{playerAmount}} players</h2>
+  </section>
   <section id="buttonContainer" *ngIf="auth.user$ | async as user">
     <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete' && !isAdmin">Game Info</button>
     <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)" *ngIf="isAdmin">Manage Game</button>
   </section>
 
+  <div id="dateContainer">
+    <h4 class="dateText" *ngIf="startTime != null">Start: {{startTime}}</h4>
+    <h4 class="dateText" *ngIf="endTime != null">End: &nbsp; {{endTime}}</h4>
+  </div>
   <section class="infoContainer">
     <div class="statusContainer">
       <h3 class="status">Status: &nbsp;</h3>

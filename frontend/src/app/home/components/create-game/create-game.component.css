@@ -6,3 +6,9 @@
   font-weight: bold;
   font-size: 110%;
 }
+.text {
+  color: #B2BBBD;
+}
+::placeholder {
+  color: #B2BBBD;
+}

@@ -20,7 +20,7 @@
   <mat-label class="text">When did the kill happen? (Required):</mat-label>
   <section class="text" id="dateTimeContainer">
     <mat-form-field appearance="fill">
-      <input matInput [matDatepicker]="startPicker" placeholder="Start date" [(ngModel)]="data.timeOfDeath">
+      <input matInput [matDatepicker]="startPicker" placeholder="Time of death" [(ngModel)]="data.timeOfDeath">
       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
     </mat-form-field>

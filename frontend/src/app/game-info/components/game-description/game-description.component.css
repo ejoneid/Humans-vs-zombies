@@ -6,6 +6,7 @@
 }
 #rules {
   border-top: #FEA520 1px solid;
+  overflow-y: scroll;
 }
 #description {
   width: 100%;
