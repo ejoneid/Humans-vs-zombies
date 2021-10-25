@@ -14,10 +14,11 @@
 }
 #buttonContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-right: 20%;
   align-self: flex-end;
   column-gap: 2%;
+  width: 100%;
 }
 #chatTitle {
   align-self: flex-end;
@@ -54,13 +55,14 @@
   width: 100%;
   padding: 1%;
   align-self: flex-end;
+  flex-wrap: wrap;
 }
 .chatHeaderSelector {
   /* Buttons and selects for the chat header */
   background: #272D2D;
   border: 2px solid #B2BBBD;
   box-sizing: border-box;
-  width: 5vw;
+  width: 49%;
   height: fit-content;
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
