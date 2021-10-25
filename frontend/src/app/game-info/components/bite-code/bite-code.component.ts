@@ -13,7 +13,7 @@ export class BiteCodeComponent {
   @Input()
   public isHuman!: boolean;
   @Input()
-  playerID!: number;
+  playerID!: number | null;
   @Input()
   public biteCode: string = "";
   @Input()
@@ -47,7 +47,7 @@ export class BiteCodeComponent {
       }
       const kill: KillOutput = {
         biteCode: this.biteCodeInput,
-        killerID: this.playerID,
+        killerID: this.playerID!,
         id: 0,
         lat: lat,
         lng: lng,

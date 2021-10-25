@@ -7,7 +7,7 @@ import {SquadCheckIn} from "./squad-check-in.model";
 
 export interface GameInfo {
   gameID: number,
-  playerID: number,
+  playerID: number | null,
   player_is_human: boolean,
   name: string,
   state: string,

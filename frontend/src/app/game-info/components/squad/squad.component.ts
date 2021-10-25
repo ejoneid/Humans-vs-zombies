@@ -18,7 +18,7 @@ export class SquadComponent implements OnInit, OnChanges {
   @Input()
   gameID!: number;
   @Input()
-  playerID!: number;
+  playerID!: number | null;
   @Input()
   playerLocation: LatLng | null = null;
   @Output()
@@ -40,7 +40,7 @@ export class SquadComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.playerLocation != null && this.squad != null && this.checkInRequested) {
+    if (this.playerLocation != null && this.squad != null && this.checkInRequested && this.playerID != null) {
       const checkIn: SquadCheckInOutput = {
         playerID: this.playerID,
         lat: this.playerLocation.lat(),

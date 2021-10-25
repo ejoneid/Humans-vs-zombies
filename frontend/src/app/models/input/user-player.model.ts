@@ -1,5 +1,6 @@
 export interface UserPlayer {
   name: string,
   id: number,
-  gameID: number
+  gameID: number,
+  admin: boolean
 }
