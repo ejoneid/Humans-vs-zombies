@@ -1,6 +1,6 @@
-<body>
+<body *ngIf="!isMobile">
 <app-game-title-admin id="gameTitle" [(gameTitle)]="game.name" (gameTitleChange)="saveChanges()"></app-game-title-admin>
-<main class="adminContainer">
+<main id="adminContainer">
   <app-players id="player"
     [playerList]="game.players"
     [gameID]="game.id"
@@ -23,6 +23,45 @@
   <section class="componentContainer">
     <app-game id="description" [(gameDescription)]="game.description"></app-game>
     <app-chat-admin id="chat"
+                    [chatMessages]="this.loadedMessages"
+                    [squads]="this.squads"
+                    [players]="game.players"
+                    (globalChat)="loadGlobalChat()"
+                    (humanChat)="loadHumanChat()"
+                    (zombieChat)="loadZombieChat()"
+                    (sendChat)="sendChatMessage($event)"
+                    (squadLoad)="loadSquadChat($event)"
+                    (playerLoad)="loadPlayerChat($event)"
+    ></app-chat-admin>
+  </section>
+</main>
+</body>
+
+<!-- ************************************************  MOBILE VIEW  ************************************************ -->
+<body *ngIf="isMobile">
+<main id="adminContainerMobile">
+  <app-players
+               [playerList]="game.players"
+               [gameID]="game.id"
+               (playerUpdate)="updatePlayers()"></app-players>
+  <section>
+    <app-squad-admin id="mobileSquad" [squads]="this.squads">
+    </app-squad-admin>
+    <app-map-admin
+                   [(mapInfo)]="game.map_info"
+                   [kills]="game.kills"
+                   [missions]="game.missions"
+                   [gameID]="game.id"
+                   [biteCodes]="humanBiteCodes"
+                   [ids]="zombieIDs"
+                   (missionUpdate)="updateMissions()"
+                   (killUpdate)="updateKills()"
+                   [squadCheckIns]="game.squadCheckIns"
+    ></app-map-admin>
+  </section>
+  <section>
+    <app-game [(gameDescription)]="game.description"></app-game>
+    <app-chat-admin
                     [chatMessages]="this.loadedMessages"
                     [squads]="this.squads"
                     [players]="game.players"

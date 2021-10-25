@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
@@ -47,9 +47,6 @@ export class MapComponent implements OnInit, OnChanges {
   @Output() //Emits whenever a kill is updated
   killUpdate: EventEmitter<any> = new EventEmitter<any>();
 
-  //Is defined from ngAfterViewInit()
-  @ViewChild("gmap") gmap!: ElementRef; //The Google Map component
-
   apiLoaded!: Observable<boolean>;
 
   //Initial settings for the Google Map
@@ -65,7 +62,10 @@ export class MapComponent implements OnInit, OnChanges {
   //The current borders of the map
   corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
 
+  public isMobile: boolean;
+
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
+    this.isMobile = window.innerWidth < 768;
   }
 
   /**

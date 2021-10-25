@@ -1,4 +1,4 @@
-.adminContainer {
+#adminContainer {
   display: flex;
   justify-content: space-evenly;
   height: 85%;
@@ -22,8 +22,11 @@
 #player {
   width: 24%;
 }
-#gameInfoPageContainerMobile {
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#adminContainerMobile {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 97%;
 }
