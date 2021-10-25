@@ -15,10 +15,9 @@ export class AuthButtonComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService, private readonly homeAPI: HomeAPI) { }
 
-  @Input()
-  player!: UserPlayer | null;
+  players: UserPlayer[] = [];
   @Output()
-  playerChange = new EventEmitter<UserPlayer>();
+  playerChange = new EventEmitter<{admin: boolean, players: UserPlayer[]}>();
   @Input()
   public isMobile!: boolean;
 
@@ -31,8 +30,8 @@ export class AuthButtonComponent implements OnInit {
             .then(res => {
               res.subscribe(
                 data => {
-                  this.player = data;
-                  this.playerChange.emit(this.player!);
+                  console.log(data)
+                  this.playerChange.emit({admin: data.admin, players: data.players});
                 }, //If the user is found
                 err => {
                   if (err.status == 404) {//If user doesn't exist

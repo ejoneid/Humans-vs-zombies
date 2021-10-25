@@ -85,9 +85,9 @@ export class GameInfoPage implements OnInit {
       this.updateSquad(); //Also updates the squad check-ins.
       //Getting information about map markers.
       this.updateMissions();
-      this.updateKills();
       this.updateMessagesGlobal();
     }
+    this.updateKills();
 
     this.gameInfoAPI.getAllSquads(this.gameInfo.gameID)
       .then(res => {

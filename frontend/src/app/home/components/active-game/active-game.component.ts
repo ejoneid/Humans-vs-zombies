@@ -42,13 +42,12 @@ export class ActiveGameComponent implements OnChanges {
   }
 
   toGameInfo(gameId: number, playerId: number | null): Promise<boolean> | void {
-    if (playerId == null) { //TODO: Make this only apply when a game is actually joined. This will also fix the issues with admin access.
+    if (playerId == null) {
       return this.router.navigate(["game/"+gameId]);
     }
     else {
       return this.router.navigate(["game/"+gameId+"/player/"+playerId]);
     }
-
   }
   toGameInfoAdmin(gameId: number): Promise<boolean> {
     return this.router.navigate(["game/"+gameId+"/admin"]);
