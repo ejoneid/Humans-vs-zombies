@@ -1,5 +1,10 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.noroff.hvz.dto.user.AppUserDTOFull;
 import no.noroff.hvz.dto.user.AppUserDTOReg;
@@ -34,9 +39,18 @@ public class AppUserController {
      * Method for getting all users. Admin only.
      * @return List of appUser DTOs
      */
+    @Operation(tags = "User", summary = "getAllUsers -ADMIN ONLY")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AppUserDTOFull.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "getAllUsers", description = "Method for getting all users. Admin only")
     public ResponseEntity<List<AppUserDTOFull>> getAllUsers() {
         List<AppUser> users= appUserService.getAllUsers();
         List<AppUserDTOFull> userDTOs = users.stream().map(user -> mapper.toAppUserDTOFull(user, false)).collect(Collectors.toList());
@@ -48,9 +62,18 @@ public class AppUserController {
      * @param principal Auth token with openID
      * @return the specific user DTO
      */
+    @Operation(tags = "User", summary = "getCurrentUser", description = "Method for getting the current user from the database. Uses auth0 token to identify user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AppUserDTOFull.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping("/log-in")
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "getCurrentUser", description = "Method for getting the current user from the database. Uses auth0 token to identify user")
     public ResponseEntity<AppUserDTOFull> getSpecificUser( @AuthenticationPrincipal Jwt principal) {
         AppUser appUser;
         // try catch because we send a different Http status code than usually with AppUserNotFoundException
@@ -70,9 +93,18 @@ public class AppUserController {
      * @return the created user DTO
      * @throws DataIntegrityViolationException when the user already exists
      */
+    @Operation(tags = "User", summary = "createUser", description = "Method for creating a user in the database for the current user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AppUserDTOFull.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "createUser", description = "Method for creating a user in the database for the current user.")
     public ResponseEntity<AppUserDTOFull> createUser(@RequestBody AppUserDTOReg userDTO, @AuthenticationPrincipal Jwt principal) throws DataIntegrityViolationException, AppUserAlreadyExistException {
         AppUser appUser = mapper.toAppUser(userDTO);
         appUser.setOpenId(principal.getClaimAsString("sub"));
