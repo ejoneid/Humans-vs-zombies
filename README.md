@@ -21,7 +21,7 @@ API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui
         <th>Name</th>
         <th>Version</th>
         <th>Link</th>
-        <th>Required<th>
+        <th>Required</th>
     </tr>
     <tr>
         <td>Postgres</td>
