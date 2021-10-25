@@ -109,7 +109,7 @@ public class Mapper {
      * @return a new game
      */
     public Game toGame(GameDTOReg gameDTO) {
-        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long(), gameDTO.getStartDate(), gameDTO.getEndDate());
     }
 
     /**
@@ -129,6 +129,8 @@ public class Mapper {
         game.setSe_lat(gameDTOUpdate.getSe_lat());
         game.setNw_long(gameDTOUpdate.getNw_long());
         game.setSe_long(gameDTOUpdate.getSe_long());
+        game.setStartDate(gameDTOUpdate.getStartDate());
+        game.setEndDate(gameDTOUpdate.getEndDate());
         return game;
     }
 
@@ -140,7 +142,7 @@ public class Mapper {
      */
     public GameDTO toGameDTO(Game game) {
         return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getNw_lat(), game.getSe_lat(),
-                game.getNw_long(),game.getSe_long());
+                game.getNw_long(),game.getSe_long(), game.getStartDate(), game.getEndDate());
     }
 
     /**

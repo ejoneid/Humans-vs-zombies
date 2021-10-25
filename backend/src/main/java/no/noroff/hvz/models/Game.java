@@ -1,6 +1,7 @@
 package no.noroff.hvz.models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -32,6 +33,12 @@ public class Game {
     @Column(length = 20)
     private String se_long;
 
+    @Column
+    private Date startDate;
+
+    @Column
+    private Date endDate;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "squad_id")
     private Set<Squad> squads;
@@ -52,7 +59,7 @@ public class Game {
     @JoinColumn(name = "player_id")
     private Set<Player> players;
 
-    public Game(String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
+    public Game(String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, Date startDate, Date endDate) {
         this.name = name;
         this.gameState = gameState;
         this.description = description;
@@ -60,6 +67,8 @@ public class Game {
         this.se_lat = se_lat;
         this.nw_long = nw_long;
         this.se_long = se_long;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Game() {
@@ -167,5 +176,21 @@ public class Game {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
