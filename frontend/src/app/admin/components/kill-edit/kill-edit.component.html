@@ -15,7 +15,7 @@
     </select>
   </mat-form-field>
 
-  <textarea class="text" id="story" cdkTextareaAutosize
+  <textarea class="text" id="story" cdkTextareaAutosize maxlength="255"
       [(ngModel)]="data.story" placeholder="Kill Story (Optional)"></textarea>
   <mat-label class="text">When did the kill happen? (Required):</mat-label>
   <section class="text" id="dateTimeContainer">
