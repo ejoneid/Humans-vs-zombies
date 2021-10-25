@@ -2,10 +2,12 @@ import {MapMarker} from "../../models/input/map-marker.model";
 import {Kill} from "../../models/input/kill.model";
 import {Mission} from "../../models/input/mission.model";
 import {SquadCheckIn} from "../../models/input/squad-check-in.model";
+import {MapBorder} from "../../models/input/map-border.model";
+import LatLng = google.maps.LatLng;
 
 //Takes an array of kills and missions and turns them into map markers.
 //Used in both the admin and game-info modules.
-export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckIns: SquadCheckIn[]): MapMarker[] {
+export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckIns: SquadCheckIn[], mapBorders: MapBorder): MapMarker[] {
   const markers: MapMarker[] = [];
   // Populating the marker list
   for (let mission of missions) {
@@ -41,6 +43,44 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       label: {text: checkIn.member.name, color: "#B2BBBD"},
       options: {icon: "../assets/check-in-icon.png"},
       title: checkIn.member.name
+    })
+  }
+  if (mapBorders.nw_lat != null && mapBorders.nw_long != null && mapBorders.se_lat != null && mapBorders.se_long != null) {
+    markers.push({
+      description: "",
+      id: 0,
+      label: {color: "", text: ""},
+      options: {icon: "../assets/map-borders-icon.svg"},
+      position: {lat: mapBorders.nw_lat, lng: mapBorders.nw_long},
+      title: "topLeft",
+      type: "BORDER"
+    })
+    markers.push({
+      description: "",
+      id: 0,
+      label: {color: "", text: ""},
+      options: {icon: "../assets/map-borders-icon.svg"},
+      position: {lat: mapBorders.nw_lat, lng: mapBorders.se_long},
+      title: "topRight",
+      type: "BORDER"
+    })
+    markers.push({
+      description: "",
+      id: 0,
+      label: {color: "", text: ""},
+      options: {icon: "../assets/map-borders-icon.svg"},
+      position: {lat: mapBorders.se_lat, lng: mapBorders.nw_long},
+      title: "bottomLeft",
+      type: "BORDER"
+    })
+    markers.push({
+      description: "",
+      id: 0,
+      label: {color: "", text: ""},
+      options: {icon: "../assets/map-borders-icon.svg"},
+      position: {lat: mapBorders.se_lat, lng: mapBorders.se_long},
+      title: "bottomRight",
+      type: "BORDER"
     })
   }
   return markers;
