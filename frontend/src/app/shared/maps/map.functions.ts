@@ -3,7 +3,6 @@ import {Kill} from "../../models/input/kill.model";
 import {Mission} from "../../models/input/mission.model";
 import {SquadCheckIn} from "../../models/input/squad-check-in.model";
 import {MapBorder} from "../../models/input/map-border.model";
-import LatLng = google.maps.LatLng;
 
 //Takes an array of kills and missions and turns them into map markers.
 //Used in both the admin and game-info modules.
@@ -50,7 +49,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.svg"},
+      options: {icon: "../assets/map-borders-icon.png"},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.nw_long},
       title: "topLeft",
       type: "BORDER"
@@ -59,7 +58,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.svg"},
+      options: {icon: "../assets/map-borders-icon.png"},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.se_long},
       title: "topRight",
       type: "BORDER"
@@ -68,7 +67,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.svg"},
+      options: {icon: "../assets/map-borders-icon.png"},
       position: {lat: mapBorders.se_lat, lng: mapBorders.nw_long},
       title: "bottomLeft",
       type: "BORDER"
@@ -77,7 +76,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.svg"},
+      options: {icon: "../assets/map-borders-icon.png"},
       position: {lat: mapBorders.se_lat, lng: mapBorders.se_long},
       title: "bottomRight",
       type: "BORDER"

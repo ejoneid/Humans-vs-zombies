@@ -76,8 +76,9 @@ export class AdminPage implements OnInit {
     }
     this.adminAPI.updateGame(this.gameInfo.id, updateGame)
       .then(res => res.subscribe(
-        data => data
+        () => this.updateGame()
       ));
+
   }
 
   /* ************************************************************
@@ -135,12 +136,14 @@ export class AdminPage implements OnInit {
           this.gameInfo.name = game.name;
           this.gameInfo.state = game.gameState;
           this.gameInfo.description = game.description;
-          this.gameInfo.map_info = {
-            nw_lat: game.nw_lat,
-            se_lat: game.se_lat,
-            nw_long: game.nw_long,
-            se_long: game.se_long
-          };
+          try {
+            this.gameInfo.map_info = {
+              nw_lat: parseFloat(game.nw_lat),
+              se_lat: parseFloat(game.se_lat),
+              nw_long: parseFloat(game.nw_long),
+              se_long: parseFloat(game.se_long)
+            };
+          } catch (e) {}
         });
       });
   }
