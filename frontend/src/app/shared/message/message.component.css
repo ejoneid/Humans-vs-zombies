@@ -2,16 +2,18 @@
   border: #00FF00 solid 1px;
   display: flex;
   justify-content: space-evenly;
+  height: fit-content;
 }
 .dateTime {
   font-size: 70%;
   color: #00FF00;
-  line-height: 13px;
+  height: 5px;
   margin: 0;
 }
 #sender {
   color: #FEA520;
-  height: 0;
+  line-height: 14px;
+  height: 15px;
   margin-bottom: 22%;
 }
 #message {
@@ -21,4 +23,8 @@
   width: 24%;
   padding-right: 1%;
   border-right: #FEA520 1px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
 }
