@@ -11,7 +11,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: any) {
     // Check if it's an error from an HTTP response
-    if (!(error instanceof HttpErrorResponse)) {
+    if (!(error instanceof HttpErrorResponse) || (error?.error == "No squad exists for this player.")) {
       error = error.rejection; // get the error object
     }
     this.zone.run(() =>
@@ -20,9 +20,6 @@ export class GlobalErrorHandler implements ErrorHandler {
         error?.status
       )
     );
-
     console.error('Error from global error handler', error);
   }
-
-
 }
