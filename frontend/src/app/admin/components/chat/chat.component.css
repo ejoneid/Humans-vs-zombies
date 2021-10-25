@@ -14,7 +14,10 @@
 }
 .chatHeaderContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  width: 100%;
+  padding-bottom: 1%;
+  border-bottom: #FEA520 1px solid;
 }
 #buttonContainer {
   display: flex;
@@ -22,9 +25,6 @@
   margin-right: 20%;
   align-self: flex-end;
   column-gap: 2%;
-}
-.normalGreyButton {
-  font-size: 150%;
 }
 #chatTitle {
   align-self: flex-end;
@@ -51,4 +51,24 @@
   padding: 5px;
   color: #B2BBBD;
   font-size: 15px;
+}
+.normalGreyButton {
+  font-size: 150%;
+}
+.chatHeaderContent {
+  /* Button Background */
+  background: #272D2D;
+  border: 2px solid #B2BBBD;
+  box-sizing: border-box;
+  padding: 5px;
+  height: fit-content;
+  /* Button Text */
+  font-family: Gemunu Libre, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 89%;
+  align-items: center;
+  color: #FEA520;
+  font-size: 143%;
+  width: 30%;
 }
