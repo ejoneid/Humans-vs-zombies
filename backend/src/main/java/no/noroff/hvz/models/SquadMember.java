@@ -19,7 +19,7 @@ public class SquadMember {
     @JoinColumn(name = "squad_id")
     private Squad squad;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "player_id")
     private Player player;
 
