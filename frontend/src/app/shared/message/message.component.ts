@@ -21,9 +21,8 @@ export class MessageComponent implements OnInit {
 
   ngOnInit() {
     const dateArr = this.timeSent.split("T")[0].split("-");
-    const date = dateArr[2] + "." + dateArr[1] + "." + dateArr[0];
-    const time = this.timeSent.split("T")[1].split(".")[0];
-    this.timeSent = date + "-" + time;
+    this.date = dateArr[2] + "." + dateArr[1];
+    this.time = this.timeSent.split("T")[1].split(".")[0];
   }
 
 }
