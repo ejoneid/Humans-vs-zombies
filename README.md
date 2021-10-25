@@ -51,7 +51,7 @@ API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui
 
 ### Instuctions
 
-1. Install required external [dependencies](###-External-dependencies).
+1. Install required external [dependencies](#-external-dependencies).
 
 2. Create a postgres database named `HvZ` by running ```psql -U postgres -c "CREATE DATABASE HvZ"```
 
