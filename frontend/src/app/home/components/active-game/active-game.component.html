@@ -1,7 +1,7 @@
 <section class="blackBackground" *ngIf="!isMobile">
   <h2 id="name">{{gameName}}</h2>
   <section id="buttonContainer" *ngIf="auth.user$ | async as user">
-    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete'">Game Info</button>
+    <button class="normalGreyButton" (click)="toGameInfo(gameId,playerID)" *ngIf="gameStatus != 'Complete' && !isAdmin">Game Info</button>
     <button class="normalGreyButton" (click)="toGameInfoAdmin(gameId)" *ngIf="isAdmin">Manage Game</button>
   </section>
 
