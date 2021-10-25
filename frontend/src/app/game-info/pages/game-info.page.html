@@ -19,6 +19,8 @@
                [playerID]="game.playerID"
                [gameID]="game.gameID"
                (updateCheckIns)="updateCheckIns()"
+               [playerHasGame]="game.playerID != null"
+               (updateSquads)="getAllSquads()"
     ></app-squad>
     <app-map class="map"
              [mapInfo]="game.map_info"
@@ -43,6 +45,7 @@
               [chatMessages]="game.messages"
               [playerIsHuman]="game.player_is_human"
               [playerHasSquad]="game.squad_info != null"
+              [playerHasGame]="game.playerID != null"
               (globalChat)="loadGlobalChat()"
               (factionChat)="loadFactionChat()"
               (squadChat)="loadSquadChat()"

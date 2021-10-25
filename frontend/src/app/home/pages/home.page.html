@@ -2,7 +2,7 @@
 <main class="homePageContainer" *ngIf="!isMobile">
   <section class="loginSection">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(player)]="player" (playerChange)="setAdmin($event)" [isMobile]="isMobile"></app-auth-button>
+    <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSection">
     <section class="titleSection">
@@ -20,6 +20,7 @@
                        [isMobile]="isMobile"
                        [isAdmin]="isAdmin"
                        [playerAmount]="game.playerAmount"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>
@@ -31,7 +32,7 @@
 <main class="homePageContainerMobile" *ngIf="isMobile">
   <section class="loginSectionMobile">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(player)]="player" [isMobile]="isMobile"></app-auth-button>
+    <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSectionMobile">
     <section class="titleSection">
@@ -42,11 +43,12 @@
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"
                        [gameName]="game.name"
-                       [startTime]="'05.10'"
-                       [endTime]="'31.10'"
+                       [startTime]="game.startTime"
+                       [endTime]="game.endTime"
                        [gameStatus]="game.gameState"
                        [activePlayer]="player"
                        [isMobile]="isMobile"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>

@@ -65,7 +65,7 @@ class AppStartupRunner implements ApplicationRunner {
         AppUser user2 = new AppUser();
         AppUser user3 = new AppUser();
 
-        AppUser patrick = new AppUser();
+//        AppUser patrick = new AppUser();
         AppUser fredrik = new AppUser();
 
         Game game1 = new Game();
@@ -94,7 +94,7 @@ class AppStartupRunner implements ApplicationRunner {
         Player player4 = new Player();
         Player player5 = new Player();
 
-        Player playerPatrick = new Player();
+//        Player playerPatrick = new Player();
         Player playerFredrik = new Player();
 
         Squad squad1 = new Squad();
@@ -104,7 +104,7 @@ class AppStartupRunner implements ApplicationRunner {
 
         SquadMember member1 = new SquadMember();
         SquadMember member2 = new SquadMember();
-        SquadMember memberPatrick = new SquadMember();
+//        SquadMember memberPatrick = new SquadMember();
         SquadMember memberFredrik = new SquadMember();
 
         game1.setGameState("Registration");
@@ -173,9 +173,9 @@ class AppStartupRunner implements ApplicationRunner {
         user3.setLastName("Johnsen");
         user3.setOpenId("openId3");
 
-        patrick.setFirstName("Patrick");
-        patrick.setLastName("Haukaa");
-        patrick.setOpenId("google-oauth2|112037027886754103927");
+//        patrick.setFirstName("Patrick");
+//        patrick.setLastName("Haukaa");
+//        patrick.setOpenId("google-oauth2|112037027886754103927");
         fredrik.setFirstName("Fredrik");
         fredrik.setLastName("Rikheim");
         fredrik.setOpenId("google-oauth2|108443371955945011845");
@@ -184,7 +184,7 @@ class AppStartupRunner implements ApplicationRunner {
             user1 = appUserRepository.save(user1);
             user2 = appUserRepository.save(user2);
             user3 = appUserRepository.save(user3);
-            patrick = appUserRepository.save(patrick);
+//            patrick = appUserRepository.save(patrick);
             fredrik = appUserRepository.save(fredrik);
         }
 
@@ -208,9 +208,9 @@ class AppStartupRunner implements ApplicationRunner {
         player5.setUser(user3);
         player5.setPatientZero(false);
 
-        playerPatrick.setHuman(true);
-        playerPatrick.setUser(patrick);
-        playerPatrick.setPatientZero(false);
+//        playerPatrick.setHuman(true);
+//        playerPatrick.setUser(patrick);
+//        playerPatrick.setPatientZero(false);
         playerFredrik.setHuman(true);
         playerFredrik.setUser(fredrik);
         playerFredrik.setPatientZero(false);
@@ -220,7 +220,7 @@ class AppStartupRunner implements ApplicationRunner {
         playerService.createNewPlayer(1L, player3);
         playerService.createNewPlayer(2L, player4);
         playerService.createNewPlayer(2L, player5);
-        playerService.createNewPlayer(1L, playerPatrick);
+//        playerService.createNewPlayer(1L, playerPatrick);
         playerService.createNewPlayer(1L, playerFredrik);
 
 

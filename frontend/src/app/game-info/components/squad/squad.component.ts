@@ -21,6 +21,8 @@ export class SquadComponent implements OnInit, OnChanges {
   playerID!: number | null;
   @Input()
   playerLocation: LatLng | null = null;
+  @Input()
+  playerHasGame: boolean = false;
   @Output()
   requestLocation = new EventEmitter<any>();
   @Output()
@@ -57,6 +59,12 @@ export class SquadComponent implements OnInit, OnChanges {
   squadCheckIn() {
     this.requestLocation.emit();
     this.checkInRequested = true;
+  }
+
+  @Output() updateSquads: EventEmitter<any> = new EventEmitter<any>();
+  joinClick() {
+    this.join = true;
+    this.updateSquads.emit();
   }
 
   @Output() joinThis: EventEmitter<any> = new EventEmitter<any>();

@@ -2,7 +2,7 @@
   <div class="chatContainer">
     <section class="chatHeaderContainer">
       <h2 id="chatTitle" *ngIf="!isMobile">Chat</h2>
-      <div id="buttonContainer">
+      <div id="buttonContainer" *ngIf="playerHasGame">
         <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
         <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="playerIsHuman && selectedChat !== 'HUMAN'" (click)="displayFaction()" >Human</button>
@@ -27,7 +27,7 @@
                    [message]="message.content">
       </app-message>
     </section>
-    <form class="sendContainer">
+    <form class="sendContainer" *ngIf="playerHasGame">
       <input id="chatInput" type="text" placeholder="Type a chat message..." [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
       <button id="chatButton" class="normalGreyButton" type="submit" (click)="submitChat()">
         Send

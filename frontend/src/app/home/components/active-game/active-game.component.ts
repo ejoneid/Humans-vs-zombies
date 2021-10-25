@@ -28,27 +28,21 @@ export class ActiveGameComponent implements OnChanges {
   public isAdmin!: boolean;
   @Input()
   public playerAmount!: number;
-
-  public playerID: number | null = null;
+  @Input()
+  public playerID!: number | null;
 
   constructor(private readonly router: Router, public auth: AuthService) { }
 
   ngOnChanges() {
-    if (this.activePlayer != null) {
-        if (this.activePlayer.gameID === this.gameId) {
-          this.playerID = this.activePlayer.id
-        }
-    }
   }
 
-  toGameInfo(gameId: number, playerId: number | null): Promise<boolean> | void {
-    if (playerId == null) { //TODO: Make this only apply when a game is actually joined. This will also fix the issues with admin access.
+  toGameInfo(gameId: number, playerID: number | null): Promise<boolean> | void {
+    if (playerID == null) {
       return this.router.navigate(["game/"+gameId]);
     }
     else {
-      return this.router.navigate(["game/"+gameId+"/player/"+playerId]);
+      return this.router.navigate(["game/"+gameId+"/player/"+playerID]);
     }
-
   }
   toGameInfoAdmin(gameId: number): Promise<boolean> {
     return this.router.navigate(["game/"+gameId+"/admin"]);

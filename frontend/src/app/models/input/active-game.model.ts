@@ -4,5 +4,6 @@ export interface ActiveGame {
   gameState: string,
   playerAmount: number,
   startTime: string | null,
-  endTime: string | null
+  endTime: string | null,
+  playerID: number | null
 }
