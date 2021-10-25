@@ -36,14 +36,21 @@ export class HomePage implements OnInit {
               gameState: game.gameState,
               playerAmount: game.playerAmount,
               startTime: game.startDate,
-              endTime: game.endDate
+              endTime: game.endDate,
+              playerID: null
             });
         }
       });
   }
 
-  setAdmin(player: UserPlayer) {
-    this.isAdmin = player.admin;
+  userLoaded(data :{admin: boolean, players: UserPlayer[]}) {
+    this.isAdmin = data.admin;
+    for (let player of data.players) {
+      const game: ActiveGame | undefined = this.activeGames.find((g) => g.id === player.gameID)
+      if (game != undefined) {
+        game.playerID = player.id
+      }
+    }
   }
 
   createGame(): void {

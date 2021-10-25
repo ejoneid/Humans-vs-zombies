@@ -80,7 +80,6 @@ export class AdminPage implements OnInit {
       ));
   }
 
-
   /* ************************************************************
    * Methods that update the objects referenced in their names. *
    ************************************************************ */
@@ -187,6 +186,9 @@ export class AdminPage implements OnInit {
     return this.gameInfo;
   }
 
+  /* *****************
+   * Chat functions. *
+   ***************** */
   loadGlobalChat() {
     this.selectedChat = "Global";
     const tempMessages: Message[] = [];
