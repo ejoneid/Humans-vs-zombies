@@ -57,6 +57,7 @@ public class SquadService {
         Squad squad = new Squad();
         if (playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
             SquadMember member= squadMemberRepository.getByPlayer(playerRepository.getById(playerID));
+            if (member == null) throw new NoSuchElementException("No squad exists for this player.");
             squad = squadRepository.getById(member.getSquad().getId());
         }
         return squad;
