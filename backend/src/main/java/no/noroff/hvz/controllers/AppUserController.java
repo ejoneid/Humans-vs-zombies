@@ -35,11 +35,12 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
+
     /**
      * Method for getting all users. Admin only.
      * @return List of appUser DTOs
      */
-    @Operation(tags = "User", summary = "getAllUsers -ADMIN ONLY")
+    @Operation(tags = "User", summary = "Get all users -ADMIN ONLY")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users found.",
                     content = { @Content(mediaType = "application/json",
@@ -57,12 +58,13 @@ public class AppUserController {
         return  new ResponseEntity<>(userDTOs,HttpStatus.OK);
     }
 
+
     /**
      * Method for getting your user
      * @param principal Auth token with openID
      * @return the specific user DTO
      */
-    @Operation(tags = "User", summary = "getCurrentUser", description = "Method for getting the current user from the database.")
+    @Operation(tags = "User", summary = "Get current user", description = "Method for getting the current user from the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users found.",
                     content = { @Content(mediaType = "application/json",
@@ -86,6 +88,7 @@ public class AppUserController {
         return new ResponseEntity<>(mapper.toAppUserDTOFull(appUser, SecurityUtils.isAdmin(principal.getTokenValue())), status);
     }
 
+
     /**
      * Method for creating a new user
      * @param userDTO DTO for a new user
@@ -93,7 +96,7 @@ public class AppUserController {
      * @return the created user DTO
      * @throws DataIntegrityViolationException when the user already exists
      */
-    @Operation(tags = "User", summary = "createUser", description = "Method for creating a user in the database for the current user.")
+    @Operation(tags = "User", summary = "Create user", description = "Method for creating a user in the database for the current user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Users created.",
                     content = { @Content(mediaType = "application/json",
@@ -115,6 +118,4 @@ public class AppUserController {
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(mapper.toAppUserDTOFull(addedUser, SecurityUtils.isAdmin(principal.getTokenValue())), status);
     }
-
-
 }
