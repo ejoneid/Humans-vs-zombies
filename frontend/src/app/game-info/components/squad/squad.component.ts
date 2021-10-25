@@ -21,6 +21,8 @@ export class SquadComponent implements OnInit, OnChanges {
   playerID!: number | null;
   @Input()
   playerLocation: LatLng | null = null;
+  @Input()
+  playerHasGame: boolean = false;
   @Output()
   requestLocation = new EventEmitter<any>();
   @Output()
