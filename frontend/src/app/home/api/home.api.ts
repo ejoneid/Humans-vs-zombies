@@ -23,8 +23,4 @@ export class HomeAPI {
   public async createGame(game: any) {
     return this.http.post<any>(baseURL + "api/game", game);
   }
-  public async createPlayer(gameID: number) {
-    return this.http.post<any>(baseURL+"api/game/"+gameID+"/player", null);
-  }
-
 }

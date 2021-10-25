@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GameInfoAPI} from "../api/game-info.api";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PlayerInfo} from "../../models/input/player-info.model";
 import {GameInfo} from "../../models/input/game-info.model";
 import {Mission} from "../../models/input/mission.model";
@@ -20,16 +20,14 @@ export class GameInfoPage implements OnInit {
   private gameInfo: GameInfo = {
     gameID: 0,
     //All the variables are initialized in safe states or error states.
-    //TODO: Find player id from auth
-    playerID: 1,
+    playerID: null,
     player_is_human: true,
-    name: "ERROR: No game name found",
+    name: "Not a player in this game",
     state: "ERROR: No game state found",
     description: "",
-    bite_code: "ERROR: No bite code found",
+    bite_code: "Not a player in this game",
     squad_info: null,
     map_info: {nw_lat: null, nw_long: null, se_lat: null, se_long: null},
-    //TODO: Filter messages in HEAD
     messages: [],
     kills: [],
     missions: [],
@@ -50,14 +48,15 @@ export class GameInfoPage implements OnInit {
 
   public isMobile: boolean;
 
-  constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute) {
+  constructor(private readonly gameInfoAPI: GameInfoAPI, private route: ActivatedRoute, private readonly router: Router) {
     this.isMobile = window.innerWidth < 768;
   }
 
   ngOnInit(): void {
     //Finding gameID and playerID from the optional params
     this.gameInfo.gameID = parseInt(this.route.snapshot.paramMap.get("id")!);
-    this.gameInfo.playerID = parseInt(this.route.snapshot.paramMap.get("playerId")!);
+    const playerIDTemp = this.route.snapshot.paramMap.get("playerId");
+    if (playerIDTemp != null) this.gameInfo.playerID = parseInt(playerIDTemp);
 
     //Getting information about the specific game
     this.gameInfoAPI.getGameById(this.gameInfo.gameID)
@@ -75,18 +74,20 @@ export class GameInfoPage implements OnInit {
             this.messagesURL = game.messages;
           });
       });
-    //Getting information about the specific player.
-    this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.gameID, this.gameInfo.playerID)
-      .then((response) => {
-        response.subscribe((player) => {
-          this.gameInfo.bite_code = player.biteCode;
+    if (this.gameInfo.playerID != null) { //Only runs if the player has already joined the game.
+      //Getting information about the specific player.
+      this.gameInfoAPI.getCurrentPlayerInfo(this.gameInfo.gameID, this.gameInfo.playerID)
+        .then((response) => {
+          response.subscribe((player) => {
+            this.gameInfo.bite_code = player.biteCode;
+          });
         });
-      });
-    this.updateSquad(); //Also updates the squad check-ins.
-    //Getting information about map markers.
-    this.updateMissions();
-    this.updateKills();
-    this.updateMessagesGlobal();
+      this.updateSquad(); //Also updates the squad check-ins.
+      //Getting information about map markers.
+      this.updateMissions();
+      this.updateKills();
+      this.updateMessagesGlobal();
+    }
 
     this.gameInfoAPI.getAllSquads(this.gameInfo.gameID)
       .then(res => {
@@ -188,7 +189,7 @@ export class GameInfoPage implements OnInit {
   }
 
   updateSquad() {
-    this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.gameID, this.gameInfo.playerID)
+    this.gameInfoAPI.getCurrentPlayerSquad(this.gameInfo.gameID, this.gameInfo.playerID!)
       .then((response) => {
         response.subscribe((squads) => {
           const members: PlayerInfo[] = [];
@@ -210,16 +211,15 @@ export class GameInfoPage implements OnInit {
     this.playerLocation = location;
   }
 
+  //Creates a new player for the currently logged in user.
   registerUser(): void {
-    //Check if the user has a player
-
-    //Create a player if not
-
-    //Register for the game
-    this.gameInfoAPI.registerForGame(this.gameInfo.gameID, {userID: this.gameInfo.playerID})
+    this.gameInfoAPI.createPlayer(this.gameInfo.gameID)
       .then(res => res.subscribe(
-        data => console.log(data)
-      ))
+        data => { //If the response is ok, there is a player that can be used.
+          this.gameInfo.playerID = data.id
+          return this.router.navigate(["game/"+this.gameInfo.gameID+"/player/"+this.gameInfo.playerID]);
+        }
+      ));
   }
 
   // Connect to the WebSocket
@@ -333,12 +333,14 @@ export class GameInfoPage implements OnInit {
   }
 
   joinSquad(squadID: number) {
-    this.gameInfoAPI.joinSquad(this.gameInfo.gameID, squadID, this.gameInfo.playerID)
-      .then(res => {
-        res.subscribe(() => {
-          this.updateSquad();
-        })
-      });
+    if (this.gameInfo.playerID != null) {
+      this.gameInfoAPI.joinSquad(this.gameInfo.gameID, squadID, this.gameInfo.playerID)
+        .then(res => {
+          res.subscribe(() => {
+            this.updateSquad();
+          })
+        });
+    }
   }
 
   createSquad(squadName: string) {

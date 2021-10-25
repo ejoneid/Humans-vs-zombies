@@ -47,9 +47,6 @@ export class GameInfoAPI {
   public async sendSquadChat(gameID: number, squadID: number, message: String): Promise<Observable<any>> {
     return await this.http.post(baseURL+"api/game/"+gameID+"/squad/"+squadID+"/chat", {"message":message, "faction":false});
   }
-  public async registerForGame(gameID: number, user: {userID: number}): Promise<Observable<any>> {
-    return await this.http.post(baseURL + "api/game/" + gameID + "/player", user);
-  }
   public async getAllSquads(gameID: number) {
     return await this.http.get<any>(baseURL + "api/game/"+gameID+"/squad");
   }
@@ -70,5 +67,8 @@ export class GameInfoAPI {
   }
   public async squadCheckIn(gameID: number, squadID: number, checkIn: SquadCheckInOutput) {
     return await this.http.post<any>(baseURL + "api/game/"+gameID+"/squad/"+squadID+"/check-in", checkIn);
+  }
+  public async createPlayer(gameID: number) {
+    return this.http.post<any>(baseURL+"api/game/"+gameID+"/player", null);
   }
 }

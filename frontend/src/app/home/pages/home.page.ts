@@ -15,9 +15,11 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  public players: UserPlayer[] = [];
+  public player: UserPlayer | null = null;
 
   public isMobile: boolean;
+
+  public isAdmin: boolean = false;
 
   constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
     this.isMobile = window.innerWidth < 768;
@@ -33,6 +35,10 @@ export class HomePage implements OnInit {
           )
         }
       })
+  }
+
+  setAdmin(player: UserPlayer) {
+    this.isAdmin = player.admin;
   }
 
   createGame(): void {

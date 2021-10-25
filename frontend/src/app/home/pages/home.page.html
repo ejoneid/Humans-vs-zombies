@@ -2,15 +2,12 @@
 <main class="homePageContainer" *ngIf="!isMobile">
   <section class="loginSection">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
-    <button mat-raised-button (click)="localError()">
-      Local front end error
-    </button>
+    <app-auth-button [(player)]="player" (playerChange)="setAdmin($event)" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSection">
     <section class="titleSection">
       <h2 class="activeGamesTitle">Active Games:</h2>
-      <button class="normalGreyButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
+      <button class="normalGreyButton" (click)="createGame()" *ngIf="isAdmin">New Game</button>
     </section>
     <ul id="activeGameList">
       <app-active-game *ngFor="let game of games"
@@ -19,8 +16,9 @@
                        [gameStart]="'05.10'"
                        [gameEnd]="'31.10'"
                        [gameStatus]="game.gameState"
-                       [activePlayers]="players"
+                       [activePlayer]="player"
                        [isMobile]="isMobile"
+                       [isAdmin]="isAdmin"
                        class="activeGameElement"
       ></app-active-game>
     </ul>
@@ -32,7 +30,7 @@
 <main class="homePageContainerMobile" *ngIf="isMobile">
   <section class="loginSectionMobile">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
+    <app-auth-button [(player)]="player" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSectionMobile">
     <section class="titleSection">
@@ -46,7 +44,7 @@
                        [gameStart]="'05.10'"
                        [gameEnd]="'31.10'"
                        [gameStatus]="game.gameState"
-                       [activePlayers]="players"
+                       [activePlayer]="player"
                        [isMobile]="isMobile"
                        class="activeGameElement"
       ></app-active-game>
