@@ -59,10 +59,11 @@ API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui
 
 1. Install required external [dependencies](#-external-dependencies).
 
-2. Create a postgres database named `HvZ` by running ```psql -U postgres -c "CREATE DATABASE HvZ"``` or using pgAdmin.
+2. Create a postgres database named `HvZ` by running ```psql -U postgres -c "CREATE DATABASE HvZ"```.  
+Alternatively create the database using pgAdmin.
 
 2. Clone the project  
-``https://gitlab.com/EirikJoneid/hvz_case.git`` or ``git@gitlab.com:EirikJoneid/hvz_case.git``
+``git clone https://gitlab.com/EirikJoneid/hvz_case.git`` or ``git clone git@gitlab.com:EirikJoneid/hvz_case.git``
 
 3. Open `HvZ/backend` in Intellij, let Intellij install maven dependencies and run the project from the main method in `HvZ/backend/src/main/java/no/noroff/hvz/HvzApplication.java`.
 
