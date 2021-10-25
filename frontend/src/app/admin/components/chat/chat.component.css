@@ -12,13 +12,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.chatHeaderContainer {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-  padding-bottom: 1%;
-  border-bottom: #FEA520 1px solid;
-}
 #buttonContainer {
   display: flex;
   justify-content: space-around;
@@ -55,20 +48,30 @@
 .normalGreyButton {
   font-size: 150%;
 }
-.chatHeaderContent {
-  /* Button Background */
+.chatHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1%;
+  align-self: flex-end;
+}
+.chatHeaderContainerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+}
+.chatHeaderSelector {
+  /* Buttons and selects for the chat header */
   background: #272D2D;
   border: 2px solid #B2BBBD;
   box-sizing: border-box;
-  padding: 5px;
+  width: 5vw;
   height: fit-content;
-  /* Button Text */
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
   font-weight: bold;
-  line-height: 89%;
   align-items: center;
   color: #FEA520;
-  font-size: 143%;
-  width: 30%;
+  font-size: 168%;
 }

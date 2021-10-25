@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Message} from "../../../models/input/message.model";
-import {PlayerInfo} from "../../../models/input/player-info.model";
 import {PlayerInfoFull} from "../../../models/input/player-info-full.model";
 
 @Component({

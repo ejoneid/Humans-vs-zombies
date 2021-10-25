@@ -3,6 +3,9 @@
   justify-content: space-evenly;
   height: 85%;
 }
+.componentContainer {
+  width: 33%;
+}
 #map {
   row-gap: 0;
   align-self: flex-end;
@@ -17,7 +20,7 @@
   height: 39%;
 }
 #player {
-  width: 30%;
+  width: 24%;
 }
 #gameInfoPageContainerMobile {
   display: flex;
