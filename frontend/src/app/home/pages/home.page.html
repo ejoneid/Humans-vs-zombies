@@ -20,6 +20,7 @@
                        [isMobile]="isMobile"
                        [isAdmin]="isAdmin"
                        [playerAmount]="game.playerAmount"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>
@@ -42,11 +43,12 @@
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"
                        [gameName]="game.name"
-                       [startTime]="'05.10'"
-                       [endTime]="'31.10'"
+                       [startTime]="game.startTime"
+                       [endTime]="game.endTime"
                        [gameStatus]="game.gameState"
                        [activePlayer]="player"
                        [isMobile]="isMobile"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>

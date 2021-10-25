@@ -61,7 +61,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
     else {
       // Populating the marker list
-      this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns);
+      this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
     }
   }
 

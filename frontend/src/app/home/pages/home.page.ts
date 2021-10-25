@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
   userLoaded(data :{admin: boolean, players: UserPlayer[]}) {
     this.isAdmin = data.admin;
     for (let player of data.players) {
-      const game: ActiveGame | undefined = this.activeGames.find((g) => g.id === player.gameID)
+      const game: ActiveGame | undefined = this.activeGames.find(g => g.id === player.gameID)
       if (game != undefined) {
         game.playerID = player.id
       }

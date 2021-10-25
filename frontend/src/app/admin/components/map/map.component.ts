@@ -93,7 +93,7 @@ export class MapComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
-    this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns);
+    this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.corners = {
         nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
