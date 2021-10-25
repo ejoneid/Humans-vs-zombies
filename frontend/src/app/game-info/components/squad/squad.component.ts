@@ -61,6 +61,12 @@ export class SquadComponent implements OnInit, OnChanges {
     this.checkInRequested = true;
   }
 
+  @Output() updateSquads: EventEmitter<any> = new EventEmitter<any>();
+  joinClick() {
+    this.join = true;
+    this.updateSquads.emit();
+  }
+
   @Output() joinThis: EventEmitter<any> = new EventEmitter<any>();
   joinSquad(id: number) {
     this.joinThis.emit(id);

@@ -89,14 +89,18 @@ export class GameInfoPage implements OnInit {
     }
     this.updateKills();
 
-    this.gameInfoAPI.getAllSquads(this.gameInfo.gameID)
-      .then(res => {
-        res.subscribe(squads => this.allSquads = squads)
-      });
+    this.getAllSquads();
 
     // Connecting the WebSocket
     this.webSocketAPI = new WebSocketAPI(this);
     this.connect();
+  }
+
+  getAllSquads() {
+    this.gameInfoAPI.getAllSquads(this.gameInfo.gameID)
+      .then(res => {
+        res.subscribe(squads => this.allSquads = squads)
+      });
   }
 
   updateMissions() {
@@ -128,7 +132,6 @@ export class GameInfoPage implements OnInit {
       this.gameInfoAPI.getSquadCheckIns(this.gameInfo.gameID, this.gameInfo.squad_info.id)
         .then((response) => {
           response.subscribe((checkIns) => {
-            console.log(checkIns)
             for (let checkIn of checkIns) {
               tempCheckIns.push({
                 id: checkIn.id,

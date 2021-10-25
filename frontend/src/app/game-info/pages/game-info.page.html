@@ -20,6 +20,7 @@
                [gameID]="game.gameID"
                (updateCheckIns)="updateCheckIns()"
                [playerHasGame]="game.playerID != null"
+               (updateSquads)="getAllSquads()"
     ></app-squad>
     <app-map class="map"
              [mapInfo]="game.map_info"
