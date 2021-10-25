@@ -1,24 +1,61 @@
 <section class="greyBackground">
   <div class="chatContainer">
-    <section class="chatHeaderContainerContainer">
-      <section class="chatHeaderContainer">
-        <div id="buttonContainer">
-          <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
-          <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
-          <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'HUMAN'" (click)="displayHuman()" >Human</button>
-          <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
-          <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
-          <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
-          <select class="chatHeaderSelector" (click)="loadSquadChat($event)">
-            <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
-          </select>
-          <select class="chatHeaderSelector" (click)="loadPlayerChat($event)">
-            <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
-          </select>
-        </div>
-      </section>
+    <section id="chatHeaderContainer" *ngIf="!isMobile">
+      <div id="buttonContainer">
+        <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'HUMAN'" (click)="displayHuman()" >Human</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
+      </div>
+      <div class="selectorContainer" *ngIf="!isMobile">
+        <select class="chatHeaderSelector" (click)="loadSquadChat($event)">
+          <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
+        </select>
+        <select class="chatHeaderSelector" (click)="loadPlayerChat($event)">
+          <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
+        </select>
+      </div>
+      <div class="selectorContainer" *ngIf="isMobile">
+        <select class="chatHeaderSelectorMobile" (click)="loadSquadChat($event)">
+          <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
+        </select>
+        <select class="chatHeaderSelectorMobile" (click)="loadPlayerChat($event)">
+          <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
+        </select>
+      </div>
     </section>
-    <section class="messageContainer" #chat [scrollTop]="chat.scrollHeight">
+
+
+    <section id="chatHeaderContainerMobile" *ngIf="isMobile">
+      <div id="buttonContainerMobile">
+        <button class="normalGreyButton" style="color: #B2BBBD;" (click)="displayGlobal()" *ngIf="selectedChat !== 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'GLOBAL'">Global</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'HUMAN'" (click)="displayHuman()" >Human</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'HUMAN'">Human</button>
+        <button class="normalGreyButton" style="color: #B2BBBD;" *ngIf="selectedChat !== 'ZOMBIE'" (click)="displayZombie()">Zombie</button>
+        <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'ZOMBIE'">Zombie</button>
+      </div>
+      <div class="selectorContainer" *ngIf="isMobile">
+        <select class="chatHeaderSelectorMobile" (click)="loadSquadChat($event)">
+          <option [value]="squad.id" *ngFor="let squad of squads">{{squad.name}}</option>
+        </select>
+        <select class="chatHeaderSelectorMobile" (click)="loadPlayerChat($event)">
+          <option [value]="player.id" *ngFor="let player of players">{{player.name}}</option>
+        </select>
+      </div>
+    </section>
+
+
+    <section id="messageContainer" #chat [scrollTop]="chat.scrollHeight" *ngIf="!isMobile">
+      <app-message *ngFor="let message of chatMessages"
+                   [timeSent]="message.time"
+                   [sender]="message.sender"
+                   [message]="message.content">
+      </app-message>
+    </section>
+    <section id="mobileMessageContainer" #chat [scrollTop]="chat.scrollHeight" *ngIf="isMobile">
       <app-message *ngFor="let message of chatMessages"
                    [timeSent]="message.time"
                    [sender]="message.sender"

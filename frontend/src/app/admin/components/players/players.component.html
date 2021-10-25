@@ -3,9 +3,10 @@
     <h1>Players:</h1>
     <button id="newPlayerButton" class="normalGreyButton" (click)="createPlayer()">Create Player</button>
   </div>
-  <div id="playerContainer">
-    <app-single-player id="player" *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
-    <app-single-player id="playerSelected" *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
-
+  <div id="playerContainer" *ngIf="!isMobile">
+    <app-single-player class="player" *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
+  </div>
+  <div id="playerContainerMobile" *ngIf="isMobile">
+    <app-single-player class="player" *ngFor="let player of players" [playerInfo]="player" (click)="editPlayer(player)"></app-single-player>
   </div>
 </section>

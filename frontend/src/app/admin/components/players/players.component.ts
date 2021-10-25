@@ -22,7 +22,11 @@ export class PlayersComponent {
   @Output()
   public playerUpdate: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private dialog: MatDialog, private readonly adminAPI: AdminAPI) { }
+  public isMobile: boolean;
+
+  constructor(private dialog: MatDialog, private readonly adminAPI: AdminAPI) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   /**
    * Creates a popup window for editing a player.

@@ -25,7 +25,11 @@ export class ChatComponent {
   @Input()
   public players: PlayerInfoFull[] = [];
 
-  constructor() { }
+  public isMobile: boolean;
+
+  constructor() {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   // Emits a request to load the correct chat
   @Output() globalChat: EventEmitter<any> = new EventEmitter<any>();

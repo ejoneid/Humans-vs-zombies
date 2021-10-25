@@ -24,7 +24,7 @@ import {PlayerCreateComponent} from "./components/player-create/player-create.co
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {GameInfoModule} from "../game-info/game-info.module";
 import {SquadComponent} from "./components/squad/squad.component";
-import {ViewsquadComponent} from "./components/squad/viewsquad.component";
+import {ViewsquadComponent} from "./components/squad-view/viewsquad.component";
 
 @NgModule({
   declarations: [

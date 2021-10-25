@@ -4,6 +4,9 @@
   margin-top: 1%;
   border-top: #FEA520 1px solid;
 }
+.squadContainer {
+  color: #B2BBBD;
+}
 #memberItem {
   display: flex;
   justify-content: space-between;
