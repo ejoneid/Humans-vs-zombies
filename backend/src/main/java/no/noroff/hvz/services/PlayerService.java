@@ -1,6 +1,7 @@
 package no.noroff.hvz.services;
 
 import no.noroff.hvz.dto.player.PlayerDTOUpdate;
+import no.noroff.hvz.exceptions.PlayerAlreadyExistException;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.*;
@@ -87,6 +88,9 @@ public class PlayerService {
      */
     public Player createNewPlayer(Long gameID, Player player) {
         Game game = gameRepository.findById(gameID).get();
+        if(playerRepository.existsByGameAndUser(game,player.getUser())) {
+            throw new PlayerAlreadyExistException("The user already has a player in this game");
+        }
         player.setGame(game);
         player.setBiteCode(createRandomBiteCode(10));
         player.setPatientZero(false);
@@ -104,10 +108,14 @@ public class PlayerService {
         Player player = new Player();
         if(gameRepository.existsById(gameID)) {
             // Set the players default info
+            Game game = gameRepository.getById(gameID);
+            if(playerRepository.existsByGameAndUser(game,user)) {
+                throw new PlayerAlreadyExistException("The user already has a player in this game");
+            }
             player.setUser(user);
             player.setHuman(true);
             player.setPatientZero(false);
-            player.setGame(gameRepository.getById(gameID));
+            player.setGame(game);
             String randomBiteCode = createRandomBiteCode(10);
             // Create a random biteCode -> if the bitecode already exist creates a new one
             String finalRandomBiteCode = randomBiteCode;
