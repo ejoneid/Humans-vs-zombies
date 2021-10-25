@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
-import {ViewsquadComponent} from "./viewsquad.component";
+import {ViewsquadComponent} from "../squad-view/viewsquad.component";
 
 @Component({
   selector: 'app-squad-admin',

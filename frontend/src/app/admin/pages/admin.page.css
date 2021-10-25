@@ -1,7 +1,10 @@
-.adminContainer {
+#adminContainer {
   display: flex;
   justify-content: space-evenly;
   height: 85%;
+}
+.componentContainer {
+  width: 33%;
 }
 #map {
   row-gap: 0;
@@ -17,10 +20,13 @@
   height: 39%;
 }
 #player {
-  width: 30%;
+  width: 24%;
 }
-#gameInfoPageContainerMobile {
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#adminContainerMobile {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 97%;
 }

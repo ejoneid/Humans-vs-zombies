@@ -1,4 +1,4 @@
-.messageContainer {
+#messageContainer {
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -12,19 +12,12 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.chatHeaderContainer {
-  display: flex;
-  justify-content: space-between;
-}
 #buttonContainer {
   display: flex;
   justify-content: space-around;
   margin-right: 20%;
   align-self: flex-end;
   column-gap: 2%;
-}
-.normalGreyButton {
-  font-size: 150%;
 }
 #chatTitle {
   align-self: flex-end;
@@ -51,4 +44,70 @@
   padding: 5px;
   color: #B2BBBD;
   font-size: 15px;
+}
+.normalGreyButton {
+  font-size: 150%;
+}
+#chatHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1%;
+  align-self: flex-end;
+}
+.chatHeaderSelector {
+  /* Buttons and selects for the chat header */
+  background: #272D2D;
+  border: 2px solid #B2BBBD;
+  box-sizing: border-box;
+  width: 5vw;
+  height: fit-content;
+  font-family: Gemunu Libre, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  align-items: center;
+  color: #FEA520;
+  font-size: 168%;
+}
+.selectorContainer {
+  display: flex;
+}
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#mobileMessageContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  flex: 2;
+}
+#buttonContainerMobile {
+  display: flex;
+  justify-content: space-around;
+  margin-right: 20%;
+  align-self: flex-end;
+  column-gap: 2%;
+  width: 100%;
+}
+.chatHeaderSelectorMobile {
+  /* Buttons and selects for the chat header */
+  background: #272D2D;
+  border: 2px solid #B2BBBD;
+  box-sizing: border-box;
+  width: 45vw;
+  height: fit-content;
+  font-family: Gemunu Libre, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  align-items: center;
+  color: #FEA520;
+  font-size: 168%;
+}
+#chatHeaderContainerMobile {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1%;
+  align-self: flex-end;
+  flex-wrap: wrap;
 }

@@ -41,7 +41,11 @@ export class AdminPage implements OnInit {
   public squads = null;
   public selectedSquad: number = 0;
 
-  constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) { }
+  public isMobile: boolean;
+
+  constructor(private readonly adminAPI: AdminAPI, private route: ActivatedRoute) {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnInit(): void {
     //Finding gameID from the optional params
@@ -282,7 +286,7 @@ export class AdminPage implements OnInit {
     if (this.selectedChat == "Global") {
       this.adminAPI.sendGlobalChat(this.gameInfo.id, message)
         .then((res) => {
-          res.subscribe(msg => {
+          res.subscribe(() => {
             // Reload chat when a message is sent
             this.loadGlobalChat();
           })
@@ -290,7 +294,7 @@ export class AdminPage implements OnInit {
     } else if (this.selectedChat == "Human") {
       this.adminAPI.sendHumanChat(this.gameInfo.id, message)
         .then((res) => {
-          res.subscribe(msg => {
+          res.subscribe(() => {
             // Reload chat when a message is sent
             this.loadHumanChat();
           })
@@ -298,7 +302,7 @@ export class AdminPage implements OnInit {
     } else if (this.selectedChat == "Zombie") {
       this.adminAPI.sendZombieChat(this.gameInfo.id, message)
         .then((res) => {
-          res.subscribe(msg => {
+          res.subscribe(() => {
             // Reload chat when a message is sent
             this.loadZombieChat();
           })
@@ -306,7 +310,7 @@ export class AdminPage implements OnInit {
     } else if (this.selectedChat == "Squad") {
       this.adminAPI.sendSquadChat(this.gameInfo.id, this.selectedSquad, message)
         .then(res => {
-          res.subscribe(msg => {
+          res.subscribe(() => {
             this.loadSquadChat(this.selectedSquad)
           })
         });
@@ -329,6 +333,7 @@ export class AdminPage implements OnInit {
     this.webSocketAPI._send(this.gameInfo.id);
   }
 
+  //Not an unused method even if IntelliJ says so
   handleMessage(){
     if (this.selectedChat == "Global") this.loadGlobalChat();
     else if (this.selectedChat == "Human") this.loadHumanChat();
