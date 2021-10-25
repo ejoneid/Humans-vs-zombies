@@ -74,19 +74,14 @@ public class SquadController {
         AppUser user = appUserService.getSpecificUser(principal.getClaimAsString("sub"));
         Squad createdSquad;
 
-        if (SecurityUtils.isAdmin(principal.getTokenValue())) {
-            createdSquad = squadService.createNewSquad(gameID, mapper.toSquad(squad));
+        Player player;
+        // Try catch is here because we do not return the usual Http status for NoSuchElementException.
+        try {
+            player = appUserService.getPlayerByGameAndUser(gameID, user);
+        } catch (MissingPlayerException e) {
+            throw new MissingPermissionsException("User is not a player in this game");
         }
-        else {
-            Player player;
-            // Try catch is here because we do not return the usual Http status for NoSuchElementException.
-            try {
-                player = appUserService.getPlayerByGameAndUser(gameID, user);
-            } catch (MissingPlayerException e) {
-                throw new MissingPermissionsException("User is not a player in this game");
-            }
-            createdSquad = squadService.createNewSquad(gameID, mapper.toSquad(squad), player);
-        }
+        createdSquad = squadService.createNewSquad(gameID, mapper.toSquad(squad), player);
 
         status = HttpStatus.CREATED;
         SquadDTO squadDTO = mapper.toSquadDTO(createdSquad);
