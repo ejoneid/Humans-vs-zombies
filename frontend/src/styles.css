@@ -4,7 +4,6 @@ body {
   color: #B2BBBD;
   font-family: 'Gemunu Libre', sans-serif;
   font-weight: bold;
-  scrollbar-base-color: #272D2D;
 }
 .componentContainer {
   display: flex;
@@ -75,5 +74,5 @@ mat-dialog-container {
   background-color: #272D2D !important;
 }
 
-html, body { height: 100%; }
+html, body { height: 100%;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

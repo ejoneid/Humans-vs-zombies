@@ -30,11 +30,16 @@ export class HomePage implements OnInit {
     this.homeAPI.getGames()
       .subscribe((games) => {
         for (let game of games) {
-          this.activeGames.push(
-            {id: game.id, name: game.name, gameState: game.gameState}
-          )
+          this.activeGames.push({
+              id: game.id,
+              name: game.name,
+              gameState: game.gameState,
+              playerAmount: game.playerAmount,
+              startTime: game.startDate,
+              endTime: game.endDate
+            });
         }
-      })
+      });
   }
 
   setAdmin(player: UserPlayer) {
@@ -60,6 +65,6 @@ export class HomePage implements OnInit {
   }
 
   public localError() {
-    throw Error('The app component has thrown an error!');
+    throw Error('The home page has thrown an error!');
   }
 }

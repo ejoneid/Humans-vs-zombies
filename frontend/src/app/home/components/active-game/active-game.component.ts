@@ -13,9 +13,9 @@ export class ActiveGameComponent implements OnChanges {
   @Input()
   public gameName: String = "";
   @Input()
-  public gameStart: String = "";
+  public startTime!: String | null;
   @Input()
-  public gameEnd: String = "";
+  public endTime!: String | null;
   @Input()
   public gameStatus: String = "";
   @Input()
@@ -26,6 +26,8 @@ export class ActiveGameComponent implements OnChanges {
   public isMobile!: boolean;
   @Input()
   public isAdmin!: boolean;
+  @Input()
+  public playerAmount!: number;
 
   public playerID: number | null = null;
 
