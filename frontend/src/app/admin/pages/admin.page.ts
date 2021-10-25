@@ -333,6 +333,13 @@ export class AdminPage implements OnInit {
     this.webSocketAPI._send(this.gameInfo.id);
   }
 
+  //Not an unused method even if IntelliJ says so
+  handleMessage(){
+    if (this.selectedChat == "Global") this.loadGlobalChat();
+    else if (this.selectedChat == "Human") this.loadHumanChat();
+    else if (this.selectedChat == "Zombie") this.loadZombieChat();
+  }
+
   getAllSquads() {
     this.adminAPI.getAllSquads(this.gameInfo.id)
       .then(res => {
