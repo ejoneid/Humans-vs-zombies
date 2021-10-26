@@ -4,7 +4,7 @@
     <textarea #title id="title" required cdkTextareaAutosize placeholder="Game name" maxlength="255" [(ngModel)]="data.name"></textarea>
   </mat-card-title>
   <mat-dialog-content>
-    <textarea id="description" placeholder="Game description (Optional)" cdkTextareaAutosize [(ngModel)]="data.description"></textarea>
+    <textarea maxlength="255" id="description" placeholder="Game description (Optional)" cdkTextareaAutosize [(ngModel)]="data.description"></textarea>
     <mat-label class="text">Game start and end dates (Optional):</mat-label>
     <section class="text">
       <mat-form-field appearance="fill">

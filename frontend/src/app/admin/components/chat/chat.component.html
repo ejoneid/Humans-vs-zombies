@@ -55,7 +55,7 @@
       </app-message>
     </section>
     <form class="sendContainer" *ngIf="selectedChat != 'PLAYER'">
-      <input id="chatInput" type="text" placeholder="Type a chat message..." [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
+      <input id="chatInput" maxlength="255" type="text" placeholder="Type a chat message..." [(ngModel)]="submitText" (keydown.enter)="submitChat()" name="chatInput">
       <button id="chatButton" class="normalGreyButton" type="submit" (click)="submitChat()">
         Send
       </button>

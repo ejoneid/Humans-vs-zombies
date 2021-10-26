@@ -1,5 +1,6 @@
 <body *ngIf="!isMobile">
-<app-game-title-admin id="gameTitle" [(gameTitle)]="game.name" (gameTitleChange)="saveChanges()"></app-game-title-admin>
+<app-game-title-admin id="gameTitle" [(gameTitle)]="game.name" [(gameState)]="game.state"
+                      (gameTitleChange)="saveTitle()"></app-game-title-admin>
 <main id="adminContainer">
   <app-players id="player"
     [playerList]="game.players"

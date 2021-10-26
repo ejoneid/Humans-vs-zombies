@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
-import {options} from "src/assets/map-options";
+import {mapRectangleOptions, options} from "src/assets/map-options";
 import {MapBorder} from "../../../models/input/map-border.model";
 import {Kill} from "../../../models/input/kill.model";
 import {Mission} from "../../../models/input/mission.model";
@@ -16,6 +16,7 @@ import {KillEditComponent} from "../kill-edit/kill-edit.component";
 import {KillOutput} from "../../../models/output/kill-output.model";
 import {createMapMarkers} from "../../../shared/maps/map.functions";
 import {SquadCheckIn} from "../../../models/input/squad-check-in.model";
+import LatLngBounds = google.maps.LatLngBounds;
 
 @Component({
   selector: 'app-map-admin',
@@ -52,6 +53,8 @@ export class MapComponent implements OnInit, OnChanges {
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
 
+  mapRectangleOptions: google.maps.RectangleOptions = mapRectangleOptions;
+
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
@@ -63,6 +66,10 @@ export class MapComponent implements OnInit, OnChanges {
   corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
 
   public isMobile: boolean;
+  public centerNotChanged = true;
+  public bounds = new LatLngBounds(new LatLng(0,0), new LatLng(0,0));
+  public showBounds = false;
+  public center!: LatLng;
 
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
     this.isMobile = window.innerWidth < 768;
@@ -80,6 +87,10 @@ export class MapComponent implements OnInit, OnChanges {
           south: this.mapInfo.se_lat,
           west: this.mapInfo.nw_long
         }};
+      this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.nw_long - (this.mapInfo.nw_long - this.mapInfo.se_long));
+    }
+    else {
+      this.center = new LatLng(52.9, 51.8);
     }
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
       .pipe(
@@ -99,6 +110,10 @@ export class MapComponent implements OnInit, OnChanges {
         nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
         se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
       };
+      if (this.centerNotChanged) {
+        this.center = this.bounds.getCenter();
+        this.centerNotChanged = false;
+      }
     }
   }
 

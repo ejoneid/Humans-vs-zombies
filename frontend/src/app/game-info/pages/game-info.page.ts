@@ -64,13 +64,15 @@ export class GameInfoPage implements OnInit {
         response.subscribe((game) => {
             this.gameInfo.name = game.name;
             this.gameInfo.state = game.gameState;
-            this.gameInfo.description = game.description;
+          this.gameInfo.description = game.description;
+          try {
             this.gameInfo.map_info = {
-              nw_lat: game.nw_lat,
-              se_lat: game.se_lat,
-              nw_long: game.nw_long,
-              se_long: game.se_long
+              nw_lat: parseFloat(game.nw_lat),
+              se_lat: parseFloat(game.se_lat),
+              nw_long: parseFloat(game.nw_long),
+              se_long: parseFloat(game.se_long)
             };
+          } catch (e) {}
             this.messagesURL = game.messages;
           });
       });
@@ -80,6 +82,7 @@ export class GameInfoPage implements OnInit {
         .then((response) => {
           response.subscribe((player) => {
             this.gameInfo.bite_code = player.biteCode;
+            this.gameInfo.player_is_human = player.human;
           });
         });
       this.updateSquad(); //Also updates the squad check-ins.
@@ -88,7 +91,6 @@ export class GameInfoPage implements OnInit {
       this.updateMessagesGlobal();
     }
     this.updateKills();
-
     this.getAllSquads();
 
     // Connecting the WebSocket
@@ -200,7 +202,7 @@ export class GameInfoPage implements OnInit {
             members.push({name: member.player.name, state: member.player.human, rank: member.rank});
           }
           this.gameInfo.squad_info = {name: squads[0].name, members: members, id: squads[0].id, numDead: squads[0].numDead};
-          this.updateCheckIns();
+          if (this.gameInfo.player_is_human) this.updateCheckIns();
         });
       });
   }
