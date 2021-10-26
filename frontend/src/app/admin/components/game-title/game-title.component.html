@@ -1,6 +1,6 @@
 <section class="gameTitleContainer">
   <textarea id="title" maxlength="255" [(ngModel)]="gameTitle" cdkTextareaAutosize></textarea>
-  <select class="normalGreyButton">
+  <select class="normalGreyButton" [(ngModel)]="gameState">
     <option value="Open">Open</option>
     <option value="Closed">Closed</option>
     <option value="Finished">Finished</option>

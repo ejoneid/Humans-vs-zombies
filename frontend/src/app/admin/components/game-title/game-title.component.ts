@@ -13,7 +13,7 @@ export class GameTitleComponent {
   @Output()
   public gameTitleChange = new EventEmitter<string>();
   @Input()
-  public gameState!: string; //"Registration" | "Closed" | "Complete";
+  public gameState!: string;
   @Output()
   public gameStateChange = new EventEmitter<string>();
 
@@ -21,8 +21,8 @@ export class GameTitleComponent {
 
   //Called when the save button is clicked
   saveChanges(): void {
-    this.gameTitleChange.emit(this.gameTitle);
     this.gameStateChange.emit(this.gameState);
+    this.gameTitleChange.emit(this.gameTitle);
   }
 
 }
