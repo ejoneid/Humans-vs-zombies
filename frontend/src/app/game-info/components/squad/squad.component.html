@@ -37,6 +37,7 @@
     <ng-form>
       Squad name:
       <input type="text" [(ngModel)]="createSquadName" (keydown.enter)="createSquad()" name="squadName">
+      <button class="normalGreyButton" (click)="createSquad()">Create</button>
     </ng-form>
   </section>
   <section id="buttonContainer">
