@@ -4,14 +4,19 @@ import no.noroff.hvz.dto.player.PlayerDTOUpdate;
 import no.noroff.hvz.exceptions.PlayerAlreadyExistException;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.mapper.Mapper;
-import no.noroff.hvz.models.*;
+import no.noroff.hvz.models.AppUser;
+import no.noroff.hvz.models.Game;
+import no.noroff.hvz.models.Player;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import no.noroff.hvz.repositories.SquadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

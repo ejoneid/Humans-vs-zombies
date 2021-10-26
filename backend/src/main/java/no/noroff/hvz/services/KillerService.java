@@ -8,7 +8,10 @@ import no.noroff.hvz.repositories.KillerRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class KillerService {
