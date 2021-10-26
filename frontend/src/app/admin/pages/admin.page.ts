@@ -64,7 +64,7 @@ export class AdminPage implements OnInit {
   }
 
   //Saves the changes made by the admin. Runs when the Save button is clicked.
-  saveChanges(): void {
+  saveTitle(): void {
     const updateGame: GameOutput = {
       description: this.gameInfo.description,
       gameState: this.gameInfo.state,
@@ -78,7 +78,6 @@ export class AdminPage implements OnInit {
       .then(res => res.subscribe(
         () => this.updateGame()
       ));
-
   }
 
   /* ************************************************************
