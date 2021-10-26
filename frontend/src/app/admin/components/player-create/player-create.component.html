@@ -2,7 +2,7 @@
   <mat-label class="text">User:</mat-label>
   <select class="text" matNativeControl (change)="selectPlayer($event)">
     <option *ngFor="let user of data.allUsers" [value]="user.openID"
-            [selected]="player.openID === user.openID">{{user.firstName}} {{user.lastName}}</option>
+            [selected]="player.userID === user.openID">{{user.firstName}} {{user.lastName}}</option>
   </select>
 </mat-form-field>
 <mat-slide-toggle [(ngModel)]="player.human">
