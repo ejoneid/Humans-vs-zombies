@@ -1,6 +1,14 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import no.noroff.hvz.dto.kill.KillDTO;
+import no.noroff.hvz.dto.kill.KillDTOReg;
 import no.noroff.hvz.dto.mission.MissionDTO;
 import no.noroff.hvz.dto.mission.MissionDTOReg;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
@@ -36,10 +44,20 @@ public class MissionController {
     @Autowired
     private PlayerService playerService;
 
+
+    @Operation(tags = "Mission", summary = "Get all Missions", description = "Method for getting all missions in a game. Admin get all missions, " +
+            "players get their factions missions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Missions found.",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = MissionDTO.class))) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that ID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "getAllMissions", description = "Method for getting all missions in a game. Admin get all missions, " +
-            "players get their factions missions")
     public ResponseEntity<List<MissionDTO>> getAllMissions(
             @PathVariable Long gameID,
             @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
@@ -58,9 +76,19 @@ public class MissionController {
         return new ResponseEntity<>(missionDTOs, status);
     }
 
+
+    @Operation(tags = "Mission", summary = "Get a specific mission", description = "Method for getting a specific mission in a game. Players can only get their factions missions.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Mission found.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MissionDTO.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID, or no mission with that missionID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping("/{missionID}")
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "getSpecificMission", description = "Method for getting a specific mission in a game. Players can only get their factions missions.")
     public ResponseEntity<MissionDTO> getSpecificMission(@PathVariable Long gameID, @PathVariable Long missionID, @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException, MissingPermissionsException {
         Mission mission = missionService.getSpecificMission(gameID,missionID);
         if(!SecurityUtils.isAdmin(principal.getTokenValue())) {
@@ -73,9 +101,24 @@ public class MissionController {
         return new ResponseEntity<>(mapper.toMissionDTO(mission),status);
     }
 
+
+    @Operation(tags = "Mission", summary = "Create a mission", description = "Method for creating a new mission in a game. Admin only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Mission created.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MissionDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Mission registration json incorrect.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = MissionDTOReg.class)))
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "createMission", description = "Method for creating a new mission in a game. Admin only")
     public ResponseEntity<MissionDTO> createNewMission(@PathVariable Long gameID, @RequestBody MissionDTOReg missionDTO) {
         Mission mission = mapper.toMission(missionDTO, gameID);
         mission = missionService.createNewMission(gameID, mission);
@@ -84,9 +127,24 @@ public class MissionController {
         return new ResponseEntity<>(addedMissionDTO, status);
     }
 
+
+    @Operation(tags = "Mission", summary = "Update a mission", description = "Method for updating a mission in a game. Admin only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Mission updated.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MissionDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Mission registration json incorrect.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = MissionDTOReg.class)))
     @PutMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "updateMission", description = "Method for updating a mission in a game. Admin only")
     public ResponseEntity<MissionDTO> updateMission(@PathVariable Long gameID, @PathVariable Long missionID, @RequestBody MissionDTOReg missionDTO) {
         Mission mission = mapper.toMissionUpdate(missionDTO, gameID, missionID);
         Mission updatedMission = missionService.updateMission(gameID, missionID, mission);
@@ -95,9 +153,21 @@ public class MissionController {
         return new ResponseEntity<>(updatedMissionDTO, status);
     }
 
+
+    @Operation(tags = "Mission", summary = "Delete a mission", description = "Method for deleting a mission in a game. Admin only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Mission deleted.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MissionDTO.class)) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID or mission with that missionID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @DeleteMapping("/{missionID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "deleteMission", description = "Method for deleting a mission in a game. Admin only")
     public ResponseEntity<MissionDTO> deleteMission(@PathVariable Long gameID, @PathVariable Long missionID) {
         Mission deletedMission = missionService.deleteMission(gameID, missionID);
         HttpStatus status = HttpStatus.OK;
