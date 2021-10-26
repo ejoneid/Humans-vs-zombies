@@ -75,8 +75,8 @@ export class MapComponent implements OnInit, OnChanges {
       this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
       if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
         //Checking if there are actual borders.
-        const se = new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long);
-        const nw = new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long);
+        const nw = new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long);
+        const se = new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long);
         this.bounds = new LatLngBounds(nw, se);
         this.showBounds = true;
         if (this.centerNotChanged) {
