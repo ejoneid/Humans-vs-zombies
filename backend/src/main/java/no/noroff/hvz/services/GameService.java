@@ -6,7 +6,6 @@ import no.noroff.hvz.models.Message;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.MessageRepository;
 import no.noroff.hvz.repositories.PlayerRepository;
-import no.noroff.hvz.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
