@@ -154,6 +154,7 @@ export class MapComponent implements OnInit, OnChanges {
       this.corners.se = position;
       this.mapInfo!.se_lat = position.lat()
       this.mapInfo!.se_long = position.lng()
+      this.showBounds = true;
     }
     this.lastNorthWest = !this.lastNorthWest;
   }
