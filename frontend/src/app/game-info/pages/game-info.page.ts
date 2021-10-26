@@ -82,6 +82,7 @@ export class GameInfoPage implements OnInit {
         .then((response) => {
           response.subscribe((player) => {
             this.gameInfo.bite_code = player.biteCode;
+            this.gameInfo.player_is_human = player.human;
           });
         });
       this.updateSquad(); //Also updates the squad check-ins.
@@ -90,7 +91,6 @@ export class GameInfoPage implements OnInit {
       this.updateMessagesGlobal();
     }
     this.updateKills();
-
     this.getAllSquads();
 
     // Connecting the WebSocket

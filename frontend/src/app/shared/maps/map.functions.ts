@@ -16,7 +16,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: mission.description,
       position: {lat: mission.lat, lng: mission.lng},
       label: {text: mission.name, color: "#B2BBBD"},
-      options: {icon: "../assets/mission-icon.svg"},
+      options: {icon: "../assets/mission-icon.svg", opacity: 1.0},
       title: mission.name
     });
   }
@@ -28,7 +28,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
         description: kill.story,
         position: {lat: kill.lat, lng: kill.lng},
         label: {text: kill.victimName, color: "#B2BBBD"},
-        options: {icon: "../assets/tombstone-icon.svg"},
+        options: {icon: "../assets/tombstone-icon.svg", opacity: 1.0},
         title: kill.killerName
       });
     }
@@ -40,7 +40,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: checkIn.time,
       position: {lat: checkIn.lat, lng: checkIn.lng},
       label: {text: checkIn.member.name, color: "#B2BBBD"},
-      options: {icon: "../assets/check-in-icon.png"},
+      options: {icon: "../assets/check-in-icon.png", opacity: 1.0},
       title: checkIn.member.name
     })
   }
@@ -49,7 +49,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.png"},
+      options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.nw_long},
       title: "topLeft",
       type: "BORDER"
@@ -58,7 +58,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.png"},
+      options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.se_long},
       title: "topRight",
       type: "BORDER"
@@ -67,7 +67,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.png"},
+      options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.se_lat, lng: mapBorders.nw_long},
       title: "bottomLeft",
       type: "BORDER"
@@ -76,7 +76,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: "",
       id: 0,
       label: {color: "", text: ""},
-      options: {icon: "../assets/map-borders-icon.png"},
+      options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.se_lat, lng: mapBorders.se_long},
       title: "bottomRight",
       type: "BORDER"
