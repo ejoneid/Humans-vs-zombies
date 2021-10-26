@@ -88,6 +88,7 @@ export class MapComponent implements OnInit, OnChanges {
           west: this.mapInfo.nw_long
         }};
       this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.nw_long - (this.mapInfo.nw_long - this.mapInfo.se_long));
+      this.showBounds = true;
     }
     else {
       this.center = new LatLng(52.9, 51.8);
@@ -107,9 +108,10 @@ export class MapComponent implements OnInit, OnChanges {
     this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
       this.corners = {
-        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
-        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
+        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long),
+        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long)
       };
+      this.showBounds = true;
       if (this.centerNotChanged) {
         this.center = this.bounds.getCenter();
         this.centerNotChanged = false;
@@ -152,6 +154,7 @@ export class MapComponent implements OnInit, OnChanges {
       this.corners.se = position;
       this.mapInfo!.se_lat = position.lat()
       this.mapInfo!.se_long = position.lng()
+      this.showBounds = true;
     }
     this.lastNorthWest = !this.lastNorthWest;
   }

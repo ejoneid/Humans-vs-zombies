@@ -16,7 +16,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       description: mission.description,
       position: {lat: mission.lat, lng: mission.lng},
       label: {text: mission.name, color: "#B2BBBD"},
-      options: {icon: "../assets/mission-icon.svg", opacity: 1.0},
+      options: {icon: "../assets/mission-icon.png", opacity: 1.0},
       title: mission.name
     });
   }
@@ -28,7 +28,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
         description: kill.story,
         position: {lat: kill.lat, lng: kill.lng},
         label: {text: kill.victimName, color: "#B2BBBD"},
-        options: {icon: "../assets/tombstone-icon.svg", opacity: 1.0},
+        options: {icon: "../assets/tombstone-icon.png", opacity: 1.0},
         title: kill.killerName
       });
     }
