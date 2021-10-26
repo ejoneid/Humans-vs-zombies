@@ -1,9 +1,15 @@
 package no.noroff.hvz.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import no.noroff.hvz.dto.player.PlayerDTO;
-import no.noroff.hvz.dto.player.PlayerDTORegAdmin;
-import no.noroff.hvz.dto.player.PlayerDTOUpdate;
+import no.noroff.hvz.dto.mission.MissionDTO;
+import no.noroff.hvz.dto.mission.MissionDTOReg;
+import no.noroff.hvz.dto.player.*;
 import no.noroff.hvz.exceptions.AppUserNotFoundException;
 import no.noroff.hvz.mapper.Mapper;
 import no.noroff.hvz.models.AppUser;
@@ -41,9 +47,18 @@ public class PlayerController {
      * @param principal Auth token
      * @return list of players
      */
+    @Operation(tags = "Player", summary = "Get all players", description = "Method for getting all players in a game. Players get limited information.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Players found.",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(oneOf = {PlayerDTOFull.class, PlayerDTOStandard.class}))) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that ID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "getAllPlayers", description = "Method for getting all players in a game. Players get limited information.")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(@PathVariable Long gameID, @AuthenticationPrincipal Jwt principal) {
         List<PlayerDTO> playerDTOs;
         Set<Player> players = playerService.getAllPlayers(gameID);
@@ -58,6 +73,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerDTOs, status);
     }
 
+
     /**
      * Method for getting a specific player
      * @param gameID ID of game
@@ -65,9 +81,18 @@ public class PlayerController {
      * @param principal Auth token
      * @return the player
      */
+    @Operation(tags = "Player", summary = "Get a specific player", description = "Method for getting a specific player in a game. Players get limited information.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Player found.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(oneOf = {PlayerDTOFull.class, PlayerDTOStandard.class})) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID, or no player with that playerID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @GetMapping("/{playerID}")
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "getSpecificPlayer", description = "Method for getting a specific player in a game. Players get limited information.")
     public ResponseEntity<PlayerDTO> getSpecificPlayer(@PathVariable Long gameID, @PathVariable Long playerID, @AuthenticationPrincipal Jwt principal) {
         Player player = playerService.getSpecificPlayer(gameID, playerID);
         PlayerDTO playerDTO;
@@ -82,6 +107,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerDTO, status);
     }
 
+
     /**
      * Method for creating a new player, different for an admin
      * @param gameID ID of game
@@ -90,9 +116,21 @@ public class PlayerController {
      * @return the created player
      * @throws AppUserNotFoundException if the provided user do not exists
      */
+    @Operation(tags = "Player", summary = "Create a player", description = "Method for a new player in a game. Admins can create players without default values.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Player created.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(oneOf = {PlayerDTOFull.class, PlayerDTOStandard.class})) }),
+            @ApiResponse(responseCode = "400", description = "Player registration json incorrect.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTORegAdmin.class)))
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    @Tag(name = "createPlayer", description = "Method for a new player in a game. Admins can create players without default values.")
     public ResponseEntity<PlayerDTO> createNewPlayer(@PathVariable Long gameID, @RequestBody Optional<PlayerDTORegAdmin> player,
                                                       @AuthenticationPrincipal Jwt principal) throws AppUserNotFoundException {
         HttpStatus status;
@@ -112,6 +150,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerDTO,status);
     }
 
+
     /**
      * Method for updating a player, admin only
      * @param gameID ID of game
@@ -119,9 +158,23 @@ public class PlayerController {
      * @param playerDTO DTO with new info
      * @return the updated player
      */
+    @Operation(tags = "Player", summary = "Update a player", description = "Method for updating a player in a game. Admin only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Player updated.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(oneOf = {PlayerDTOFull.class, PlayerDTOStandard.class})) }),
+            @ApiResponse(responseCode = "400", description = "Player requestBody json incorrect.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not admin.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID, or player with that PlayerID",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlayerDTOUpdate.class)))
     @PutMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "updatePlayer", description = "Method for updating a player in a game. Admin only.")
     public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long gameID, @PathVariable Long playerID,
                                                   @RequestBody PlayerDTOUpdate playerDTO) {
         HttpStatus status;
@@ -131,15 +184,27 @@ public class PlayerController {
         return new ResponseEntity<>(updatedPlayerDTO, status);
     }
 
+
     /**
      * Method for deleting a player, admin only
      * @param gameID ID of game
      * @param playerID ID of player
      * @return the deleted player
      */
+    @Operation(tags = "Player", summary = "Delete a player", description = "Method for deleting a player in a game. Admin only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Player deleted.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(oneOf = {PlayerDTOFull.class, PlayerDTOStandard.class})) }),
+            @ApiResponse(responseCode = "401", description = "User not logged in.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "403", description = "User is not an admin.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+            @ApiResponse(responseCode = "404", description = "No game with that gameID or player with that playerID.",
+                    content = @Content(mediaType = "Text", schema = @Schema(description = "Error message"))),
+    })
     @DeleteMapping("/{playerID}")
     @PreAuthorize("hasAuthority('SCOPE_admin:permissions')")
-    @Tag(name = "deletePlayer", description = "Method for deleting a player in a game. Admin only.")
     public ResponseEntity<PlayerDTO> deletePlayer(@PathVariable Long gameID, @PathVariable Long playerID) {
         Player deletedPlayer = playerService.deletePlayer(gameID, playerID);
         HttpStatus status = HttpStatus.OK;
