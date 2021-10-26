@@ -283,3 +283,9 @@ export const options: google.maps.MapOptions = {
     }
   ],
 };
+
+
+export const mapRectangleOptions: google.maps.RectangleOptions = {
+  fillOpacity: 0.0,
+  strokeColor: "#00FF00",
+}

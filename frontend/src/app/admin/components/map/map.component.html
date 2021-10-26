@@ -6,6 +6,7 @@
               style="height: 100%; width: 100%"
               (mapClick)="mapClick($event.latLng)"
   >
+    <map-rectangle [bounds]="bounds" [options]="mapRectangleOptions" *ngIf="showBounds"></map-rectangle>
     <map-marker
       *ngFor="let marker of markers"
       [label]="marker.label"

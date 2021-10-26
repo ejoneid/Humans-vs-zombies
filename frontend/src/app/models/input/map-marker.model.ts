@@ -11,7 +11,8 @@ export interface MapMarker {
     color: string
   },
   options: {
-    icon: string
+    icon: string,
+    opacity: number
   },
   title: string
 }

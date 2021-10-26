@@ -1,12 +1,12 @@
 <div>
   <mat-error *ngIf="title.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
-  <textarea class="text" id="title" #title cdkTextareaAutosize mat-dialog-title placeholder="Mission name (Required)"
+  <textarea maxlength="255" class="text" id="title" #title cdkTextareaAutosize mat-dialog-title placeholder="Mission name (Required)"
             [(ngModel)]="data.name"></textarea>
 </div>
 <mat-dialog-content>
   <div>
     <mat-error *ngIf="description.textLength == 0 && buttonClicked">Field can't be empty</mat-error>
-    <textarea class="text" #description id="description" cdkTextareaAutosize
+    <textarea maxlength="255" class="text" #description id="description" cdkTextareaAutosize
               [(ngModel)]="data.description" placeholder="Mission description (Required)"></textarea>
   </div>
 

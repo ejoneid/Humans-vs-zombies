@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
-import {options} from "src/assets/map-options";
+import {mapRectangleOptions, options} from "src/assets/map-options";
 import {MapBorder} from "../../../models/input/map-border.model";
 import {Kill} from "../../../models/input/kill.model";
 import {Mission} from "../../../models/input/mission.model";
@@ -11,6 +11,7 @@ import {MapInfoWindow, MapMarker as GoogleMapMarker} from "@angular/google-maps"
 import LatLng = google.maps.LatLng;
 import {createMapMarkers} from "../../../shared/maps/map.functions";
 import {SquadCheckIn} from "../../../models/input/squad-check-in.model";
+import LatLngBounds = google.maps.LatLngBounds;
 
 @Component({
   selector: 'app-map',
@@ -32,6 +33,12 @@ export class MapComponent implements OnInit, OnChanges {
   @Output()
   currentLocation = new EventEmitter<LatLng>();
 
+  public bounds = new LatLngBounds(new LatLng(0,0), new LatLng(0,0));
+  public showBounds = false;
+
+  @ViewChild("map", {static: false}) map!: ElementRef;
+  @ViewChild("mobileMap", {static: false}) mobileMap!: ElementRef;
+
   //Defined from ngAfterViewInit()
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
@@ -40,10 +47,14 @@ export class MapComponent implements OnInit, OnChanges {
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
 
+  mapRectangleOptions: google.maps.RectangleOptions = mapRectangleOptions;
+
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
 
   public isMobile: boolean;
+  public centerNotChanged = true;
+  public center!: LatLng;
 
   constructor(private readonly httpClient: HttpClient) {
     this.isMobile = window.innerWidth < 768;
@@ -62,6 +73,17 @@ export class MapComponent implements OnInit, OnChanges {
     else {
       // Populating the marker list
       this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
+      if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
+        //Checking if there are actual borders.
+        const se = new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long);
+        const nw = new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long);
+        this.bounds = new LatLngBounds(nw, se);
+        this.showBounds = true;
+        if (this.centerNotChanged) {
+          this.center = this.bounds.getCenter();
+          this.centerNotChanged = false;
+        }
+      }
     }
   }
 
@@ -77,6 +99,10 @@ export class MapComponent implements OnInit, OnChanges {
         south: this.mapInfo.se_lat,
         west: this.mapInfo.nw_long
       }};
+      this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.nw_long - (this.mapInfo.nw_long - this.mapInfo.se_long));
+    }
+    else {
+      this.center = new LatLng(52.9, 51.8);
     }
     //Maps API key: AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')

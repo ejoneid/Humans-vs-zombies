@@ -12,11 +12,16 @@ export class GameTitleComponent {
   public gameTitle: string = "ERROR: No game title found";
   @Output()
   public gameTitleChange = new EventEmitter<string>();
+  @Input()
+  public gameState!: string;
+  @Output()
+  public gameStateChange = new EventEmitter<string>();
 
   constructor() { }
 
   //Called when the save button is clicked
   saveChanges(): void {
+    this.gameStateChange.emit(this.gameState);
     this.gameTitleChange.emit(this.gameTitle);
   }
 
