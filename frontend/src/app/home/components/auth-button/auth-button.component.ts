@@ -3,6 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 import {HomeAPI} from "../../api/home.api";
 import {UserPlayer} from "../../../models/input/user-player.model";
+import {last} from "rxjs/operators";
 
 @Component({
   selector: 'app-auth-button',
@@ -36,7 +37,16 @@ export class AuthButtonComponent implements OnInit {
                   if (err.status == 404) {//If user doesn't exist
                     if (!this.postRequestSent) { //Ensures only one request is sent
                       this.postRequestSent = true;
-                      this.homeAPI.createUser({firstName: token.given_name, lastName: token.family_name})
+                      let firstName = token.given_name;
+                      let lastName = token.family_name;
+                      console.log(firstName, lastName)
+                      if (firstName == undefined || lastName == undefined) {
+                        console.log("Using mail")
+                        firstName = token.email?.split('@')[0];
+                        lastName = '';
+                      }
+                      console.log(firstName, lastName)
+                      this.homeAPI.createUser({firstName: firstName, lastName: lastName})
                         .then(res => {res.subscribe(data => data)});
                     }
                   }
