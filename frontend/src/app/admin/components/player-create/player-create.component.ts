@@ -20,7 +20,8 @@ export class PlayerCreateComponent {
   player: PlayerAdminOutput = {
     human: true,
     userID: "",
-    patientZero: false
+    patientZero: false,
+    id: 0
   }
 
   patientZeroChanged() {

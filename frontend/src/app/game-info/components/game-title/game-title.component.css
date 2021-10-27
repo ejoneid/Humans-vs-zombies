@@ -11,4 +11,5 @@
   line-height: 20px;
   margin-left: 3%;
   margin-right: 3%;
+  flex-grow: 2;
 }
