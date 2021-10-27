@@ -50,7 +50,7 @@
   max-height: 97vh;
   justify-content: flex-end;
 }
-#userManual {
+.userManual {
   border: none;
   background: none;
   color: #FEA520;
