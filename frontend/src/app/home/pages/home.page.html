@@ -3,6 +3,7 @@
   <section class="loginSection">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
     <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
+    <button class="userManual" (click)="openUserManual()">User manual</button>
   </section>
   <section class="activeGamesSection">
     <section class="titleSection">
@@ -33,11 +34,12 @@
   <section class="loginSectionMobile">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
     <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
+    <button class="userManual" (click)="openUserManual()">User manual</button>
   </section>
   <section class="activeGamesSectionMobile">
     <section class="titleSection">
       <h2 class="activeGamesTitle">Active Games:</h2>
-      <button class="normalGreyButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
+      <button class="normalGreyButton" (click)="createGame()">New Game</button>
     </section>
     <ul id="activeGameListMobile">
       <app-active-game *ngFor="let game of games"
