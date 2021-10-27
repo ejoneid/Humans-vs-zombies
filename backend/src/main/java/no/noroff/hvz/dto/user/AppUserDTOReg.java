@@ -10,6 +10,9 @@ public class AppUserDTOReg {
         this.lastName = lastName;
     }
 
+    public AppUserDTOReg() {
+    }
+
     public String getFirstName() {
         return firstName;
     }

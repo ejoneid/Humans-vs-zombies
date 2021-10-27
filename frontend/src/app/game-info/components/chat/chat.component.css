@@ -1,5 +1,5 @@
 #messageContainer {
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   row-gap: 3px;

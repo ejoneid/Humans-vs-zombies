@@ -1,10 +1,10 @@
 .squadContainer {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 30vh;
 }
 #memberContainer {
   max-height: 20vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 1%;
   border-top: #FEA520 1px solid;
 }
