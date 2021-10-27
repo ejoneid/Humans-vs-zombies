@@ -14,3 +14,15 @@
   width: 50%;
   font-weight: bold;
 }
+#stateSelector {
+  align-self: flex-start;
+  margin-top: 1px;
+  font-size: 115%;
+  margin-left: 1%;
+}
+#saveButton {
+  align-self: flex-start;
+  margin-top: 1px;
+  width: 150px;
+  font-size: 140%;
+}
