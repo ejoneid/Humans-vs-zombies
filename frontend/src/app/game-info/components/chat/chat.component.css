@@ -19,8 +19,8 @@
 #buttonContainer {
   display: flex;
   justify-content: space-around;
-  margin-right: 20%;
   align-self: flex-end;
+  width: 70%;
   column-gap: 2%;
 }
 .normalGreyButton {

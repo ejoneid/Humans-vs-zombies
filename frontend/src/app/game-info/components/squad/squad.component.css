@@ -23,10 +23,10 @@ h3 {
 h2 {
   height: 5px;
 }
-.living {
+#living {
   color: #00FF00;
 }
-.dead {
+#dead {
   color: red;
 }
 .buttonContainer {

@@ -14,11 +14,12 @@
 }
 #buttonContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-right: 20%;
   align-self: flex-end;
   column-gap: 2%;
   width: 100%;
+  margin-bottom: 1%;
 }
 #chatTitle {
   align-self: flex-end;
@@ -36,6 +37,7 @@
 }
 #chatButton {
   margin-right: 17px;
+  width: 30%;
 }
 #chatInput {
   background-color: black;
@@ -48,14 +50,18 @@
 }
 .normalGreyButton {
   font-size: 150%;
+  width: 120%;
 }
 #chatHeaderContainer {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
-  padding: 1%;
+  margin-top: 1%;
+  padding-bottom: 1%;
+  margin-bottom: 1%;
   align-self: flex-end;
   flex-wrap: wrap;
+  border-bottom: #FEA520 1px solid;
 }
 .chatHeaderSelector {
   /* Buttons and selects for the chat header */
@@ -63,16 +69,20 @@
   border: 2px solid #B2BBBD;
   box-sizing: border-box;
   width: 49%;
-  height: fit-content;
+  height: 120%;
   font-family: Gemunu Libre, sans-serif;
   font-style: normal;
   font-weight: bold;
   align-items: center;
   color: #FEA520;
-  font-size: 168%;
+  font-size: 120%;
 }
 .selectorContainer {
   display: flex;
+  font-size: 100%;
+  width: 100%;
+  justify-content: space-around;
+  margin-bottom: 1%;
 }
 /****************************
  *     MOBILE ATTRIBUTES    *
