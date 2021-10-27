@@ -4,7 +4,7 @@
   flex-direction: column;
   align-content: center;
   justify-content: space-between;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-top: #FEA520 2px solid;
   align-self: flex-end;
   row-gap: 1%;
