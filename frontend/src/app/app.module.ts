@@ -11,6 +11,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatNativeDateModule} from "@angular/material/core";
 import {MomentDateModule} from '@angular/material-moment-adapter';
+import { baseURL } from 'src/assets/base-url';
 import {ErrorModule} from "./Errors/error.module";
 import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
 
@@ -40,21 +41,21 @@ import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
         allowedList: [
           {
             httpMethod: HttpMethod.Post,
-            uri: "http://localhost:8080/api/*"
+            uri: baseURL + "api/*"
           },
           {
             httpMethod: HttpMethod.Put,
-            uri: "http://localhost:8080/api/*"
+            uri: baseURL + "api/*"
           },
           {
             httpMethod: HttpMethod.Delete,
-            uri: "http://localhost:8080/api/*"
+            uri: baseURL + "api/*"
           },
           {
             httpMethod: HttpMethod.Get,
             uriMatcher: (url: string) => {
-              if (url == "http://localhost:8080/api/game") {return false}
-              if (url.match("http://localhost:8080/api/.*")) {return true}
+              if (url == baseURL + "api/game") {return false}
+              if (url.match(baseURL +"api/.*")) {return true}
               return false;
             }
           },
