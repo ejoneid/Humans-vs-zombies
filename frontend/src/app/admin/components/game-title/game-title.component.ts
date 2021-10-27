@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game-title-admin',
@@ -17,12 +18,14 @@ export class GameTitleComponent {
   @Output()
   public gameStateChange = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private readonly router: Router) { }
 
   //Called when the save button is clicked
   saveChanges(): void {
     this.gameStateChange.emit(this.gameState);
     this.gameTitleChange.emit(this.gameTitle);
   }
-
+  toHome() {
+    return this.router.navigate([""]);
+  }
 }

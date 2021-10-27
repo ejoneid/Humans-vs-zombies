@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game-title',
@@ -14,11 +15,15 @@ export class GameTitleComponent {
   @Input()
   public playerHasJoined!: boolean;
 
-  constructor() { }
+  constructor(private readonly router: Router) { }
 
   joinGameClicked(): void {
     this.playerHasJoined = true;
     this.joinGame.emit();
+  }
+
+  toHome() {
+    return this.router.navigate([""]);
   }
 
 }
