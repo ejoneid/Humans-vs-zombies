@@ -6,10 +6,6 @@ export interface MapMarker {
     lat: number,
     lng: number
   },
-  label: {
-    text: string,
-    color: string
-  },
   options: {
     icon: string,
     opacity: number
