@@ -364,6 +364,7 @@ export class GameInfoPage implements OnInit {
           res.subscribe()
         });
       this.gameInfo.squad_info = null;
+      this.gameInfo.squadCheckIns = [];
     }
   }
 }

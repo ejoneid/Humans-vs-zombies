@@ -133,13 +133,16 @@ export class MapComponent implements OnInit, OnChanges {
   /**
    * Decides whether a marker should be placed or the borders should be edited.
    * @param position where the map was clicked
+   * @param fromRectangle if the area clicked was inside the map borders.
    */
-  mapClick(position: LatLng): void {
-    if (this.changeArea) {
-      this.placeCorner(position);
-    }
-    else {
-      this.createMarker(position)
+  mapClick(position: LatLng, fromRectangle: boolean): void {
+    if (this.showBounds && fromRectangle || !this.showBounds) {
+      if (this.changeArea) {
+        this.placeCorner(position);
+      }
+      else {
+        this.createMarker(position)
+      }
     }
   }
 
