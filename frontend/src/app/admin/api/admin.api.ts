@@ -55,6 +55,9 @@ export class AdminAPI {
   public async createPlayer(gameID: number, player: PlayerAdminOutput): Promise<Observable<any>> {
     return await this.http.post<any>(baseURL+"api/game/"+gameID+"/player", player);
   }
+  public async deletePlayer(gameID: number,  playerID: number): Promise<Observable<any>> {
+    return await this.http.delete(baseURL+"api/game/"+gameID+"/player/"+playerID);
+  }
   public async getAllUsers(): Promise<Observable<any>> {
     return await this.http.get<any>(baseURL+"api/user");
   }
