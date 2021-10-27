@@ -36,10 +36,18 @@ export class PlayersComponent {
     const dialogRef = this.dialog.open(PlayerEditComponent, {data: player});
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.adminAPI.updatePlayer(this.gameID, player.id, result)
-          .then(res => res.subscribe(
-            () => this.playerUpdate.emit()
-          ));
+        if (result) {
+          this.adminAPI.updatePlayer(this.gameID, player.id, result)
+            .then(res => res.subscribe(
+              () => this.playerUpdate.emit()
+            ));
+        }
+        else {
+          this.adminAPI.deletePlayer(this.gameID, player.id)
+            .then(res => res.subscribe(
+              () => this.playerUpdate.emit()
+            ));
+        }
       }
     });
   }
