@@ -13,11 +13,10 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
     markers.push({
       id: mission.id,
       type: "MISSION",
-      description: mission.description,
+      description: mission.name + "<br><br>" + mission.description,
       position: {lat: mission.lat, lng: mission.lng},
-      label: {text: mission.name, color: "#B2BBBD"},
       options: {icon: "../assets/mission-icon.png", opacity: 1.0},
-      title: mission.name
+      title: ""
     });
   }
   for (let kill of kills) {
@@ -25,11 +24,10 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
       markers.push({
         id: kill.id,
         type: "KILL",
-        description: kill.story,
+        description: kill.killerName + " killed " + kill.victimName + "<br><br>" + kill.story,
         position: {lat: kill.lat, lng: kill.lng},
-        label: {text: kill.victimName, color: "#B2BBBD"},
         options: {icon: "../assets/tombstone-icon.png", opacity: 1.0},
-        title: kill.killerName
+        title: ""
       });
     }
   }
@@ -37,48 +35,43 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
     markers.push({
       id: checkIn.id,
       type: "CHECKIN",
-      description: checkIn.time,
+      description: checkIn.member.name + " @ " + checkIn.time,
       position: {lat: checkIn.lat, lng: checkIn.lng},
-      label: {text: checkIn.member.name, color: "#B2BBBD"},
       options: {icon: "../assets/check-in-icon.png", opacity: 1.0},
-      title: checkIn.member.name
+      title: ""
     })
   }
   if (mapBorders.nw_lat != null && mapBorders.nw_long != null && mapBorders.se_lat != null && mapBorders.se_long != null) {
     markers.push({
       description: "",
       id: 0,
-      label: {color: "", text: ""},
       options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.nw_long},
-      title: "topLeft",
+      title: "",
       type: "BORDER"
     })
     markers.push({
       description: "",
       id: 0,
-      label: {color: "", text: ""},
       options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.nw_lat, lng: mapBorders.se_long},
-      title: "topRight",
+      title: "",
       type: "BORDER"
     })
     markers.push({
       description: "",
       id: 0,
-      label: {color: "", text: ""},
       options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.se_lat, lng: mapBorders.nw_long},
-      title: "bottomLeft",
+      title: "",
       type: "BORDER"
     })
     markers.push({
       description: "",
       id: 0,
-      label: {color: "", text: ""},
       options: {icon: "", opacity: 0.0},
       position: {lat: mapBorders.se_lat, lng: mapBorders.se_long},
-      title: "bottomRight",
+      title: "",
       type: "BORDER"
     })
   }

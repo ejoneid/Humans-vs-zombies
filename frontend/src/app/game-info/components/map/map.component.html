@@ -9,7 +9,6 @@
     <map-rectangle [bounds]="bounds" [options]="mapRectangleOptions" *ngIf="showBounds"></map-rectangle>
     <map-marker #mapMarker="mapMarker"
       *ngFor="let marker of markers"
-      [label]="marker.label"
       [position]="marker.position"
       [options]="marker.options"
       (mapClick)="openInfoWindow(mapMarker, marker.description)"
@@ -27,7 +26,6 @@
     <map-rectangle [bounds]="bounds"></map-rectangle>
     <map-marker #mapMarker="mapMarker"
                 *ngFor="let marker of markers"
-                [label]="marker.label"
                 [position]="marker.position"
                 [options]="marker.options"
                 (mapClick)="openInfoWindow(mapMarker, marker.description)"
