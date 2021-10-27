@@ -18,6 +18,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/api/websocket").setAllowedOrigins("http://localhost:4200").withSockJS();
+        registry.addEndpoint("/api/websocket").setAllowedOrigins("http://localhost:4200", "https://humans-versus-zombies.herokuapp.com").withSockJS();
     }
 }
