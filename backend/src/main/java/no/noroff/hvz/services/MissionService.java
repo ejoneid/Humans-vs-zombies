@@ -5,12 +5,12 @@ import no.noroff.hvz.models.Mission;
 import no.noroff.hvz.repositories.GameRepository;
 import no.noroff.hvz.repositories.MissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +39,7 @@ public class MissionService {
      * Method for getting all missions for a faction in a game
      * @param gameID ID of game
      * @param isHuman true for human faction
-     * @return list of faction missions in agme
+     * @return list of faction missions in game
      */
     public List<Mission> getAllMissionsFaction(Long gameID, boolean isHuman) {
         List<Mission> missions = null;

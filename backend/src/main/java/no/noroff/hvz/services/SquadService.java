@@ -1,8 +1,7 @@
 package no.noroff.hvz.services;
 
 import no.noroff.hvz.dto.squad.SquadDTOUpdate;
-import no.noroff.hvz.exceptions.AppUserAlreadyExistException;
-import no.noroff.hvz.exceptions.AppUserNotFoundException;
+import no.noroff.hvz.exceptions.MissingPermissionsException;
 import no.noroff.hvz.exceptions.PlayerAlreadyExistException;
 import no.noroff.hvz.mapper.CustomMapper;
 import no.noroff.hvz.models.*;
@@ -58,6 +57,7 @@ public class SquadService {
         Squad squad = new Squad();
         if (playerRepository.existsById(playerID) && gameRepository.existsById(gameID)) {
             SquadMember member= squadMemberRepository.getByPlayer(playerRepository.getById(playerID));
+            if (member == null) throw new NoSuchElementException("No squad exists for this player.");
             squad = squadRepository.getById(member.getSquad().getId());
         }
         return squad;
@@ -117,7 +117,6 @@ public class SquadService {
     public Message createSquadChat(Long gameID, Long squadID, AppUser user, Message message) {
         Message chat;
         if(!(gameRepository.existsById(gameID) && squadRepository.existsById(squadID))) throw new NoSuchElementException();
-        //TODO fiks dette, skal ikke være nødvendig hvis message objektet lages fra messageDTO
         message.setGame(gameRepository.getById(gameID));
         message.setSquad(squadRepository.getById(squadID));
         message.setUser(user);
@@ -160,5 +159,17 @@ public class SquadService {
 
     public SquadMember getSquadMemberByPlayer(Player player) {
         return squadMemberRepository.getByPlayer(player);
+    }
+
+    public SquadMember leaveSquad(Long gameID, Long squadID, Player player) throws MissingPermissionsException {
+        if(!gameRepository.existsById(gameID) || !squadRepository.existsById(squadID)) {
+            throw  new NoSuchElementException("No such player in the squad");
+        }
+        SquadMember leaver = getSquadMemberByPlayer(player);
+        if(!leaver.getSquad().getId().equals(squadID)) {
+            throw new MissingPermissionsException("Cannot leave a squad you are not a member in");
+        }
+        squadMemberRepository.delete(leaver);
+        return leaver;
     }
 }

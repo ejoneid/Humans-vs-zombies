@@ -1,35 +1,34 @@
 package no.noroff.hvz.dto.game;
 
+import java.util.Date;
+
+@SuppressWarnings("unused")
 public class GameDTO {
 
     private Long id;
     private String name;
     private String gameState;
     private String description;
+    private int playerAmount;
     private String nw_lat;
     private String se_lat;
     private String nw_long;
     private String se_long;
-    private String squadsUrl;
-    private String missionsUrl;
-    private String killsUrl;
-    private String chatUrl;
-    private String playersUrl;
+    private Date startDate;
+    private Date endDate;
 
-    public GameDTO(Long id, String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
+    public GameDTO(Long id, String name, String gameState, String description, int playerAmount, String nw_lat, String se_lat, String nw_long, String se_long, Date startDate, Date endDate) {
         this.id = id;
         this.name = name;
         this.gameState = gameState;
         this.description = description;
+        this.playerAmount = playerAmount;
         this.nw_lat = nw_lat;
         this.se_lat = se_lat;
         this.nw_long = nw_long;
         this.se_long = se_long;
-        this.squadsUrl = squadsUrl;
-        this.missionsUrl = missionsUrl;
-        this.killsUrl = killsUrl;
-        this.chatUrl = chatUrl;
-        this.playersUrl = playersUrl;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -96,43 +95,27 @@ public class GameDTO {
         this.se_long = se_long;
     }
 
-    public String getSquadsUrl() {
-        return squadsUrl;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setSquadsUrl(String squadsUrl) {
-        this.squadsUrl = squadsUrl;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public String getMissionsUrl() {
-        return missionsUrl;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setMissionsUrl(String missionsUrl) {
-        this.missionsUrl = missionsUrl;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public String getKillsUrl() {
-        return killsUrl;
+    public int getPlayerAmount() {
+        return playerAmount;
     }
 
-    public void setKillsUrl(String killsUrl) {
-        this.killsUrl = killsUrl;
-    }
-
-    public String getChatUrl() {
-        return chatUrl;
-    }
-
-    public void setChatUrl(String chatUrl) {
-        this.chatUrl = chatUrl;
-    }
-
-    public String getPlayersUrl() {
-        return playersUrl;
-    }
-
-    public void setPlayersUrl(String playersUrl) {
-        this.playersUrl = playersUrl;
+    public void setPlayerAmount(int playerAmount) {
+        this.playerAmount = playerAmount;
     }
 }

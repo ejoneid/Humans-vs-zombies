@@ -1,17 +1,14 @@
 export interface MapMarker {
   id: number,
-  isMission: boolean,
+  type: string,
   description: string | null,
   position: {
     lat: number,
     lng: number
   },
-  label: {
-    text: string,
-    color: string
-  },
   options: {
-    icon: string
+    icon: string,
+    opacity: number
   },
   title: string
 }

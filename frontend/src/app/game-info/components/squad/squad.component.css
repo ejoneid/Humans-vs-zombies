@@ -1,3 +1,7 @@
+.squadContainer {
+  overflow-y: scroll;
+  max-height: 30vh;
+}
 #memberContainer {
   max-height: 20vh;
   overflow-y: scroll;
@@ -19,9 +23,29 @@ h3 {
 h2 {
   height: 5px;
 }
-#living {
+.living {
   color: #00FF00;
 }
-#dead {
+.dead {
   color: red;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/****************************
+ *     MOBILE ATTRIBUTES    *
+ ****************************/
+#memberContainerMobile {
+  margin-top: 1%;
+  width: 100%;
+  border-top: #FEA520 1px solid;
+}
+#memberItemMobile {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border-bottom: #FEA520 solid 1px;
+  margin-right: 5px;
 }

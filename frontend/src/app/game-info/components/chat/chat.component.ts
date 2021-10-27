@@ -15,11 +15,17 @@ export class ChatComponent {
   @Input()
   public playerHasSquad: boolean = false;
 
+  @Input()
+  public playerHasGame: boolean = false;
+
   public selectedChat: string = "GLOBAL";
 
   public submitText: String = "";
 
-  constructor() { }
+  public isMobile: boolean;
+
+  constructor() {
+    this.isMobile = window.innerWidth < 768; }
 
   // Emits a request to load the correct chat
   @Output() globalChat: EventEmitter<any> = new EventEmitter<any>();

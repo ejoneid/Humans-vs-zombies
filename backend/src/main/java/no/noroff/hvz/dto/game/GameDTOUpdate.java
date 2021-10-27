@@ -1,5 +1,8 @@
 package no.noroff.hvz.dto.game;
 
+import java.util.Date;
+
+@SuppressWarnings("unused")
 public class GameDTOUpdate {
 
     private String name;
@@ -9,16 +12,8 @@ public class GameDTOUpdate {
     private String se_lat;
     private String nw_long;
     private String se_long;
-
-    public GameDTOUpdate( String name, String gameState, String description, String nw_lat, String se_lat, String nw_long, String se_long, String squadsUrl, String missionsUrl, String killsUrl, String chatUrl, String playersUrl) {
-        this.name = name;
-        this.gameState = gameState;
-        this.description = description;
-        this.nw_lat = nw_lat;
-        this.se_lat = se_lat;
-        this.nw_long = nw_long;
-        this.se_long = se_long;
-    }
+    private Date startDate;
+    private Date endDate;
 
     public String getName() {
         return name;
@@ -76,5 +71,19 @@ public class GameDTOUpdate {
         this.se_long = se_long;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
 
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 }

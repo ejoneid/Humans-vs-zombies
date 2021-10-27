@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.mission;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class MissionDTO {
 
     private Long id;

@@ -14,8 +14,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 class AppStartupRunner implements ApplicationRunner {
@@ -61,14 +59,14 @@ class AppStartupRunner implements ApplicationRunner {
     GameService gameService;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         logger.info("Your application started with option names : {}", args.getOptionNames());
 
         AppUser user1 = new AppUser();
         AppUser user2 = new AppUser();
         AppUser user3 = new AppUser();
 
-        AppUser patrick = new AppUser();
+//        AppUser patrick = new AppUser();
         AppUser fredrik = new AppUser();
 
         Game game1 = new Game();
@@ -97,7 +95,7 @@ class AppStartupRunner implements ApplicationRunner {
         Player player4 = new Player();
         Player player5 = new Player();
 
-        Player playerPatrick = new Player();
+//        Player playerPatrick = new Player();
         Player playerFredrik = new Player();
 
         Squad squad1 = new Squad();
@@ -107,24 +105,24 @@ class AppStartupRunner implements ApplicationRunner {
 
         SquadMember member1 = new SquadMember();
         SquadMember member2 = new SquadMember();
-        SquadMember memberPatrick = new SquadMember();
+//        SquadMember memberPatrick = new SquadMember();
         SquadMember memberFredrik = new SquadMember();
 
         game1.setGameState("Registration");
         game1.setName("Game numero uno");
         game1.setDescription("An open game, which is numero uno");
         game1.setNw_lat("59.934319");
-        game1.setNw_long("10.695490");
+        game1.setSe_long("10.695490");
         game1.setSe_lat("59.884573");
-        game1.setSe_long("10.833259");
+        game1.setNw_long("10.833259");
 
         game2.setGameState("Complete");
         game2.setName("Game numero dos");
         game2.setDescription("A closed game, which is numero dos");
         game2.setNw_lat("59.413878");
-        game2.setNw_long("17.807955");
+        game2.setSe_long("17.807955");
         game2.setSe_lat("59.261201");
-        game2.setSe_long("18.203022");
+        game2.setNw_long("18.203022");
 
         if (gameRepository.count() == 0) {
             gameRepository.save(game1);
@@ -176,9 +174,9 @@ class AppStartupRunner implements ApplicationRunner {
         user3.setLastName("Johnsen");
         user3.setOpenId("openId3");
 
-        patrick.setFirstName("Patrick");
-        patrick.setLastName("Haukaa");
-        patrick.setOpenId("google-oauth2|112037027886754103927");
+//        patrick.setFirstName("Patrick");
+//        patrick.setLastName("Haukaa");
+//        patrick.setOpenId("google-oauth2|112037027886754103927");
         fredrik.setFirstName("Fredrik");
         fredrik.setLastName("Rikheim");
         fredrik.setOpenId("google-oauth2|108443371955945011845");
@@ -187,7 +185,7 @@ class AppStartupRunner implements ApplicationRunner {
             user1 = appUserRepository.save(user1);
             user2 = appUserRepository.save(user2);
             user3 = appUserRepository.save(user3);
-            patrick = appUserRepository.save(patrick);
+//            patrick = appUserRepository.save(patrick);
             fredrik = appUserRepository.save(fredrik);
         }
 
@@ -211,9 +209,9 @@ class AppStartupRunner implements ApplicationRunner {
         player5.setUser(user3);
         player5.setPatientZero(false);
 
-        playerPatrick.setHuman(true);
-        playerPatrick.setUser(patrick);
-        playerPatrick.setPatientZero(false);
+//        playerPatrick.setHuman(true);
+//        playerPatrick.setUser(patrick);
+//        playerPatrick.setPatientZero(false);
         playerFredrik.setHuman(true);
         playerFredrik.setUser(fredrik);
         playerFredrik.setPatientZero(false);
@@ -223,7 +221,7 @@ class AppStartupRunner implements ApplicationRunner {
         playerService.createNewPlayer(1L, player3);
         playerService.createNewPlayer(2L, player4);
         playerService.createNewPlayer(2L, player5);
-        playerService.createNewPlayer(1L, playerPatrick);
+//        playerService.createNewPlayer(1L, playerPatrick);
         playerService.createNewPlayer(1L, playerFredrik);
 
 

@@ -1,5 +1,5 @@
 export interface PlayerAdminOutput {
-  openID: string,
+  userID: string,
   human: boolean,
   patientZero: boolean
 }

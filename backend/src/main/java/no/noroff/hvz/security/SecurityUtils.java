@@ -17,7 +17,7 @@ public class SecurityUtils {
     }
 
     public static JSONObject getTokenPayload(String bearerToken) throws Exception {
-        String token = bearerToken.substring(7, bearerToken.length());
+        String token = bearerToken.substring(7);
 
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getDecoder();
@@ -27,7 +27,7 @@ public class SecurityUtils {
     }
 
     public static JSONObject getTokenHeaders(String bearerToken) throws Exception {
-        String token = bearerToken.substring(7, bearerToken.length());
+        String token = bearerToken.substring(7);
 
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getDecoder();

@@ -1,19 +1,37 @@
-<button (click)="toggleAreaChange()">Change area</button>
-<p *ngIf="changeArea">Changing map corners</p>
 <section class="greyBackground">
   <!--Needs both the versions of width and height to work-->
-  <google-map #gmap
+  <google-map *ngIf="!isMobile"
               [options]="options"
               height="100%" width="100%"
               style="height: 100%; width: 100%"
               (mapClick)="mapClick($event.latLng)"
   >
+    <map-rectangle [bounds]="bounds" [options]="mapRectangleOptions" *ngIf="showBounds"></map-rectangle>
     <map-marker
       *ngFor="let marker of markers"
-      [label]="marker.label"
       [position]="marker.position"
       [options]="marker.options"
-      (mapClick)="editMarker(marker.id, marker.isMission)">
+      (mapClick)="editMarker(marker.id, marker.type)">
     </map-marker>
   </google-map>
+
+
+<!-- ************************************************  MOBILE VIEW  ************************************************ -->
+  <google-map *ngIf="isMobile"
+              [options]="options"
+              height="30vh" width="100%"
+              style="height: 100%; width: 100%"
+              (mapClick)="mapClick($event.latLng)"
+  >
+    <map-marker
+      *ngFor="let marker of markers"
+      [position]="marker.position"
+      [options]="marker.options"
+      (mapClick)="editMarker(marker.id, marker.type)">
+    </map-marker>
+  </google-map>
+  <section id="changeContainer">
+    <button class="normalGreyButton" id="changeButton" (click)="toggleAreaChange()">Change game area</button>
+    <p id="changeText" *ngIf="changeArea">Changing map corners</p>
+  </section>
 </section>

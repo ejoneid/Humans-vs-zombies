@@ -1,5 +1,6 @@
 package no.noroff.hvz.dto.user;
 
+@SuppressWarnings("unused")
 public class AppUserDTOReg {
     private String firstName;
     private String lastName;

@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value( "${auth0.audience}" )
     private String audience;
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuer;
 

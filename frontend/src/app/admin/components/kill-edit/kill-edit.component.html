@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <mat-form-field appearance="fill">
+  <mat-form-field class="text" appearance="fill">
     <mat-label>Killer Name</mat-label>
     <select matNativeControl (change)="selectKiller($event)">
       <option *ngFor="let killer of data.ids" [value]="killer.id"
@@ -7,7 +7,7 @@
     </select>
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field class="text" appearance="fill">
     <mat-label>Victim Name</mat-label>
     <select matNativeControl (change)="selectVictim($event)">
       <option *ngFor="let victim of data.biteCodes" [value]="victim.biteCode"
@@ -15,12 +15,12 @@
     </select>
   </mat-form-field>
 
-  <textarea id="story" cdkTextareaAutosize
+  <textarea class="text" id="story" cdkTextareaAutosize maxlength="255"
       [(ngModel)]="data.story" placeholder="Kill Story (Optional)"></textarea>
-  <mat-label>When did the kill happen? (Required):</mat-label>
-  <section id="dateTimeContainer">
+  <mat-label class="text">When did the kill happen? (Required):</mat-label>
+  <section class="text" id="dateTimeContainer">
     <mat-form-field appearance="fill">
-      <input matInput [matDatepicker]="startPicker" placeholder="Start date" [(ngModel)]="data.timeOfDeath">
+      <input matInput [matDatepicker]="startPicker" placeholder="Time of death" [(ngModel)]="data.timeOfDeath">
       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
     </mat-form-field>

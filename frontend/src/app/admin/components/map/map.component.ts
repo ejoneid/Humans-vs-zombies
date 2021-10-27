@@ -1,8 +1,8 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
-import {options} from "src/assets/map-options";
+import {mapRectangleOptions, options} from "src/assets/map-options";
 import {MapBorder} from "../../../models/input/map-border.model";
 import {Kill} from "../../../models/input/kill.model";
 import {Mission} from "../../../models/input/mission.model";
@@ -15,6 +15,8 @@ import {CreateMarkerComponent} from "../create-marker/create-marker.component";
 import {KillEditComponent} from "../kill-edit/kill-edit.component";
 import {KillOutput} from "../../../models/output/kill-output.model";
 import {createMapMarkers} from "../../../shared/maps/map.functions";
+import {SquadCheckIn} from "../../../models/input/squad-check-in.model";
+import LatLngBounds = google.maps.LatLngBounds;
 
 @Component({
   selector: 'app-map-admin',
@@ -34,6 +36,8 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() //Missions in the game
   missions!: Mission[];
   @Input()
+  squadCheckIns!: SquadCheckIn[];
+  @Input()
   public gameID!: number;
   @Input() //The names of the humans in the game and their corresponding bite codes
   public biteCodes!: {name: string, biteCode: string}[];
@@ -44,13 +48,12 @@ export class MapComponent implements OnInit, OnChanges {
   @Output() //Emits whenever a kill is updated
   killUpdate: EventEmitter<any> = new EventEmitter<any>();
 
-  //Is defined from ngAfterViewInit()
-  @ViewChild("gmap") gmap!: ElementRef; //The Google Map component
-
   apiLoaded!: Observable<boolean>;
 
   //Initial settings for the Google Map
   options: google.maps.MapOptions = options;
+
+  mapRectangleOptions: google.maps.RectangleOptions = mapRectangleOptions;
 
   //Markers for the Google Map are put here
   markers: MapMarker[] = [];
@@ -62,7 +65,14 @@ export class MapComponent implements OnInit, OnChanges {
   //The current borders of the map
   corners: {nw: LatLng | null, se: LatLng | null} = {nw: null, se: null}
 
+  public isMobile: boolean;
+  public centerNotChanged = true;
+  public bounds = new LatLngBounds(new LatLng(0,0), new LatLng(0,0));
+  public showBounds = true;
+  public center!: LatLng;
+
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
+    this.isMobile = window.innerWidth < 768;
   }
 
   /**
@@ -77,6 +87,11 @@ export class MapComponent implements OnInit, OnChanges {
           south: this.mapInfo.se_lat,
           west: this.mapInfo.nw_long
         }};
+      this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.nw_long - (this.mapInfo.nw_long - this.mapInfo.se_long));
+      this.showBounds = true;
+    }
+    else {
+      this.center = new LatLng(52.9, 51.8);
     }
     this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDLrbUDvEj78cTcTCheVdJbIH5IT5xPAkQ', 'initMap')
       .pipe(
@@ -90,12 +105,20 @@ export class MapComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     //Resetting the markers so that they dont get loaded twice when changes are made.
-    this.markers = createMapMarkers(this.kills, this.missions);
+    this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
+      const ne = new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long)
+      const sw = new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long)
       this.corners = {
-        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.nw_long),
-        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.se_long)
+        nw: ne,
+        se: sw
       };
+      this.showBounds = true;
+      this.bounds = new LatLngBounds(ne,sw);
+      if (this.centerNotChanged) {
+        this.center = this.bounds.getCenter();
+        this.centerNotChanged = false;
+      }
     }
   }
 
@@ -134,6 +157,7 @@ export class MapComponent implements OnInit, OnChanges {
       this.corners.se = position;
       this.mapInfo!.se_lat = position.lat()
       this.mapInfo!.se_long = position.lng()
+      this.showBounds = true;
     }
     this.lastNorthWest = !this.lastNorthWest;
   }
@@ -141,16 +165,16 @@ export class MapComponent implements OnInit, OnChanges {
   /**
    * Checks if the selected marker is for a kill or a mission and opens the proper method.
    * @param id what is the id of the marker (Used to find it in the kills and missions lists)
-   * @param isMission should a mission or kill be edited
+   * @param type should a mission or kill be edited
    */
-  public editMarker(id: number, isMission: boolean): void {
-    if (isMission) {
+  public editMarker(id: number, type: string): void {
+    if (type === "MISSION") {
       const mission = this.missions.find(m => m.id === id);
       if (mission != undefined) {
         this.editMission(mission);
       }
     }
-    else {
+    else if (type === "KILL") {
       const kill = this.kills.find(k => k.id === id);
       if (kill != undefined) {
         this.editKill(kill);
@@ -174,7 +198,7 @@ export class MapComponent implements OnInit, OnChanges {
         if (result) {
           this.createMission(position);
         }
-        else {
+        else if ( result === false){
           this.createKill(position);
         }
     });

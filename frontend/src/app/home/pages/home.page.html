@@ -2,22 +2,25 @@
 <main class="homePageContainer" *ngIf="!isMobile">
   <section class="loginSection">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
+    <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSection">
     <section class="titleSection">
       <h2 class="activeGamesTitle">Active Games:</h2>
-      <button class="normalGreyButton" (click)="createGame()">New Game</button><!--TODO: Check if admin before this is shown-->
+      <button class="normalGreyButton" (click)="createGame()" *ngIf="isAdmin">New Game</button>
     </section>
     <ul id="activeGameList">
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"
                        [gameName]="game.name"
-                       [gameStart]="'05.10'"
-                       [gameEnd]="'31.10'"
+                       [startTime]="game.startTime"
+                       [endTime]="game.endTime"
                        [gameStatus]="game.gameState"
-                       [activePlayers]="players"
+                       [activePlayer]="player"
                        [isMobile]="isMobile"
+                       [isAdmin]="isAdmin"
+                       [playerAmount]="game.playerAmount"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>
@@ -29,7 +32,7 @@
 <main class="homePageContainerMobile" *ngIf="isMobile">
   <section class="loginSectionMobile">
     <img src="assets/HvZ_logo.png" class="logo" alt="HvZ logo">
-    <app-auth-button [(players)]="players" [isMobile]="isMobile"></app-auth-button>
+    <app-auth-button (playerChange)="userLoaded($event)" [isMobile]="isMobile"></app-auth-button>
   </section>
   <section class="activeGamesSectionMobile">
     <section class="titleSection">
@@ -40,11 +43,12 @@
       <app-active-game *ngFor="let game of games"
                        [gameId]="game.id"
                        [gameName]="game.name"
-                       [gameStart]="'05.10'"
-                       [gameEnd]="'31.10'"
+                       [startTime]="game.startTime"
+                       [endTime]="game.endTime"
                        [gameStatus]="game.gameState"
-                       [activePlayers]="players"
+                       [activePlayer]="player"
                        [isMobile]="isMobile"
+                       [playerID]="game.playerID"
                        class="activeGameElement"
       ></app-active-game>
     </ul>

@@ -1,7 +1,8 @@
 package no.noroff.hvz.dto.game;
 
-import javax.persistence.Column;
+import java.util.Date;
 
+@SuppressWarnings("unused")
 public class GameDTOReg {
 
     private String name;
@@ -10,15 +11,8 @@ public class GameDTOReg {
     private String se_lat;
     private String nw_long;
     private String se_long;
-
-    public GameDTOReg(String name, String description, String nw_lat, String se_lat, String nw_long, String se_long) {
-        this.name = name;
-        this.description = description;
-        this.nw_lat = nw_lat;
-        this.se_lat = se_lat;
-        this.nw_long = nw_long;
-        this.se_long = se_long;
-    }
+    private Date startDate;
+    private Date endDate;
 
     public String getName() {
         return name;
@@ -66,5 +60,21 @@ public class GameDTOReg {
 
     public void setSe_long(String se_long) {
         this.se_long = se_long;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

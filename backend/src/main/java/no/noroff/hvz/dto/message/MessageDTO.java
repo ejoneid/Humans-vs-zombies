@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.message;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class MessageDTO {
     private Long id;
     private String message;

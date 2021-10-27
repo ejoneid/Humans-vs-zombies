@@ -12,26 +12,30 @@ export class PlayerCreateComponent {
 
   constructor(public dialogRef: MatDialogRef<PlayerCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {gameID: number, allUsers: User[]}) {
     this.gameID = data.gameID;
-    this.player.openID = this.data.allUsers[0].openID
+    this.player.userID = this.data.allUsers[0].openID
   }
 
   public gameID!: number;
 
   player: PlayerAdminOutput = {
     human: true,
-    openID: "",
+    userID: "",
     patientZero: false
   }
 
+  patientZeroChanged() {
+    if (this.player.patientZero) this.player.human = false;
+  }
+
   selectPlayer(event: Event) {
-    this.player.openID = (event.target as HTMLSelectElement).value;
+    this.player.userID = (event.target as HTMLSelectElement).value;
   }
 
   /*
   Returns the values of the created player
    */
   closeDialog() {
-    if (this.player.openID != undefined && this.player.openID.length > 0) {
+    if (this.player.userID != undefined && this.player.userID.length > 0) {
         this.dialogRef.close(this.player);
     }
   }

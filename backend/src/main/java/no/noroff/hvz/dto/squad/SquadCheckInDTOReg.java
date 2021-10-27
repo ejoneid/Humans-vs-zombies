@@ -1,9 +1,6 @@
 package no.noroff.hvz.dto.squad;
 
-import no.noroff.hvz.dto.player.PlayerDTO;
-
-import java.util.Date;
-
+@SuppressWarnings("unused")
 public class SquadCheckInDTOReg {
 
     private String lat;

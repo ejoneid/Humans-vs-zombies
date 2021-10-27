@@ -2,6 +2,7 @@ package no.noroff.hvz.dto.mission;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class MissionDTOReg {
     private String name;
     private String description;

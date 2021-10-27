@@ -1,7 +1,7 @@
 
 export const options: google.maps.MapOptions = {
   center: { lat: 59.9115856, lng: 10.750967 },
-  zoom: 14,
+  zoom: 11,
   disableDefaultUI: true,
   styles: [
     {
@@ -283,3 +283,9 @@ export const options: google.maps.MapOptions = {
     }
   ],
 };
+
+
+export const mapRectangleOptions: google.maps.RectangleOptions = {
+  fillOpacity: 0.0,
+  strokeColor: "#00FF00",
+}

@@ -15,9 +15,11 @@ export class HomePage implements OnInit {
 
   private activeGames: ActiveGame[] = [];
 
-  public players: UserPlayer[] = [];
+  public player: UserPlayer | null = null;
 
   public isMobile: boolean;
+
+  public isAdmin: boolean = false;
 
   constructor(private readonly homeAPI: HomeAPI, private dialog: MatDialog, private readonly router: Router) {
     this.isMobile = window.innerWidth < 768;
@@ -28,11 +30,27 @@ export class HomePage implements OnInit {
     this.homeAPI.getGames()
       .subscribe((games) => {
         for (let game of games) {
-          this.activeGames.push(
-            {id: game.id, name: game.name, gameState: game.gameState}
-          )
+          this.activeGames.push({
+              id: game.id,
+              name: game.name,
+              gameState: game.gameState,
+              playerAmount: game.playerAmount,
+              startTime: game.startDate,
+              endTime: game.endDate,
+              playerID: null
+            });
         }
-      })
+      });
+  }
+
+  userLoaded(data :{admin: boolean, players: UserPlayer[]}) {
+    this.isAdmin = data.admin;
+    for (let player of data.players) {
+      const game: ActiveGame | undefined = this.activeGames.find(g => g.id === player.gameID)
+      if (game != undefined) {
+        game.playerID = player.id
+      }
+    }
   }
 
   createGame(): void {
@@ -51,5 +69,9 @@ export class HomePage implements OnInit {
 
   public get games(): ActiveGame[] {
     return this.activeGames;
+  }
+
+  public localError() {
+    throw Error('The home page has thrown an error!');
   }
 }

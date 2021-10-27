@@ -66,6 +66,19 @@
   line-height: 20px;
   margin: 0;
 }
+#header {
+  display: flex;
+  justify-content: space-between;
+}
+#dateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-bottom: 2%;
+}
+.dateText {
+  margin: 0;
+}
 /****************************
  *     MOBILE ATTRIBUTES    *
  ****************************/

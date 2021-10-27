@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 @Component
 public class Mapper {
 
-    private final String url = "/api/game/";
-
     @Autowired
     private PlayerService playerService;
 
@@ -50,7 +48,7 @@ public class Mapper {
 
     /**
      * Method for mapping missionDTO
-     * includes id, name, description, startime, endtime, faction, coordinates and gameID
+     * includes id, name, description, startTime, endTime, faction, coordinates and gameID
      * @param mission the mission
      * @return DTO of the mission
      */
@@ -65,29 +63,20 @@ public class Mapper {
      * @return Mission
      */
     public Mission toMission(MissionDTOReg missionDTO, long gameId) {
-        //Gets the game form the database and uses the infor from the DTO to create the mission
+        //Gets the game form the database and uses the information from the DTO to create the mission
         Game game = gameService.getSpecificGame(gameId);
         return new Mission(missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
     public Mission toMissionUpdate(MissionDTOReg missionDTO, long gameId, Long missionID) {
-        //Gets the game form the database and uses the infor from the DTO to create the mission
+        //Gets the game form the database and uses the information from the DTO to create the mission
         Game game = gameService.getSpecificGame(gameId);
         return new Mission(missionID,missionDTO.getName(), missionDTO.isHuman(), missionDTO.getDescription(),
                 missionDTO.getStartTime(), missionDTO.getEndTime(), missionDTO.getLat(), missionDTO.getLng(), game);
     }
 
 
-    /**
-     * Method for mapping DTO for user
-     * Includes firstname and lastname
-     * @param user AppUser
-     * @return DTO
-     */
-    public AppUserDTOReg toAppUserDTOReg(AppUser user) {
-        return new AppUserDTOReg(user.getFirstName(), user.getLastName());
-    }
 
     /**
      * Method for mapping DTO for user
@@ -95,9 +84,9 @@ public class Mapper {
      * @param user AppUser
      * @return DTO
      */
-    public AppUserDTOFull toAppUserDTOFull(AppUser user) {
+    public AppUserDTOFull toAppUserDTOFull(AppUser user, boolean isAdmin) {
         return new AppUserDTOFull(user.getOpenId(), user.getFirstName(), user.getLastName(),
-                user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet())
+                user.getPlayers().stream().map(this::toPlayerDTOFull).collect(Collectors.toSet()), isAdmin
         );
     }
 
@@ -120,7 +109,7 @@ public class Mapper {
      * @return a new game
      */
     public Game toGame(GameDTOReg gameDTO) {
-        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long());
+        return new Game(gameDTO.getName(),"Registration", gameDTO.getDescription(), gameDTO.getNw_lat(), gameDTO.getSe_lat(), gameDTO.getNw_long(), gameDTO.getSe_long(), gameDTO.getStartDate(), gameDTO.getEndDate());
     }
 
     /**
@@ -140,6 +129,8 @@ public class Mapper {
         game.setSe_lat(gameDTOUpdate.getSe_lat());
         game.setNw_long(gameDTOUpdate.getNw_long());
         game.setSe_long(gameDTOUpdate.getSe_long());
+        game.setStartDate(gameDTOUpdate.getStartDate());
+        game.setEndDate(gameDTOUpdate.getEndDate());
         return game;
     }
 
@@ -150,19 +141,20 @@ public class Mapper {
      * @return DTO of game
      */
     public GameDTO toGameDTO(Game game) {
-        String gameUrl = url + game.getId();
-        String squadsUrl = gameUrl + "/squad";
-        String missionsUrl = gameUrl + "/mission";
-        String killsUrl = gameUrl + "/kill";
-        String chatUrl = gameUrl + "/chat";
-        String playersUrl = gameUrl + "/player";
-        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), game.getNw_lat(), game.getSe_lat(),
-                game.getNw_long(),game.getSe_long(),squadsUrl, missionsUrl, killsUrl, chatUrl, playersUrl);
+        int playerAmount;
+        if(game.getPlayers() == null) {
+            playerAmount = 0;
+        }
+        else {
+            playerAmount =game.getPlayers().size();
+        }
+        return new GameDTO(game.getId(), game.getName(),game.getGameState(), game.getDescription(), playerAmount, game.getNw_lat(), game.getSe_lat(),
+                game.getNw_long(),game.getSe_long(), game.getStartDate(), game.getEndDate());
     }
 
     /**
      * Method for mapping from Kill til DTO
-     * Includs ID, timeOfDeath, story, coordinates and the names of killer and victim
+     * Includes ID, timeOfDeath, story, coordinates and the names of killer and victim
      * @param kill kill object
      * @return kill DTO
      */
@@ -177,11 +169,11 @@ public class Mapper {
      * Method for mapping from DTO with new content to a new kill
      * @param killDTO DTO with new content
      * @return the new kill
-     * @throws InvalidBiteCodeException if the bitecode provided in the dto does not match a player or is already dead
+     * @throws InvalidBiteCodeException if the biteCode provided in the dto does not match a player or is already dead
      */
     public Kill regKillDTO(KillDTOReg killDTO, Long gameID) throws InvalidBiteCodeException {
         Kill kill = new Kill();
-        //uses customMapper to mapp new contents onto the kill object
+        //uses customMapper to map new contents onto the kill object
         customMapper.updateKillFromDto(killDTO, kill);
         //gets the killer and victim
         Player killer = playerService.getSpecificPlayer(gameID, killDTO.getKillerID());
@@ -196,7 +188,7 @@ public class Mapper {
 
     /**
      * Method for mapping from message to DTO
-     * Includes id, mesage, time, name and the cahts the message id for
+     * Includes id, message, time, name and the chat the message is for
      * @param message original object
      * @return DTO of message
      */
@@ -218,8 +210,21 @@ public class Mapper {
     }
 
     /**
+     * Method for mapping from DTO with new contents to admin message
+     * @param dto DTO with new content
+     * @return new message
+     */
+    public Message toAdminMessage(MessageDTOreg dto) {
+        Message message = new Message();
+        message.setMessage(dto.getMessage());
+        message.setFaction(dto.isFaction());
+        message.setHuman(dto.isHuman());
+        return message;
+    }
+
+    /**
      * Method for mapping from Player to PlayerDTO for normal users
-     * Includes name, id, status and bitecode
+     * Includes name, id, status and biteCode
      * @param player player object
      * @return DTO for normal users
      */
@@ -230,15 +235,12 @@ public class Mapper {
 
     /**
      * Method for mapping from Player to PlayerDTO for admins
-     * Includes name, id, status, patientZero bitecode, UserDTO and urls for kills and messages
+     * Includes name, id, status, patientZero biteCode, UserDTO and urls for kills and messages
      * @param player player object
      * @return DTO for admin
      */
     public PlayerDTOFull toPlayerDTOFull(Player player) {
-        String killsUrl = url + player.getGame().getId() + "/kill/"; //TODO legge til searc parameter så vi får riktige kills
-        String messagesUrl = url + player.getGame().getId() + "/chat/"; //TODO legge til searc parameter så vi får riktige messages
-        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId(),
-               killsUrl,messagesUrl);
+        return new PlayerDTOFull(player.getId(),player.isHuman(),player.isPatientZero(), player.getBiteCode(),player.getGame().getId());
     }
 
 
@@ -258,17 +260,7 @@ public class Mapper {
     }
 
     /**
-     * Method for mapping from PlayerDTO to player
-     * @param playerDTO DTO of player
-     * @return player
-     */
-    public Player toPlayer(PlayerDTO playerDTO, Long gameID) {
-        //returns the player form the database
-        return playerService.getSpecificPlayer(gameID,playerDTO.getId());
-    }
-
-    /**
-     * Method for mapping from DTO to squadmember
+     * Method for mapping from DTO to squadMember
      * @param dto SquadDTO
      * @return member
      */

@@ -48,6 +48,7 @@ public class AppUserService {
      * @param user user we want player from
      * @return The wanted player object
      */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Player getPlayerByGameAndUser(Long gameId, AppUser user) throws MissingPlayerException {
         Game game = gameRepository.findById(gameId).get();
         if(!playerRepository.existsByGameAndUser(game,user)) throw new MissingPlayerException("Player not found");

@@ -1,9 +1,11 @@
 .gameDescriptionContainer {
   display: flex;
   flex-wrap: wrap;
-  max-height: 60vh;
-  overflow-y: scroll;
+  height: 100%;
 }
-#gameDesc {
+#description {
   width: 100%;
+  min-height: 60%;
+  font-weight: bold;
+  font-size: 120%;
 }

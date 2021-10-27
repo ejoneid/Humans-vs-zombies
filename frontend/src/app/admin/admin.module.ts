@@ -5,7 +5,7 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import { MapComponent } from './components/map/map.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { GameComponent } from './components/game/game.component';
-import { PlayersComponent } from './components/player/players.component';
+import { PlayersComponent } from './components/players/players.component';
 import {GameTitleComponent} from "./components/game-title/game-title.component";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -22,6 +22,9 @@ import {MatSelectModule} from "@angular/material/select";
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import {PlayerCreateComponent} from "./components/player-create/player-create.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {GameInfoModule} from "../game-info/game-info.module";
+import {SquadComponent} from "./components/squad/squad.component";
+import {ViewsquadComponent} from "./components/squad-view/viewsquad.component";
 
 @NgModule({
   declarations: [
@@ -36,22 +39,25 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     KillEditComponent,
     SinglePlayerComponent,
     PlayerEditComponent,
-    PlayerCreateComponent
+    PlayerCreateComponent,
+    SquadComponent,
+    ViewsquadComponent
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    GoogleMapsModule,
-    FormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatDatepickerModule,
-    ReactiveFormsModule,
-    MatSlideToggleModule,
-    MatCardModule,
-    MatSelectModule,
-    MatCheckboxModule
-  ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        GoogleMapsModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatDatepickerModule,
+        ReactiveFormsModule,
+        MatSlideToggleModule,
+        MatCardModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        GameInfoModule
+    ],
   entryComponents: [
     MissionEditComponent
   ]

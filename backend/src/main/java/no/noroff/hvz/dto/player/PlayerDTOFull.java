@@ -1,8 +1,6 @@
 package no.noroff.hvz.dto.player;
 
-import no.noroff.hvz.dto.user.AppUserDTOFull;
-import no.noroff.hvz.dto.user.AppUserDTOReg;
-
+@SuppressWarnings("unused")
 public class PlayerDTOFull implements PlayerDTO {
 
     private Long id;
@@ -10,17 +8,13 @@ public class PlayerDTOFull implements PlayerDTO {
     private Boolean patientZero;
     private String biteCode;
     private Long gameID;
-    private String killsUrl;
-    private String messagesUrl;
 
-    public PlayerDTOFull(Long id, Boolean isHuman, Boolean patientZero, String biteCode, Long gameID, String killsUrl, String messagesUrl) {
+    public PlayerDTOFull(Long id, Boolean isHuman, Boolean patientZero, String biteCode, Long gameID) {
         this.id = id;
         this.isHuman = isHuman;
         this.patientZero = patientZero;
         this.biteCode = biteCode;
         this.gameID = gameID;
-        this.killsUrl = killsUrl;
-        this.messagesUrl = messagesUrl;
     }
 
     @Override
@@ -49,21 +43,6 @@ public class PlayerDTOFull implements PlayerDTO {
         this.biteCode = biteCode;
     }
 
-    public String getKillsUrl() {
-        return killsUrl;
-    }
-
-    public void setKillsUrl(String killsUrl) {
-        this.killsUrl = killsUrl;
-    }
-
-    public String getMessagesUrl() {
-        return messagesUrl;
-    }
-
-    public void setMessagesUrl(String messagesUrl) {
-        this.messagesUrl = messagesUrl;
-    }
 
     public Boolean getPatientZero() {
         return patientZero;

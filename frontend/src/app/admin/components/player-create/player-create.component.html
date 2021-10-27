@@ -1,16 +1,16 @@
 <mat-form-field appearance="fill">
-  <mat-label>User:</mat-label>
-  <select matNativeControl (change)="selectPlayer($event)">
+  <mat-label class="text">User:</mat-label>
+  <select class="text" matNativeControl (change)="selectPlayer($event)">
     <option *ngFor="let user of data.allUsers" [value]="user.openID"
-            [selected]="player.openID === user.openID">{{user.firstName}} {{user.lastName}}</option>
+            [selected]="player.userID === user.openID">{{user.firstName}} {{user.lastName}}</option>
   </select>
 </mat-form-field>
 <mat-slide-toggle [(ngModel)]="player.human">
-  <p *ngIf="player.human">Human</p>
-  <p *ngIf="!player.human">Zombie</p>
+  <p class="text" *ngIf="player.human">Human</p>
+  <p class="text" *ngIf="!player.human">Zombie</p>
 </mat-slide-toggle>
-<h2>Patient zero?</h2>
-<mat-checkbox [(ngModel)]="player.patientZero"></mat-checkbox>
+<h2 class="text">Patient zero?</h2>
+<mat-checkbox class="text" [(ngModel)]="player.patientZero" (change)="patientZeroChanged()"></mat-checkbox>
 <mat-dialog-actions>
-  <button (click)="closeDialog()">Save</button>
+  <button class="normalGreyButton" (click)="closeDialog()">Save</button>
 </mat-dialog-actions>
