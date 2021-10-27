@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, OnChanges {
   public isMobile: boolean;
   public centerNotChanged = true;
   public bounds = new LatLngBounds(new LatLng(0,0), new LatLng(0,0));
-  public showBounds = false;
+  public showBounds = true;
   public center!: LatLng;
 
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
@@ -107,11 +107,14 @@ export class MapComponent implements OnInit, OnChanges {
     //Resetting the markers so that they dont get loaded twice when changes are made.
     this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
     if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
+      const ne = new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long)
+      const sw = new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long)
       this.corners = {
-        nw: new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long),
-        se: new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long)
+        nw: ne,
+        se: sw
       };
       this.showBounds = true;
+      this.bounds = new LatLngBounds(ne,sw);
       if (this.centerNotChanged) {
         this.center = this.bounds.getCenter();
         this.centerNotChanged = false;

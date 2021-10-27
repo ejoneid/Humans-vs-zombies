@@ -112,17 +112,17 @@ class AppStartupRunner implements ApplicationRunner {
         game1.setName("Game numero uno");
         game1.setDescription("An open game, which is numero uno");
         game1.setNw_lat("59.934319");
-        game1.setNw_long("10.695490");
+        game1.setSe_long("10.695490");
         game1.setSe_lat("59.884573");
-        game1.setSe_long("10.833259");
+        game1.setNw_long("10.833259");
 
         game2.setGameState("Complete");
         game2.setName("Game numero dos");
         game2.setDescription("A closed game, which is numero dos");
         game2.setNw_lat("59.413878");
-        game2.setNw_long("17.807955");
+        game2.setSe_long("17.807955");
         game2.setSe_lat("59.261201");
-        game2.setSe_long("18.203022");
+        game2.setNw_long("18.203022");
 
         if (gameRepository.count() == 0) {
             gameRepository.save(game1);

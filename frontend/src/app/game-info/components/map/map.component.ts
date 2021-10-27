@@ -75,9 +75,9 @@ export class MapComponent implements OnInit, OnChanges {
       this.markers = createMapMarkers(this.kills, this.missions, this.squadCheckIns, this.mapInfo);
       if (this.mapInfo.nw_lat != null && this.mapInfo.nw_long != null && this.mapInfo.se_lat != null && this.mapInfo.se_long != null) {
         //Checking if there are actual borders.
-        const nw = new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long);
-        const se = new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long);
-        this.bounds = new LatLngBounds(nw, se);
+        const ne = new LatLng(this.mapInfo.nw_lat, this.mapInfo.se_long);
+        const sw = new LatLng(this.mapInfo.se_lat, this.mapInfo.nw_long);
+        this.bounds = new LatLngBounds(ne, sw);
         this.showBounds = true;
         if (this.centerNotChanged) {
           this.center = this.bounds.getCenter();
@@ -99,7 +99,7 @@ export class MapComponent implements OnInit, OnChanges {
         south: this.mapInfo.se_lat,
         west: this.mapInfo.nw_long
       }};
-      this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.nw_long - (this.mapInfo.nw_long - this.mapInfo.se_long));
+      this.center = new LatLng(this.mapInfo.nw_lat - (this.mapInfo.nw_lat - this.mapInfo.se_lat),this.mapInfo.se_long - (this.mapInfo.se_long - this.mapInfo.nw_long));
     }
     else {
       this.center = new LatLng(52.9, 51.8);
