@@ -1,6 +1,7 @@
 .gameTitleContainer {
   display: flex;
   justify-content: space-between;
+  margin-left: 3%;
 }
 .normalGreyButton {
   align-self: center;
