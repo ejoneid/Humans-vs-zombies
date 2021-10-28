@@ -9,7 +9,7 @@
 #messageContainerZombie {
   overflow-y: auto;
   display: flex;
-  max-height: 37vh;
+  max-height: 36vh;
   flex-direction: column;
   row-gap: 3px;
   flex: 2;

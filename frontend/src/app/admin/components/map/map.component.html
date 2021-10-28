@@ -32,6 +32,7 @@
   </google-map>
   <section id="changeContainer">
     <button class="normalGreyButton" id="changeButton" (click)="toggleAreaChange()">Change game area</button>
-    <p id="changeText" *ngIf="changeArea">Changing map corners</p>
+    <p class="changeText" *ngIf="changeArea && !lastNorthWest">Set North West</p>
+    <p class="changeText" *ngIf="changeArea && lastNorthWest">Set South East</p>
   </section>
 </section>
