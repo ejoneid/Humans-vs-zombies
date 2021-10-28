@@ -40,7 +40,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   row-gap: 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .activeGameElement {
   width: 45%;
@@ -49,6 +49,14 @@
   display: flex;
   max-height: 97vh;
   justify-content: flex-end;
+}
+.userManual {
+  border: none;
+  background: none;
+  color: #FEA520;
+  border-bottom: #FEA520 solid 1px;
+  width: fit-content;
+  align-self: center;
 }
                             /****************************
                              *     MOBILE ATTRIBUTES    *

@@ -1,5 +1,5 @@
 #messageContainer {
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   row-gap: 3px;
@@ -19,8 +19,8 @@
 #buttonContainer {
   display: flex;
   justify-content: space-around;
-  margin-right: 20%;
   align-self: flex-end;
+  width: 70%;
   column-gap: 2%;
 }
 .normalGreyButton {

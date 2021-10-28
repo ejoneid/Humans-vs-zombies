@@ -4,9 +4,9 @@
               [options]="options"
               height="100%" width="100%"
               style="height: 100%; width: 100%"
-              (mapClick)="mapClick($event.latLng)"
+              (mapClick)="mapClick($event.latLng, false)"
   >
-    <map-rectangle [bounds]="bounds" [options]="mapRectangleOptions" *ngIf="showBounds"></map-rectangle>
+    <map-rectangle (rectangleClick)="mapClick($event.latLng, true)" [bounds]="bounds" [options]="mapRectangleOptions" *ngIf="showBounds"></map-rectangle>
     <map-marker
       *ngFor="let marker of markers"
       [position]="marker.position"
@@ -21,7 +21,7 @@
               [options]="options"
               height="30vh" width="100%"
               style="height: 100%; width: 100%"
-              (mapClick)="mapClick($event.latLng)"
+              (mapClick)="mapClick($event.latLng, false)"
   >
     <map-marker
       *ngFor="let marker of markers"

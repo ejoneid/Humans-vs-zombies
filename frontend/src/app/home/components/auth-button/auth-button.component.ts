@@ -3,7 +3,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 import {HomeAPI} from "../../api/home.api";
 import {UserPlayer} from "../../../models/input/user-player.model";
-import {last} from "rxjs/operators";
 
 @Component({
   selector: 'app-auth-button',

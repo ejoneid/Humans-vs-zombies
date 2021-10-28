@@ -67,7 +67,12 @@ export class HomePage implements OnInit {
     });
   }
 
-  public get games(): ActiveGame[] {
+  openUserManual(): void {
+    window.open("../../../assets/HvZ-usermanual.pdf", '_blank');
+  }
+
+
+public get games(): ActiveGame[] {
     return this.activeGames;
   }
 

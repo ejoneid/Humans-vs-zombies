@@ -35,7 +35,7 @@ export function createMapMarkers(kills: Kill[], missions: Mission[], squadCheckI
     markers.push({
       id: checkIn.id,
       type: "CHECKIN",
-      description: checkIn.member.name + " @ " + checkIn.time,
+      description: checkIn.member.name + " @ " + checkIn.time.split("T")[1].split(".")[0],
       position: {lat: checkIn.lat, lng: checkIn.lng},
       options: {icon: "../assets/check-in-icon.png", opacity: 1.0},
       title: ""

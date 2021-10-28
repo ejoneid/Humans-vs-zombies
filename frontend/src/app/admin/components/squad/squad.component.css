@@ -1,6 +1,6 @@
 .squadContainer {
   max-height: 20vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 1%;
   border-top: #FEA520 1px solid;
 }

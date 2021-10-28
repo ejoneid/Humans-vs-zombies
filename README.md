@@ -11,7 +11,8 @@ Frontend: https://humans-versus-zombies.herokuapp.com
 Backend : https://humans-versus-zombies-api.herokuapp.com
 
 ## Documentation
-API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui
+API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui  
+Frontend user manual: https://humans-versus-zombies.herokuapp.com/assets/HvZ-usermanual.pdf
 
 ## How to run locally
 

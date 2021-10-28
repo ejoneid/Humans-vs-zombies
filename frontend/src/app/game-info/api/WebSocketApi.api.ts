@@ -2,9 +2,10 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { GameInfoPage} from "../pages/game-info.page";
 import {AdminPage} from "../../admin/pages/admin.page";
+import {baseURL} from "../../../assets/base-url";
 
 export class WebSocketAPI {
-  webSocketEndPoint: string = 'http://localhost:8080/api/websocket';
+  webSocketEndPoint: string = baseURL + 'api/websocket';
   topic: string = "/socket/notify";
   stompClient: any;
   game: GameInfoPage | AdminPage;

@@ -14,6 +14,7 @@ import {MomentDateModule} from '@angular/material-moment-adapter';
 import { baseURL } from 'src/assets/base-url';
 import {ErrorModule} from "./Errors/error.module";
 import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
+import {AuthGuard} from "./shared/auth-guard/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -55,8 +56,7 @@ import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
             httpMethod: HttpMethod.Get,
             uriMatcher: (url: string) => {
               if (url == baseURL + "api/game") {return false}
-              if (url.match(baseURL +"api/.*")) {return true}
-              return false;
+              return !!url.match(baseURL +"api/.*")
             }
           },
         ],
@@ -69,8 +69,9 @@ import {GlobalErrorHandler} from "./Errors/errors/global-error-handler";
     ErrorModule
   ],
   providers: [
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
-    {provide: ErrorHandler, useClass: GlobalErrorHandler,}
+    {provide: ErrorHandler, useClass: GlobalErrorHandler,},
   ],
   bootstrap: [AppComponent]
 })
