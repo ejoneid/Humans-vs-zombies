@@ -14,6 +14,9 @@ public class SquadCheckInDTOReg {
         this.playerID = playerID;
     }
 
+    public SquadCheckInDTOReg() {
+    }
+
     public String getLat() {
         return lat;
     }
