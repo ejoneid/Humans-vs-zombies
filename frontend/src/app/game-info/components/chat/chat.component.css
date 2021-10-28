@@ -1,6 +1,15 @@
 #messageContainer {
   overflow-y: auto;
   display: flex;
+  max-height: 55vh;
+  flex-direction: column;
+  row-gap: 3px;
+  flex: 2;
+}
+#messageContainerZombie {
+  overflow-y: auto;
+  display: flex;
+  max-height: 37vh;
   flex-direction: column;
   row-gap: 3px;
   flex: 2;

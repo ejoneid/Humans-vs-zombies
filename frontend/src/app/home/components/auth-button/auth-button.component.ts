@@ -38,13 +38,10 @@ export class AuthButtonComponent implements OnInit {
                       this.postRequestSent = true;
                       let firstName = token.given_name;
                       let lastName = token.family_name;
-                      console.log(firstName, lastName)
                       if (firstName == undefined || lastName == undefined) {
-                        console.log("Using mail")
                         firstName = token.email?.split('@')[0];
                         lastName = '';
                       }
-                      console.log(firstName, lastName)
                       this.homeAPI.createUser({firstName: firstName, lastName: lastName})
                         .then(res => {res.subscribe(data => data)});
                     }

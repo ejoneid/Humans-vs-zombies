@@ -54,7 +54,6 @@ export class BiteCodeComponent {
         story: this.storyInput,
         timeOfDeath: new Date().getTime().toString()
       };
-      console.log(kill)
       this.gameInfoAPI.createKill(this.gameID, kill)
         .then(res => res.subscribe(
           () => {
