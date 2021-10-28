@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-between;
 }
+#buttonPlaceholder {
+  visibility: hidden;
+}
 #buttonContainer {
   display: flex;
   justify-content: space-evenly;

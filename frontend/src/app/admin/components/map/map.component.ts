@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, OnChanges {
   public isMobile: boolean;
   public centerNotChanged = true;
   public bounds = new LatLngBounds(new LatLng(0,0), new LatLng(0,0));
-  public showBounds = true;
+  public showBounds = false;
   public center!: LatLng;
 
   constructor(private readonly httpClient: HttpClient, public dialog: MatDialog, private readonly adminAPI: AdminAPI) {
@@ -136,13 +136,11 @@ export class MapComponent implements OnInit, OnChanges {
    * @param fromRectangle if the area clicked was inside the map borders.
    */
   mapClick(position: LatLng, fromRectangle: boolean): void {
-    if (this.showBounds && fromRectangle || !this.showBounds) {
-      if (this.changeArea) {
-        this.placeCorner(position);
-      }
-      else {
-        this.createMarker(position)
-      }
+    if (this.changeArea) {
+      this.placeCorner(position);
+    }
+    else if (this.showBounds && fromRectangle || !this.showBounds) {
+      this.createMarker(position)
     }
   }
 

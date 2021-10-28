@@ -13,7 +13,14 @@
         <button class="normalGreyButton" style="border-color: #FEA520" disabled *ngIf="selectedChat === 'SQUAD'">Squad</button>
       </div>
     </section>
-    <section id="messageContainer" #chat [scrollTop]="chat.scrollHeight" *ngIf="!isMobile">
+    <section id="messageContainer" #chat [scrollTop]="chat.scrollHeight" *ngIf="!isMobile && playerIsHuman">
+      <app-message *ngFor="let message of chatMessages"
+                   [timeSent]="message.time"
+                   [sender]="message.sender"
+                   [message]="message.content">
+      </app-message>
+    </section>
+    <section id="messageContainerZombie" #chat [scrollTop]="chat.scrollHeight" *ngIf="!isMobile && !playerIsHuman">
       <app-message *ngFor="let message of chatMessages"
                    [timeSent]="message.time"
                    [sender]="message.sender"
