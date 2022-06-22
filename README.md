@@ -10,6 +10,8 @@
 Frontend: https://humans-versus-zombies.herokuapp.com  
 Backend : https://humans-versus-zombies-api.herokuapp.com
 
+Note! Backend can go into sleep mode if there is no activity for a while, therefore it can take a minuite or two for active games to show up.
+
 ## Documentation
 API Swagger docs: https://humans-versus-zombies-api.herokuapp.com/api-docs/ui  
 Frontend user manual: https://humans-versus-zombies.herokuapp.com/assets/HvZ-usermanual.pdf
